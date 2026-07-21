@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.1 — Common OS Types and Their Purposes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  .nav-start {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  padding: 4px 9px;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  opacity: 0.8;
+  }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* OS PANEL — reuse of edition-panel pattern for OS profiles */
+  .os-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .os-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .os-panel-header.win     { background: #0078d4; }
+  .os-panel-header.linux   { background: #2c2c2c; }
+  .os-panel-header.mac     { background: #4a4a52; }
+  .os-panel-header.chrome  { background: #1a73e8; }
+  .os-panel-header.ios     { background: #333336; }
+  .os-panel-header.ipados  { background: #4b4b52; }
+  .os-panel-header.android { background: #1a6b3a; }
+  .os-panel-body { padding: 0; }
+  .os-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .os-row:last-child { border-bottom: none; }
+  .os-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .os-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .os-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .os-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.1</strong> Explain Common Operating System Types and Their Purposes</span>
+  </div>
+  <div class="top-nav-right">
+    <span class="nav-start">Start of Core 2</span>
+    <a class="nav-next" href="./1_2-OS-Installations-Upgrades.html">1.2</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.1</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Explain Common Operating System<br>Types and Their Purposes</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.1</span>
+    <span>Domain weight: 28%</span>
+    <span>Workstation OSes · Mobile OSes · Filesystems · Life Cycle · Compatibility</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Operating Systems</h2>
+
+<p>An <span class="key-term">operating system (OS)</span> is the foundational software layer that manages a device's hardware and provides the services applications need to run — memory management, process scheduling, file storage, device drivers, security, and the user interface itself. Every device a technician touches, from a desktop tower to a smartphone in someone's pocket, runs some operating system, and picking the right one for the job — and knowing its quirks — is core to the support role the A+ exam certifies.</p>
+
+<p>Objective 1.1 asks you to recognize the major desktop and mobile operating systems in use today, understand what each one is best suited for, know the filesystems each one relies on to organize data on disk, and understand what happens when an OS or a specific version of it reaches the end of its supported life. It also touches on the practical headaches that come from mixing operating systems and filesystems in the same environment — the compatibility concerns a technician is expected to anticipate.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Two Categories, One Exam Objective</p>
+  <p>The exam splits operating systems into two buckets: <strong>workstation systems</strong> (Windows, Linux, macOS, Chrome OS — designed to run on desktops and laptops) and <strong>mobile OSes</strong> (iPadOS, iOS, Android — designed for touch-first, battery-powered, always-connected devices). Each OS pairs with certain filesystems, has its own life-cycle policy, and creates specific compatibility friction when it has to interoperate with the others. Keep those three threads — OS, filesystem, life cycle — separate in your head, because exam questions frequently test one against another (e.g., "which filesystem would you use on this OS," or "why can't this file be read on that OS").</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — WORKSTATION OSes ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Workstation Operating Systems</h2>
+
+<p>A <span class="key-term">workstation OS</span> is designed to run on desktop and laptop computers where a keyboard, mouse, and full-size display are the primary input and output methods, and where the machine typically stays connected to power. The four workstation OSes on the exam — Windows, Linux, macOS, and Chrome OS — cover the overwhelming majority of desktop and laptop deployments a technician will encounter in the field.</p>
+
+<h3 class="section">Windows</h3>
+
+<p>Microsoft <span class="key-term">Windows</span> is the dominant desktop operating system in both consumer and enterprise environments. Its market position stems from decades of backward compatibility, the broadest hardware and peripheral driver support of any desktop OS, and deep integration with business tools — Active Directory, Group Policy, Microsoft 365, and enterprise management platforms like Intune and SCCM.</p>
+
+<div class="os-panel">
+  <div class="os-panel-header win"><span>Windows</span><span>Closed-source · Microsoft</span></div>
+  <div class="os-panel-body">
+    <div class="os-row">
+      <span class="os-label">Primary use case</span>
+      <span class="os-desc">General-purpose business and home desktops/laptops; the default choice for organizations standardized on Active Directory and Microsoft's productivity ecosystem</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Native filesystem</span>
+      <span class="os-desc"><strong>NTFS</strong> for internal drives (required for the OS partition); FAT32/exFAT commonly used for removable/external media</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Strengths</span>
+      <span class="os-desc">Widest application library and hardware driver availability; native support for legacy business software; centralized management via Active Directory/Group Policy/Intune; largest installed base means the broadest peer/community support</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Considerations</span>
+      <span class="os-desc">Largest attack surface due to market share, making it the most frequently targeted OS by malware; licensing costs per seat; feature updates and end-of-life dates must be tracked per version</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Linux</h3>
+
+<p><span class="key-term">Linux</span> is an open-source, Unix-like operating system built around the Linux kernel, distributed in many different "distributions" (distros) such as Ubuntu, Fedora, Debian, and Red Hat Enterprise Linux (RHEL). Because the kernel and most surrounding software are free and open-source, Linux dominates servers, embedded devices, and increasingly developer workstations, while remaining a minority player on consumer desktops.</p>
+
+<div class="os-panel">
+  <div class="os-panel-header linux"><span>Linux</span><span>Open-source · Community/Vendor</span></div>
+  <div class="os-panel-body">
+    <div class="os-row">
+      <span class="os-label">Primary use case</span>
+      <span class="os-desc">Servers, developer workstations, embedded/IoT devices, and cost-sensitive or highly customizable desktop deployments; the backbone of most of the internet's server infrastructure</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Native filesystem</span>
+      <span class="os-desc"><strong>ext4</strong> is the default on most distributions; <strong>XFS</strong> is common on Red Hat/enterprise systems and for large storage volumes</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Strengths</span>
+      <span class="os-desc">No license cost; highly configurable and scriptable; strong security model with granular permissions; long-term stability for servers; large ecosystem of free, open-source software</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Considerations</span>
+      <span class="os-desc">Smaller consumer software library (some commercial apps have no native Linux version); steeper learning curve for users accustomed to Windows/macOS; hardware driver support varies by distro and hardware vendor</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">macOS</h3>
+
+<p>Apple's <span class="key-term">macOS</span> is a Unix-based desktop OS that runs exclusively on Apple's Mac hardware. It is known for tight hardware/software integration, a polished user interface, and deep interoperability with Apple's other device platforms (iPhone, iPad, Apple Watch) through Continuity features.</p>
+
+<div class="os-panel">
+  <div class="os-panel-header mac"><span>macOS</span><span>Closed-source · Apple, hardware-locked</span></div>
+  <div class="os-panel-body">
+    <div class="os-row">
+      <span class="os-label">Primary use case</span>
+      <span class="os-desc">Creative and professional workstations (video/audio/photo editing, design, development), and organizations already invested in Apple's device ecosystem</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Native filesystem</span>
+      <span class="os-desc"><strong>APFS (Apple File System)</strong> is the default on all modern Macs; older Macs and some external drives may still use HFS+</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Strengths</span>
+      <span class="os-desc">Tight hardware/software optimization since Apple controls both; strong built-in creative and productivity software; seamless integration with iPhone/iPad via Continuity, Handoff, and iCloud; Unix underpinnings give it a capable command-line environment (Terminal)</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Considerations</span>
+      <span class="os-desc">Only runs on Apple hardware — no option to build/repair with commodity parts; smaller business software library for certain vertical/legacy applications; generally higher hardware cost than comparable Windows/Linux machines</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Chrome OS</h3>
+
+<p><span class="key-term">Chrome OS</span> is Google's lightweight, Linux-kernel-based operating system built around the Chrome web browser. It is designed for devices — Chromebooks — that rely heavily on cloud storage and web/Android applications rather than large locally installed software.</p>
+
+<div class="os-panel">
+  <div class="os-panel-header chrome"><span>Chrome OS</span><span>Closed-source core · Google</span></div>
+  <div class="os-panel-body">
+    <div class="os-row">
+      <span class="os-label">Primary use case</span>
+      <span class="os-desc">Education (the dominant OS in K-12 classrooms), low-cost/low-maintenance business fleets, and kiosk-style deployments where centralized cloud management matters more than local software installation</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Native filesystem</span>
+      <span class="os-desc">Uses a Linux-derived filesystem internally; user-facing storage is primarily cloud-based (Google Drive), so local filesystem specifics rarely surface as a support concern</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Strengths</span>
+      <span class="os-desc">Fast boot times; minimal local attack surface (mostly sandboxed web/Android apps); automatic background updates; centralized fleet management through the Google Admin console; inexpensive hardware</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Considerations</span>
+      <span class="os-desc">Cannot run traditional Windows/macOS desktop applications natively; heavily dependent on an internet connection for full functionality; limited local storage on most devices by design</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Exam Angle — Matching OS to Scenario</p>
+  <p>Scenario questions on 1.1 often describe an environment and ask which workstation OS fits. <strong>Video editor needs a workstation</strong> → macOS (creative software ecosystem). <strong>School wants low-maintenance, cheap, cloud-managed laptops</strong> → Chrome OS. <strong>Developer needs a server-like environment locally for scripting/compiling</strong> → Linux. <strong>Business needs Active Directory domain join and legacy line-of-business software</strong> → Windows. Read for the clue words: "creative," "budget/cloud-managed/education," "open-source/server/scripting," and "domain/legacy line-of-business app" respectively.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — MOBILE OSes ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Mobile Operating Systems</h2>
+
+<p>Mobile operating systems are built for touch input, battery efficiency, constant wireless connectivity, and an app-store distribution model rather than traditional installer packages. The exam covers three: Apple's iPadOS and iOS, and Google's Android.</p>
+
+<h3 class="section">iPadOS and iOS</h3>
+
+<p><span class="key-term">iOS</span> runs on the iPhone, and <span class="key-term">iPadOS</span> is Apple's fork of iOS tailored for the iPad's larger touchscreen, adding features like a more capable multitasking Split View, external pointer/keyboard support, and a Files app with more desktop-like file management. Both are closed-source, run only on Apple hardware, and share the same underlying Darwin/XNU kernel lineage as macOS.</p>
+
+<div class="card-grid">
+  <div class="card card-accent2">
+    <h4>iOS (iPhone)</h4>
+    <ul>
+      <li><strong>Distribution model</strong> — Apps install only through the App Store (absent jailbreaking); Apple reviews every app before publication</li>
+      <li><strong>Hardware</strong> — Runs exclusively on iPhone hardware; tightly optimized for a specific, limited set of chipsets Apple designs itself</li>
+      <li><strong>Ecosystem role</strong> — Central hub for Apple ID, iCloud, Apple Pay, and Continuity features shared with macOS/iPadOS</li>
+      <li><strong>Support model</strong> — Long update support window per device generation; security patches distributed directly by Apple, bypassing carriers</li>
+    </ul>
+  </div>
+  <div class="card card-accent2">
+    <h4>iPadOS (iPad)</h4>
+    <ul>
+      <li><strong>Distribution model</strong> — Same App Store model as iOS; many iPhone apps run on iPad automatically or with an adapted layout</li>
+      <li><strong>Hardware</strong> — Runs exclusively on iPad hardware; higher-end iPads use the same chip families as Macs</li>
+      <li><strong>Differentiators from iOS</strong> — Multitasking (Split View/Slide Over), Apple Pencil support, external display/keyboard support, more capable Files app</li>
+      <li><strong>Support model</strong> — Same Apple-direct patch distribution model as iOS; update support tied to hardware generation</li>
+    </ul>
+  </div>
+</div>
+
+<h3 class="section">Android</h3>
+
+<p><span class="key-term">Android</span> is Google's mobile OS, built on an open-source Linux kernel, but distributed and customized by many different hardware manufacturers (Samsung, Google, Motorola, and others). This open licensing model is the single biggest structural difference between Android and Apple's mobile OSes.</p>
+
+<div class="os-panel">
+  <div class="os-panel-header android"><span>Android</span><span>Open-source core · Google, multi-vendor</span></div>
+  <div class="os-panel-body">
+    <div class="os-row">
+      <span class="os-label">Primary use case</span>
+      <span class="os-desc">The most widely used mobile OS worldwide across a huge range of price points and hardware form factors, from budget phones to foldables to tablets</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Distribution model</span>
+      <span class="os-desc">Google Play Store is the default, but Android's open licensing allows sideloading APK files and alternative app stores — something iOS does not permit without jailbreaking</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Strengths</span>
+      <span class="os-desc">Runs on hardware from dozens of manufacturers at every price point; deep customization (launchers, widgets, system-level tweaks); open-source AOSP base lets vendors build heavily customized experiences</span>
+    </div>
+    <div class="os-row">
+      <span class="os-label">Considerations</span>
+      <span class="os-desc">Update timelines vary widely by manufacturer/carrier since each vendor must adapt and push its own updates — a major fragmentation concern; the more open distribution model creates greater exposure to malicious sideloaded apps</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Fragmentation — A Real-World Android Support Issue</p>
+  <p>Because manufacturers customize Android and control the update rollout for their own devices, two phones running "Android" can be on very different security patch levels even when released the same year. A technician troubleshooting an Android security issue always needs to check the specific device model and manufacturer, not just "which version of Android" — the manufacturer's own update policy determines what's actually possible to patch.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — FILESYSTEMS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Various Filesystem Types</h2>
+
+<p>A <span class="key-term">filesystem</span> is the method an OS uses to organize, name, store, and retrieve data on a storage device. Each OS family has a native filesystem it's optimized for, and knowing which filesystem pairs with which OS — and what each filesystem's limitations are — is heavily tested on 1.1.</p>
+
+<table class="data-table">
+  <thead><tr><th>Filesystem</th><th>Full Name</th><th>Native OS</th><th>Key Characteristics</th></tr></thead>
+  <tbody>
+    <tr><td>NTFS</td><td>New Technology File System</td><td>Windows</td><td>Journaling; file/folder permissions (ACLs); encryption (EFS); compression; supports very large files and volumes; required for the Windows OS partition</td></tr>
+    <tr><td>ReFS</td><td>Resilient File System</td><td>Windows Server / Windows Pro for Workstations</td><td>Newer Microsoft filesystem built for resiliency and large-scale storage; automatic data integrity checking/repair; used for storage pools and large data volumes rather than as a general boot filesystem</td></tr>
+    <tr><td>FAT32</td><td>32-bit File Allocation Table</td><td>Legacy Windows / universal removable media</td><td>Maximum individual file size 4 GiB; maximum volume size 2 TiB; no permissions or journaling; the most universally compatible filesystem across Windows, macOS, and Linux for small removable drives</td></tr>
+    <tr><td>ext4</td><td>Fourth Extended Filesystem</td><td>Linux</td><td>Journaling filesystem; the default on most Linux distributions; supports large files/volumes; not natively readable by Windows or macOS without third-party drivers</td></tr>
+    <tr><td>XFS</td><td>Extended Filesystem</td><td>Linux (Red Hat/enterprise)</td><td>High-performance journaling filesystem tuned for large files and parallel I/O; common default on Red Hat Enterprise Linux and for large storage arrays/servers</td></tr>
+    <tr><td>APFS</td><td>Apple File System</td><td>macOS / iOS / iPadOS</td><td>Optimized for flash/SSD storage; native encryption; space-sharing between volumes on the same physical container; snapshots for backups; replaced HFS+ as Apple's default</td></tr>
+    <tr><td>exFAT</td><td>Extensible File Allocation Table</td><td>Cross-platform removable media</td><td>Designed to replace FAT32 on large removable drives; no 4 GiB file size limit; readable/writable natively by Windows, macOS, and modern Linux — the go-to choice for cross-platform USB/external drives holding large files</td></tr>
+  </tbody>
+</table>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Journaling</span>
+    <span>A technique where the filesystem logs pending changes before committing them, so that if the system crashes mid-write, the filesystem can replay or roll back the journal on next boot rather than becoming corrupted. NTFS, ext4, XFS, and APFS are all journaling filesystems; FAT32 is not, which is why FAT32 volumes are more prone to corruption after an unclean shutdown.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Why FAT32/exFAT persist</span>
+    <span>Despite being older or simpler than NTFS/ext4/APFS, FAT32 and exFAT remain important because they are the only filesystems natively readable and writable across Windows, macOS, and Linux without installing extra drivers. This cross-platform compatibility is exactly why USB flash drives and SD cards ship formatted as FAT32 (smaller/older media) or exFAT (larger drives and files).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Reading a foreign filesystem</span>
+    <span>Windows cannot natively read ext4 or XFS (Linux) or write to APFS (macOS) without third-party software. macOS can read NTFS by default but cannot write to it without third-party tools or reformatting. This is a frequent real-world support scenario: a drive formatted on one OS often needs a driver, a reformat, or a cross-platform filesystem (exFAT) to be usable on another.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Filesystem Selection</p>
+  <p><strong>Windows OS/boot drive</strong> → NTFS (required). <strong>Linux OS/boot drive</strong> → ext4 (most common) or XFS (enterprise/Red Hat). <strong>macOS internal drive</strong> → APFS. <strong>Cross-platform external drive, files under 4 GB</strong> → FAT32 for maximum compatibility with older devices. <strong>Cross-platform external drive, large files (video, disk images)</strong> → exFAT, since it removes the FAT32 file-size ceiling while remaining readable everywhere.</p>
+</div>
+
+
+<!-- ═══ SECTION 4 — LIFE CYCLE ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Vendor Life-Cycle Limitations</h2>
+
+<p>Every operating system version has a defined support life cycle set by its vendor. Understanding these life-cycle stages — and the risk of running past them — is essential, because an OS's age directly determines whether it can still receive security fixes.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">End-of-Life (EOL)</span>
+    <span>The point at which a vendor permanently stops providing security patches, bug fixes, and technical support for an OS version. Once an OS reaches EOL, any newly discovered vulnerability in it will never be patched — the system is permanently exposed. Continuing to run EOL software in a business environment is a compliance and security liability, not just an inconvenience.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Update limitations</span>
+    <span>Constraints on which updates a given device or OS version can actually receive — for example, hardware too old to meet a new OS version's minimum requirements, a mobile device whose manufacturer has stopped shipping monthly security patches, or a Windows feature update version that has itself passed its own separate support date even though the parent OS is still supported. Update limitations can leave a device vulnerable well before the OS's official EOL date.</span>
+  </div>
+</div>
+
+<div class="card-grid">
+  <div class="card card-accent">
+    <h4>Life Cycle Across OS Families</h4>
+    <ul>
+      <li><strong>Windows</strong> — Each release/feature update has its own mainstream and extended support dates set by Microsoft; server versions are typically supported longer than desktop consumer versions</li>
+      <li><strong>macOS</strong> — Apple typically supports a given macOS version with security updates for about three years from release, then drops it for the newest hardware</li>
+      <li><strong>Linux distros</strong> — Support windows vary widely by distribution; enterprise distros (RHEL, Ubuntu LTS) offer multi-year support windows, while some community releases support only months</li>
+      <li><strong>Mobile OSes</strong> — iOS/iPadOS support windows are tied to hardware generation and set directly by Apple; Android support windows are set independently by each device manufacturer, often shorter and less predictable</li>
+    </ul>
+  </div>
+  <div class="card card-accent4">
+    <h4>Consequences of Running EOL Software</h4>
+    <ul>
+      <li><strong>No security patches</strong> — any newly discovered vulnerability remains permanently exploitable</li>
+      <li><strong>Compliance failure</strong> — many regulatory/compliance frameworks explicitly prohibit EOL software in scope</li>
+      <li><strong>Loss of vendor support</strong> — no technical support, no bug fixes, no driver updates for new peripherals</li>
+      <li><strong>Compatibility drift</strong> — new software and hardware increasingly refuse to support or even install on EOL platforms</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Real-World Consequence — EOL Is Not Theoretical</p>
+  <p>Ransomware outbreaks like WannaCry in 2017 spread most severely through organizations still running Windows XP, which had already reached EOL years earlier. Microsoft had patched the underlying vulnerability for all currently supported Windows versions, but EOL systems never received that fix and had no defense. The lesson tested on the exam: EOL is a security decision with real consequences, not just a policy checkbox.</p>
+</div>
+
+
+<!-- ═══ SECTION 5 — COMPATIBILITY ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Compatibility Concerns Between Operating Systems</h2>
+
+<p>Supporting a mixed environment — Windows machines alongside Macs, Linux servers, and a fleet of iOS and Android phones — means anticipating where these systems don't naturally interoperate. Objective 1.1 expects a technician to recognize the common friction points before they become support tickets.</p>
+
+<ul class="body-list">
+  <li><strong>File format and application compatibility</strong> — a file created in an application on one OS may not open correctly (or at all) in a different OS's version of that application, or in an application native to a different OS entirely</li>
+  <li><strong>Filesystem compatibility</strong> — an external drive formatted as NTFS or ext4 on one OS may be unreadable, or read-only, on another OS without added drivers or a reformat (see Section 3)</li>
+  <li><strong>Driver and peripheral support</strong> — a printer, scanner, or specialty peripheral may only ship drivers for certain OSes, leaving other platforms unable to use the device fully or at all</li>
+  <li><strong>Application availability</strong> — some commercial software is published for only one or two OS platforms (e.g., many enterprise line-of-business applications are Windows-only), forcing organizations to maintain a specific OS just to run one application</li>
+  <li><strong>Authentication and directory service integration</strong> — joining a Linux or macOS machine to a Windows Active Directory domain requires extra configuration (or third-party tools) that isn't necessary for Windows clients, which join natively</li>
+  <li><strong>Mobile-to-desktop handoff</strong> — features like Apple's Continuity/Handoff only work within the Apple ecosystem; an Android phone and a Windows PC require third-party or manufacturer-specific apps to achieve similar file/clipboard sharing</li>
+  <li><strong>32-bit vs. 64-bit and legacy software</strong> — older 16-bit or 32-bit-only applications may not run at all on a modern 64-bit OS without a compatibility layer or virtual machine</li>
+</ul>
+
+<div class="callout callout-info">
+  <p class="callout-title">Practical Example — Mixed-OS File Sharing</p>
+  <p>A small office with a mix of Windows PCs and MacBooks wants to share a single external hard drive for large video files. Formatting the drive NTFS means the Macs can read but not write to it by default. Formatting it APFS means the Windows PCs can't read it at all without third-party software. The practical fix, and the one the exam wants you to recognize, is to format the drive <strong>exFAT</strong> — it is natively readable and writable by both operating systems and has no 4 GiB file-size ceiling, making it the correct answer for cross-platform file sharing of large files.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 1.1 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Windows</span><span>Dominant workstation OS; NTFS native; Active Directory/Group Policy integration; widest driver/app support</span></div>
+    <div class="summary-item"><span class="s-sym">Linux</span><span>Open-source, Unix-like; ext4/XFS native; dominant on servers; free, highly configurable</span></div>
+    <div class="summary-item"><span class="s-sym">macOS</span><span>Apple-hardware-only; APFS native; creative/professional workstation favorite; Unix-based</span></div>
+    <div class="summary-item"><span class="s-sym">Chrome OS</span><span>Google, Linux-kernel-based; cloud-centric; dominant in K-12 education; low local storage/maintenance</span></div>
+    <div class="summary-item"><span class="s-sym">iOS</span><span>Apple's phone OS; App Store-only distribution; APFS-family filesystem; Apple-direct patch delivery</span></div>
+    <div class="summary-item"><span class="s-sym">iPadOS</span><span>iOS fork for iPad; adds Split View multitasking, Pencil, external display/keyboard support</span></div>
+    <div class="summary-item"><span class="s-sym">Android</span><span>Google, open-source (AOSP) core; multi-vendor; sideloading allowed; update timelines fragmented by OEM</span></div>
+    <div class="summary-item"><span class="s-sym">NTFS</span><span>Windows native; journaling, ACLs, encryption (EFS); required for Windows OS partition</span></div>
+    <div class="summary-item"><span class="s-sym">ReFS</span><span>Microsoft; resiliency/large storage focus; Windows Server and Pro for Workstations</span></div>
+    <div class="summary-item"><span class="s-sym">FAT32</span><span>4 GiB max file size; 2 TiB max volume; universal legacy cross-platform compatibility</span></div>
+    <div class="summary-item"><span class="s-sym">ext4</span><span>Linux default; journaling; not natively read/write on Windows/macOS without drivers</span></div>
+    <div class="summary-item"><span class="s-sym">XFS</span><span>Linux enterprise default (RHEL); tuned for large files and high-throughput I/O</span></div>
+    <div class="summary-item"><span class="s-sym">APFS</span><span>macOS/iOS/iPadOS native; flash-optimized; encryption, snapshots, space-sharing volumes</span></div>
+    <div class="summary-item"><span class="s-sym">exFAT</span><span>No 4 GiB limit; native read/write across Windows, macOS, modern Linux; best for large cross-platform files</span></div>
+    <div class="summary-item"><span class="s-sym">End-of-Life (EOL)</span><span>No more patches ever; permanent vulnerability exposure; compliance and security risk</span></div>
+    <div class="summary-item"><span class="s-sym">Update Limitations</span><span>Hardware or vendor constraints prevent a device from receiving available updates/patches</span></div>
+    <div class="summary-item"><span class="s-sym">OS Compatibility Friction</span><span>File formats, filesystems, drivers, app availability, and directory integration differ across platforms</span></div>
+    <div class="summary-item"><span class="s-sym">Cross-Platform Sharing Fix</span><span>Format shared removable/external media as exFAT to guarantee read/write access on all major OSes</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>OS Selection Guide</h4>
+    <ul>
+      <li><strong>General business/home desktop</strong> — Windows</li>
+      <li><strong>Server, developer workstation, IoT</strong> — Linux</li>
+      <li><strong>Creative/professional production work</strong> — macOS</li>
+      <li><strong>Education or low-maintenance cloud fleet</strong> — Chrome OS</li>
+      <li><strong>Apple phone</strong> — iOS · <strong>Apple tablet</strong> — iPadOS</li>
+      <li><strong>Multi-vendor, customizable, any price point</strong> — Android</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Filesystem-to-OS Pairing</h4>
+    <ul>
+      <li><strong>Windows OS partition</strong> — NTFS (required)</li>
+      <li><strong>Windows Server large storage pools</strong> — ReFS</li>
+      <li><strong>Linux OS partition (general)</strong> — ext4</li>
+      <li><strong>Linux OS partition (enterprise/RHEL)</strong> — XFS</li>
+      <li><strong>macOS/iOS/iPadOS internal storage</strong> — APFS</li>
+      <li><strong>Cross-platform removable media</strong> — FAT32 (small files) / exFAT (large files)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Life-Cycle Red Flags</h4>
+    <ul>
+      <li><strong>OS past its EOL date</strong> — no future patches, ever; flag for immediate upgrade/replacement</li>
+      <li><strong>Device can't meet new OS hardware requirements</strong> — an update limitation, not a choice</li>
+      <li><strong>Android phone with no OEM update in a year+</strong> — check manufacturer's specific patch policy</li>
+      <li><strong>Windows feature update itself past support</strong> — separate from whether Windows overall is supported</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Compatibility Troubleshooting</h4>
+    <ul>
+      <li><strong>Drive unreadable on another OS</strong> — check filesystem; consider reformatting to exFAT</li>
+      <li><strong>App won't run on new OS</strong> — check 32-bit/64-bit and legacy compatibility layer options</li>
+      <li><strong>Peripheral not working on non-Windows OS</strong> — check vendor's cross-platform driver support</li>
+      <li><strong>Mac/Linux won't join AD domain natively</strong> — expect extra configuration or third-party tooling</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Windows = NTFS, Linux = ext4/XFS, macOS = APFS</strong> — memorize these three native pairings first; every other filesystem question builds on top of them.</p>
+  <p><strong>FAT32's defining limit is 4 GiB per file</strong> — this single fact explains why it can't hold most modern install media or large video files, and why exFAT exists.</p>
+  <p><strong>exFAT is the correct answer for cross-platform large-file sharing</strong> on removable/external drives — native read/write on Windows, macOS, and modern Linux, with no FAT32 file-size ceiling.</p>
+  <p><strong>iOS is for iPhone; iPadOS is the iPad-specific fork</strong> with added multitasking and accessory support — don't confuse the two on device-specific scenario questions.</p>
+  <p><strong>Android's open licensing allows sideloading</strong>; iOS/iPadOS do not (without jailbreaking) — this is the core distribution-model difference tested between the two mobile platforms.</p>
+  <p><strong>End-of-Life (EOL) means no security patches will ever be released again</strong> for that OS version, regardless of how severe a newly discovered vulnerability is. This is distinct from an update limitation, where a device is simply blocked from receiving updates it might otherwise be eligible for.</p>
+  <p><strong>Chrome OS is Linux-kernel-based but is not "Linux" for exam purposes</strong> — it's tested as its own distinct category focused on cloud/education/fleet deployments.</p>
+  <p><strong>Compatibility concerns are about friction points</strong>, not permanent impossibilities — filesystem mismatches, driver gaps, and app availability gaps almost always have a workaround (reformatting, third-party drivers, compatibility layers, or virtualization), and the exam wants you to identify the right workaround for the scenario.</p>
+</div>
+
+</div>
+</body>
+</html>

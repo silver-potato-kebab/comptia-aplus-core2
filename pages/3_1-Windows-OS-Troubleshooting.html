@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 3.1 — Troubleshoot Common Windows OS Issues</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* NAV */
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-eyebrow .domain-badge { background: var(--accent4); }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* ISSUE CARD — the main pattern for each symptom */
+  .issue-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 20px 0 32px; }
+  .issue-header { padding: 14px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; border-bottom: 2px solid var(--border); }
+  .issue-header.red  { background: var(--accent-light);  border-bottom-color: #c0392b33; }
+  .issue-header.blue { background: var(--accent2-light); border-bottom-color: #2c3e6b33; }
+  .issue-header.grn  { background: var(--accent3-light); border-bottom-color: #1a6b3a33; }
+  .issue-header.org  { background: var(--accent4-light); border-bottom-color: #b5590a33; }
+  .issue-header.neu  { background: var(--surface2);      border-bottom-color: var(--border2); }
+  .issue-name { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; line-height: 1.25; }
+  .issue-sub  { font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .issue-tags { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+  .tag-critical { background: #1a1a18; color: #fff; }
+  .tag-high  { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b44; }
+  .tag-med   { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .tag-low   { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+  .tag-info  { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+
+  /* SPEC ROW inside cards */
+  .spec-row { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+  .spec-cell { padding: 9px 14px; border-right: 1px solid var(--border); font-family: var(--sans); font-size: 13px; }
+  .spec-cell:last-child { border-right: none; }
+  .spec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .spec-value { font-weight: 600; color: var(--text); line-height: 1.35; }
+  .sv-red { color: var(--accent); }
+  .sv-grn { color: var(--accent3); }
+  .sv-org { color: var(--accent4); }
+
+  /* BODY ROWS inside cards */
+  .card-body { }
+  .card-row { display: grid; grid-template-columns: 190px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .card-row:last-child { border-bottom: none; }
+  .card-label { font-weight: 600; color: var(--accent2); padding: 10px 14px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .card-desc  { padding: 10px 14px; color: var(--muted); line-height: 1.6; }
+  .card-desc strong { color: var(--text); }
+  .card-desc code  { font-family: var(--mono); font-size: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+
+  /* STEP LIST */
+  .step-list { margin: 16px 0 24px; counter-reset: step; }
+  .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .step-item:last-child { border-bottom: none; }
+  .step-num { font-family: var(--mono); font-size: 11px; font-weight: 600; background: var(--accent2); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-content { color: var(--muted); line-height: 1.6; flex: 1; }
+  .step-content strong { color: var(--text); }
+  .step-content code { font-family: var(--mono); font-size: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+
+  /* BSOD CODE BLOCK */
+  .bsod-block { background: #0050ef; color: #fff; border-radius: 6px; padding: 24px 28px; margin: 18px 0 28px; font-family: var(--mono); font-size: 13px; line-height: 1.7; }
+  .bsod-block .bsod-header { font-size: 18px; font-weight: 700; margin-bottom: 16px; letter-spacing: 0.02em; }
+  .bsod-block .bsod-code { font-size: 14px; font-weight: 600; color: #aad4ff; margin: 8px 0 4px; }
+  .bsod-block .bsod-note { font-size: 11.5px; color: rgba(255,255,255,0.6); }
+  .bsod-block .bsod-sep { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 12px 0; }
+
+  /* COMMAND BLOCK */
+  .cmd-block { background: #1a1a18; color: #e8e4da; border-radius: 5px; padding: 14px 18px; margin: 12px 0 20px; font-family: var(--mono); font-size: 12.5px; line-height: 1.8; overflow-x: auto; }
+  .cmd-block .cmd-prompt { color: #7fb3d3; }
+  .cmd-block .cmd-comment { color: #6b6860; font-style: italic; }
+  .cmd-block .cmd-output { color: #b8d4b0; }
+  .cmd-block .cmd-warn   { color: #e8a87c; }
+
+  /* COMPARISON TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; font-size: 13.5px; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); background: var(--surface2); font-size: 13px; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .cell-yes  { color: var(--accent3); font-weight: 700; }
+  .cell-no   { color: var(--accent);  font-weight: 700; }
+  .cell-part { color: var(--accent4); font-weight: 700; }
+
+  /* DECISION FLOW */
+  .decision-flow { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-family: var(--sans); font-size: 14px; }
+  .df-title { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .df-row { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .df-row:last-child { border-bottom: none; }
+  .df-condition { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; font-size: 12.5px; color: var(--text); min-width: 195px; flex-shrink: 0; font-weight: 600; line-height: 1.4; }
+  .df-arrow { color: var(--border2); font-size: 16px; padding-top: 5px; flex-shrink: 0; }
+  .df-result { color: var(--muted); line-height: 1.55; }
+  .df-result strong { color: var(--accent); }
+  .df-result .good { color: var(--accent3); font-weight: 600; }
+  .df-result code { font-family: var(--mono); font-size: 12px; background: var(--surface); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+
+  /* TOOL MATRIX */
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 24px; }
+  .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; font-family: var(--sans); font-size: 13px; }
+  .tool-name  { font-family: var(--mono); font-weight: 600; font-size: 13px; color: var(--accent2); margin-bottom: 4px; }
+  .tool-how   { font-size: 11px; color: var(--accent4); font-weight: 600; letter-spacing: 0.06em; margin-bottom: 5px; font-family: var(--mono); }
+  .tool-body  { color: var(--muted); line-height: 1.55; }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY */
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 160px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .tool-grid { grid-template-columns: 1fr; }
+    .card-row, .spec-row { grid-template-columns: 1fr; }
+    .card-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .spec-row { grid-template-columns: 1fr 1fr; }
+    .df-row { flex-direction: column; }
+    .df-condition { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-current"><strong>3.1</strong> Windows OS Troubleshooting</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="2_11-Browser-Security.html">2.11</a>
+    <a class="nav-next" href="3_2-Mobile-OS-Troubleshooting.html">3.2</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="book-header">
+  <div class="book-eyebrow">
+    <span>3.1</span>
+    CompTIA A+ Core 2 · Software Troubleshooting
+  </div>
+  <h1 class="book-title">Troubleshoot Common Windows OS Issues</h1>
+  <div class="book-subtitle">
+    <span>BSOD &amp; Stop Errors</span>
+    <span>Boot Failures</span>
+    <span>Performance Degradation</span>
+    <span>Services &amp; Applications</span>
+    <span>System Instability</span>
+  </div>
+</header>
+
+<!-- INTRO -->
+<p>Windows OS troubleshooting is one of the highest-value skill sets for an A+ technician. Every symptom covered in this objective — from a blue screen to a slow profile load — maps to a finite set of root causes that can be isolated through systematic diagnosis. The technician's job is not to memorize magic fixes; it is to build a mental model of what each symptom means, which components it implicates, and how to gather evidence that distinguishes between the candidates.</p>
+
+<p>This objective covers twelve distinct symptom categories. For each one, you need to know: what the symptom looks like, what causes it, which diagnostic tools reveal the cause, and what the remediation steps are. Scenarios on the exam will describe a symptom and ask you to identify the most appropriate next step, the most likely cause, or the correct tool — all of which require understanding the full diagnostic chain, not just isolated facts.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Troubleshooting Methodology Review</p>
+  <p>CompTIA's six-step troubleshooting methodology underlies every scenario in Domain 3: <strong>(1)</strong> Identify the problem; <strong>(2)</strong> Establish a theory of probable cause; <strong>(3)</strong> Test the theory; <strong>(4)</strong> Establish a plan of action; <strong>(5)</strong> Implement the solution; <strong>(6)</strong> Verify full functionality and document. Even when the exam doesn't explicitly reference these steps, structuring your thinking around them helps you arrive at the correct answer systematically rather than by guessing.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION A — BSOD
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section A</span>Blue Screen of Death (BSOD)</h2>
+
+<p>The <span class="key-term">Blue Screen of Death (BSOD)</span> — formally called a <span class="key-term">stop error</span> or <span class="key-term">bug check</span> — is Windows's response to a fatal kernel-mode error from which it cannot recover. When the kernel detects an inconsistent or unrecoverable state (a driver writing to protected memory, a hardware error that can't be handled, a deadlock in a critical system thread), it halts all execution, displays the stop screen, writes a memory dump file, and reboots. The BSOD is not a bug in itself — it is Windows's protective mechanism preventing the system from running in a corrupted state that could destroy data or spread the error.</p>
+
+<div class="bsod-block">
+  <div class="bsod-header">:( Your PC ran into a problem and needs to restart.</div>
+  <div>We're just collecting some error info, and then we'll restart for you.</div>
+  <hr class="bsod-sep">
+  <div class="bsod-code">STOP CODE: DRIVER_IRQL_NOT_LESS_OR_EQUAL</div>
+  <div class="bsod-note">What failed: NetworkDriver.sys</div>
+  <hr class="bsod-sep">
+  <div class="bsod-note">For more information about this issue and possible fixes, visit https://www.windows.com/stopcode</div>
+</div>
+
+<div class="issue-card">
+  <div class="issue-header red">
+    <div>
+      <div class="issue-name">Blue Screen of Death (BSOD) / Stop Error</div>
+      <div class="issue-sub">Fatal kernel-mode error — system halted to prevent data corruption</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-critical">Critical</span><span class="tag tag-high">Diagnose First</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Primary causes</div><div class="spec-value">Drivers, hardware, RAM, overheating</div></div>
+    <div class="spec-cell"><div class="spec-label">Key diagnostic file</div><div class="spec-value sv-org">Memory dump (.dmp)</div></div>
+    <div class="spec-cell"><div class="spec-label">Analysis tool</div><div class="spec-value">WinDbg / Event Viewer</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Reading the stop code</div>
+      <div class="card-desc">The <span class="key-term">stop code</span> (also called the bug check code) on a BSOD directly identifies what kernel assertion failed. Common stop codes and what they implicate: <strong>DRIVER_IRQL_NOT_LESS_OR_EQUAL</strong> — a driver attempted to access memory at an invalid interrupt request level, almost always a faulty or incompatible driver; <strong>PAGE_FAULT_IN_NONPAGED_AREA</strong> — a component tried to access a page of memory that was not present, caused by bad RAM, a buggy driver, or a corrupt page file; <strong>IRQL_NOT_LESS_OR_EQUAL</strong> — similar to driver_irql, often faulty drivers or RAM; <strong>CRITICAL_PROCESS_DIED</strong> — a critical Windows system process terminated unexpectedly, often malware, corrupt system files, or driver issues; <strong>MEMORY_MANAGEMENT</strong> — Windows memory manager detected an error, almost always RAM failure; <strong>WHEA_UNCORRECTABLE_ERROR</strong> — Windows Hardware Error Architecture caught a hardware error the CPU or chipset could not correct, often CPU, RAM, or motherboard failure; <strong>SYSTEM_SERVICE_EXCEPTION</strong> — a system service threw an exception, often driver or system file corruption.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">The "What failed" field</div>
+      <div class="card-desc">Modern Windows BSODs display a <strong>"What failed"</strong> field identifying the specific driver or module that was executing when the error occurred. A filename ending in <code>.sys</code> is a kernel-mode driver. If it names a third-party driver (e.g., <code>NetworkDriver.sys</code>, <code>nvlddmkm.sys</code> for NVIDIA, <code>atikmpag.sys</code> for AMD), the fix is typically to update, roll back, or reinstall that driver. If it names a Windows system file (e.g., <code>ntoskrnl.exe</code>, <code>hal.dll</code>), the issue may be RAM failure, corrupt system files (run <code>sfc /scannow</code>), or a hardware fault.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Memory dump analysis</div>
+      <div class="card-desc">When a BSOD occurs, Windows writes a <span class="key-term">memory dump file</span> to disk. Dump types: <strong>Small memory dump (Minidump)</strong> — saves only the stop code, loaded drivers, and the call stack of the thread that caused the crash (~256 KB, stored in <code>C:\Windows\Minidump\</code>); <strong>Kernel memory dump</strong> — saves kernel memory only, excludes user-mode process memory; <strong>Complete memory dump</strong> — saves all physical RAM, largest but most complete for deep analysis. Configure dump type at: System Properties → Advanced → Startup and Recovery → Write debugging information. Minidumps are the most practical for field diagnosis — analyze them with <strong>WinDbg</strong> or the lighter-weight <strong>WhoCrashed</strong> tool, which reads minidumps and reports the responsible driver in plain language.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Hardware causes</div>
+      <div class="card-desc"><strong>Faulty RAM</strong> is one of the most common BSOD causes. Run <strong>Windows Memory Diagnostic</strong> (<code>mdsched.exe</code>) — it tests RAM on next reboot with a pattern test. For more thorough testing, boot from a USB running <strong>MemTest86</strong>, which runs outside Windows and can test all RAM with multiple pass patterns. A single-pass failure indicates bad RAM. Remove and reseat RAM sticks, test each stick individually in a known-good slot to isolate the failing module. <strong>Overheating</strong> causes BSODs when CPU or GPU thermal protection triggers shutdown — monitor temperatures in BIOS/UEFI or with HWMonitor/Core Temp. Clean thermal paste and fans if temperatures are excessive.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Driver causes</div>
+      <div class="card-desc">Driver-caused BSODs are the most common category and also the most fixable. Key diagnostic question: <strong>did the BSOD start after a recent driver update?</strong> If yes: roll back the driver (Device Manager → right-click device → Properties → Driver tab → Roll Back Driver). If a new device was recently installed: update its driver to the latest version from the manufacturer's website, or remove the device to confirm it is the cause. Use <strong>Driver Verifier</strong> (<code>verifier.exe</code>) to stress-test all non-Microsoft drivers simultaneously — it forces crash dumps on the first driver misbehavior, making the offending driver easier to identify.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Systematic triage</div>
+      <div class="card-desc"><strong>Step 1</strong> — Boot into Safe Mode (F8 or Shift+Restart → Troubleshoot → Advanced → Startup Settings). Safe Mode loads only minimal Microsoft-signed drivers. If the system is stable in Safe Mode, a third-party driver or startup program is causing the BSOD. <strong>Step 2</strong> — Check Event Viewer (System and Application logs) for errors logged just before the crash. <strong>Step 3</strong> — Read minidumps with WinDbg or WhoCrashed. <strong>Step 4</strong> — If driver-related, update or roll back. <strong>Step 5</strong> — Run <code>sfc /scannow</code> and <code>DISM /Online /Cleanup-Image /RestoreHealth</code> to repair corrupt system files. <strong>Step 6</strong> — Test RAM with MemTest86 if no driver cause is found. <strong>Step 7</strong> — If hardware failure is confirmed, replace the faulty component.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Most Tested BSOD Facts</p>
+  <p>The exam most commonly asks about: (1) <strong>which tool analyzes memory dump files</strong> → WinDbg (primary tool); (2) <strong>first step when BSOD started after a driver update</strong> → roll back the driver; (3) <strong>which mode to boot into to isolate driver vs. hardware</strong> → Safe Mode; (4) <strong>which tool tests RAM</strong> → Windows Memory Diagnostic (<code>mdsched.exe</code>) or MemTest86. Know that minidumps are stored in <code>C:\Windows\Minidump\</code>.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION B — BOOT ISSUES / NO OS FOUND
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section B</span>Boot Issues and No OS Found</h2>
+
+<p>Boot failures are among the most alarming issues a user can encounter — a system that will not start appears completely broken. In reality, most boot failures have specific, diagnosable causes with established recovery paths. The two primary categories are <span class="key-term">pre-OS boot failures</span> (the system cannot find or start Windows at all) and <span class="key-term">Windows startup failures</span> (Windows begins to load but fails partway through). Understanding where in the boot sequence the failure occurs is the critical first diagnostic step.</p>
+
+<h3 class="section">The Windows Boot Sequence</h3>
+
+<p>Knowing the stages of the Windows boot process allows a technician to pinpoint where a failure is occurring based on how far the system progresses before failing:</p>
+
+<div class="step-list">
+  <div class="step-item">
+    <div class="step-num">1</div>
+    <div class="step-content"><strong>POST (Power-On Self-Test)</strong> — The BIOS/UEFI firmware tests hardware (CPU, RAM, storage controllers). POST errors indicate hardware failures. The system beeps or displays error codes. If POST fails, Windows never starts. Fix: reseat hardware, check BIOS settings, replace failing component.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">2</div>
+    <div class="step-content"><strong>Boot device selection</strong> — BIOS/UEFI reads the boot order and attempts to load from the first bootable device. If no bootable device is found: "No bootable device," "Boot device not found," or "Operating system not found." Causes: wrong boot order, dead drive, disconnected SATA/NVMe cable, drive not detected in BIOS.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">3</div>
+    <div class="step-content"><strong>Bootloader</strong> — On UEFI systems: the EFI System Partition (ESP) contains <code>bootmgfw.efi</code> (Windows Boot Manager). On legacy BIOS systems: the Master Boot Record (MBR) contains the first-stage bootloader. Errors here: "Bootmgr is missing," "NTLDR is missing" (Windows XP), corrupt BCD. Fix: <code>bootrec</code> commands from Windows Recovery Environment (WinRE).</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">4</div>
+    <div class="step-content"><strong>Windows Boot Manager / BCD</strong> — The <span class="key-term">Boot Configuration Data (BCD)</span> store contains the list of OS boot entries. Boot Manager reads BCD and loads the selected entry. Corrupt BCD: "An error occurred while attempting to read the boot configuration data." Fix: <code>bootrec /rebuildbcd</code>, <code>bcdedit</code>.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">5</div>
+    <div class="step-content"><strong>Windows Loader (winload.exe)</strong> — Loads the Windows kernel (<code>ntoskrnl.exe</code>), Hardware Abstraction Layer (<code>hal.dll</code>), and boot-start drivers. Errors here often indicate corrupt system files. Fix: <code>sfc /scannow</code>, <code>DISM /RestoreHealth</code>, Startup Repair.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">6</div>
+    <div class="step-content"><strong>Kernel initialization</strong> — The kernel initializes, loads drivers, and starts system services. BSOD at this stage indicates driver or hardware issues. The system may cycle in a <span class="key-term">boot loop</span> — starting, crashing, attempting to repair, and starting again.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">7</div>
+    <div class="step-content"><strong>User session (Winlogon / Explorer)</strong> — The login screen appears and the user logs in. <code>explorer.exe</code> starts the desktop shell. Failures here: slow profile load, black screen after login, desktop not loading. Often caused by corrupt user profiles, shell extensions, or startup programs.</div>
+  </div>
+</div>
+
+<div class="issue-card">
+  <div class="issue-header red">
+    <div>
+      <div class="issue-name">No OS Found / Boot Failures</div>
+      <div class="issue-sub">"Bootmgr is missing" · "No bootable device" · "Operating system not found"</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-critical">Critical</span><span class="tag tag-info">Recovery Environment</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Recovery tool</div><div class="spec-value">WinRE / Windows Recovery Env.</div></div>
+    <div class="spec-cell"><div class="spec-label">Boot to WinRE</div><div class="spec-value sv-org">Shift+Restart or boot from USB</div></div>
+    <div class="spec-cell"><div class="spec-label">Primary command</div><div class="spec-value"><code>bootrec</code></div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">"Bootmgr is missing"</div>
+      <div class="card-desc">The Windows Boot Manager file (<code>bootmgfw.efi</code> on UEFI, <code>bootmgr</code> on MBR systems) cannot be found or is corrupt. Most commonly caused by: an accidental deletion of the EFI System Partition contents, changing the active partition, or installing another OS that overwrote the bootloader. <strong>Fix:</strong> boot from Windows installation media → Repair your computer → Troubleshoot → Advanced Options → Command Prompt. Run <code>bootrec /fixmbr</code> (repairs the MBR), <code>bootrec /fixboot</code> (writes a new VBR), <code>bootrec /rebuildbcd</code> (scans for Windows installations and rebuilds BCD). On UEFI systems, also run <code>bcdboot C:\Windows /s Z: /f UEFI</code> (where Z: is the EFI partition).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">"Operating system not found" / "No bootable device"</div>
+      <div class="card-desc">The firmware completed POST but cannot find any bootable storage. Causes: <strong>(1)</strong> Boot order is wrong — BIOS is looking at the wrong device (e.g., USB drive is first and it's not bootable); check and correct BIOS boot order. <strong>(2)</strong> Drive not detected — check that the drive appears in the BIOS/UEFI storage list; if absent, the drive may be failed, disconnected (reseat SATA/power cables), or the controller may need a driver. <strong>(3)</strong> Partition table damage — the drive is present but its MBR or GPT is corrupt; use <code>bootrec /rebuildbcd</code> or TestDisk to repair partition tables. <strong>(4)</strong> Dead drive — if the drive is absent from BIOS even after reseating, test in another system or with a USB adapter to confirm drive failure.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Startup Repair</div>
+      <div class="card-desc"><span class="key-term">Startup Repair</span> is an automated Windows Recovery Environment tool that diagnoses and fixes common boot problems — corrupt BCD, missing boot files, incorrect active partition — without manual command-line intervention. Access: boot from Windows installation media → Repair your computer → Troubleshoot → Advanced Options → Startup Repair. Startup Repair is the correct first-line automated repair tool before resorting to manual <code>bootrec</code> commands. It can repair most MBR/BCD issues and some corrupt system files automatically. If Startup Repair fails to fix the issue, proceed to manual bootrec commands or System Restore.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Boot loop</div>
+      <div class="card-desc">A <span class="key-term">boot loop</span> (also called an automatic repair loop) occurs when Windows begins to start, encounters a fatal error, and automatically restarts — repeatedly, never reaching the desktop. Windows may display "Preparing Automatic Repair" and cycle indefinitely. Break the loop: force-power-off during three consecutive boot attempts (Windows detects this pattern and boots into WinRE). Then use Startup Repair, System Restore, or — as a last resort — Reset This PC. A boot loop is commonly caused by a recent bad driver install, a failed Windows Update, or corrupt system files.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Corrupt BCD — manual fix</div>
+      <div class="card-desc">The <span class="key-term">Boot Configuration Data (BCD)</span> store is a database that tells Boot Manager which OS entries exist and where to find them. Corruption can occur from power loss during an update, disk errors, or manual misconfiguration. From WinRE Command Prompt:
+        <br><br>
+        <code>bootrec /scanos</code> — scans all disks for Windows installations<br>
+        <code>bootrec /rebuildbcd</code> — adds found installations to BCD<br>
+        <code>bcdedit /enum all</code> — lists all current BCD entries<br>
+        <br>
+        If these fail, completely rebuild BCD: delete and recreate the BCD store with <code>bcdedit /export C:\BcdBackup</code>, <code>attrib C:\boot\bcd -h -r -s</code>, <code>ren C:\boot\bcd bcd.old</code>, then <code>bootrec /rebuildbcd</code>.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Last Known Good Configuration</div>
+      <div class="card-desc">Windows maintains a <span class="key-term">Last Known Good Configuration</span> — a snapshot of registry settings from the last successful boot. On Windows 10/11, this functionality has been largely superseded by System Restore and WinRE recovery options, but the concept remains exam-relevant. If a system change (driver install, registry edit) causes an unbootable state, System Restore (accessed from WinRE → Advanced Options → System Restore) rolls back to a previous restore point, which serves the same purpose as Last Known Good Configuration in practice.</div>
+    </div>
+  </div>
+</div>
+
+<p>Key <code>bootrec</code> commands available from the Windows Recovery Environment Command Prompt:</p>
+
+<div class="cmd-block">
+  <span class="cmd-prompt">X:\Sources&gt; </span>bootrec /fixmbr
+  <span class="cmd-output">The operation completed successfully.</span>
+  <span class="cmd-comment">  ← Writes a new MBR; does not touch partition table or BCD</span>
+
+  <br><span class="cmd-prompt">X:\Sources&gt; </span>bootrec /fixboot
+  <span class="cmd-output">The operation completed successfully.</span>
+  <span class="cmd-comment">  ← Writes a new Volume Boot Record to the active partition</span>
+
+  <br><span class="cmd-prompt">X:\Sources&gt; </span>bootrec /scanos
+  <span class="cmd-output">Total identified Windows installations: 1</span>
+  <span class="cmd-comment">  ← Scans for Windows installs not in the current BCD</span>
+
+  <br><span class="cmd-prompt">X:\Sources&gt; </span>bootrec /rebuildbcd
+  <span class="cmd-output">Add installation to boot list? Yes/No/All: </span><span class="cmd-warn">A</span>
+  <span class="cmd-comment">  ← Rebuilds BCD store; type A to add all found installations</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION C — DEGRADED PERFORMANCE
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section C</span>Degraded Performance</h2>
+
+<div class="issue-card">
+  <div class="issue-header blue">
+    <div>
+      <div class="issue-name">Degraded Performance</div>
+      <div class="issue-sub">Slow system response, high resource utilization, sluggish applications</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Common Complaint</span><span class="tag tag-med">Multi-cause</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Primary tools</div><div class="spec-value">Task Manager, Resource Monitor, Perfmon</div></div>
+    <div class="spec-cell"><div class="spec-label">Key metrics</div><div class="spec-value sv-org">CPU, RAM, disk, network utilization %</div></div>
+    <div class="spec-cell"><div class="spec-label">Shortcut</div><div class="spec-value">Ctrl+Shift+Esc → Task Manager</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Identify the bottleneck first</div>
+      <div class="card-desc">Performance degradation always has a bottleneck — one resource that is saturated while others have headroom. Open <strong>Task Manager → Performance tab</strong> to see real-time CPU, Memory, Disk, and Network utilization. The tab that is near 100% is the bottleneck. Each bottleneck type has different causes and solutions: CPU-bound (runaway processes, malware, insufficient cores), RAM-bound (too many applications open, memory leak, insufficient physical RAM), Disk-bound (fragmented HDD, failing drive, excessive paging, malware scanning), Network-bound (bandwidth saturation, misconfigured adapter). Identifying the bottleneck before attempting fixes prevents wasted effort.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">High CPU utilization</div>
+      <div class="card-desc">Task Manager → Processes tab → sort by CPU descending to find the process consuming CPU. Common high-CPU culprits: <strong>antivirus scans</strong> (scheduled — reschedule to off-hours); <strong>Windows Update</strong> (TrustedInstaller, WaaS Medical processes — normal during update, concerning if persistent); <strong>malware</strong> (cryptomining malware pegs CPU continuously, often disguised as <code>svchost.exe</code>); <strong>runaway application</strong> (a bug in an application consuming CPU in an infinite loop — kill the process and report to vendor). Use <strong>Resource Monitor</strong> (<code>resmon.exe</code>) for deeper analysis — it shows per-process CPU usage broken down by thread and shows which processes are waiting on each other.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">High memory utilization</div>
+      <div class="card-desc">Task Manager → Performance → Memory shows total used vs. available. Task Manager → Processes → sort by Memory to find the top consumers. Key indicators: <strong>low available RAM</strong> (under ~500 MB) — Windows begins paging heavily, causing disk thrash; <strong>growing memory use over time</strong> on one process — indicates a <span class="key-term">memory leak</span>; applications that were using 200 MB after launch that now consume 2 GB. Memory leaks are bugs in applications — restart the application as a temporary fix; long-term fix requires an application update. Insufficient physical RAM for workload: upgrade RAM or reduce the number of running applications. Check <strong>commit charge</strong> in Task Manager's Memory performance page — if commit is near or exceeds the page file size, the system is under severe memory pressure.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">High disk utilization</div>
+      <div class="card-desc">Task Manager → Performance → Disk or Processes → Disk column. A mechanical HDD at 100% disk utilization is a common Windows 10/11 performance problem. Causes: <strong>Windows Search indexing</strong> on an HDD — disable or reschedule; <strong>Superfetch/SysMain service</strong> preloading data on HDD — on SSD is fine, on slow HDD can cause thrash; <strong>Windows Update background downloads/installation</strong>; <strong>failing HDD</strong> — check SMART status with <code>wmic diskdrive get status</code> or CrystalDiskInfo; <strong>malware</strong> — scanning, exfiltrating, or encrypting files (ransomware causes extreme disk activity). For HDDs: run <code>defrag /c /u</code> to defragment (never defrag SSDs). For SSDs: run the optimizer which performs TRIM.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Startup programs</div>
+      <div class="card-desc">Excess startup programs extend boot time and keep consuming RAM and CPU after login. <strong>Task Manager → Startup tab</strong> shows all programs configured to launch at login with their startup impact (Low/Medium/High). Right-click and Disable any programs that are not needed at startup. Note: disabling a startup program does not uninstall it — it just prevents it from auto-launching. Programs can also be managed via <code>msconfig</code> (System Configuration) on older Windows versions. Keep security software (antivirus) and hardware utilities in startup; disable update managers, communication apps, and vendor bloatware that don't need to be running immediately after boot.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Malware as a cause</div>
+      <div class="card-desc">Malware is a consistent cause of degraded performance. Cryptomining malware specifically pegs CPU and GPU at maximum utilization, dramatically degrading system performance while mining cryptocurrency for the attacker. Ransomware causes extreme disk activity during the encryption phase. Signs malware is the cause: performance degraded suddenly (not gradually), CPU high but no identifiable legitimate process in Task Manager (malware may inject into <code>svchost.exe</code> or use process hollowing), antivirus was recently disabled or not running. Run a full scan with Windows Defender or an on-demand scanner (Malwarebytes) as part of any unexplained performance investigation.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Performance Monitor (perfmon)</div>
+      <div class="card-desc"><span class="key-term">Performance Monitor</span> (<code>perfmon.exe</code>) provides detailed long-term performance data collection and analysis. Use it to: create <strong>Data Collector Sets</strong> that log resource usage over time (useful when performance degrades intermittently at specific times of day); view <strong>Performance counters</strong> for specific metrics (page faults/sec, disk queue length, available bytes); and diagnose issues that are hard to catch in the moment with Task Manager. The <strong>Reliability Monitor</strong> (<code>perfmon /rel</code>) shows a timeline of system events — application crashes, hardware errors, driver installs, Windows Updates — correlated on a calendar, making it easy to identify what changed when performance degraded.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION D — LOW MEMORY WARNINGS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section D</span>Low Memory Warnings</h2>
+
+<div class="issue-card">
+  <div class="issue-header org">
+    <div>
+      <div class="issue-name">Low Memory Warnings</div>
+      <div class="issue-sub">"Your computer is low on memory" — Windows cannot allocate sufficient virtual memory</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">RAM / Virtual Memory</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Virtual memory and paging</div>
+      <div class="card-desc">Windows uses a <span class="key-term">virtual memory</span> system that combines physical RAM with a <span class="key-term">page file</span> (pagefile.sys) on disk to provide more addressable memory than physical RAM alone. When physical RAM is full, Windows moves least-recently-used memory pages to the page file on disk (<span class="key-term">paging out</span>) and retrieves them later when needed (<span class="key-term">paging in</span>). Excessive paging is called <span class="key-term">thrashing</span> and severely degrades performance because disk access is orders of magnitude slower than RAM access. Windows generates a low memory warning when the combination of physical RAM and page file cannot satisfy all memory requests — both are nearly full.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Immediate actions</div>
+      <div class="card-desc">When a low memory warning appears: <strong>(1)</strong> Close any unnecessary applications immediately — this releases physical RAM and page file space. <strong>(2)</strong> If a specific process is consuming an abnormal amount of memory (memory leak), terminate it via Task Manager. <strong>(3)</strong> Restart the system if possible — this clears all in-memory state and resets leaked memory. These are temporary fixes; the root cause must be addressed to prevent recurrence.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Page file configuration</div>
+      <div class="card-desc">The page file is configured at: System Properties → Advanced → Performance Settings → Advanced → Virtual Memory → Change. Options: <strong>Automatically manage paging file size for all drives</strong> (default, recommended for most users — Windows dynamically adjusts); <strong>Custom size</strong> — manually set initial and maximum size; <strong>No paging file</strong> — only appropriate on systems with very large RAM (≥32 GB) for specific workloads. If low memory warnings occur with "System managed" selected, the drive may be too full to expand the page file — free up disk space. General guidance: page file initial size = 1× RAM, maximum = 3× RAM, though Windows manages this well automatically. Place the page file on the fastest available drive (SSD).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Root cause resolution</div>
+      <div class="card-desc">Persistent low memory warnings require addressing the root cause: <strong>Insufficient physical RAM</strong> — check whether the installed RAM meets the workload's requirements; if the system regularly pages under normal use, a RAM upgrade is the correct fix. <strong>Memory leak</strong> — identify the leaking application via Task Manager (memory usage grows continuously over time for one process); update or replace the application. <strong>Too many applications</strong> — adjust the user's workflow or upgrade RAM. <strong>32-bit application on 64-bit OS</strong> — 32-bit processes are limited to 4 GB virtual address space (2 GB by default without the /LARGEADDRESSAWARE flag); a memory-intensive 32-bit application may hit this limit even on a system with ample RAM; solution is to use the 64-bit version of the application if available.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION E — FREQUENT SHUTDOWNS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section E</span>Frequent Shutdowns</h2>
+
+<div class="issue-card">
+  <div class="issue-header red">
+    <div>
+      <div class="issue-name">Frequent / Unexpected Shutdowns</div>
+      <div class="issue-sub">System powers off without warning — usually thermal or power-related</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Hardware Likely</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Thermal shutdown (overheating)</div>
+      <div class="card-desc">The most common cause of sudden, unexpected shutdown (not a BSOD — the system just powers off) is <span class="key-term">thermal shutdown</span>. Modern CPUs and GPUs include thermal protection — when temperature exceeds a threshold (typically 90–105°C for modern CPUs), the processor throttles performance and, if temperature continues to rise, the system shuts down immediately to prevent permanent hardware damage. Diagnose: monitor CPU and GPU temperatures using <strong>HWMonitor</strong>, <strong>Core Temp</strong>, or BIOS/UEFI hardware monitoring. Shutdowns occurring after the system warms up (15–30 minutes of use) are a strong thermal shutdown indicator. Fix: clean dust from vents and fans (compressed air), verify CPU cooler is properly seated and has good thermal paste contact, replace dried-out thermal paste, ensure case airflow is adequate (cable management, fan direction).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Power supply failure (PSU)</div>
+      <div class="card-desc">A failing or underpowered <span class="key-term">power supply unit (PSU)</span> causes unexpected shutdowns when it cannot maintain stable output voltages under load. A PSU that works at idle may fail under the load of a gaming session or intensive computation when power draw peaks. Symptoms: shutdowns correlate with high system load (gaming, video encoding); system restarts immediately or takes a moment to restart. Diagnose: test voltage rails with a multimeter or PSU tester; if voltages sag under load, the PSU is failing. Fix: replace the PSU. Ensure the replacement PSU is rated for the system's actual power draw (CPU TDP + GPU TDP + component headroom). Failing capacitors in a PSU can also cause instability — inspect for bulging capacitors if the PSU is opened (safely).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Event log investigation</div>
+      <div class="card-desc">After an unexpected shutdown, <strong>Event Viewer → Windows Logs → System</strong> records the shutdown event. Event ID <strong>41</strong> (Kernel-Power) with reason code "The previous system shutdown at [time] on [date] was unexpected" indicates an unplanned power loss — the system was not properly shut down. This event is created on the next successful boot and is the primary way to confirm unexpected shutdown occurred vs. a user-initiated shutdown. Filter the System log for Critical and Error events before the Event ID 41 to look for preceding warnings (disk errors, driver failures, thermal events). Also check <strong>Event ID 6008</strong> (EventLog) — "The previous system shutdown at [time] was unexpected."</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Windows Update / software cause</div>
+      <div class="card-desc">Windows Update can force a restart after installing updates, which may appear as an unexpected shutdown to a user who did not notice the notification. Confirm via Event Viewer — planned restarts due to updates create a different event than thermal or power-loss shutdowns. Malware can also cause forced shutdowns — some malware shuts down the system to prevent forensic analysis or to complete an install that requires a reboot. If shutdowns are irregular and Event Viewer shows no hardware errors, run a malware scan.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION F — SERVICES NOT STARTING
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section F</span>Services Not Starting</h2>
+
+<div class="issue-card">
+  <div class="issue-header blue">
+    <div>
+      <div class="issue-name">Services Not Starting</div>
+      <div class="issue-sub">Windows services fail to start automatically or manually — causing feature failures</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">Services.msc</span><span class="tag tag-info">Event Viewer</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Services architecture</div>
+      <div class="card-desc">Windows <span class="key-term">services</span> are background processes that run independently of user login — antivirus, print spooler, Windows Update, network stack, audio, Windows Defender, and hundreds more. Services are managed through the <strong>Services console</strong> (<code>services.msc</code>), <strong>Task Manager → Services tab</strong>, or from the command line with <code>sc</code> and <code>net start</code>/<code>net stop</code>. Each service has a startup type: <strong>Automatic</strong> (starts at boot), <strong>Automatic (Delayed Start)</strong> (starts after boot completes — reduces boot impact), <strong>Manual</strong> (starts only when requested), <strong>Disabled</strong> (cannot be started). Services can also have dependencies — if a dependency service fails to start, all services that depend on it will also fail.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Diagnosing a failed service</div>
+      <div class="card-desc"><strong>Step 1:</strong> Open <code>services.msc</code>, find the service, note its current status and startup type. Right-click → Start — if it fails, a dialog shows the error code. <strong>Step 2:</strong> Open <strong>Event Viewer → Windows Logs → System</strong> and filter for the service name — the error event (usually Source: Service Control Manager) shows a specific error code and description explaining why the service failed to start. Common errors: <strong>Error 1068</strong> — dependency service or group failed to start (start the dependency first); <strong>Error 1079</strong> — account used to run the service differs from what the service requires; <strong>Error 2</strong> — the system cannot find the file specified (service executable is missing or path is wrong — often malware removal deletes files, or an application uninstall leaves a broken service registration).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Service recovery options</div>
+      <div class="card-desc">Services include built-in failure recovery actions. Right-click a service → Properties → Recovery tab. Options for First, Second, and Subsequent failure: <strong>Take No Action</strong>, <strong>Restart the Service</strong>, <strong>Run a Program</strong>, <strong>Restart the Computer</strong>. For critical services, configure recovery to "Restart the Service" for the first two failures with a short delay, and "Restart the Computer" or "Run a Program" (to send an alert) for subsequent failures. This provides automatic recovery from transient failures without administrator intervention.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Common problem services</div>
+      <div class="card-desc"><strong>Print Spooler</strong> — if it crashes, all printing stops; fix by restarting the service (<code>net stop spooler</code>, <code>net start spooler</code>) and clearing the print queue (<code>C:\Windows\System32\spool\PRINTERS\</code>). <strong>Windows Audio</strong> — if it stops, no sound; often caused by a corrupt audio driver. <strong>DHCP Client</strong> — if stopped, the computer cannot obtain an IP address; run <code>ipconfig /release</code> and <code>ipconfig /renew</code> after restarting. <strong>Windows Defender Antivirus</strong> — if disabled or stopped, system is unprotected; malware often disables security services as a first step. <strong>Windows Update</strong> (wuauserv) — if stopped, updates cannot download or install.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION G — APPLICATIONS CRASHING
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section G</span>Applications Crashing</h2>
+
+<div class="issue-card">
+  <div class="issue-header org">
+    <div>
+      <div class="issue-name">Applications Crashing</div>
+      <div class="issue-sub">Applications terminate unexpectedly — hangs, crashes, or "has stopped working" errors</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">Event Viewer</span><span class="tag tag-info">App-Level</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Application vs. system crash</div>
+      <div class="card-desc">Application crashes occur in <span class="key-term">user mode</span> — the application terminates, but the OS and other programs continue running. This is fundamentally different from a BSOD (kernel-mode crash), which takes down the entire system. Windows catches user-mode crashes through <span class="key-term">Windows Error Reporting (WER)</span>, which generates crash dump files and can send diagnostic data to Microsoft (with user permission). Application crash dumps are stored in <code>%LocalAppData%\CrashDumps\</code> (for applications that opt in) or can be collected manually with Task Manager or ProcDump.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Event Viewer diagnosis</div>
+      <div class="card-desc"><strong>Event Viewer → Windows Logs → Application</strong> logs every application crash as an Error event with Source <strong>Application Error</strong>. The event details include: the faulting application name and version, the faulting module (DLL or EXE that crashed inside), the exception code (e.g., <code>0xc0000005</code> = access violation), and the fault offset. The faulting module is often more diagnostic than the application name — if the faulting module is a Windows system DLL (e.g., <code>ntdll.dll</code>), the application has a heap corruption or use-after-free bug. If it is a third-party DLL (e.g., a codec or plugin), updating or removing that component often resolves the crash.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Common crash causes and fixes</div>
+      <div class="card-desc"><strong>Missing or corrupt runtime libraries</strong> — many applications require specific versions of Visual C++ Redistributables, .NET Framework, or DirectX. A "side-by-side configuration" error or a missing DLL message indicates a runtime dependency problem; install or repair the required runtime. <strong>Incompatibility</strong> — a 32-bit application may have compatibility issues on a 64-bit OS; try running in compatibility mode (right-click EXE → Properties → Compatibility). <strong>Corrupt application files</strong> — repair or reinstall the application. <strong>Conflicting software</strong> — another application or driver interfering; test by booting in Clean Boot state (<code>msconfig</code> → General → Selective Startup → disable startup items and services) to eliminate third-party software as a variable. <strong>Insufficient permissions</strong> — try running as administrator.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Hung application (not responding)</div>
+      <div class="card-desc">An application marked <strong>"Not Responding"</strong> in Task Manager has not processed a Windows message in more than 5 seconds — it is either deadlocked, waiting on a resource, or in an infinite loop. Actions: <strong>(1)</strong> Wait — some operations (large file processing, network timeouts) may resume on their own. <strong>(2)</strong> End Task (Task Manager → right-click → End Task) — sends a WM_CLOSE message; the application can handle this gracefully. <strong>(3)</strong> End Process Tree — force-terminates immediately without graceful shutdown; use when End Task does not respond. Note: force-terminating an application without saving may lose work.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION H — USB CONTROLLER RESOURCE WARNINGS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section H</span>USB Controller Resource Warnings</h2>
+
+<div class="issue-card">
+  <div class="issue-header blue">
+    <div>
+      <div class="issue-name">USB Controller Resource Warnings</div>
+      <div class="issue-sub">"Not enough USB controller resources" — USB bandwidth or device count exceeded</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-low">USB Architecture</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">USB controller architecture</div>
+      <div class="card-desc">A <span class="key-term">USB host controller</span> manages all USB devices connected to it. Most motherboards have several host controllers, each supporting a limited number of devices and a shared bandwidth pool. <strong>USB 2.0 controllers</strong> share 480 Mbps across all devices on the controller. <strong>USB 3.x controllers</strong> share bandwidth in the multi-gigabit range. Each controller also has a limited number of <span class="key-term">endpoints</span> — data transfer pipes — that all connected devices share. The warning "Not enough USB controller resources" means the connected devices have collectively requested more endpoints than the controller can provide. This is separate from bandwidth — a device may fail to enumerate even on an otherwise idle controller if endpoint limits are exhausted.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Causes</div>
+      <div class="card-desc"><strong>Too many high-endpoint devices on one controller</strong> — audio interfaces, video capture cards, and some USB hubs each claim many endpoints. Connecting multiple such devices through one USB hub (which shares one host controller) can exhaust the endpoint pool. <strong>USB hub limitations</strong> — a powered USB hub expands port count but not host controller endpoints — all devices on the hub share the same endpoint pool as if directly connected to that controller port. <strong>Driver issues</strong> — outdated or corrupt USB controller drivers can misreport available resources. <strong>Power delivery</strong> — insufficient USB bus power for attached devices (particularly bus-powered hard drives) causes devices to fail to enumerate, which may generate resource-adjacent errors.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Resolution</div>
+      <div class="card-desc"><strong>(1) Distribute devices across controllers</strong> — connect high-endpoint devices to different USB ports on the back of the computer (which may be on different host controllers) rather than all through one hub. Check Device Manager → View → Devices by connection to see which USB controller each port is associated with. <strong>(2) Update USB controller drivers</strong> — Device Manager → right-click USB host controller → Update driver. <strong>(3) Uninstall/reinstall USB controllers</strong> — in Device Manager, uninstall all USB controllers (they will be rediscovered on reboot). <strong>(4) Add a PCIe USB expansion card</strong> — adds a new independent host controller with its own endpoint pool, directly addressing the root cause. <strong>(5) Reduce the number of connected USB devices</strong> — disconnect devices that are not in use.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Device Manager errors</div>
+      <div class="card-desc">USB resource problems appear in <strong>Device Manager</strong> as yellow warning triangles on the affected devices or on the USB controller itself. Common Device Manager error codes for USB: <strong>Code 10</strong> — device cannot start (driver, power, or resource issue); <strong>Code 12</strong> — not enough resources (IRQ, memory, or endpoint conflict); <strong>Code 43</strong> — Windows stopped the device because it reported problems (also common for USB devices with power delivery issues). Right-click the problematic device → Properties → Device Status for the specific error message and code.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION I — SYSTEM INSTABILITY
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section I</span>System Instability</h2>
+
+<div class="issue-card">
+  <div class="issue-header red">
+    <div>
+      <div class="issue-name">System Instability</div>
+      <div class="issue-sub">Random errors, crashes, freezes, and unpredictable behavior across multiple components</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Hardware Suspect</span><span class="tag tag-med">Systematic Diagnosis</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What "instability" means</div>
+      <div class="card-desc"><span class="key-term">System instability</span> refers to a pattern of inconsistent, unpredictable failures — random BSODs with varying stop codes, application crashes that do not consistently reproduce, system freezes, file corruption, and errors that appear unrelated to each other. Unlike a consistent, reproducible error that points to a specific component, instability suggests a fundamental issue that manifests differently each time. The most common underlying causes: <strong>faulty RAM</strong> (random data corruption at the hardware level produces random symptoms), <strong>overheating</strong> (thermal throttling and shutdown under varying load), <strong>failing storage drive</strong> (inconsistent read/write errors produce varying symptoms depending on which file is affected), <strong>unstable CPU overclock</strong> (instability under varying workloads), and <strong>corrupt system files</strong>.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">RAM testing</div>
+      <div class="card-desc">When system instability has no obvious software cause, <strong>test RAM first</strong> — it is the most common hardware cause of intermittent, seemingly random failures. Methods: <strong>Windows Memory Diagnostic</strong> (<code>mdsched.exe</code>) — schedule a test on next restart (basic test, usually sufficient for detecting bad RAM); <strong>MemTest86</strong> — boot from USB, run at least one full pass (7 tests), ideally multiple passes; errors at any test indicate faulty RAM. Isolation: if multiple RAM sticks are installed, test with one stick at a time in the primary slot to identify which stick is bad. Try each stick in different slots to rule out a bad memory slot on the motherboard.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">System File Checker and DISM</div>
+      <div class="card-desc">Corrupt system files cause instability by making Windows execute different code than expected. Two tools repair system files: <strong>System File Checker (SFC)</strong> — <code>sfc /scannow</code> — scans all protected Windows system files and replaces corrupt or missing ones from the Windows Component Store. Run from an elevated command prompt. Results in <code>%windir%\Logs\CBS\CBS.log</code>. <strong>DISM (Deployment Image Servicing and Management)</strong> — repairs the Component Store itself (which SFC uses as its source): <code>DISM /Online /Cleanup-Image /ScanHealth</code> (checks for corruption), <code>DISM /Online /Cleanup-Image /RestoreHealth</code> (repairs using Windows Update as the source). Run DISM before SFC if you suspect the Component Store itself is corrupt — SFC cannot fix a file if the Component Store's copy is also bad. After DISM completes, run SFC to repair any files that the now-healthy Component Store can fix.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Reliability Monitor</div>
+      <div class="card-desc"><strong>Reliability Monitor</strong> (<code>perfmon /rel</code> or search "reliability history") displays a timeline of system events — application failures, Windows failures, warnings, and informational events — on a visual calendar with a stability score from 1 to 10. This is invaluable for identifying: when instability began (correlating with a software installation or update), which components are most frequently failing, and whether instability is random or systematic. Each event entry can be expanded to show details. Look for patterns: if multiple unrelated applications crash on the same day, and that day coincides with a Windows Update, the update is the suspect. If failures cluster around hardware operations (hibernation, external drive connection), hardware is the suspect.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Driver Verifier</div>
+      <div class="card-desc"><strong>Driver Verifier</strong> (<code>verifier.exe</code>) is an advanced diagnostic tool that subjects drivers to additional stress tests during normal operation — monitoring for memory allocation errors, improper memory access, and rule violations. When Driver Verifier catches a misbehaving driver, it immediately causes a BSOD with a specific stop code (DRIVER_VERIFIER_DETECTED_VIOLATION) and the offending driver name. This makes intermittent driver bugs that are difficult to reproduce reliably turn into consistent, attributable crashes. <strong>Caution:</strong> Driver Verifier adds overhead and can make a system with driver issues unbootable — only use on a machine where you have WinRE access and can disable Verifier from the recovery environment if needed (<code>verifier /reset</code>).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION J — SLOW PROFILE LOAD
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section J</span>Slow Profile Load</h2>
+
+<div class="issue-card">
+  <div class="issue-header grn">
+    <div>
+      <div class="issue-name">Slow Profile Load</div>
+      <div class="issue-sub">Login completes but the desktop takes an unusually long time to appear — profile loading delay</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">Profile / Group Policy</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What happens during profile load</div>
+      <div class="card-desc">After the user authenticates at the login screen, Windows loads the <span class="key-term">user profile</span> — a collection of user-specific settings, preferences, and data stored in <code>C:\Users\[username]\</code>. Profile loading involves: mounting the user's registry hive (<code>NTUSER.DAT</code>), applying <span class="key-term">Group Policy</span> (user-side policies), mapping network drives (in domain environments), running logon scripts, and launching startup programs. Any of these steps can introduce delay. The system displays "Please wait…" during this process. If the delay is consistently long, one of these steps is the bottleneck.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Corrupt user profile</div>
+      <div class="card-desc">A <span class="key-term">corrupt user profile</span> is a common cause of both slow profile load and post-login errors. Symptoms: login takes very long, the user is logged in with a "Temporary Profile" (desktop is empty, no familiar settings — Windows created a generic profile because the real one was inaccessible), or <code>NTUSER.DAT</code> fails to load. <strong>Diagnosis:</strong> Event Viewer → Application → filter for Source: "User Profile Service" — error events here identify profile load failures. <strong>Fix for temporary profile:</strong> log out and back in (sometimes transient); if persistent — log in with an administrator account, navigate to <code>C:\Users\</code>, check that the user's profile folder exists and is not locked. Create a new profile and migrate data, or use the Profile List registry key fix (<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList</code>) to correct a misregistered profile.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Group Policy processing delay</div>
+      <div class="card-desc">In domain environments, Group Policy is applied during login — Windows must contact a domain controller to download and process user-side policies before the desktop appears. Slow profile load in a domain environment often indicates: <strong>slow or unreachable domain controller</strong> (the client waits to connect before timing out); <strong>large number of Group Policy Objects (GPOs)</strong> applying to the user; <strong>slow network drive mappings</strong> configured via GPO (particularly if a mapped network server is offline — Windows will wait for the connection timeout); <strong>logon scripts</strong> that run synchronously and take time to complete. Use <code>gpresult /h report.html</code> to generate a Group Policy results report showing which GPOs applied and how long each took.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Roaming profiles</div>
+      <div class="card-desc"><span class="key-term">Roaming profiles</span> (a domain feature where the user's profile folder is stored on a network share and synchronized at login) can cause severe profile load delays if: the profile has grown very large (downloads, desktop files, AppData), the network share is slow, or the synchronization is downloading changes made on another workstation. <strong>Best practices for roaming profiles:</strong> use <strong>Folder Redirection</strong> (Documents, Desktop, AppData are redirected to network shares and accessed directly rather than synchronized on login), configure <strong>exclusions</strong> for large folders that don't need to roam (browser cache, temp files), and implement <strong>profile size limits</strong> via GPO.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Startup programs at login</div>
+      <div class="card-desc">Even after the desktop appears, the system may remain unresponsive for minutes while startup programs launch and initialize. Audit and reduce startup programs via Task Manager → Startup tab. In domain environments, GPO-assigned startup scripts and run-once actions also contribute. Excessive startup programs are identified in Reliability Monitor and Task Manager's Startup Impact column. Antivirus software scanning the profile on first load also contributes — if the scan impact is high, schedule it for non-login times.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION K — TIME DRIFT
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section K</span>Time Drift</h2>
+
+<div class="issue-card">
+  <div class="issue-header grn">
+    <div>
+      <div class="issue-name">Time Drift</div>
+      <div class="issue-sub">System clock loses accuracy — causing security failures, certificate errors, and auth issues</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-low">RTC / NTP</span><span class="tag tag-high">Auth Impact</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Why accurate time matters</div>
+      <div class="card-desc">A system clock that drifts from the correct time causes problems that range from annoying to security-critical. <strong>TLS/SSL certificates</strong> — certificates have validity periods; a clock that is hours or days off will cause all certificates to appear expired or not-yet-valid, breaking every HTTPS connection. <strong>Kerberos authentication</strong> (the default Windows domain authentication protocol) has a <span class="key-term">maximum clock skew</span> of 5 minutes — if the client's clock differs from the domain controller by more than 5 minutes, Kerberos tickets are rejected and the user cannot log in to the domain. <strong>Timestamps in logs</strong> — incorrect timestamps make forensic log correlation impossible. <strong>Multi-factor authentication TOTP tokens</strong> (like Google Authenticator) are time-based — a drifted clock causes TOTP codes to not match.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Hardware cause: failing CMOS battery</div>
+      <div class="card-desc">The <span class="key-term">Real-Time Clock (RTC)</span> on the motherboard is powered by a small coin-cell battery (typically CR2032) on the CMOS chip. This battery maintains the clock and BIOS/UEFI settings when the computer is powered off. When the CMOS battery dies: the system clock resets to a default date (often January 1, 2000 or 2004) every time the system loses power, BIOS/UEFI settings may reset to defaults (including boot order), and the system may display CMOS checksum errors on boot. Replace the CMOS battery (typically a CR2032 — check the motherboard manual). After replacement, set the correct time in BIOS/UEFI and let Windows NTP sync correct any remaining drift.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">NTP synchronization</div>
+      <div class="card-desc">Windows continuously synchronizes the system clock with a <span class="key-term">Network Time Protocol (NTP)</span> server to correct clock drift. Standalone workstations sync with <code>time.windows.com</code> by default. Domain-joined computers sync with the domain hierarchy: workstations sync to domain controllers → domain controllers sync to the PDC Emulator FSMO role holder → the PDC Emulator syncs with an external NTP source (internet NTP pool or a GPS-based stratum-1 server). Check sync status and manually trigger a sync from an elevated command prompt: <code>w32tm /query /status</code> (shows source and last sync time), <code>w32tm /resync /force</code> (forces immediate sync). If sync fails, check that the Windows Time service (<code>w32tm</code>) is running and that the NTP source is reachable.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Virtual machine time drift</div>
+      <div class="card-desc">Virtual machines are particularly susceptible to clock drift because the VM's clock is derived from the host and virtual CPU scheduling can cause it to fall behind during CPU contention. Hypervisors (Hyper-V, VMware, VirtualBox) include <span class="key-term">VM integration tools</span> (Hyper-V Integration Services, VMware Tools, VirtualBox Guest Additions) that synchronize the guest VM's clock with the host. These tools should be installed and the time synchronization component enabled. For Hyper-V: the "Hyper-V Time Synchronization Service" in the guest's services list handles this. Ensure NTP is also configured in the guest for additional correction.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION L — DIAGNOSTIC TOOLS REFERENCE
+     ═══════════════════════════════════════════════════ -->
+
+<div class="ch-divider"></div>
+
+<h2 class="chapter"><span class="ch-num">Section L</span>Windows Diagnostic Tools Reference</h2>
+
+<p>Each symptom covered in this objective is most efficiently diagnosed with specific tools. The following grid maps key diagnostic tools to their purpose, how to launch them, and which symptoms they address.</p>
+
+<div class="tool-grid">
+  <div class="tool-card">
+    <div class="tool-name">Task Manager</div>
+    <div class="tool-how">Ctrl+Shift+Esc · taskmgr.exe</div>
+    <div class="tool-body">Real-time CPU, RAM, disk, network usage per process. Startup program management. Service start/stop. First-line tool for performance and hung application diagnosis.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">Resource Monitor</div>
+    <div class="tool-how">resmon.exe · Task Manager → Performance → Open Resource Monitor</div>
+    <div class="tool-body">Deep per-process resource breakdown: CPU wait chain, disk read/write per file, network connections per process, memory committed vs. working set. Used when Task Manager identifies a symptom but not the exact cause.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">Event Viewer</div>
+    <div class="tool-how">eventvwr.msc · Windows+X → Event Viewer</div>
+    <div class="tool-body">System, Application, and Security logs. Critical for: diagnosing BSODs (System log after crash), service failures (System log, Source: SCM), application crashes (Application log, Source: Application Error), shutdown events (Event ID 41, 6008).</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">Reliability Monitor</div>
+    <div class="tool-how">perfmon /rel · Search "reliability history"</div>
+    <div class="tool-body">Timeline of crashes, errors, and system changes correlated on a calendar. Invaluable for identifying when instability started and correlating it with software changes. Shows stability score trend.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">WinDbg</div>
+    <div class="tool-how">Install from Microsoft Store or WDK</div>
+    <div class="tool-body">Analyzes BSOD memory dump files. Run <code>!analyze -v</code> on a minidump to identify the responsible driver and call stack. The definitive tool for BSOD root cause analysis.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">Memory Diagnostic</div>
+    <div class="tool-how">mdsched.exe · Search "Windows Memory Diagnostic"</div>
+    <div class="tool-body">Schedules RAM test on next reboot. Two test modes: Standard (default) and Extended (more thorough). Results displayed after test completes and system boots. First-line RAM test tool.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">SFC (System File Checker)</div>
+    <div class="tool-how">sfc /scannow (elevated cmd)</div>
+    <div class="tool-body">Scans and repairs corrupt Windows system files using the Component Store as the source. Run DISM /RestoreHealth first to ensure the Component Store itself is healthy. Results in CBS.log.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">DISM</div>
+    <div class="tool-how">DISM /Online /Cleanup-Image /RestoreHealth (elevated cmd)</div>
+    <div class="tool-body">Repairs the Windows Component Store used by SFC. Uses Windows Update as a source for healthy files. Run before SFC when system instability or file corruption is suspected. Requires internet connectivity.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">Device Manager</div>
+    <div class="tool-how">devmgmt.msc · Windows+X → Device Manager</div>
+    <div class="tool-body">Hardware driver management — update, roll back, disable, uninstall drivers. Yellow triangles indicate driver or resource errors. View → Show hidden devices reveals ghost devices. Used for USB resource warnings, BSOD driver identification, hardware conflicts.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">Performance Monitor</div>
+    <div class="tool-how">perfmon.exe</div>
+    <div class="tool-body">Long-term performance data collection and analysis. Create Data Collector Sets for scheduled logging. Hundreds of performance counters available. Used for intermittent performance issues that are hard to catch in real time.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">Services Console</div>
+    <div class="tool-how">services.msc</div>
+    <div class="tool-body">Start, stop, restart, and configure Windows services. View startup type, dependencies, recovery options, and service account. Essential for diagnosing services not starting.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">System Configuration</div>
+    <div class="tool-how">msconfig.exe</div>
+    <div class="tool-body">Boot options (Safe Mode, minimal/network), startup program management, and service management for troubleshooting. Clean Boot = selective startup with all third-party services and startup items disabled — isolates software conflicts.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">bootrec (WinRE)</div>
+    <div class="tool-how">From Windows Recovery Env. Command Prompt</div>
+    <div class="tool-body">Repairs MBR, Volume Boot Record, and BCD store. Essential for "Bootmgr is missing" and "Operating system not found" errors. Commands: /fixmbr, /fixboot, /scanos, /rebuildbcd.</div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">w32tm (Windows Time)</div>
+    <div class="tool-how">w32tm /query /status · w32tm /resync</div>
+    <div class="tool-body">Check NTP sync status and force resync. Diagnose time drift issues. View current NTP source, last sync time, and stratum. Essential for Kerberos authentication failures caused by clock skew.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION M — SCENARIO DECISION GUIDE
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section M</span>Scenario-Based Triage Decision Guide</h2>
+
+<div class="decision-flow">
+  <div class="df-title">Windows OS Troubleshooting — Symptom to First Action</div>
+
+  <div class="df-row">
+    <div class="df-condition">BSOD began after installing a new graphics card driver</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">Roll back the driver.</span> Device Manager → Display adapters → Properties → Driver → Roll Back Driver. Boot Safe Mode first if the system will not start normally. Safe Mode loads generic display driver, making rollback possible.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Random BSODs with varying stop codes, no recent changes</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Test RAM first — <span class="good">run MemTest86</span> from bootable USB. Varying stop codes with no consistent driver name strongly suggest RAM failure. Also check temperatures (HWMonitor) for overheating as a secondary suspect.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">"Bootmgr is missing" on startup</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Boot from Windows installation media → Repair → Troubleshoot → Advanced → <span class="good">Startup Repair</span> (first attempt). If that fails → Command Prompt → <code>bootrec /fixmbr</code>, <code>bootrec /fixboot</code>, <code>bootrec /rebuildbcd</code>.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">System powers off suddenly after 20–30 minutes of use</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Thermal shutdown suspected. <span class="good">Monitor CPU temperatures</span> with HWMonitor during operation. Clean cooling system (compressed air, thermal paste replacement). Check Event Viewer for Kernel-Power Event ID 41. If clean and still occurring, test PSU under load.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Computer is very slow; CPU at 80–100% constantly</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Open <span class="good">Task Manager → Processes tab</span>, sort by CPU descending. Identify the process. If a familiar application: troubleshoot that specific app. If <code>svchost.exe</code> group is high: expand it in Resource Monitor to see which service. If no obvious cause: run a malware scan (cryptominer).</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Disk usage at 100% in Task Manager on Windows 10 HDD</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Identify the process causing disk I/O in Task Manager → Processes → Disk column. Common culprits: <code>Windows Search</code> indexing, <code>SysMain</code> (Superfetch), Windows Update. Check SMART status for drive health with <span class="good">CrystalDiskInfo</span>. Consider SSD upgrade as a long-term fix.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">"Your computer is low on memory" appears regularly</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Check <span class="good">Task Manager → Memory</span> to see if physical RAM is full. If one process grows continuously: memory leak → restart/update that application. If RAM is genuinely insufficient: increase page file size (temporary) or add physical RAM (permanent fix).</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Print Spooler service keeps stopping; printing fails</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">Restart the service</span>: <code>net stop spooler</code>, delete all files in <code>C:\Windows\System32\spool\PRINTERS\</code>, <code>net start spooler</code>. Set the service's Recovery properties to automatically restart on failure. Check Application Event log for WER error identifying the corrupt print job file.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">USB audio interface stops working after adding a second USB device</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">USB controller resource exhaustion.</span> Disconnect other USB devices and test. Connect high-bandwidth USB devices to different USB ports (potentially different host controllers). Add a PCIe USB expansion card for additional independent controller bandwidth. Check Device Manager for Code 12 on USB controller.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">System instability — random crashes, errors, no consistent pattern</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Systematic approach: <span class="good">(1)</span> Check Reliability Monitor for pattern/correlation. <span class="good">(2)</span> Run MemTest86. <span class="good">(3)</span> Run <code>sfc /scannow</code> and DISM. <span class="good">(4)</span> Check SMART for drive errors. <span class="good">(5)</span> Check temperatures. <span class="good">(6)</span> Run Driver Verifier if driver-caused BSODs are suspected.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Login screen appears but desktop takes 3+ minutes to load</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Check <span class="good">Event Viewer → Application</span> for User Profile Service errors (corrupt profile). In domain: check network drive mappings and GPO processing with <code>gpresult /h</code>. Reduce startup programs (Task Manager → Startup). Test with a new user account — if new account loads fast, the issue is profile-specific.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">User cannot log into domain — "time difference" error</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">Kerberos clock skew.</span> Check system clock — if wrong, correct it manually or run <code>w32tm /resync /force</code>. If clock resets after reboot: <span class="good">replace the CMOS battery</span> (CR2032). In domain: ensure workstation is synchronizing with a domain controller, not an internet NTP source, to keep time aligned with the DC.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">All websites show certificate errors on a specific workstation</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">First check <span class="good">system clock</span> — an incorrect date causes all certificates to appear expired. Run <code>w32tm /resync</code>. If clock is correct: check for unauthorized proxy in browser settings. Check <code>certmgr.msc</code> → Trusted Root CAs for unexpected entries (rogue CA installed by malware).</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     QUICK REFERENCE TABLE
+     ═══════════════════════════════════════════════════ -->
+
+<h3 class="section">Symptom-to-Tool Quick Reference</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Symptom</th>
+      <th>First-Line Tool</th>
+      <th>Key Command / Location</th>
+      <th>Primary Suspects</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BSOD (stop error)</td>
+      <td>WinDbg / Event Viewer</td>
+      <td><code>C:\Windows\Minidump\</code> · EV System log</td>
+      <td>Drivers, RAM, overheating, hardware failure</td>
+    </tr>
+    <tr>
+      <td>Boot failure / No OS</td>
+      <td>WinRE → Startup Repair</td>
+      <td><code>bootrec /fixmbr /fixboot /rebuildbcd</code></td>
+      <td>Corrupt BCD/MBR, bad boot order, dead drive</td>
+    </tr>
+    <tr>
+      <td>Degraded performance</td>
+      <td>Task Manager → Performance</td>
+      <td>Ctrl+Shift+Esc → Performance tab</td>
+      <td>Runaway process, malware, low RAM, failing HDD</td>
+    </tr>
+    <tr>
+      <td>Frequent shutdowns</td>
+      <td>Event Viewer + HWMonitor</td>
+      <td>EV System: Event ID 41 · HWMonitor temps</td>
+      <td>Overheating, failing PSU, malware</td>
+    </tr>
+    <tr>
+      <td>Service not starting</td>
+      <td>services.msc + Event Viewer</td>
+      <td>EV System: Source = Service Control Manager</td>
+      <td>Dependency failure, missing executable, permissions</td>
+    </tr>
+    <tr>
+      <td>Application crashing</td>
+      <td>Event Viewer Application log</td>
+      <td>EV Application: Source = Application Error</td>
+      <td>Missing runtime, corrupt files, incompatibility</td>
+    </tr>
+    <tr>
+      <td>Low memory warnings</td>
+      <td>Task Manager → Memory</td>
+      <td>Processes tab sorted by memory use</td>
+      <td>Memory leak, insufficient RAM, oversized page file on full disk</td>
+    </tr>
+    <tr>
+      <td>USB resource warnings</td>
+      <td>Device Manager</td>
+      <td>devmgmt.msc → USB controllers; Code 12</td>
+      <td>Too many high-endpoint devices on one controller</td>
+    </tr>
+    <tr>
+      <td>System instability</td>
+      <td>Reliability Monitor + MemTest86</td>
+      <td><code>perfmon /rel</code> · bootable USB MemTest86</td>
+      <td>Faulty RAM, overheating, corrupt system files, failing drive</td>
+    </tr>
+    <tr>
+      <td>Slow profile load</td>
+      <td>Event Viewer + gpresult</td>
+      <td>EV Application: User Profile Service · <code>gpresult /h</code></td>
+      <td>Corrupt profile, GPO delay, roaming profile size, startup programs</td>
+    </tr>
+    <tr>
+      <td>Time drift</td>
+      <td>w32tm + BIOS check</td>
+      <td><code>w32tm /query /status</code> · <code>w32tm /resync</code></td>
+      <td>Dead CMOS battery, NTP service stopped, VM clock drift</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SUMMARY -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 3.1 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">BSOD stop codes</span>Stop code + "What failed" field identify the cause. Driver-related: roll back or update driver. ntoskrnl/hal: test RAM, run SFC/DISM.</div>
+    <div class="summary-item"><span class="s-sym">Minidump location</span><code>C:\Windows\Minidump\</code> — analyze with WinDbg or WhoCrashed. Configure in System Properties → Advanced → Startup and Recovery.</div>
+    <div class="summary-item"><span class="s-sym">BSOD → Safe Mode</span>Stable in Safe Mode = third-party driver or startup program is the cause. Safe Mode loads only minimal Microsoft drivers.</div>
+    <div class="summary-item"><span class="s-sym">RAM test tools</span>Windows Memory Diagnostic (mdsched.exe) — built-in, runs at reboot. MemTest86 — bootable USB, more thorough, runs outside Windows.</div>
+    <div class="summary-item"><span class="s-sym">bootrec commands</span>/fixmbr repairs MBR; /fixboot repairs VBR; /scanos finds Windows installs; /rebuildbcd rebuilds BCD store. Run from WinRE Command Prompt.</div>
+    <div class="summary-item"><span class="s-sym">Boot loop break</span>Force-power-off 3 times during boot — Windows detects pattern and opens WinRE. Then use Startup Repair or System Restore.</div>
+    <div class="summary-item"><span class="s-sym">Performance bottleneck</span>Task Manager → Performance — the tab near 100% is the bottleneck. Each type (CPU/RAM/Disk/Network) has different causes and fixes.</div>
+    <div class="summary-item"><span class="s-sym">100% disk — HDD</span>Common Windows 10/11 issue on HDDs. Causes: Windows Search, SysMain, Windows Update, failing drive. Check SMART status with CrystalDiskInfo.</div>
+    <div class="summary-item"><span class="s-sym">Memory leak</span>One process grows continuously in memory over time. Restart application as temporary fix; update or replace for permanent fix.</div>
+    <div class="summary-item"><span class="s-sym">Sudden shutdown — first check</span>Check temperatures (HWMonitor). Thermal shutdown (no BSOD, just power off) = overheating. Event ID 41 = unplanned power loss confirmed.</div>
+    <div class="summary-item"><span class="s-sym">Service failure error 1068</span>Dependency service or group failed to start. Start the required dependency first, then start the target service.</div>
+    <div class="summary-item"><span class="s-sym">SFC and DISM order</span>Run DISM /RestoreHealth FIRST to repair the Component Store; then run sfc /scannow to repair individual files using the now-healthy store.</div>
+    <div class="summary-item"><span class="s-sym">USB Code 12</span>Not enough resources for USB device. Distribute high-endpoint devices across different host controllers; add PCIe USB card for additional controller.</div>
+    <div class="summary-item"><span class="s-sym">Reliability Monitor</span>perfmon /rel — timeline of crashes and changes on a calendar. Best tool for correlating instability onset with a specific software change.</div>
+    <div class="summary-item"><span class="s-sym">Slow profile — new account test</span>Create a new user account. If new account loads fast but original is slow, the issue is the specific profile (corrupt NTUSER.DAT or too many startup items).</div>
+    <div class="summary-item"><span class="s-sym">Time drift — CMOS battery</span>Clock resets to wrong date after power-off = dead CMOS battery (CR2032). Replace battery, set time in BIOS, run w32tm /resync.</div>
+    <div class="summary-item"><span class="s-sym">Kerberos clock skew</span>Domain login fails with "time difference" error when client clock differs from DC by more than 5 minutes. Fix: correct clock + w32tm /resync.</div>
+    <div class="summary-item"><span class="s-sym">Driver Verifier</span>verifier.exe — stress-tests all non-Microsoft drivers; causes immediate BSOD on first driver misbehavior with specific driver name. Use with caution — have WinRE access ready.</div>
+    <div class="summary-item"><span class="s-sym">Application crash log</span>Event Viewer → Application log → Source: Application Error. Shows faulting application, faulting module (DLL), exception code, and fault offset.</div>
+    <div class="summary-item"><span class="s-sym">Clean Boot</span>msconfig → General → Selective Startup. Disables all third-party services and startup items. Isolates software conflicts as cause of instability or crashes.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> A user's Windows 10 PC displays a BSOD with stop code DRIVER_IRQL_NOT_LESS_OR_EQUAL every time they use the wireless adapter. The issue started after a Windows Update. What is the first step? → Roll back the wireless adapter driver in Device Manager. The stop code and the correlation with the update point directly to a driver issue; rolling back is the least destructive first step.<br><br>
+  <strong>Scenario 2:</strong> A Windows workstation randomly BSODs with different stop codes each time. No recent hardware or software changes were made. What should the technician test first? → RAM. Random BSODs with varying stop codes, no consistent driver name, and no recent changes is the classic presentation of failing RAM. Use MemTest86 (boot from USB) for the most thorough test.<br><br>
+  <strong>Scenario 3:</strong> After a power outage, a computer boots to "Operating system not found." The drive appears in BIOS. What tool and command repairs this? → Boot from Windows installation media → Repair → Command Prompt → run <code>bootrec /fixmbr</code>, <code>bootrec /fixboot</code>, and <code>bootrec /rebuildbcd</code>. The power outage likely corrupted the MBR or BCD.<br><br>
+  <strong>Scenario 4:</strong> A workstation's CPU is consistently at 95% usage. The user has not changed anything. Task Manager shows the load is coming from an unfamiliar process. What should the technician suspect and do? → Suspect malware (particularly a cryptominer). Run a full malware scan with Windows Defender and Malwarebytes. Investigate the process name — look it up and use Resource Monitor to see its network connections.<br><br>
+  <strong>Scenario 5:</strong> A domain-joined computer cannot log in with the error "There is a time difference between the client and the server." What is the fix? → Correct the system clock. Run <code>w32tm /resync /force</code> to force NTP sync with the domain controller. If the clock keeps resetting after reboot, replace the CMOS battery. Kerberos requires clocks within 5 minutes of the domain controller.<br><br>
+  <strong>Scenario 6:</strong> A user's profile takes 5 minutes to load at login. Other users on the same machine load instantly. What should the technician check first? → The specific user's profile. Create a new test account — if it loads fast, the issue is the user's profile. Check Event Viewer Application log for User Profile Service errors. A corrupt NTUSER.DAT or temporary profile assignment is the most likely cause.<br><br>
+  <strong>Scenario 7:</strong> A technician runs <code>sfc /scannow</code> and it reports it cannot fix all errors. What should be done next? → Run <code>DISM /Online /Cleanup-Image /RestoreHealth</code> to repair the Windows Component Store (which SFC uses as its source). After DISM completes, run <code>sfc /scannow</code> again. SFC cannot repair files if the Component Store's own copy is also corrupt — DISM repairs the store first.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

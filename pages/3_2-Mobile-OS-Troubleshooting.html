@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 3.2 — Troubleshoot Common Mobile OS and Application Issues</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-eyebrow .dom-badge { background: var(--accent4); }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* ISSUE CARD */
+  .issue-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 20px 0 32px; }
+  .issue-header { padding: 14px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; border-bottom: 2px solid var(--border); }
+  .issue-header.red    { background: var(--accent-light);  border-bottom-color: #c0392b33; }
+  .issue-header.blue   { background: var(--accent2-light); border-bottom-color: #2c3e6b33; }
+  .issue-header.grn    { background: var(--accent3-light); border-bottom-color: #1a6b3a33; }
+  .issue-header.org    { background: var(--accent4-light); border-bottom-color: #b5590a33; }
+  .issue-header.neu    { background: var(--surface2);      border-bottom-color: var(--border2); }
+  .issue-name { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; line-height: 1.25; }
+  .issue-sub  { font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .issue-tags { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+  .tag-critical { background: #1a1a18; color: #fff; }
+  .tag-high  { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b44; }
+  .tag-med   { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .tag-low   { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+  .tag-info  { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+
+  /* SPEC ROW */
+  .spec-row { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+  .spec-cell { padding: 9px 14px; border-right: 1px solid var(--border); font-family: var(--sans); font-size: 13px; }
+  .spec-cell:last-child { border-right: none; }
+  .spec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .spec-value { font-weight: 600; color: var(--text); line-height: 1.35; }
+  .sv-red { color: var(--accent); }
+  .sv-grn { color: var(--accent3); }
+  .sv-org { color: var(--accent4); }
+  .sv-blu { color: var(--accent2); }
+
+  /* CARD ROWS */
+  .card-body { }
+  .card-row { display: grid; grid-template-columns: 190px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .card-row:last-child { border-bottom: none; }
+  .card-label { font-weight: 600; color: var(--accent2); padding: 10px 14px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .card-desc  { padding: 10px 14px; color: var(--muted); line-height: 1.6; }
+  .card-desc strong { color: var(--text); }
+  .card-desc code   { font-family: var(--mono); font-size: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+
+  /* OS PLATFORM STRIP */
+  .os-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 16px 0 28px; font-family: var(--sans); font-size: 13px; }
+  .os-cell { padding: 14px 16px; border-right: 1px solid var(--border); }
+  .os-cell:last-child { border-right: none; }
+  .os-name  { font-weight: 700; font-size: 14px; margin-bottom: 5px; }
+  .os-items { color: var(--muted); line-height: 1.7; }
+  .os-items strong { color: var(--text); }
+  .os-android { background: #f0faf2; } .os-android .os-name { color: #1a6b3a; }
+  .os-ios     { background: #f5f5f7; } .os-ios     .os-name { color: #444; }
+
+  /* STEP LIST */
+  .step-list { margin: 16px 0 24px; }
+  .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .step-item:last-child { border-bottom: none; }
+  .step-num { font-family: var(--mono); font-size: 11px; font-weight: 600; background: var(--accent2); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-content { color: var(--muted); line-height: 1.6; flex: 1; }
+  .step-content strong { color: var(--text); }
+  .step-content code { font-family: var(--mono); font-size: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+
+  /* DECISION FLOW */
+  .decision-flow { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-family: var(--sans); font-size: 14px; }
+  .df-title { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .df-row { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .df-row:last-child { border-bottom: none; }
+  .df-condition { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; font-size: 12.5px; color: var(--text); min-width: 200px; flex-shrink: 0; font-weight: 600; line-height: 1.4; }
+  .df-arrow { color: var(--border2); font-size: 16px; padding-top: 5px; flex-shrink: 0; }
+  .df-result { color: var(--muted); line-height: 1.55; }
+  .df-result strong { color: var(--accent); }
+  .df-result .good { color: var(--accent3); font-weight: 600; }
+  .df-result code  { font-family: var(--mono); font-size: 12px; background: var(--surface); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+
+  /* COMPARISON TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; font-size: 13.5px; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); background: var(--surface2); font-size: 13px; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .cell-yes  { color: var(--accent3); font-weight: 700; }
+  .cell-no   { color: var(--accent);  font-weight: 700; }
+  .cell-part { color: var(--accent4); font-weight: 700; }
+
+  /* BATTERY DRAIN VISUAL */
+  .battery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 24px; }
+  .bat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; font-family: var(--sans); font-size: 13px; }
+  .bat-title { font-weight: 700; font-size: 13px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+  .bat-badge { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 1px 6px; border-radius: 2px; }
+  .bat-hw   { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b44; }
+  .bat-sw   { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+  .bat-set  { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+  .bat-env  { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .bat-body { color: var(--muted); line-height: 1.55; }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 155px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .battery-grid { grid-template-columns: 1fr; }
+    .card-row, .spec-row, .os-strip { grid-template-columns: 1fr; }
+    .card-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .os-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .df-row { flex-direction: column; }
+    .df-condition { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-current"><strong>3.2</strong> Mobile OS &amp; App Troubleshooting</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="3_1-Windows-OS-Troubleshooting.html">3.1</a>
+    <a class="nav-next" href="3_3-Mobile-OS-Security-Issues.html">3.3</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="book-header">
+  <div class="book-eyebrow">
+    <span>3.2</span>
+    CompTIA A+ Core 2 · Software Troubleshooting
+  </div>
+  <h1 class="book-title">Troubleshoot Common Mobile OS and Application Issues</h1>
+  <div class="book-subtitle">
+    <span>App Failures</span>
+    <span>OS Updates</span>
+    <span>Battery &amp; Performance</span>
+    <span>Connectivity</span>
+    <span>Screen Rotation</span>
+  </div>
+</header>
+
+<!-- INTRO -->
+<p>Mobile devices — smartphones and tablets running iOS/iPadOS or Android — are front-line productivity tools in modern workplaces, and troubleshooting them is a core A+ technician skill. Mobile OS troubleshooting differs from desktop troubleshooting in important ways: you cannot run arbitrary diagnostic commands, access is mediated through app stores and OS-level permissions, and many fixes involve gestures and settings menus rather than command-line tools. The symptoms in this objective are the ones users most commonly bring to help desk: apps that refuse to open, batteries that drain too fast, Wi-Fi that drops, and screens that won't rotate.</p>
+
+<p>For each symptom, a technician must know the common causes on both major platforms, the correct sequence of diagnostic steps, and when to escalate from simple fixes to more drastic measures like factory reset. The exam presents these as scenario questions — a user describes a specific symptom on a specific platform and you must identify the most appropriate next step.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Platform Scope — Android and iOS/iPadOS</p>
+  <p>Every symptom in this objective applies to both Android and iOS/iPadOS, but the exact navigation path to the fix differs by platform. The exam is platform-aware — scenarios may specify Android or iOS. The platform comparison strips throughout this guide show where the key settings live on each. iOS refers to iPhone, iPadOS to iPad (functionally identical for these purposes); Android applies to Samsung, Google Pixel, and other Android-based devices.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION A — MOBILE TROUBLESHOOTING FOUNDATIONS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section A</span>Mobile Troubleshooting Foundations</h2>
+
+<p>Before examining individual symptoms, a technician must understand the key interventions available on mobile devices. Unlike desktop Windows, mobile OS troubleshooting relies on a smaller but highly effective toolkit of escalating actions. Most issues resolve at steps 1–3; steps 4–5 are for persistent or severe problems.</p>
+
+<div class="step-list">
+  <div class="step-item">
+    <div class="step-num">1</div>
+    <div class="step-content"><strong>Force-close the app</strong> — swipe away the app from the app switcher (recent apps). Clears the running process and any in-memory state without rebooting the device. First fix for any app-specific issue.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">2</div>
+    <div class="step-content"><strong>Restart the device</strong> — a full power cycle clears all running processes, RAM, and temporary system state. Resolves the majority of transient software issues including random reboots, app crashes, connectivity glitches, and sluggish performance. Should be the second action for almost any mobile issue.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">3</div>
+    <div class="step-content"><strong>Clear app cache / data</strong> — on Android: Settings → Apps → [app] → Storage → Clear Cache (removes temporary files) or Clear Data (resets the app to fresh-install state, deletes local data). On iOS: delete and reinstall the app (iOS does not expose a separate cache-clear option). Resolves app corruption without uninstalling on Android.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">4</div>
+    <div class="step-content"><strong>Uninstall and reinstall the app</strong> — downloads a fresh copy from the app store. Resolves corrupt installations, failed updates, and app-specific permission issues. User data stored server-side (cloud apps) is preserved; locally stored data is lost.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">5</div>
+    <div class="step-content"><strong>Factory reset (last resort)</strong> — wipes all user data and apps, restoring the device to out-of-box state. Resolves persistent OS-level issues that survive all other interventions. Requires full backup first. Android: Settings → General Management → Reset → Factory Reset. iOS: Settings → General → Transfer or Reset iPhone → Erase All Content and Settings.</div>
+  </div>
+</div>
+
+<div class="os-strip">
+  <div class="os-cell os-android">
+    <div class="os-name">Android Key Locations</div>
+    <div class="os-items">
+      <strong>App info:</strong> Settings → Apps → [app]<br>
+      <strong>Clear cache:</strong> App info → Storage → Clear Cache<br>
+      <strong>App permissions:</strong> App info → Permissions<br>
+      <strong>Storage full:</strong> Settings → Storage<br>
+      <strong>Developer options:</strong> Settings → About → tap Build Number ×7<br>
+      <strong>Safe Mode:</strong> Hold power → long-press Power Off<br>
+      <strong>Factory reset:</strong> Settings → General Management → Reset
+    </div>
+  </div>
+  <div class="os-cell os-ios">
+    <div class="os-name">iOS / iPadOS Key Locations</div>
+    <div class="os-items">
+      <strong>App info/offload:</strong> Settings → General → iPhone Storage → [app]<br>
+      <strong>App permissions:</strong> Settings → Privacy & Security → [permission]<br>
+      <strong>Background refresh:</strong> Settings → General → Background App Refresh<br>
+      <strong>Storage full:</strong> Settings → General → iPhone Storage<br>
+      <strong>Updates:</strong> Settings → General → Software Update<br>
+      <strong>Reset network:</strong> Settings → General → Transfer or Reset → Reset → Reset Network Settings<br>
+      <strong>Factory reset:</strong> Settings → General → Transfer or Reset → Erase All Content
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION B — APPLICATION FAILURES
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section B</span>Application Failures</h2>
+
+<h3 class="section">Application Fails to Launch</h3>
+
+<div class="issue-card">
+  <div class="issue-header red">
+    <div>
+      <div class="issue-name">Application Fails to Launch</div>
+      <div class="issue-sub">App icon tapped but nothing opens, or app opens briefly and returns to home screen immediately</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Common</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Most common cause</div><div class="spec-value sv-red">Corrupt install or cached state</div></div>
+    <div class="spec-cell"><div class="spec-label">First fix</div><div class="spec-value sv-org">Force-close, then restart device</div></div>
+    <div class="spec-cell"><div class="spec-label">Escalation</div><div class="spec-value sv-blu">Clear cache/data → Reinstall</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Immediate triage</div>
+      <div class="card-desc">When an app tapped does not open or flashes and immediately returns to the home screen, start with the basics: <strong>force-close the app</strong> via the app switcher, then <strong>restart the device</strong>. Most launch failures are caused by a previous session crashing and leaving the app in a bad in-memory state — a restart clears this completely. If the app still fails to launch after restart, the issue is more persistent.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Insufficient storage</div>
+      <div class="card-desc"><span class="key-term">Insufficient storage</span> is a leading cause of app launch failures on both platforms. Apps require free storage not just to install but to run — they write temporary files, caches, and logs during operation. A device with less than 500 MB of free storage may fail to launch apps that need to write to disk during startup. <strong>Android:</strong> Settings → Storage — check free space. Clear cached app data, delete unused apps, or move media to external storage. <strong>iOS:</strong> Settings → General → iPhone Storage — identifies large apps, cached data, and allows offloading apps (removes the app but keeps its data, freeing storage while preserving the ability to re-download).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Corrupt app installation</div>
+      <div class="card-desc">A failed update or interrupted download can leave an app in a corrupt state that prevents launch. On Android: Settings → Apps → [app] → Storage → <strong>Clear Cache</strong> first; if that fails, <strong>Clear Data</strong>, then try launching. If still broken, uninstall and reinstall from the Play Store. On iOS: there is no separate cache-clear option — go directly to Settings → General → iPhone Storage → [app] → <strong>Delete App</strong>, then reinstall from the App Store. Re-download ensures a fresh, uncorrupted installation.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Permissions not granted</div>
+      <div class="card-desc">Some apps crash on launch rather than prompting for permissions when a required permission was previously denied. <strong>Android:</strong> Settings → Apps → [app] → Permissions — review and grant required permissions (Camera, Location, Microphone, etc.). <strong>iOS:</strong> Settings → Privacy & Security → [permission type] → verify the app is listed and enabled. Alternatively: Settings → [app name] → review all permission toggles. Granting the required permission and relaunching often resolves immediate-crash-on-launch behavior.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">OS/app incompatibility</div>
+      <div class="card-desc">An app may fail to launch because it requires a newer OS version than what is installed, or — less commonly — a recent OS update broke compatibility with an older app version. Check the app's listing in the Play Store or App Store for minimum OS requirements. If the OS is below the required version, update the OS (if the device supports it) or accept that the app cannot be used on that device. Conversely, if an app broke after an OS update, check whether a newer app version is available or whether the developer has acknowledged the issue.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Application Fails to Close / Crashes</h3>
+
+<div class="issue-card">
+  <div class="issue-header red">
+    <div>
+      <div class="issue-name">Application Fails to Close / Crashes</div>
+      <div class="issue-sub">App freezes, becomes unresponsive, or terminates unexpectedly mid-use</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Common</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Frozen / hung app</div>
+      <div class="card-desc">When an app stops responding to input (taps, swipes), it is <span class="key-term">frozen</span> or <span class="key-term">hung</span>. The OS has not yet killed it because it is still technically running — it has simply stopped processing the event queue. Resolution: <strong>force-close via the app switcher</strong> — swipe up from the bottom (iPhone/iPad without home button) or press the recents/overview button (Android), then swipe the frozen app off the screen. This sends a termination signal to the app process. If the touchscreen itself is unresponsive, perform a <strong>force restart</strong>: on iPhone 8+/iOS devices, quickly press Volume Up, Volume Down, then hold the Side button until the Apple logo appears. On Android: hold the power button for 10–15 seconds (model-dependent).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Random / recurring crashes</div>
+      <div class="card-desc">Apps that crash repeatedly (not just once after a restart) suggest a more persistent problem. Triage order: <strong>(1)</strong> Check for an app update in the store — the developer may have patched a known crash bug. <strong>(2)</strong> Clear cache/data (Android) or delete and reinstall (iOS). <strong>(3)</strong> Check available storage — apps crash when they cannot write temporary data. <strong>(4)</strong> Check available RAM — too many apps running simultaneously causes the OS to kill apps in the background, which may manifest as crash-like behavior when returning to the app. <strong>(5)</strong> If only one specific app crashes and others are fine, the issue is app-specific — contact the developer or report through the store.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">App crashes after OS update</div>
+      <div class="card-desc">A major OS update can break app compatibility if the developer has not updated their app for the new OS version. Symptoms: apps that worked before the update now crash immediately or during specific operations. Check the app store for a pending app update — the developer typically releases compatibility fixes within days of a major OS release. If no update is available, the only option is to wait for the developer to release an update, use the app's web version if available, or roll back (iOS does not support OS rollback; Android rollback is complex and usually not end-user accessible).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Background vs. foreground crash</div>
+      <div class="card-desc">On both platforms, the OS may terminate background apps to free RAM for foreground activity — this is normal behavior, not a crash. If a user reports that "the app closes when I switch to another app," this is the OS performing memory management, not the app crashing. The user's data should be preserved if the app implements proper state restoration. Educate the user that this is expected. If the app is losing unsaved data when backgrounded, that is an app design issue — report it to the developer or advise the user to save frequently.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Application Fails to Update</h3>
+
+<div class="issue-card">
+  <div class="issue-header org">
+    <div>
+      <div class="issue-name">Application Fails to Update</div>
+      <div class="issue-sub">App update shows in the store but download stalls, errors out, or never completes</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">App Store / Play Store</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Network connectivity</div>
+      <div class="card-desc">The most common cause of a failed app update is a network issue — the app store cannot reach the update server. Verify connectivity: open a website in the browser to confirm internet access. If on Wi-Fi, try switching to mobile data (or vice versa) — this quickly isolates whether the issue is network-specific. Large updates (>150 MB on iOS) require Wi-Fi by default on iOS — the user will see "This app requires a Wi-Fi connection to update" if they are on cellular. Disable and re-enable Wi-Fi to force reconnection to the AP if the connection appears connected but is not passing traffic.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Insufficient storage</div>
+      <div class="card-desc">App updates require free storage equal to (or slightly more than) the new version's size plus temporary space for the installer. If storage is critically low, the update download will fail or get stuck. Resolve: free up storage by deleting unused apps, photos (after backing up), or cached data before retrying the update. On iOS, the system sometimes automatically offloads unused apps to make room — this can be enabled in Settings → App Store → enable Offload Unused Apps.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Account authentication issues</div>
+      <div class="card-desc">App store updates are tied to the account that originally purchased/downloaded the app. If the store account credentials have changed, or if a corporate MDM profile has changed app ownership, the update may fail with an authentication error. <strong>Android (Play Store):</strong> ensure the correct Google account is signed in (Play Store → profile icon → verify account). <strong>iOS (App Store):</strong> tap the profile icon in the App Store → verify the Apple ID. If a pop-up asks for the original downloader's password and the app was installed by a different account, the device may need to re-sign in with that account or the app must be deleted and reinstalled under the current account.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Store cache corruption</div>
+      <div class="card-desc">The app store app itself can have a corrupt cache that prevents downloads. <strong>Android:</strong> Settings → Apps → Google Play Store → Storage → Clear Cache, then Clear Data. This resets Play Store without affecting installed apps or purchases. Restart the device and retry. <strong>iOS:</strong> there is no manual App Store cache clear; signing out of Apple ID (Settings → [your name] → Sign Out) and signing back in typically resolves authentication and cache-related App Store issues.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">App no longer compatible</div>
+      <div class="card-desc">If the new version of an app requires a newer OS version than what the device runs, the update will not install. The App Store on iOS intelligently offers to install the latest compatible version instead. On Android, the Play Store may show the update as unavailable. The resolution is either to update the OS (if the device supports the required version) or to continue using the older, compatible version of the app — which means the user will not receive new features or security patches.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Application Fails to Install</h3>
+
+<div class="issue-card">
+  <div class="issue-header org">
+    <div>
+      <div class="issue-name">Application Fails to Install</div>
+      <div class="issue-sub">Download completes but installation fails, or download itself cannot start</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">Storage / Policy</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Insufficient storage</div>
+      <div class="card-desc">Installation requires free storage for the app itself plus overhead. Both stores display the app's size before download. If storage is insufficient, the download either fails to start or fails during installation. Check storage: <strong>Android:</strong> Settings → Storage; <strong>iOS:</strong> Settings → General → iPhone Storage. Free up space before reattempting. iOS will display an alert: "Not Enough Storage — You can manage your storage in Settings."</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">MDM / enterprise restrictions</div>
+      <div class="card-desc">On <span class="key-term">MDM (Mobile Device Management)</span>-managed devices, the IT administrator may have configured an app allowlist or blocklist. Users on managed devices may be prevented from installing apps that are not in the approved list, or all sideloading may be blocked. The error usually reads "Installation is blocked by your organization's policy." The resolution is an IT admin action — either approve the app in the MDM console (Intune, Jamf, VMware Workspace ONE) or push it to the device via the MDM-managed app catalog. The technician's role is to identify this as a policy issue and escalate to the MDM admin.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Android — unknown sources / sideloading</div>
+      <div class="card-desc">Android allows installation of apps from outside the Play Store — called <span class="key-term">sideloading</span> — by installing an <code>.apk</code> file directly. By default, Android requires explicit permission to install from unknown sources. <strong>Android 8+:</strong> the permission is per-source-app — Settings → Apps → [browser or file manager used to download] → Install unknown apps → Allow. If a user is trying to install a legitimate enterprise app distributed as an APK (common with internal corporate apps), enable this setting for the specific downloader app only, install the APK, and then disable the setting again to minimize the attack surface of allowing unknown sources.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">iOS — untrusted developer</div>
+      <div class="card-desc">On iOS, apps outside the App Store can only be installed via an enterprise distribution profile (for corporate apps) or TestFlight (for beta apps). When a user installs a corporate enterprise app for the first time, iOS displays "Untrusted Enterprise Developer." Resolution: Settings → General → VPN & Device Management → find the enterprise developer → <strong>Trust</strong>. This step must be performed after every device restore or enrollment. If the profile is expired or revoked by the developer, the app will not open — the IT admin must renew the enterprise developer certificate and redistribute the app.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION C — PERFORMANCE AND OS ISSUES
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section C</span>Performance and OS Issues</h2>
+
+<h3 class="section">Slow to Respond</h3>
+
+<div class="issue-card">
+  <div class="issue-header blue">
+    <div>
+      <div class="issue-name">Slow to Respond</div>
+      <div class="issue-sub">Device feels laggy — delayed touch response, slow app launches, sluggish animations</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Common Complaint</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">First action</div><div class="spec-value sv-org">Restart the device</div></div>
+    <div class="spec-cell"><div class="spec-label">Storage check</div><div class="spec-value sv-red">Under 10–15% free = performance impact</div></div>
+    <div class="spec-cell"><div class="spec-label">Battery impact</div><div class="spec-value sv-blu">Degraded battery → CPU throttling</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Too many background processes</div>
+      <div class="card-desc">Unlike desktop computers, mobile devices actively limit background processing — but this does not mean background apps have zero impact. On Android, apps with background services (music players, navigation apps, email sync, notification listeners) consume RAM and CPU continuously. Open the app switcher and close apps that don't need to be running. On Android, check which apps are actively running in the background: Settings → Battery → Battery Usage or Developer Options → Running Services. On iOS, the OS manages background apps aggressively and closing apps from the switcher is rarely necessary — Apple explicitly states that iOS handles memory automatically and force-closing apps may slow down relaunching them.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Insufficient storage</div>
+      <div class="card-desc">When device storage is nearly full, performance degrades significantly. Both Android and iOS use free storage space for virtual memory operations, system updates, and app temporary files. <strong>Rule of thumb:</strong> keep at least 10–15% of total storage free. A 64 GB device with less than 6–9 GB free will exhibit noticeable slowness. Resolution: delete unused apps, clear app caches, offload photos to cloud storage (Google Photos, iCloud), and remove downloaded media.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Battery health and CPU throttling</div>
+      <div class="card-desc">Lithium-ion batteries degrade over time — a battery at 70% health cannot deliver peak current. Both Apple and Android throttle CPU performance when peak power demand exceeds what the degraded battery can supply, to prevent unexpected shutdowns. This manifests as general system sluggishness that worsens over time as the battery degrades further. <strong>iOS:</strong> Settings → Battery → Battery Health & Charging — if capacity is below ~80%, throttling is active and battery replacement resolves the performance issue. <strong>Android:</strong> battery health varies by manufacturer — some Samsung devices show health in Settings → Battery → Battery Status; third-party apps like AccuBattery provide health estimates. Battery replacement on most modern smartphones requires professional service.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">OS update pending</div>
+      <div class="card-desc">A downloaded but not-yet-installed OS update running background preparation tasks (decrypting update files, verifying integrity) can temporarily slow the device. Check for pending updates and install them — the temporary slowness during update preparation resolves after installation completes. Conversely, immediately after installing a major OS update, the device may be slow for 15–60 minutes while the OS re-indexes content, re-optimizes apps, and completes background setup tasks — this is normal and resolves on its own.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Malware (Android)</div>
+      <div class="card-desc">On Android, malware (particularly adware and cryptominers) can continuously consume CPU and RAM, causing persistent sluggishness. Signs: device is hot even at idle, battery drains rapidly at rest, performance does not improve after restart. Investigate in Settings → Battery → Battery Usage — any unfamiliar app consuming high background CPU is suspicious. Install a reputable mobile security scanner (Malwarebytes, Bitdefender) to scan. If malware is confirmed and cannot be removed, a factory reset is the definitive solution. iOS is considerably more resistant to malware due to app sandboxing and App Store review, but is not immune to phishing and profile-based attacks.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">OS Fails to Update</h3>
+
+<div class="issue-card">
+  <div class="issue-header org">
+    <div>
+      <div class="issue-name">OS Fails to Update</div>
+      <div class="issue-sub">System update download stalls, installation fails, or update option does not appear</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">OS / Storage</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Insufficient storage</div>
+      <div class="card-desc">OS updates are large — iOS updates are typically 3–7 GB; Android updates 1–4 GB. The device needs free space approximately equal to 1.5–2× the update size for the download, extraction, and installation process. A device with 2 GB free cannot install a 5 GB update. <strong>iOS</strong> will show: "Not Enough Space — iOS [version] requires [x] GB of space to update." It may offer to temporarily remove apps to make room. <strong>Android</strong> will show an error during download or pre-installation check. Resolution: free up storage and retry, or use a computer to update (iTunes/Finder for iOS; Android may update via a PC with vendor-provided update software).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Device no longer supported</div>
+      <div class="card-desc">The most common reason a device cannot update to a new OS version is that the hardware is no longer supported. Apple typically supports iPhones for 5–6 years — an iPhone 8 cannot run the latest iOS version indefinitely. Android varies by manufacturer — Google Pixel devices receive 5–7 years of OS updates, while budget Android devices may receive only 1–2. When the update option does not appear at all, check the OS vendor's published supported device list. An unsupported device will continue to receive minor security patches for a limited time, then will receive no further updates — representing a security risk that a technician should document and escalate (device replacement is the long-term solution).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">MDM-controlled update policy</div>
+      <div class="card-desc">On MDM-enrolled devices, the organization's IT policy may delay or block OS updates. This is intentional in enterprise environments — IT teams need to test OS updates for compatibility with corporate apps before deploying them to all employees. If a managed device shows "Software Update — Updates are managed by your organization," the update is blocked by MDM policy. The technician should not attempt to override MDM policy — report to the MDM administrator who can schedule or approve the update in the MDM console.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Download failure / network issue</div>
+      <div class="card-desc">Update downloads fail on unstable networks. Large OS updates should be downloaded on Wi-Fi (most devices block OTA updates on cellular by default for updates over a certain size). Ensure the device is on a stable Wi-Fi connection with a strong signal, plugged into power, and not being actively used during the download. iOS updates can be downloaded in the background overnight with the device on power and Wi-Fi. If the download repeatedly fails, try resetting network settings: <strong>iOS:</strong> Settings → General → Transfer or Reset iPhone → Reset → Reset Network Settings. This clears saved Wi-Fi passwords and VPN configurations but often resolves stubborn connectivity issues affecting the update server.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">iOS update via computer</div>
+      <div class="card-desc">For iOS devices that cannot update OTA (over the air) due to storage or network issues, updating via a computer bypasses the on-device constraints. Connect the iPhone/iPad to a Mac (Finder → select device) or Windows PC (iTunes). Finder/iTunes downloads the update directly to the computer (where storage and bandwidth are less constrained) and pushes it to the device. This method also allows <strong>Recovery Mode</strong> updates — if the device is in a boot loop or won't start normally, putting it into Recovery Mode (device-specific button combination) and connecting to iTunes/Finder allows a clean iOS reinstall that preserves or wipes user data depending on the options chosen.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION D — BATTERY LIFE ISSUES
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section D</span>Battery Life Issues</h2>
+
+<p>Battery complaints are one of the most frequent mobile support tickets. A technician must distinguish between <span class="key-term">hardware degradation</span> (the battery's physical capacity has diminished with age and charge cycles) and <span class="key-term">software drain</span> (an app or setting is consuming power excessively). These require different fixes — the former requires battery replacement, the latter requires settings changes or app removal.</p>
+
+<div class="battery-grid">
+  <div class="bat-card">
+    <div class="bat-title">Hardware / Battery Age <span class="bat-badge bat-hw">Hardware</span></div>
+    <div class="bat-body">Lithium-ion batteries degrade after 300–500 full charge cycles. Capacity below ~80% causes both reduced battery life and CPU throttling. iOS: Settings → Battery → Battery Health. Android: varies by model. Fix: battery replacement by certified technician.</div>
+  </div>
+  <div class="bat-card">
+    <div class="bat-title">Rogue App Drain <span class="bat-badge bat-sw">Software</span></div>
+    <div class="bat-body">A single app consuming disproportionate CPU/GPS/radio time drains battery abnormally fast. iOS: Settings → Battery → Battery Usage (last 24 hrs / 10 days). Android: Settings → Battery → Battery Usage. Identify and uninstall or restrict the offending app.</div>
+  </div>
+  <div class="bat-card">
+    <div class="bat-title">Settings-Based Drain <span class="bat-badge bat-set">Settings</span></div>
+    <div class="bat-body">High screen brightness, always-on location services, push email sync every minute, Bluetooth/Wi-Fi scanning in background — all reduce battery life significantly. Reduce brightness, use adaptive/auto-brightness, switch location to "While Using" for most apps, set email to fetch manually or every 30 min.</div>
+  </div>
+  <div class="bat-card">
+    <div class="bat-title">Environmental / Thermal <span class="bat-badge bat-env">Environment</span></div>
+    <div class="bat-body">Cold temperatures reduce battery capacity temporarily; extreme heat degrades it permanently. A device used in sub-freezing conditions may show rapid drain that recovers at normal temperature. A device left in a hot car (>45°C) sustains permanent capacity loss. Keep devices within -20°C to 45°C operating range.</div>
+  </div>
+</div>
+
+<div class="issue-card">
+  <div class="issue-header grn">
+    <div>
+      <div class="issue-name">Battery Life Issues — Detailed Diagnosis</div>
+      <div class="issue-sub">Systematic approach to identifying and resolving abnormal battery drain</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">Battery / Performance</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Check battery usage by app</div>
+      <div class="card-desc"><strong>iOS:</strong> Settings → Battery — scroll down to see battery usage by app over the last 24 hours and 10 days. Each app shows percentage of battery consumed plus time on screen vs. background. An app with high background usage that the user doesn't actively use is a drain candidate — disable background app refresh for it (Settings → General → Background App Refresh → toggle off for specific apps). <strong>Android:</strong> Settings → Battery → Battery Usage — similar per-app breakdown. Sort by usage to identify outliers. An app appearing at the top of the list despite not being actively used indicates abnormal background drain — restrict background activity or uninstall.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Location services</div>
+      <div class="card-desc">GPS is the single highest power consumer among sensors. Apps set to "Always" for location access (rather than "While Using App") continuously poll the GPS radio in the background. <strong>iOS:</strong> Settings → Privacy & Security → Location Services — review each app and change from Always to While Using App unless Always is genuinely required (navigation apps while routing). <strong>Android:</strong> Settings → Location → App permissions — similarly restrict to "Only while using." The "Precise Location" toggle (Android 12+) allows apps to use approximate location instead of GPS, further reducing power consumption.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Screen brightness and timeout</div>
+      <div class="card-desc">The display is typically the largest single battery consumer. Reduce screen brightness (use adaptive/auto-brightness which adjusts based on ambient light), reduce screen timeout (Auto-Lock on iOS, Screen Timeout on Android) to the shortest acceptable duration (30 seconds to 1 minute). Enable <strong>Dark Mode</strong> on devices with OLED displays (iPhone X and later, many Android flagships) — OLED pixels that display black are fully off and consume zero power, making Dark Mode genuinely reduce battery drain on OLED screens (no benefit on LCD).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Background App Refresh (iOS)</div>
+      <div class="card-desc"><span class="key-term">Background App Refresh</span> allows iOS apps to check for new content while not in use — mail, news, and social apps update so their content is fresh when opened. This consumes battery continuously. Settings → General → Background App Refresh: disable entirely or selectively per app. Disable for apps that don't require up-to-the-minute content (games, utilities, shopping apps). Keep enabled for apps where current content is important (email, messaging). The trade-off: apps with Background App Refresh disabled may show a loading delay when opened as they fetch fresh content.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Push notifications and email sync</div>
+      <div class="card-desc">Push email (Exchange ActiveSync, Gmail) maintains a persistent connection to the mail server that wakes the device for each new message. Frequent sync intervals increase battery drain. For personal devices, changing email fetch from Push to manual (only syncs when you open the app) or a 30-minute interval significantly extends battery life. <strong>iOS:</strong> Settings → Mail → Accounts → Fetch New Data — configure per-account. <strong>Android:</strong> each email app has its own sync frequency setting. On corporate devices, Push is typically required by IT policy for timely communication — do not change without approval.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Wireless radios in background</div>
+      <div class="card-desc">Bluetooth, Wi-Fi, and cellular radios each consume power. When in an area with no Wi-Fi access points, the device continuously scans for networks — consuming battery with nothing to connect to. <strong>Wi-Fi scanning:</strong> turn off Wi-Fi when in environments where it won't be used (or use a travel/airplane mode toggle). <strong>Bluetooth:</strong> disable when no Bluetooth accessories are connected. <strong>Cellular:</strong> a device in poor signal coverage (1 bar) uses significantly more power than one with strong signal — the radio increases transmit power to maintain connection. This is hardware/environment-driven and not user-configurable; moving to better coverage resolves it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION E — RANDOM REBOOTS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section E</span>Random Reboots</h2>
+
+<div class="issue-card">
+  <div class="issue-header red">
+    <div>
+      <div class="issue-name">Random Reboots</div>
+      <div class="issue-sub">Device restarts without user action — can occur at idle, during calls, or while using apps</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Investigate Cause</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Common cause #1</div><div class="spec-value sv-red">Failing / swollen battery</div></div>
+    <div class="spec-cell"><div class="spec-label">Common cause #2</div><div class="spec-value sv-org">Rogue or corrupt app</div></div>
+    <div class="spec-cell"><div class="spec-label">Common cause #3</div><div class="spec-value sv-blu">OS corruption / pending update</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Battery failure</div>
+      <div class="card-desc">A failing lithium-ion battery is the leading hardware cause of random reboots. When the battery cannot supply sufficient current during peak demand (a phone call, launching an app), the voltage sags below the minimum threshold and the processor shuts down abruptly — which appears as a reboot. This is more common when the battery is at a lower charge level (40–60%) than when fully charged. Confirm: if reboots correlate with higher usage activity or occur at moderate charge levels, check battery health. iOS: Settings → Battery → Battery Health — if below 80%, battery replacement resolves the issue. A <span class="key-term">swollen battery</span> is an emergency — the device should be powered off and not charged until the battery is replaced, as swollen batteries risk thermal runaway.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Software / app cause</div>
+      <div class="card-desc">An app that causes a kernel panic or deep system crash triggers an automatic reboot. Diagnose: note whether reboots correlate with using a specific app — if reboots only happen when running App X, that app is the cause. <strong>Android Safe Mode</strong> disables all third-party apps (only system apps run): hold power button → long-press "Power Off" → tap OK when "Reboot to Safe Mode" appears. The device boots with "Safe Mode" displayed in the corner. If reboots stop in Safe Mode, a third-party app is responsible — uninstall recently installed apps one at a time to identify the culprit. iOS does not have a safe mode equivalent available to end users.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">OS update or corruption</div>
+      <div class="card-desc">A failed or partially applied OS update can cause system instability and random reboots. If reboots started after an update, check whether a new update or patch is available that may address the issue. If the device is stuck in a reboot loop (cannot fully boot before rebooting again), iOS recovery via Finder/iTunes is required. Android recovery varies by manufacturer — most have a Recovery Mode accessible via hardware button combinations (typically Power + Volume Down) that allows a factory reset without needing to fully boot.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Overheating</div>
+      <div class="card-desc">Devices have thermal protection that triggers shutdown (which may look like a reboot) when internal temperature exceeds safe limits. Common causes: direct sunlight, heavy gaming/video recording for extended periods, charging while running intensive apps, a case that traps heat. The device will display a temperature warning message before shutdown on both iOS and Android. Resolution: remove the case, move to a cooler environment, stop charging while running intensive applications. Persistent overheating under normal use (no heavy tasks, normal environment) indicates a hardware fault — the thermal management system, CPU, or battery may be failing.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION F — CONNECTIVITY ISSUES
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section F</span>Connectivity Issues</h2>
+
+<h3 class="section">Wi-Fi Connectivity Issues</h3>
+
+<div class="issue-card">
+  <div class="issue-header blue">
+    <div>
+      <div class="issue-name">Wi-Fi Connectivity Issues</div>
+      <div class="issue-sub">Cannot connect, connected but no internet, or intermittent drops</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-high">Common</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Basic triage steps</div>
+      <div class="card-desc">Standard Wi-Fi troubleshooting sequence for mobile devices: <strong>(1)</strong> Toggle Wi-Fi off and back on (Settings → Wi-Fi). <strong>(2)</strong> Forget the network and reconnect (tap the network → Forget, then reconnect and re-enter the password). <strong>(3)</strong> Restart the device. <strong>(4)</strong> Restart the router/AP. <strong>(5)</strong> Reset network settings on the device — this clears all saved Wi-Fi passwords, Bluetooth pairings, and VPN configurations, returning network settings to defaults. <strong>iOS:</strong> Settings → General → Transfer or Reset iPhone → Reset → Reset Network Settings. <strong>Android:</strong> Settings → General Management → Reset → Reset Network Settings. After reset, reconnect to Wi-Fi networks by re-entering passwords.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Connected but no internet ("Limited")</div>
+      <div class="card-desc">A device can show "Connected" to Wi-Fi while having no actual internet access — the device has an IP address and can reach the router, but the router cannot reach the internet. Both iOS and Android indicate this with a warning icon on the Wi-Fi symbol or "No Internet Connection" text. <strong>Isolate the issue:</strong> check whether other devices on the same Wi-Fi work — if yes, the problem is the specific device (try Forget + reconnect, reset network settings). If no devices work, the problem is the router or ISP — restart the router and modem. Also check whether the device received a valid IP address: iOS: Settings → Wi-Fi → tap network → IP Address field. If it shows 169.254.x.x (<span class="key-term">APIPA</span>), DHCP failed — the device could not obtain an IP from the router.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Incorrect Wi-Fi password</div>
+      <div class="card-desc">If a Wi-Fi network's password was recently changed, the device will fail to reconnect with an "Incorrect Password" or "Authentication Error" message. Resolution: forget the network and reconnect with the new password. On Android, authentication errors can also indicate a mismatch between the security type configured on the device and what the AP requires — when manually adding a network, ensure the security type (WPA2, WPA3, WPA2/3 Enterprise) matches the AP configuration.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Enterprise Wi-Fi (802.1X / EAP)</div>
+      <div class="card-desc">Corporate Wi-Fi networks use <span class="key-term">802.1X authentication</span> (WPA2/WPA3 Enterprise) requiring username, password, and often a certificate rather than a simple pre-shared key. Connecting a personal device to enterprise Wi-Fi: select the network → choose the EAP method (PEAP is most common) → enter domain credentials → accept the server certificate if prompted. On MDM-managed devices, the Wi-Fi profile including credentials and certificate is pushed automatically — the user doesn't need to configure anything. If an enterprise Wi-Fi connection fails on a managed device after a password change, the IT admin must update the Wi-Fi profile credentials in the MDM console.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Intermittent drops</div>
+      <div class="card-desc">Intermittent Wi-Fi that connects but repeatedly drops suggests: <strong>weak signal</strong> (device is at the edge of coverage — move closer to the AP); <strong>channel interference</strong> (too many networks on the same channel — use a Wi-Fi analyzer app to check and change the AP's channel); <strong>band steering issue</strong> (the AP is forcing the device between 2.4 GHz and 5 GHz bands and the handoff is dropping connections — disable band steering or use separate SSIDs for each band); <strong>IP address conflict</strong> (another device was assigned the same IP — the DHCP server issued a duplicate; restart the router to clear the lease table).</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Bluetooth Connectivity Issues</h3>
+
+<div class="issue-card">
+  <div class="issue-header blue">
+    <div>
+      <div class="issue-name">Bluetooth Connectivity Issues</div>
+      <div class="issue-sub">Cannot pair, paired device won't connect, audio or data transfer problems</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-med">Bluetooth / Pairing</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Pairing failure</div>
+      <div class="card-desc">When a Bluetooth device fails to pair, the standard resolution is <strong>remove and re-pair</strong>: on both the phone and the accessory, remove the existing pairing if any exists (forget the device on both ends). Put the accessory into pairing mode (typically indicated by a flashing LED — refer to the device's manual for the pairing mode procedure). On the phone, go to Settings → Bluetooth → [device name] to pair. Common issues: <strong>accessory is not in pairing mode</strong> (most common cause — already paired to another device; long-press the pairing button to reset); <strong>too far apart</strong> (Bluetooth range is approximately 10 meters / 33 feet; obstructions reduce this); <strong>Bluetooth radio issue on phone</strong> — toggle Bluetooth off/on, or restart the device.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Paired but not connecting</div>
+      <div class="card-desc">A device that shows as "Paired" in the Bluetooth list but does not connect automatically has lost its connection state. Tap the paired device → Connect (or the (i) icon → Connect). If that fails: <strong>forget the device</strong> on both the phone and the accessory, re-pair from scratch. Also verify the accessory is not already connected to another device — most Bluetooth accessories maintain only one active connection at a time; connecting to the phone requires disconnecting from the previously connected device.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Audio quality issues</div>
+      <div class="card-desc">Bluetooth audio problems (choppy audio, static, lag) are typically caused by: <strong>interference</strong> — 2.4 GHz Wi-Fi and Bluetooth share the same frequency band; crowded Wi-Fi environments degrade Bluetooth audio quality; moving away from the Wi-Fi router or switching Wi-Fi to 5 GHz can help; <strong>distance</strong> — audio quality degrades as distance and obstructions increase; <strong>codec mismatch</strong> — if the phone and headphones don't support the same Bluetooth audio codec (SBC, AAC, aptX, LDAC), the connection falls back to lower quality SBC; check both device specs to understand supported codecs; <strong>outdated firmware</strong> on the Bluetooth accessory — update the accessory's firmware via the manufacturer's app.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Clearing the Bluetooth cache (Android)</div>
+      <div class="card-desc">Android maintains a Bluetooth cache that can become corrupt, causing all manner of Bluetooth connection failures even after removing and re-pairing devices. Clearing it often resolves persistent Bluetooth problems: Settings → Apps → show system apps → Bluetooth → Storage → Clear Cache. On some Android versions, the Bluetooth service needs to be restarted after clearing — restart the device. This fix has no iOS equivalent (iOS does not expose the Bluetooth stack's cache to users).</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">NFC (Near-Field Communication) Issues</h3>
+
+<div class="issue-card">
+  <div class="issue-header blue">
+    <div>
+      <div class="issue-name">NFC Issues</div>
+      <div class="issue-sub">NFC payments, tag reading, or peer-to-peer transfer not working</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-low">NFC</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">NFC fundamentals</div>
+      <div class="card-desc"><span class="key-term">Near-Field Communication (NFC)</span> is a short-range (≤4 cm / ~1.5 inches) wireless technology used for contactless payments (Apple Pay, Google Pay), reading NFC tags, and peer-to-peer data transfer (Android Beam / Nearby Share). NFC operates at 13.56 MHz and requires the devices to be nearly touching. The very short range is both a limitation (it doesn't work at a distance) and a security feature (accidental reads and eavesdropping are prevented by proximity requirements).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">NFC not enabled</div>
+      <div class="card-desc">On Android, NFC can be manually enabled or disabled. Verify it is on: Settings → Connected Devices → Connection Preferences → NFC → toggle On. On iOS, NFC is always enabled for system-level functions (Apple Pay, App Clips, NFC tag reading) and cannot be manually toggled — it is simply always available. If NFC features appear to not work on iOS, the issue is not the NFC radio but rather the specific application or permission configuration.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Positioning and interference</div>
+      <div class="card-desc">NFC is extremely position-sensitive. The NFC antenna location varies by device model — it is typically near the top of the phone on iPhone, and near the center or bottom on many Android phones. The user must place the device correctly for NFC to register. <strong>Metal cases</strong> block NFC entirely — a metal phone case prevents all NFC functions including tap-to-pay. <strong>Thick or wallet cases</strong> can impede the signal. Solution: remove the case, or at minimum hold the phone in the correct orientation for the antenna location. Additionally, phone cards or credit cards stored in a wallet case behind the phone can cause NFC interference when making payments.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Contactless payment failures</div>
+      <div class="card-desc">For Apple Pay or Google Pay NFC payment failures: <strong>(1)</strong> Verify NFC is enabled (Android) or the device supports NFC payments (iPhone 6 and later). <strong>(2)</strong> Verify a card is set up in the wallet app (Wallet on iOS, Google Wallet on Android). <strong>(3)</strong> Verify authentication — Apple Pay requires Face ID, Touch ID, or passcode; Google Pay requires screen unlock. <strong>(4)</strong> Ensure the payment terminal supports the payment method — older terminals may not support NFC. <strong>(5)</strong> Try removing and re-adding the card in the wallet app. <strong>(6)</strong> Check whether a corporate MDM policy has disabled payment apps — some enterprise MDM profiles restrict mobile payment functionality.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION G — SCREEN DOES NOT AUTOROTATE
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section G</span>Screen Does Not Autorotate</h2>
+
+<div class="issue-card">
+  <div class="issue-header grn">
+    <div>
+      <div class="issue-name">Screen Does Not Autorotate</div>
+      <div class="issue-sub">Display stays in portrait when device is rotated — or rotates when it should not</div>
+    </div>
+    <div class="issue-tags"><span class="tag tag-low">Accelerometer / Settings</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Most common cause</div><div class="spec-value sv-org">Rotation lock enabled</div></div>
+    <div class="spec-cell"><div class="spec-label">Hardware sensor</div><div class="spec-value sv-blu">Accelerometer / gyroscope</div></div>
+    <div class="spec-cell"><div class="spec-label">App override</div><div class="spec-value sv-grn">Some apps lock to one orientation</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Rotation lock — first check</div>
+      <div class="card-desc">The single most common cause of a screen that will not rotate is <span class="key-term">Portrait Orientation Lock</span> (iOS) or <span class="key-term">Auto-rotate</span> being disabled (Android). This is the correct first thing to check — it is often accidentally enabled by a swipe in the Control Center. <strong>iOS:</strong> swipe down from the top-right corner (iPhone X+) or up from the bottom (older iPhones) to open Control Center → look for the lock icon with a circle arrow → if highlighted/red, tap it to disable the lock. <strong>Android:</strong> swipe down from the top to open Quick Settings → look for "Auto-rotate" or "Portrait" toggle → enable Auto-rotate. On some Android devices, this setting also appears at: Settings → Display → Auto-rotate screen.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">App-level orientation lock</div>
+      <div class="card-desc">Some apps are designed to display only in one orientation regardless of the device's rotation lock state or sensor readings. For example, many games, video players (while playing), and some banking apps force landscape or portrait mode by design. This is not a device fault — it is intentional app behavior. If rotation works in the home screen and other apps but not in a specific app, the app itself is locking the orientation. There is no user-accessible fix for this; the app developer controls orientation support. Verify by testing rotation in multiple apps — if most apps rotate correctly, the device's rotation hardware and settings are fine.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Accelerometer fault</div>
+      <div class="card-desc">Screen rotation is driven by the device's <span class="key-term">accelerometer</span> (which detects gravitational direction) and sometimes the <span class="key-term">gyroscope</span> (which detects angular velocity). A faulty or miscalibrated accelerometer causes the screen to not respond to physical rotation — or to rotate incorrectly (showing landscape when portrait, or constantly shifting). Test: after confirming rotation lock is off, lay the phone flat, then rotate it slowly — if autorotation works for some orientations but not others, or responds erratically, the accelerometer may be faulty. On Android, some diagnostic apps (such as manufacturer diagnostic tools) can run sensor tests to verify accelerometer function. A hardware accelerometer fault requires device repair.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Software glitch — restart</div>
+      <div class="card-desc">A software glitch in the rotation service can prevent rotation even with the lock disabled and the accelerometer functioning correctly. A simple device restart typically resolves this — it resets the sensor services and rotation handler. If rotation fails after restart, proceed to the accelerometer fault investigation above. On Android, clearing the cache partition (via Recovery Mode) can resolve OS-level sensor service issues without a factory reset. On iOS, there is no equivalent — if restart doesn't fix it, the next step is checking for an iOS update or restoring the device.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">iPad — platform behavior</div>
+      <div class="card-desc">iPads support a <span class="key-term">Side Switch</span> or software Rotation Lock accessible from the Control Center, identical in function to the iPhone's Portrait Orientation Lock. On older iPads with a physical Side Switch, the switch can be configured (Settings → General → Use Side Switch to → Lock Rotation) to toggle rotation lock physically — pressing the physical switch locks rotation. Users who don't realize their Side Switch is configured this way may be confused when the iPad won't rotate. Check Settings → General to see what the Side Switch is mapped to.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION H — DECISION GUIDE
+     ═══════════════════════════════════════════════════ -->
+
+<div class="ch-divider"></div>
+
+<h2 class="chapter"><span class="ch-num">Section H</span>Symptom-to-Action Decision Guide</h2>
+
+<div class="decision-flow">
+  <div class="df-title">Mobile OS and Application Troubleshooting — Scenario Responses</div>
+
+  <div class="df-row">
+    <div class="df-condition">App opens, immediately closes back to home screen</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">(1)</span> Force-close app → restart device. <span class="good">(2)</span> Check storage — if under 10% free, free space. <span class="good">(3)</span> Check app permissions (Settings → Apps/Privacy). <span class="good">(4)</span> Clear app cache (Android) or delete + reinstall (iOS). <span class="good">(5)</span> Check for OS/app update compatibility issues.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">App freezes and won't close</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Force-close via app switcher (swipe away). If touch screen is unresponsive: <span class="good">force restart</span> — iPhone: Volume Up → Volume Down → hold Side button. Android: hold power 10–15 seconds. After reboot, if app keeps freezing: clear cache/data or reinstall.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">App update stuck "Waiting" in the store</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Check network connectivity. Check available storage. <span class="good">Android:</span> Settings → Apps → Play Store → Clear Cache → retry. <span class="good">iOS:</span> Sign out of App Store (Settings → [name] → Sign Out) → sign back in → retry. Also try: tap the waiting update in the store to pause, then tap again to resume.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Corporate app shows "Untrusted Developer" on iOS</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">Settings → General → VPN & Device Management → [enterprise developer name] → Trust.</span> This must be done after every device restore. If the developer certificate has expired, the IT admin must renew it and redistribute the app — the technician cannot fix this locally.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Device is very slow — user says "it's been slow for months"</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Check battery health first (iOS: Settings → Battery → Battery Health; Android: varies). If below 80%, <strong>battery replacement</strong> resolves CPU throttling. Check storage (free up if under 15% free). Check battery usage for rogue apps. Restart device. If still slow: factory reset as last resort.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">iOS update says "Not Enough Space"</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">iOS will offer to temporarily remove some apps to make room — accept this offer (apps re-download after update). Or: manually free storage (Settings → General → iPhone Storage → identify large items). Last option: <span class="good">update via Mac/Finder or PC/iTunes</span> — bypasses on-device storage constraint.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Android device randomly reboots — happens during calls</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Reboots during high-demand moments (calls) strongly suggest <strong class="good">battery failure</strong>. Check battery health app or have it tested. If battery is swollen, power off immediately and arrange battery replacement. Also boot into <span class="good">Safe Mode</span> (hold power → long-press Power Off) — if reboots stop in Safe Mode, a third-party app is responsible.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Wi-Fi says "Connected" but no internet on one device</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Other devices work on same Wi-Fi → problem is the specific device. <span class="good">Forget the network and reconnect</span>. Check IP address — if 169.254.x.x (APIPA), DHCP failed; restart router. Reset Network Settings if reconnect doesn't work. Try toggling Airplane Mode on/off to force radio re-initialization.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Bluetooth headphones paired but audio still comes from phone speaker</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Device is paired but audio output not routed to headphones. <span class="good">Manually tap the device in Bluetooth settings → Connect.</span> Check media volume separately from ringtone volume (some devices have independent controls). If the headphones connected but audio routing failed: forget and re-pair. Check for a firmware update for the headphones.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">NFC tap-to-pay fails at checkout</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">Check:</span> (1) NFC enabled (Android Settings → Connected Devices → NFC). (2) Card set up in Wallet/Google Wallet. (3) Authentication completed (biometric/passcode). (4) Metal case removed. (5) Correct antenna placement for device model. (6) Terminal supports contactless — if terminal shows no NFC symbol, it may not support it. Try re-adding the card in the wallet app.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Screen won't rotate on iPhone — rotation lock is off</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Rotation lock is confirmed off → test in multiple apps. If it works in some apps but not others, those apps lock orientation by design (app issue, not device). If rotation fails in ALL apps including home screen: <span class="good">restart the device</span>. If still broken after restart: accelerometer hardware fault — check for iOS update, then consider device service/repair.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     REFERENCE TABLE
+     ═══════════════════════════════════════════════════ -->
+
+<h3 class="section">Symptom Quick-Reference Table</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Symptom</th>
+      <th>Most Common Cause</th>
+      <th>First Fix</th>
+      <th>Escalation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>App fails to launch</td>
+      <td>Corrupt state, insufficient storage, missing permissions</td>
+      <td>Force-close → restart device</td>
+      <td>Clear cache/data → reinstall app</td>
+    </tr>
+    <tr>
+      <td>App fails to close / crashes</td>
+      <td>Bug, insufficient RAM, OS incompatibility after update</td>
+      <td>Force-close via app switcher</td>
+      <td>Update app → clear cache → reinstall</td>
+    </tr>
+    <tr>
+      <td>App fails to update</td>
+      <td>No network, no storage, wrong account</td>
+      <td>Check Wi-Fi, check storage</td>
+      <td>Clear Play Store cache (Android) / re-sign into App Store (iOS)</td>
+    </tr>
+    <tr>
+      <td>App fails to install</td>
+      <td>No storage, MDM policy, unknown sources disabled</td>
+      <td>Check storage and MDM policy</td>
+      <td>Enable unknown sources (Android) / Trust profile (iOS) if applicable</td>
+    </tr>
+    <tr>
+      <td>Slow to respond</td>
+      <td>Low storage, degraded battery, rogue app</td>
+      <td>Restart device, check storage</td>
+      <td>Check battery health, check battery usage by app, factory reset</td>
+    </tr>
+    <tr>
+      <td>OS fails to update</td>
+      <td>No storage, unsupported device, MDM policy</td>
+      <td>Free storage, check compatibility</td>
+      <td>Update via computer (iOS) / confirm device support / contact MDM admin</td>
+    </tr>
+    <tr>
+      <td>Battery life issues</td>
+      <td>Battery degradation, rogue app, settings</td>
+      <td>Check battery health, review battery usage</td>
+      <td>Restrict background apps, reduce location services, battery replacement</td>
+    </tr>
+    <tr>
+      <td>Random reboots</td>
+      <td>Failing battery, rogue app, overheating</td>
+      <td>Check battery health, boot safe mode (Android)</td>
+      <td>Battery replacement; factory reset if app-caused</td>
+    </tr>
+    <tr>
+      <td>Wi-Fi issues</td>
+      <td>Incorrect password, DHCP failure, weak signal</td>
+      <td>Forget network → reconnect; restart device</td>
+      <td>Reset Network Settings; check router; 802.1X profile (enterprise)</td>
+    </tr>
+    <tr>
+      <td>Bluetooth issues</td>
+      <td>Not in pairing mode, interference, corrupt cache</td>
+      <td>Forget + re-pair both devices</td>
+      <td>Clear Bluetooth cache (Android); reset network settings</td>
+    </tr>
+    <tr>
+      <td>NFC not working</td>
+      <td>NFC disabled, metal case, wrong positioning</td>
+      <td>Enable NFC (Android), remove case</td>
+      <td>Re-add payment card, check MDM restrictions</td>
+    </tr>
+    <tr>
+      <td>Screen doesn't autorotate</td>
+      <td>Rotation lock accidentally enabled</td>
+      <td>Check and disable rotation lock in Control Center</td>
+      <td>Restart device; test in multiple apps; accelerometer hardware fault</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SUMMARY -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 3.2 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">App launch failure</span>Force-close then restart first. Check storage, permissions, and app update compatibility. Clear cache (Android) or delete+reinstall (iOS) for persistent failures.</div>
+    <div class="summary-item"><span class="s-sym">Android Safe Mode</span>Hold power → long-press Power Off → Reboot to Safe Mode. Disables all third-party apps. If issues stop in Safe Mode, a third-party app is responsible.</div>
+    <div class="summary-item"><span class="s-sym">Clear app cache (Android)</span>Settings → Apps → [app] → Storage → Clear Cache. Does not delete user data. Clear Data resets app to install state (data lost).</div>
+    <div class="summary-item"><span class="s-sym">iOS — no cache clear</span>iOS does not expose a separate cache-clear option. Delete and reinstall the app from the App Store to achieve a clean state.</div>
+    <div class="summary-item"><span class="s-sym">MDM app install block</span>Managed devices may block app installation by policy. Technician escalates to MDM admin to approve/push the app. Cannot be user-resolved.</div>
+    <div class="summary-item"><span class="s-sym">iOS Untrusted Developer</span>Settings → General → VPN & Device Management → [developer] → Trust. Required for enterprise apps distributed outside the App Store.</div>
+    <div class="summary-item"><span class="s-sym">Android unknown sources</span>Android 8+: Settings → Apps → [browser/file manager] → Install Unknown Apps → Allow. Enable per-source, not globally. Disable after installing.</div>
+    <div class="summary-item"><span class="s-sym">App crashes after OS update</span>Developer hasn't updated for new OS. Check store for app update. Wait for developer patch. Use web version as workaround.</div>
+    <div class="summary-item"><span class="s-sym">Low storage = slow + crashes</span>Both platforms need ~10–15% free storage for performance. Under ~500 MB free causes app launch failures and general sluggishness.</div>
+    <div class="summary-item"><span class="s-sym">Battery health check</span>iOS: Settings → Battery → Battery Health & Charging. Below ~80% = throttling active; battery replacement resolves both slowness and random reboots.</div>
+    <div class="summary-item"><span class="s-sym">CPU throttling</span>Both iOS and Android throttle CPU speed when battery cannot supply peak current. Manifests as slow performance that worsens over time. Fix: battery replacement.</div>
+    <div class="summary-item"><span class="s-sym">Battery drain — identify cause</span>iOS: Settings → Battery → Battery Usage. Android: Settings → Battery → Battery Usage. High background usage = restrict background refresh or uninstall app.</div>
+    <div class="summary-item"><span class="s-sym">APIPA = DHCP failure</span>IP address 169.254.x.x on Wi-Fi means DHCP failed. Restart router/AP. Forget and reconnect the Wi-Fi network. Reset Network Settings if persistent.</div>
+    <div class="summary-item"><span class="s-sym">Reset Network Settings</span>Clears all saved Wi-Fi passwords, Bluetooth pairings, VPN configs. iOS: Settings → General → Transfer or Reset → Reset → Reset Network Settings.</div>
+    <div class="summary-item"><span class="s-sym">Enterprise Wi-Fi (802.1X)</span>Requires username, password, EAP method, often a certificate. MDM-managed devices receive the profile automatically. Failed after password change → IT admin must update MDM profile.</div>
+    <div class="summary-item"><span class="s-sym">Bluetooth cache (Android)</span>Settings → Apps → show system apps → Bluetooth → Storage → Clear Cache. Resolves persistent Bluetooth pairing/connection failures. Restart device after.</div>
+    <div class="summary-item"><span class="s-sym">NFC range</span>≤4 cm / ~1.5 inches. Metal cases block NFC entirely. Antenna location varies by device model. Position matters — most iPhones: top edge; many Android: center/bottom.</div>
+    <div class="summary-item"><span class="s-sym">Rotation lock — first check</span>Always check rotation lock before anything else. iOS: Control Center lock icon (red = locked). Android: Quick Settings Auto-rotate toggle. Most common cause of no rotation.</div>
+    <div class="summary-item"><span class="s-sym">App-forced orientation</span>Some apps lock to portrait or landscape by design. Test rotation in multiple apps. If home screen and most apps rotate correctly, device is fine — app controls its own orientation.</div>
+    <div class="summary-item"><span class="s-sym">Accelerometer fault</span>If rotation fails in ALL apps after restart with lock off, accelerometer hardware fault. May show erratic or wrong-axis rotation. Requires device service/repair.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> An Android user's app randomly crashes throughout the day. The technician notices the app hasn't been updated in six months. What is the most appropriate first step? → Check the Play Store for a pending app update and install it. A developer-released fix is the most targeted solution for a crashing app before resorting to clearing data or reinstalling.<br><br>
+  <strong>Scenario 2:</strong> A user's iPhone has been getting progressively slower over the past year. They report that it was fast when new. What is the most likely cause and solution? → Battery degradation causing CPU throttling. Check Settings → Battery → Battery Health & Charging. If below ~80%, battery replacement will restore normal performance. This is a hardware issue, not a software problem.<br><br>
+  <strong>Scenario 3:</strong> An Android device keeps randomly rebooting. A technician boots it into Safe Mode and the reboots stop. What does this indicate? → A third-party app is causing the reboots. In Safe Mode all third-party apps are disabled; stability in Safe Mode confirms the OS and hardware are not at fault. Resolution: uninstall recently installed apps one at a time (most recently installed first) to identify the culprit.<br><br>
+  <strong>Scenario 4:</strong> A user reports their iPhone won't rotate to landscape. The screen rotation lock is confirmed OFF in Control Center. The app switcher is tested and home screen also won't rotate. What is the next step? → Restart the device. A software glitch in the rotation service is the likely cause. If restart doesn't fix it, investigate accelerometer hardware fault and check for an iOS update.<br><br>
+  <strong>Scenario 5:</strong> A corporate iPhone user downloaded a company app from an internal distribution link. The app icon has an "X" on it and it won't open, displaying "Untrusted Enterprise Developer." What must the technician do? → Settings → General → VPN & Device Management → find the enterprise developer → tap Trust. This explicitly grants trust to the developer's enterprise certificate, allowing the app to run.<br><br>
+  <strong>Scenario 6:</strong> A user's Android device Wi-Fi shows Connected to the corporate network but cannot browse any websites. Other users on the same network work fine. The device's IP shows 169.254.3.42. What is the diagnosis? → The device has an APIPA address (169.254.x.x), meaning DHCP failed — it could not obtain a valid IP from the router. Fix: Forget the Wi-Fi network and reconnect, or restart the device and router to trigger a fresh DHCP lease. If persistent, Reset Network Settings.<br><br>
+  <strong>Scenario 7:</strong> A user reports they cannot install a Google Play app on their company Android device, receiving the message "Installation blocked by administrator." What is the correct response? → This is an MDM policy restriction. The technician should escalate to the MDM administrator to either approve the app and push it through the managed app catalog, or grant the user an exception. This cannot be resolved by the user or tier-1 technician.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

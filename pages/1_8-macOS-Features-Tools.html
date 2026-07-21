@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.8 (Core 2) — Common Features and Tools of macOS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EDITION PANEL — custom for this page */
+  .edition-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .edition-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
+  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
+  .edition-panel-body { padding: 0; }
+  .edition-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .edition-row:last-child { border-bottom: none; }
+  .edition-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .edition-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .edition-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* UPGRADE PATH DIAGRAM */
+  .upgrade-path {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 24px;
+    font-family: var(--sans);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .up-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .up-node .up-label {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .up-node .up-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .up-arrow {
+    font-size: 18px;
+    color: var(--border2);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
+  .up-node.target .up-label { color: var(--accent3); }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .edition-row { grid-template-columns: 1fr; }
+    .upgrade-path { flex-direction: column; align-items: flex-start; }
+    .up-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.8</strong> Explain common features and tools of the macOS/desktop operating system</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_7-Windows-Networking-Features.html">1.7</a>
+    <a class="nav-next" href="./1_9-Linux-Features-Tools.html">1.9</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.8</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Explain common features and tools of the <br> macOS/desktop operating system</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.8</span>
+    <span>Domain weight: 28%</span>
+    <span>Apps · Folders · Preferences · Features · Tools</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>Objective 1.8 covers macOS — Apple's desktop operating system — as a parallel track to the Windows-focused objectives elsewhere in Core 2's Domain 1. The exam expects a technician to be conversationally fluent in macOS even if Windows is their primary platform, since real-world IT support frequently involves whatever operating system walks through the door.</p>
+
+<p>This objective is broad and list-heavy by nature: application installation, the filesystem's folder structure, account/security concepts, the System Preferences panes, a long list of signature macOS features, and several standalone tools (Disk Utility, FileVault, Terminal, Force Quit). Rather than trying to memorize every item as an isolated fact, look for the underlying logic in each section — file types map to installation methods, system folders map to a scope-of-access principle, and most "features" map to a specific everyday user need.</p>
+
+<!-- ═══ PART 1: INSTALLATION AND UNINSTALLATION ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 1</span>Installation and Uninstallation of Applications</h2>
+
+<h3 class="section">File Types</h3>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term"><span class="filetype-badge">.dmg</span></span>
+    <span><span class="key-term">Disk image</span> — a mountable virtual disk file, commonly used to distribute macOS applications. Double-clicking a .dmg mounts it as a virtual drive in Finder, typically revealing the application itself alongside a shortcut to the Applications folder, with installation simply being a matter of dragging the app icon into that Applications shortcut.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term"><span class="filetype-badge">.pkg</span></span>
+    <span><span class="key-term">Installer package</span> — a guided installer file, functioning more like a traditional Windows-style setup wizard, walking the user through installation steps (license agreements, install location, configuration choices) rather than a simple drag-and-drop. Common for more complex software or system-level components requiring multiple files placed in specific locations.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term"><span class="filetype-badge">.app</span></span>
+    <span>The actual <span class="key-term">application bundle</span> itself — what appears to be a single file/icon in Finder is actually a structured folder containing all the application's executable code, resources, and supporting files, bundled together and presented to the user as one self-contained icon.</span>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">How These Three File Types Relate</p>
+  <p>A typical macOS software distribution flow: a developer packages their finished <strong>.app</strong> bundle inside a <strong>.dmg</strong> (for simple drag-to-install software) or a <strong>.pkg</strong> (for more complex, guided installation) for distribution. Once installed, the resulting application living in <code>/Applications</code> is the <strong>.app</strong> bundle itself — the .dmg or .pkg was just the delivery/installation mechanism, not the application's permanent, ongoing form.</p>
+</div>
+
+<h3 class="section">App Store</h3>
+
+<p>The macOS <span class="key-term">App Store</span> provides a centralized, Apple-curated source for downloading and installing applications, tied to the user's Apple ID. App Store installations are handled automatically by the OS (no .dmg/.pkg file handling required by the user), and updates for App Store-sourced apps are managed centrally through the App Store itself, similar in concept to the curated app store model on iOS/mobile devices.</p>
+
+<h3 class="section">Uninstallation Process</h3>
+
+<p>Unlike Windows, which generally requires running a dedicated uninstaller or using a centralized "Programs and Features" control panel, macOS applications are commonly uninstalled simply by <strong>dragging the .app bundle from the Applications folder to the Trash</strong> — since the application bundle is largely self-contained. Some more complex applications (particularly those that install system-level components, kernel extensions, or background services) provide their own dedicated uninstaller utility for a more thorough removal, since a simple drag-to-trash wouldn't necessarily clean up every associated file in those cases.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>Recognize the basic macOS uninstall pattern (drag to Trash) as fundamentally simpler than the Windows model, while also recognizing that this simple method doesn't always remove every trace of more complex software — leftover preference files and support files can remain in the user's Library folder (Part 2, below) even after the main application has been deleted.</p>
+</div>
+
+<!-- ═══ PART 2: SYSTEM FOLDERS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 2</span>System Folders</h2>
+
+<p>macOS organizes its filesystem around a small set of top-level folders, each with a distinct purpose and scope of access — understanding this structure is foundational to navigating, troubleshooting, and supporting a Mac.</p>
+
+<div class="folder-tree">
+  <h4>Core macOS Folder Structure</h4>
+  <div class="folder-row"><span class="folder-path">/Applications</span><span class="folder-desc">Holds installed applications available to <strong>all users</strong> on the Mac — the standard destination when installing via .dmg or .pkg.</span></div>
+  <div class="folder-row"><span class="folder-path">/Users</span><span class="folder-desc">Contains each user account's individual home folder (e.g., <code>/Users/jsmith</code>), holding that specific user's Desktop, Documents, Downloads, and personal settings — analogous to <code>C:\Users\</code> on Windows.</span></div>
+  <div class="folder-row"><span class="folder-path">/Library</span><span class="folder-desc">The <strong>system-wide</strong> Library, holding support files, preferences, and resources shared across all users on the Mac — distinct from each individual user's own Library (below).</span></div>
+  <div class="folder-row"><span class="folder-path">/System</span><span class="folder-desc">Contains the core macOS operating system files themselves. This folder is tightly protected by macOS's System Integrity Protection (SIP) and is not meant to be modified by users or most third-party software under normal circumstances.</span></div>
+  <div class="folder-row"><span class="folder-path">/Users/[name]/Library</span><span class="folder-desc">Each individual user's <strong>personal</strong> Library folder, holding that specific user's application preferences, caches, and support files — hidden from Finder by default, but accessible when needed for troubleshooting.</span></div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Two Different "Library" Folders</p>
+  <p>A frequently tested distinction: <strong>/Library</strong> (system-wide, affects all users) versus <strong>/Users/[username]/Library</strong> (specific to one individual user account). When troubleshooting an application issue affecting only one specific user account, the relevant preference/cache files are typically found in that user's personal Library, not the system-wide one — an important distinction when deciding where to look for corrupted preference files or leftover application data during troubleshooting.</p>
+</div>
+
+<!-- ═══ PART 3: APPLE ID AND CORPORATE RESTRICTIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 3</span>Apple ID and Corporate Restrictions</h2>
+
+<p>An <span class="key-term">Apple ID</span> is the central account tying together a user's access to the App Store, iCloud services, and various Apple ecosystem features — conceptually similar to a Microsoft account's role across Windows and Microsoft 365 services. In a managed/corporate environment, organizations can apply restrictions to how Apple IDs and associated services are used on company-owned devices — for example, restricting personal Apple ID sign-in on a corporate Mac, controlling which apps can be installed, or managing devices centrally through Apple's enterprise device management framework (a macOS/iOS parallel to the MDM concepts covered in objective 1.3).</p>
+
+<!-- ═══ PART 4: BEST PRACTICES ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 4</span>Best Practices</h2>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Backups</span>
+    <span>Regular backups protect against data loss from hardware failure, accidental deletion, or malware — on macOS, this is most commonly accomplished via the built-in Time Machine feature (covered in Part 6 below).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Antivirus</span>
+    <span>While macOS includes built-in protective technologies, many business environments still deploy dedicated third-party antivirus/endpoint protection software on Macs as an additional layer of defense, particularly in environments with compliance requirements or mixed-OS security policies.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Updates/patches</span>
+    <span>Keeping macOS and installed applications current with security patches and bug fixes, managed through System Preferences/Settings' Software Update section, is a fundamental best practice paralleling the same patching discipline expected on any operating system.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Rapid Security Response (RSR)</span>
+    <span>A macOS mechanism for delivering critical, urgent security fixes <strong>outside</strong> the normal full OS update cycle — allowing Apple to patch serious, actively-exploited vulnerabilities quickly without requiring a full system update/restart cycle. RSR updates are typically smaller, faster to apply, and can sometimes be removed independently if they cause compatibility issues, unlike a full OS update.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>Recognize <strong>RSR</strong> specifically as a faster, lighter-weight, out-of-band patching mechanism distinct from regular full macOS updates — the key idea is urgency: RSR exists so Apple doesn't have to wait for the next full OS release cycle to patch a critical, actively-exploited security flaw.</p>
+</div>
+
+<!-- ═══ PART 5: SYSTEM PREFERENCES ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 5</span>System Preferences</h2>
+
+<p><span class="key-term">System Preferences</span> (renamed <span class="key-term">System Settings</span> in more recent macOS versions, though both names remain in common use and are treated as equivalent for exam purposes) is the central control panel for configuring macOS — directly analogous to the Windows Control Panel/Settings app.</p>
+
+<table class="data-table">
+  <thead><tr><th>Pane</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td>Displays</td><td>Configures monitor resolution, arrangement of multiple displays, and display-related settings such as Night Shift/True Tone</td></tr>
+    <tr><td>Networks</td><td>Configures Wi-Fi, Ethernet, and other network connections, including IP configuration concepts paralleling objective 1.7's Windows networking coverage</td></tr>
+    <tr><td>Printers</td><td>Adds, removes, and configures printers and print queues, including shared network printers (objective 2.5/3.7 concepts)</td></tr>
+    <tr><td>Scanners</td><td>Configures connected or network scanners, often grouped together with printer settings since many devices are multifunction (objective 3.7)</td></tr>
+    <tr><td>Privacy</td><td>Controls which applications have permission to access sensitive resources — camera, microphone, location, contacts, files and folders — directly paralleling the app-permission concepts from objective 1.1/1.3's camera/microphone troubleshooting guidance</td></tr>
+    <tr><td>Accessibility</td><td>Configures assistive features for vision, hearing, motor, and cognitive accessibility needs — screen reader (VoiceOver), zoom, captions, alternative input methods, and similar accommodations</td></tr>
+    <tr><td>Time Machine</td><td>Configures macOS's built-in backup feature (Part 6, below)</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══ PART 6: FEATURES ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 6</span>Features</h2>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Multiple desktops</span>
+    <span>Allows a user to create several distinct virtual desktop "Spaces," each potentially holding different open applications/windows, switchable independently — useful for organizing work contexts (e.g., one Space for communication apps, another for focused project work).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Mission Control</span>
+    <span>A visual overview feature showing all open windows, all active Spaces/desktops, and any full-screen apps at once, making it easy to see everything running and quickly navigate between windows/desktops.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Keychain</span>
+    <span>macOS's built-in, encrypted credential manager — securely stores saved passwords, certificates, and secure notes, syncing across a user's devices when iCloud Keychain is enabled. Conceptually similar to a password manager, but deeply integrated into the OS itself.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Spotlight</span>
+    <span>macOS's built-in system-wide search feature, allowing a user to quickly find files, launch applications, perform calculations, look up definitions, and more from a single, fast search interface — broadly analogous in role to Windows Search.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">iCloud</span>
+    <span>Apple's cloud service ecosystem, tied to the user's Apple ID, providing synchronization and cloud-based functionality across several sub-services: <strong>iMessage</strong> (text/multimedia messaging synced across Apple devices), <strong>FaceTime</strong> (Apple's video/audio calling service), and <strong>Drive</strong> (iCloud Drive, cloud file storage and synchronization, conceptually similar to other cloud storage services discussed in objective 1.3 and 3.7).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Gestures</span>
+    <span>Multi-touch trackpad gestures (swipes, pinches, multi-finger taps) used throughout macOS for navigation — swiping between desktops/Spaces, pinching to zoom, three/four-finger swipes to trigger Mission Control, and similar trackpad-driven interactions that are a signature part of the macOS user experience.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Finder</span>
+    <span>macOS's built-in file management application — the direct equivalent of Windows File Explorer — used for browsing the filesystem, managing files/folders, and accessing network shares.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Dock</span>
+    <span>The customizable bar (typically positioned at the bottom of the screen) holding shortcuts to frequently used and currently running applications, providing quick access and visual indication of what's currently open — broadly analogous in role to the Windows taskbar.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Continuity</span>
+    <span>A suite of features enabling seamless handoff and interaction between a user's Apple devices — for example, starting a task on an iPhone and continuing it on a Mac (Handoff), using an iPhone as a webcam, answering phone calls or texts from a Mac, or copying content on one device and pasting it on another (Universal Clipboard). Continuity is the umbrella concept describing this cross-device fluidity across the Apple ecosystem.</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Windows Equivalents — A Mental Shortcut</p>
+  <p>Mapping unfamiliar macOS features to a Windows equivalent can help anchor them in memory: <strong>Finder</strong> ≈ File Explorer, <strong>Dock</strong> ≈ Taskbar, <strong>Spotlight</strong> ≈ Windows Search, <strong>Mission Control</strong> ≈ Task View, <strong>Keychain</strong> ≈ Credential Manager, <strong>iCloud</strong> ≈ OneDrive/Microsoft account ecosystem. These aren't perfect one-to-one matches, but the rough parallel is a useful starting point for remembering what each feature is fundamentally for.</p>
+</div>
+
+<!-- ═══ PART 7: DISK UTILITY ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 7</span>Disk Utility</h2>
+
+<p><span class="key-term">Disk Utility</span> is macOS's built-in tool for managing storage drives and volumes — partitioning and formatting drives, verifying and repairing disk errors (similar in role to chkdsk on Windows), erasing drives securely, and creating/restoring disk images. It's a central go-to tool for storage-related troubleshooting and preparation tasks on a Mac, including preparing a drive before a clean OS installation.</p>
+
+<!-- ═══ PART 8: FILEVAULT ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 8</span>FileVault</h2>
+
+<p><span class="key-term">FileVault</span> is macOS's built-in full-disk encryption feature, encrypting the entire startup disk's contents and requiring the user's account password (or a recovery key) to decrypt and access the data — the direct macOS equivalent of Windows BitLocker (objective 3.5). Once enabled, the disk's contents remain protected even if the physical drive is removed and accessed from another machine, since the data is unreadable without the correct decryption credential.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>Pair <strong>FileVault</strong> (macOS) directly with <strong>BitLocker</strong> (Windows) in your mental model — both are built-in, OS-level full-disk encryption features serving the same fundamental purpose, just on different platforms. A scenario describing the need to protect data on a lost or stolen Mac points to verifying FileVault is enabled.</p>
+</div>
+
+<!-- ═══ PART 9: TERMINAL ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 9</span>Terminal</h2>
+
+<p><span class="key-term">Terminal</span> is macOS's command-line interface application, providing access to the underlying Unix-based shell environment that macOS is built on. Terminal allows a technician to run command-line utilities, scripts, and administrative tasks directly — the macOS equivalent in role (though built on a different underlying command set/shell) to Command Prompt or PowerShell on Windows.</p>
+
+<!-- ═══ PART 10: FORCE QUIT ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 10</span>Force Quit</h2>
+
+<p><span class="key-term">Force Quit</span> immediately terminates an unresponsive or frozen application, accessible via the Apple menu's "Force Quit" option, the keyboard shortcut <code>Command + Option + Escape</code>, or by right-clicking (or Control-clicking) an app's Dock icon. This is the direct macOS equivalent of using Task Manager to end a non-responsive process on Windows, serving as the standard first response when a specific application stops responding without requiring a full system restart.</p>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Force Quit vs. Restarting the Mac</p>
+  <p>Force Quit targets and terminates only the specific unresponsive application, leaving the rest of the system and all other open applications completely unaffected — always the preferred first step over restarting the entire machine when only one application has frozen, since a full restart is more disruptive and unnecessary if the underlying OS itself is functioning normally.</p>
+</div>
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — macOS Features and Tools</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">.dmg</span><span>Mountable disk image; drag-to-install</span></div>
+    <div class="summary-item"><span class="s-sym">.pkg</span><span>Guided installer wizard</span></div>
+    <div class="summary-item"><span class="s-sym">.app</span><span>The actual application bundle</span></div>
+    <div class="summary-item"><span class="s-sym">Uninstall</span><span>Drag .app to Trash; complex apps may need a dedicated uninstaller</span></div>
+    <div class="summary-item"><span class="s-sym">/Applications</span><span>Apps available to all users</span></div>
+    <div class="summary-item"><span class="s-sym">/Library vs. ~/Library</span><span>System-wide vs. per-user support files</span></div>
+    <div class="summary-item"><span class="s-sym">/System</span><span>Core OS files; SIP-protected</span></div>
+    <div class="summary-item"><span class="s-sym">RSR</span><span>Fast, out-of-band critical security patch</span></div>
+    <div class="summary-item"><span class="s-sym">FileVault</span><span>Full-disk encryption; macOS's BitLocker equivalent</span></div>
+    <div class="summary-item"><span class="s-sym">Time Machine</span><span>Built-in backup feature</span></div>
+    <div class="summary-item"><span class="s-sym">Spotlight</span><span>System-wide search</span></div>
+    <div class="summary-item"><span class="s-sym">Keychain</span><span>Built-in encrypted credential manager</span></div>
+    <div class="summary-item"><span class="s-sym">Finder / Dock</span><span>File Explorer / taskbar equivalents</span></div>
+    <div class="summary-item"><span class="s-sym">Continuity</span><span>Seamless cross-Apple-device handoff features</span></div>
+    <div class="summary-item"><span class="s-sym">Disk Utility</span><span>Partition, format, verify/repair drives</span></div>
+    <div class="summary-item"><span class="s-sym">Terminal</span><span>Unix-based command-line interface</span></div>
+    <div class="summary-item"><span class="s-sym">Force Quit</span><span>Ends one frozen app; macOS's Task Manager equivalent</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE TOOLS -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>1.8 Quick Reference</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>macOS ↔ Windows Equivalents</h4>
+    <ul>
+      <li><strong>Finder</strong> ↔ File Explorer</li>
+      <li><strong>Dock</strong> ↔ Taskbar</li>
+      <li><strong>Spotlight</strong> ↔ Windows Search</li>
+      <li><strong>FileVault</strong> ↔ BitLocker</li>
+      <li><strong>Force Quit</strong> ↔ Task Manager (end task)</li>
+      <li><strong>Terminal</strong> ↔ Command Prompt/PowerShell</li>
+      <li><strong>Keychain</strong> ↔ Credential Manager</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Installer File Types</h4>
+    <ul>
+      <li><strong>.dmg</strong> → Mounts a virtual drive; drag to install</li>
+      <li><strong>.pkg</strong> → Guided installer wizard</li>
+      <li><strong>.app</strong> → The installed application itself</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Where to Look When Troubleshooting</h4>
+    <ul>
+      <li><strong>Issue affects only one user</strong> → /Users/[name]/Library</li>
+      <li><strong>Issue affects all users</strong> → /Library</li>
+      <li><strong>Never modify directly</strong> → /System</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Security/Maintenance Essentials</h4>
+    <ul>
+      <li><strong>Disk encryption</strong> → FileVault</li>
+      <li><strong>Backup</strong> → Time Machine</li>
+      <li><strong>Urgent out-of-cycle patch</strong> → Rapid Security Response</li>
+      <li><strong>Disk repair/format</strong> → Disk Utility</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top: 28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>.dmg</strong> = drag-to-install disk image. <strong>.pkg</strong> = guided installer. <strong>.app</strong> = the application bundle itself.</p>
+  <p><strong>/Library</strong> = system-wide, all users. <strong>/Users/[name]/Library</strong> = that one user only. This distinction drives where to troubleshoot.</p>
+  <p><strong>RSR</strong> = fast, critical security patches delivered outside the normal full-update cycle.</p>
+  <p><strong>FileVault</strong> = macOS's full-disk encryption, directly parallel to Windows BitLocker.</p>
+  <p><strong>Force Quit</strong> = ends one unresponsive app without restarting the whole Mac — always try this before a full restart.</p>
+  <p><strong>Continuity</strong> = the umbrella term for cross-device handoff features across a user's Apple devices.</p>
+  <p>Map unfamiliar macOS terms to their <strong>Windows equivalent</strong> as a memory anchor — Finder/Explorer, Dock/Taskbar, Spotlight/Search, Keychain/Credential Manager.</p>
+</div>
+
+</div>
+</body>
+</html>

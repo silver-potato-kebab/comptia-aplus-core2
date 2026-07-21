@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ Core 2 (220-1202) — Study Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+
+    /* Domain colors — Core 2 uses 4 domains */
+    --d1: #2c3e6b;
+    --d1-light: #f0f2f8;
+    --d2: #c0392b;
+    --d2-light: #fdf2f1;
+    --d3: #b5590a;
+    --d3-light: #fdf5ed;
+    --d4: #1a6b3a;
+    --d4-light: #f0f8f3;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 0 40px 100px; }
+
+  /* ── HEADER ── */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .book-eyebrow .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 9px;
+    border-radius: 2px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .book-eyebrow .badge-blue {
+    background: var(--accent2);
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4.5vw, 44px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .book-subtitle-line {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .book-meta {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .book-meta span { display: flex; align-items: center; gap: 6px; }
+  .book-meta span::before { content: '·'; color: var(--border2); }
+  .book-meta span:first-child::before { display: none; }
+  .book-meta strong { color: var(--text); }
+
+  /* ── PROGRESS SECTION ── */
+  .progress-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .progress-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .progress-count {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent2);
+  }
+  .progress-track {
+    background: var(--surface2);
+    border-radius: 3px;
+    height: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2) 0%, var(--accent3) 100%);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+  .progress-domains {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .progress-pip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .pip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border2);
+    transition: background 0.3s;
+  }
+  .pip-dot.done { background: var(--accent3); }
+  .progress-reset {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 8px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .progress-reset:hover { border-color: var(--border2); color: var(--text); }
+
+  /* ── EXAM OVERVIEW ── */
+  .overview-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 48px;
+    font-family: var(--sans);
+  }
+  .overview-cell {
+    background: var(--surface);
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .overview-cell .ov-value {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent2);
+    line-height: 1.2;
+  }
+  .overview-cell .ov-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* ── DOMAIN CARDS ── */
+  .domain-block {
+    margin-bottom: 36px;
+  }
+  .domain-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .domain-header:hover { filter: brightness(0.97); }
+  .domain-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 3px 7px;
+    border-radius: 2px;
+    color: #fff;
+    min-width: 34px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .domain-info { flex: 1; }
+  .domain-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .domain-meta {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .domain-pct {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    opacity: 0.9;
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .domain-chevron {
+    font-size: 12px;
+    color: var(--muted);
+    align-self: center;
+    transition: transform 0.2s;
+    margin-left: 6px;
+  }
+  .domain-block.open .domain-chevron { transform: rotate(90deg); }
+
+  .domain-objectives {
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    overflow: hidden;
+    display: none;
+  }
+  .domain-block.open .domain-objectives { display: block; }
+
+  .objective-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .objective-row:last-child { border-bottom: none; }
+  .objective-row:hover { background: var(--surface2); }
+  .obj-check {
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .obj-check input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    accent-color: var(--accent3);
+  }
+  .obj-content {
+    padding: 12px 16px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .obj-left { flex: 1; }
+  .obj-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  .obj-title {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .obj-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  .obj-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    background: var(--surface);
+    white-space: nowrap;
+  }
+  .obj-tag.tag-scenario  { border-color: #b5590a55; color: var(--accent4); background: var(--accent4-light); }
+  .obj-tag.tag-compare   { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .obj-tag.tag-explain   { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .obj-tag.tag-summarize { border-color: #7b3fa055; color: #7b3fa0; background: #f6f0fb; }
+  .obj-tag.tag-implement { border-color: #c0392b55; color: var(--accent); background: var(--accent-light); }
+  .obj-link-arrow {
+    font-size: 14px;
+    color: var(--border2);
+    flex-shrink: 0;
+    transition: color 0.15s, transform 0.15s;
+  }
+  .objective-row:hover .obj-link-arrow {
+    color: var(--accent2);
+    transform: translateX(3px);
+  }
+
+  /* Completed state */
+  .objective-row.completed .obj-title { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--border2); }
+  .objective-row.completed .obj-num { opacity: 0.5; }
+
+  /* Domain-specific colors */
+  .d1 .domain-header { background: var(--d1-light); }
+  .d1 .domain-num { background: var(--d1); }
+  .d1 .domain-pct { color: var(--d1); }
+  .d2 .domain-header { background: var(--d2-light); }
+  .d2 .domain-num { background: var(--d2); }
+  .d2 .domain-pct { color: var(--d2); }
+  .d3 .domain-header { background: var(--d3-light); }
+  .d3 .domain-num { background: var(--d3); }
+  .d3 .domain-pct { color: var(--d3); }
+  .d4 .domain-header { background: var(--d4-light); }
+  .d4 .domain-num { background: var(--d4); }
+  .d4 .domain-pct { color: var(--d4); }
+
+  /* ── QUICK REF BAR ── */
+  .quick-ref {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 18px 22px;
+    margin-bottom: 48px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .quick-ref-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .qr-item {
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 8px;
+  }
+  .qr-pct {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+  }
+  .qr-name {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  /* ── STUDY TIP CALLOUT ── */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 0 0 32px;
+    border-radius: 0 4px 4px 0;
+    font-size: 15px;
+  }
+  .callout p { margin-bottom: 6px; font-family: var(--sans); }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 7px !important;
+  }
+  .callout-exam { border-color: var(--accent); background: var(--accent-light); }
+  .callout-exam .callout-title { color: var(--accent); }
+  .callout-info { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title { color: var(--accent2); }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 2px solid var(--border);
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .page { padding: 0 20px 60px; }
+    .overview-strip { grid-template-columns: repeat(2, 1fr); }
+    .quick-ref-grid { grid-template-columns: repeat(2, 1fr); }
+    .domain-pct { display: none; }
+    .obj-tags { display: none; }
+    .book-meta { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="book-header">
+    <div class="book-eyebrow">
+      <span class="badge">CompTIA A+</span>
+      <span class="badge badge-blue">220-1202 V15</span>
+      Core 2 Study Guide
+    </div>
+    <h1 class="book-title">CompTIA A+<br>Core 2 Exam Objectives</h1>
+    <p class="book-subtitle-line">A complete section-by-section study guide aligned to the 220-1202 V15 exam objectives document.</p>
+    <div class="book-meta">
+      <span><strong>90 questions</strong> max</span>
+      <span><strong>90 minutes</strong></span>
+      <span>Pass score <strong>700 / 900</strong></span>
+      <span><strong>4 domains</strong></span>
+      <span><strong>36 objectives</strong></span>
+    </div>
+  </header>
+
+  <!-- PROGRESS TRACKER -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-label">Study Progress</span>
+      <span class="progress-count" id="progress-count">0 of 36 completed</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="progress-domains" id="progress-pips"></div>
+      <button class="progress-reset" onclick="resetProgress()">Reset</button>
+    </div>
+  </div>
+
+  <!-- EXAM AT A GLANCE -->
+  <div class="overview-strip">
+    <div class="overview-cell">
+      <div class="ov-value">28%</div>
+      <div class="ov-label">Operating Systems</div>
+    </div>
+    <div class="overview-cell">
+      <div class="ov-value">28%</div>
+      <div class="ov-label">Security</div>
+    </div>
+    <div class="overview-cell">
+      <div class="ov-value">23%</div>
+      <div class="ov-label">Software Troubleshooting</div>
+    </div>
+    <div class="overview-cell">
+      <div class="ov-value">21%</div>
+      <div class="ov-label">Operational Procedures</div>
+    </div>
+  </div>
+
+  <!-- DOMAIN NAVIGATION HEADING -->
+  <div class="section-heading">
+    Domains &amp; Objectives
+    <span style="font-weight:400; text-transform:none; letter-spacing:0; font-size:11px;">Click a domain to expand · Check off sections as you study</span>
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- DOMAIN 1: OPERATING SYSTEMS -->
+  <!-- ════════════════════════════ -->
+  <div class="domain-block d1 open" id="domain-1">
+    <div class="domain-header" onclick="toggleDomain(1)">
+      <span class="domain-num">1.0</span>
+      <div class="domain-info">
+        <div class="domain-title">Operating Systems</div>
+        <div class="domain-meta">
+          <span>11 objectives</span>
+          <span>Obj 1.1 – 1.11</span>
+        </div>
+      </div>
+      <span class="domain-pct">28%</span>
+      <span class="domain-chevron">▶</span>
+    </div>
+    <div class="domain-objectives">
+
+      <a class="objective-row" href="./pages/1_1-OS-Fundamentals.html" id="row-1.1">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.1', event)">
+          <input type="checkbox" id="chk-1.1" onclick="event.stopPropagation(); toggleCheck('1.1', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.1</div>
+            <div class="obj-title">Explain common operating system (OS) types and their purposes</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-explain">Explain</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_2-OS-Installations-Upgrades.html" id="row-1.2">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.2', event)">
+          <input type="checkbox" id="chk-1.2" onclick="event.stopPropagation(); toggleCheck('1.2', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.2</div>
+            <div class="obj-title">Given a scenario, perform OS installations and upgrades in a diverse environment</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_3-Windows-Editions.html" id="row-1.3">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.3', event)">
+          <input type="checkbox" id="chk-1.3" onclick="event.stopPropagation(); toggleCheck('1.3', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.3</div>
+            <div class="obj-title">Compare and contrast basic features of Microsoft Windows editions</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-compare">Compare</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_4-Windows-Features-Tools.html" id="row-1.4">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.4', event)">
+          <input type="checkbox" id="chk-1.4" onclick="event.stopPropagation(); toggleCheck('1.4', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.4</div>
+            <div class="obj-title">Given a scenario, use Microsoft Windows operating system features and tools</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_5-Windows-Command-Line.html" id="row-1.5">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.5', event)">
+          <input type="checkbox" id="chk-1.5" onclick="event.stopPropagation(); toggleCheck('1.5', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.5</div>
+            <div class="obj-title">Given a scenario, use the appropriate Microsoft command-line tools</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_6-Windows-Settings.html" id="row-1.6">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.6', event)">
+          <input type="checkbox" id="chk-1.6" onclick="event.stopPropagation(); toggleCheck('1.6', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.6</div>
+            <div class="obj-title">Given a scenario, configure Microsoft Windows settings</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_7-Windows-Networking-Features.html" id="row-1.7">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.7', event)">
+          <input type="checkbox" id="chk-1.7" onclick="event.stopPropagation(); toggleCheck('1.7', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.7</div>
+            <div class="obj-title">Given a scenario, configure Microsoft Windows networking features on a client/desktop</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_8-macOS-Features-Tools.html" id="row-1.8">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.8', event)">
+          <input type="checkbox" id="chk-1.8" onclick="event.stopPropagation(); toggleCheck('1.8', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.8</div>
+            <div class="obj-title">Explain common features and tools of the macOS/desktop operating system</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-explain">Explain</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_9-Linux-Features-Tools.html" id="row-1.9">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.9', event)">
+          <input type="checkbox" id="chk-1.9" onclick="event.stopPropagation(); toggleCheck('1.9', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.9</div>
+            <div class="obj-title">Identify common features and tools of the Linux client/desktop operating system</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-explain">Identify</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_10-Install-Applications.html" id="row-1.10">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.10', event)">
+          <input type="checkbox" id="chk-1.10" onclick="event.stopPropagation(); toggleCheck('1.10', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.10</div>
+            <div class="obj-title">Given a scenario, install applications according to requirements</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/1_11-Cloud-Productivity-Tools.html" id="row-1.11">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('1.11', event)">
+          <input type="checkbox" id="chk-1.11" onclick="event.stopPropagation(); toggleCheck('1.11', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">1.11</div>
+            <div class="obj-title">Given a scenario, install and configure cloud-based productivity tools</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ -->
+  <!-- DOMAIN 2: SECURITY      -->
+  <!-- ═══════════════════════ -->
+  <div class="domain-block d2" id="domain-2">
+    <div class="domain-header" onclick="toggleDomain(2)">
+      <span class="domain-num">2.0</span>
+      <div class="domain-info">
+        <div class="domain-title">Security</div>
+        <div class="domain-meta">
+          <span>11 objectives</span>
+          <span>Obj 2.1 – 2.11</span>
+        </div>
+      </div>
+      <span class="domain-pct">28%</span>
+      <span class="domain-chevron">▶</span>
+    </div>
+    <div class="domain-objectives">
+
+      <a class="objective-row" href="./pages/2_1-Security-Measures.html" id="row-2.1">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.1', event)">
+          <input type="checkbox" id="chk-2.1" onclick="event.stopPropagation(); toggleCheck('2.1', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.1</div>
+            <div class="obj-title">Summarize various security measures and their purposes</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-summarize">Summarize</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_2-Windows-Security-Settings.html" id="row-2.2">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.2', event)">
+          <input type="checkbox" id="chk-2.2" onclick="event.stopPropagation(); toggleCheck('2.2', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.2</div>
+            <div class="obj-title">Given a scenario, configure and apply basic Microsoft Windows OS security settings</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_3-Wireless-Security-Protocols.html" id="row-2.3">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.3', event)">
+          <input type="checkbox" id="chk-2.3" onclick="event.stopPropagation(); toggleCheck('2.3', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.3</div>
+            <div class="obj-title">Compare and contrast wireless security protocols and authentication methods</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-compare">Compare</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_4-Malware-Detection-Removal.html" id="row-2.4">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.4', event)">
+          <input type="checkbox" id="chk-2.4" onclick="event.stopPropagation(); toggleCheck('2.4', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.4</div>
+            <div class="obj-title">Summarize types of malware and tools/methods for detection, removal, and prevention</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-summarize">Summarize</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_5-Social-Engineering-Threats.html" id="row-2.5">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.5', event)">
+          <input type="checkbox" id="chk-2.5" onclick="event.stopPropagation(); toggleCheck('2.5', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.5</div>
+            <div class="obj-title">Compare and contrast common social engineering attacks, threats, and vulnerabilities</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-compare">Compare</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_6-SOHO-Malware-Removal.html" id="row-2.6">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.6', event)">
+          <input type="checkbox" id="chk-2.6" onclick="event.stopPropagation(); toggleCheck('2.6', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.6</div>
+            <div class="obj-title">Given a scenario, implement procedures for basic SOHO malware removal</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_7-Workstation-Security-Hardening.html" id="row-2.7">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.7', event)">
+          <input type="checkbox" id="chk-2.7" onclick="event.stopPropagation(); toggleCheck('2.7', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.7</div>
+            <div class="obj-title">Given a scenario, apply workstation security options and hardening techniques</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_8-Mobile-Device-Security.html" id="row-2.8">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.8', event)">
+          <input type="checkbox" id="chk-2.8" onclick="event.stopPropagation(); toggleCheck('2.8', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.8</div>
+            <div class="obj-title">Given a scenario, apply common methods for securing mobile devices</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_9-Data-Destruction-Disposal.html" id="row-2.9">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.9', event)">
+          <input type="checkbox" id="chk-2.9" onclick="event.stopPropagation(); toggleCheck('2.9', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.9</div>
+            <div class="obj-title">Compare and contrast common data destruction and disposal methods</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-compare">Compare</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_10-SOHO-Network-Security.html" id="row-2.10">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.10', event)">
+          <input type="checkbox" id="chk-2.10" onclick="event.stopPropagation(); toggleCheck('2.10', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.10</div>
+            <div class="obj-title">Given a scenario, apply security settings on SOHO wireless and wired networks</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/2_11-Browser-Security.html" id="row-2.11">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('2.11', event)">
+          <input type="checkbox" id="chk-2.11" onclick="event.stopPropagation(); toggleCheck('2.11', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">2.11</div>
+            <div class="obj-title">Given a scenario, configure relevant security settings in a browser</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- DOMAIN 3: SOFTWARE TROUBLESHOOTING -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="domain-block d3" id="domain-3">
+    <div class="domain-header" onclick="toggleDomain(3)">
+      <span class="domain-num">3.0</span>
+      <div class="domain-info">
+        <div class="domain-title">Software Troubleshooting</div>
+        <div class="domain-meta">
+          <span>4 objectives</span>
+          <span>Obj 3.1 – 3.4</span>
+        </div>
+      </div>
+      <span class="domain-pct">23%</span>
+      <span class="domain-chevron">▶</span>
+    </div>
+    <div class="domain-objectives">
+
+      <a class="objective-row" href="./pages/3_1-Windows-OS-Troubleshooting.html" id="row-3.1">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('3.1', event)">
+          <input type="checkbox" id="chk-3.1" onclick="event.stopPropagation(); toggleCheck('3.1', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">3.1</div>
+            <div class="obj-title">Given a scenario, troubleshoot common Windows OS issues</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/3_2-Mobile-OS-Troubleshooting.html" id="row-3.2">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('3.2', event)">
+          <input type="checkbox" id="chk-3.2" onclick="event.stopPropagation(); toggleCheck('3.2', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">3.2</div>
+            <div class="obj-title">Given a scenario, troubleshoot common mobile OS and application issues</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/3_3-Mobile-OS-Security-Issues.html" id="row-3.3">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('3.3', event)">
+          <input type="checkbox" id="chk-3.3" onclick="event.stopPropagation(); toggleCheck('3.3', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">3.3</div>
+            <div class="obj-title">Given a scenario, troubleshoot common mobile OS and application security issues</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/3_4-PC-Security-Issues.html" id="row-3.4">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('3.4', event)">
+          <input type="checkbox" id="chk-3.4" onclick="event.stopPropagation(); toggleCheck('3.4', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">3.4</div>
+            <div class="obj-title">Given a scenario, troubleshoot common personal computer (PC) security issues</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ -->
+  <!-- DOMAIN 4: OPERATIONAL PROCEDURES-->
+  <!-- ═══════════════════════════════ -->
+  <div class="domain-block d4" id="domain-4">
+    <div class="domain-header" onclick="toggleDomain(4)">
+      <span class="domain-num">4.0</span>
+      <div class="domain-info">
+        <div class="domain-title">Operational Procedures</div>
+        <div class="domain-meta">
+          <span>10 objectives</span>
+          <span>Obj 4.1 – 4.10</span>
+        </div>
+      </div>
+      <span class="domain-pct">21%</span>
+      <span class="domain-chevron">▶</span>
+    </div>
+    <div class="domain-objectives">
+
+      <a class="objective-row" href="./pages/4_1-Documentation-Support.html" id="row-4.1">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.1', event)">
+          <input type="checkbox" id="chk-4.1" onclick="event.stopPropagation(); toggleCheck('4.1', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.1</div>
+            <div class="obj-title">Given a scenario, implement best practices associated with documentation and support systems information management</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_2-Change-Management.html" id="row-4.2">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.2', event)">
+          <input type="checkbox" id="chk-4.2" onclick="event.stopPropagation(); toggleCheck('4.2', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.2</div>
+            <div class="obj-title">Given a scenario, apply change management procedures</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_3-Backup-Recovery.html" id="row-4.3">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.3', event)">
+          <input type="checkbox" id="chk-4.3" onclick="event.stopPropagation(); toggleCheck('4.3', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.3</div>
+            <div class="obj-title">Given a scenario, implement workstation backup and recovery methods</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_4-Safety-Procedures.html" id="row-4.4">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.4', event)">
+          <input type="checkbox" id="chk-4.4" onclick="event.stopPropagation(); toggleCheck('4.4', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.4</div>
+            <div class="obj-title">Given a scenario, use common safety procedures</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_5-Environmental-Impacts.html" id="row-4.5">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.5', event)">
+          <input type="checkbox" id="chk-4.5" onclick="event.stopPropagation(); toggleCheck('4.5', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.5</div>
+            <div class="obj-title">Summarize environmental impacts and local environment controls</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-summarize">Summarize</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_6-Privacy-Licensing-Policy.html" id="row-4.6">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.6', event)">
+          <input type="checkbox" id="chk-4.6" onclick="event.stopPropagation(); toggleCheck('4.6', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.6</div>
+            <div class="obj-title">Explain the importance of prohibited content/activity and privacy, licensing, and policy concepts</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-explain">Explain</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_7-Communication-Professionalism.html" id="row-4.7">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.7', event)">
+          <input type="checkbox" id="chk-4.7" onclick="event.stopPropagation(); toggleCheck('4.7', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.7</div>
+            <div class="obj-title">Given a scenario, use proper communication techniques and professionalism</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_8-Scripting-Basics.html" id="row-4.8">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.8', event)">
+          <input type="checkbox" id="chk-4.8" onclick="event.stopPropagation(); toggleCheck('4.8', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.8</div>
+            <div class="obj-title">Explain the basics of scripting</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-explain">Explain</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_9-Remote-Access-Technologies.html" id="row-4.9">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.9', event)">
+          <input type="checkbox" id="chk-4.9" onclick="event.stopPropagation(); toggleCheck('4.9', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.9</div>
+            <div class="obj-title">Given a scenario, use remote access technologies</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-scenario">Scenario</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="objective-row" href="./pages/4_10-AI-Concepts.html" id="row-4.10">
+        <div class="obj-check" onclick="event.preventDefault(); toggleCheck('4.10', event)">
+          <input type="checkbox" id="chk-4.10" onclick="event.stopPropagation(); toggleCheck('4.10', event)">
+        </div>
+        <div class="obj-content">
+          <div class="obj-left">
+            <div class="obj-num">4.10</div>
+            <div class="obj-title">Explain basic concepts related to artificial intelligence (AI)</div>
+          </div>
+          <div class="obj-tags"><span class="obj-tag tag-explain">Explain</span></div>
+          <span class="obj-link-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- QUICK DOMAIN WEIGHT REFERENCE -->
+  <div style="margin-top: 48px;">
+    <div class="section-heading">Exam Domain Weights at a Glance</div>
+    <div class="quick-ref">
+      <div class="quick-ref-grid">
+        <div class="qr-item"><span class="qr-pct" style="color: var(--d1);">28%</span><div class="qr-name">1.0 Operating Systems</div></div>
+        <div class="qr-item"><span class="qr-pct" style="color: var(--d2);">28%</span><div class="qr-name">2.0 Security</div></div>
+        <div class="qr-item"><span class="qr-pct" style="color: var(--d3);">23%</span><div class="qr-name">3.0 Software Troubleshooting</div></div>
+        <div class="qr-item"><span class="qr-pct" style="color: var(--d4);">21%</span><div class="qr-name">4.0 Operational Procedures</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDY TIP -->
+  <div class="callout callout-exam">
+    <p class="callout-title">Exam Strategy</p>
+    <p>Domain 1 (Operating Systems, 28%) and Domain 2 (Security, 28%) together make up 56% of the exam. Windows features, command-line tools, malware removal procedures, and security hardening are heavily tested. Domain 3's troubleshooting objectives are almost entirely scenario-based — expect to apply knowledge, not just recall it.</p>
+  </div>
+
+  <div class="callout callout-info">
+    <p class="callout-title">About This Guide</p>
+    <p>Each objective page provides in-depth coverage aligned to the 220-1202 V15 exam objectives document (Version 4.0). Objectives are tagged by question stem verb — <em>Scenario</em>, <em>Compare</em>, <em>Explain</em>, or <em>Summarize</em> — which mirrors the wording used on the actual exam. Your progress is saved in this browser automatically.</p>
+  </div>
+
+  <footer class="page-footer">
+    <span>CompTIA A+ 220-1202 V15 · Core 2 Study Guide</span>
+    <span style="font-family: var(--mono); font-size: 11px;">Exam Objectives Document v4.0 · Not affiliated with or endorsed by CompTIA</span>
+  </footer>
+
+</div>
+
+<script>
+  const TOTAL = 36;
+  const ALL_KEYS = [
+    '1.1','1.2','1.3','1.4','1.5','1.6','1.7','1.8','1.9','1.10','1.11',
+    '2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8','2.9','2.10','2.11',
+    '3.1','3.2','3.3','3.4',
+    '4.1','4.2','4.3','4.4','4.5','4.6','4.7','4.8','4.9','4.10'
+  ];
+
+  function getCompleted() {
+    try { return JSON.parse(localStorage.getItem('a+_core2_progress') || '{}'); }
+    catch { return {}; }
+  }
+  function saveCompleted(data) {
+    try { localStorage.setItem('a+_core2_progress', JSON.stringify(data)); } catch {}
+  }
+
+  function updateProgressUI() {
+    const data = getCompleted();
+    const count = Object.values(data).filter(Boolean).length;
+    const pct = Math.round((count / TOTAL) * 100);
+    document.getElementById('progress-count').textContent = count + ' of ' + TOTAL + ' completed';
+    document.getElementById('progress-fill').style.width = pct + '%';
+    const pips = document.getElementById('progress-pips');
+    pips.innerHTML = '';
+    ALL_KEYS.forEach(k => {
+      const pip = document.createElement('div');
+      pip.className = 'progress-pip';
+      const dot = document.createElement('div');
+      dot.className = 'pip-dot' + (data[k] ? ' done' : '');
+      pip.appendChild(dot);
+      pips.appendChild(pip);
+    });
+  }
+
+  function toggleCheck(key, event) {
+    if (event) event.stopPropagation();
+    const data = getCompleted();
+    data[key] = !data[key];
+    saveCompleted(data);
+    const chk = document.getElementById('chk-' + key);
+    if (chk) chk.checked = !!data[key];
+    const row = document.getElementById('row-' + key);
+    if (row) row.classList.toggle('completed', !!data[key]);
+    updateProgressUI();
+  }
+
+  function resetProgress() {
+    if (!confirm('Reset all progress?')) return;
+    saveCompleted({});
+    ALL_KEYS.forEach(k => {
+      const chk = document.getElementById('chk-' + k);
+      if (chk) chk.checked = false;
+      const row = document.getElementById('row-' + k);
+      if (row) row.classList.remove('completed');
+    });
+    updateProgressUI();
+  }
+
+  function toggleDomain(num) {
+    const block = document.getElementById('domain-' + num);
+    block.classList.toggle('open');
+  }
+
+  // Init on load
+  (function init() {
+    const data = getCompleted();
+    ALL_KEYS.forEach(k => {
+      const chk = document.getElementById('chk-' + k);
+      if (chk) chk.checked = !!data[k];
+      const row = document.getElementById('row-' + k);
+      if (row) row.classList.toggle('completed', !!data[k]);
+    });
+    updateProgressUI();
+  })();
+</script>
+
+</body>
+</html>

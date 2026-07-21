@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.2 — Configure and Apply Basic Microsoft Windows OS Security Settings</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 40px; height: 44px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam { border-color: var(--accent); background: var(--accent-light); }
+  .callout-exam .callout-title { color: var(--accent); }
+  .callout-info { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title { color: var(--accent2); }
+  .callout-tip { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title { color: var(--accent3); }
+  .callout-warn { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title { color: var(--accent4); }
+
+  /* ── MAIN PANEL COMPONENT ── */
+  .sec-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 20px 0; }
+  .sec-panel-header { background: var(--surface2); border-bottom: 2px solid var(--border2); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .sec-panel-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .sec-panel-badge { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+  .badge-path { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b33; }
+  .badge-warn { background: var(--accent-light); color: var(--accent); border: 1px solid #c0392b33; }
+  .badge-tip { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a33; }
+
+  .sec-row { display: grid; grid-template-columns: 210px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .sec-row:last-child { border-bottom: none; }
+  .sec-label { font-weight: 600; color: var(--accent2); padding: 12px 18px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13.5px; }
+  .sec-desc { padding: 12px 18px; color: var(--muted); line-height: 1.6; }
+  .sec-desc strong { color: var(--text); }
+  .sec-desc em { color: var(--accent2); font-style: normal; font-weight: 600; }
+
+  /* ── PROCESS FLOW ── */
+  .process-flow { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-family: var(--sans); font-size: 14px; }
+  .flow-title { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .flow-step { display: flex; align-items: flex-start; gap: 14px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num { font-family: var(--mono); font-size: 11px; color: var(--accent); font-weight: 600; min-width: 24px; padding-top: 2px; }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* ── DEF LIST ── */
+  .def-list { margin: 16px 0 24px; }
+  .def-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 220px 1fr; gap: 20px; font-size: 15px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  /* ── DATA TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--surface2); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 9px 13px; text-align: left; border-bottom: 2px solid var(--border); white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); font-size: 13px; white-space: nowrap; }
+  .yes { color: var(--accent3); font-weight: 700; font-family: var(--sans); }
+  .no  { color: var(--border2); font-weight: 600; font-family: var(--sans); }
+  .ltd { color: var(--accent4); font-weight: 700; font-family: var(--sans); }
+
+  /* ── PERMISSION MATRIX ── */
+  .perm-table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: var(--sans); margin: 16px 0 24px; }
+  .perm-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 9px 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
+  .perm-table thead th:first-child { text-align: left; }
+  .perm-table tbody tr { border-bottom: 1px solid var(--border); }
+  .perm-table tbody tr:last-child { border-bottom: none; }
+  .perm-table td { padding: 8px 12px; vertical-align: middle; line-height: 1.4; text-align: center; border: 1px solid var(--border); }
+  .perm-table td:first-child { font-weight: 600; color: var(--accent2); font-size: 13px; text-align: left; background: var(--surface2); }
+  .perm-table tr:nth-child(even) td { background: #fdfcfb; }
+  .perm-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+
+  /* ── UAC LEVEL DIAGRAM ── */
+  .uac-levels { margin: 20px 0; }
+  .uac-row { display: grid; grid-template-columns: 28px 180px 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .uac-row:last-child { border-bottom: none; }
+  .uac-dot { width: 14px; height: 14px; border-radius: 50%; margin: auto; flex-shrink: 0; }
+  .uac-label { font-weight: 600; font-size: 13px; }
+  .uac-desc { color: var(--muted); line-height: 1.5; }
+  .uac-desc strong { color: var(--text); }
+
+  /* ── ACCOUNT TYPE CARDS ── */
+  .acct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .acct-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .acct-card-head { padding: 10px 16px; font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
+  .acct-card-head.admin { background: var(--accent-light); color: var(--accent); }
+  .acct-card-head.standard { background: var(--accent3-light); color: var(--accent3); }
+  .acct-card-head.guest { background: var(--surface2); color: var(--muted); }
+  .acct-card-head.power { background: var(--accent4-light); color: var(--accent4); }
+  .acct-card-body { padding: 12px 16px; font-family: var(--sans); font-size: 13.5px; }
+  .acct-perm { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.4; font-size: 13px; }
+  .acct-perm:last-child { border-bottom: none; }
+  .acct-perm .sym { font-weight: 700; min-width: 14px; flex-shrink: 0; }
+  .sym-y { color: var(--accent3); }
+  .sym-n { color: var(--border2); }
+  .sym-l { color: var(--accent4); }
+  .acct-perm strong { color: var(--text); }
+
+  /* ── LOGIN OPTION CARDS ── */
+  .login-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; }
+  .login-card h4 { font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .login-card p { font-family: var(--sans); font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 0; }
+  .login-card.hello { border-top: 3px solid var(--accent2); }
+  .login-card.biometric { border-top: 3px solid var(--accent3); }
+  .login-card.standard { border-top: 3px solid var(--border2); }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  .path-bar { font-family: var(--mono); font-size: 11.5px; background: var(--accent2-light); border: 1px solid #2c3e6b22; color: var(--accent2); padding: 5px 12px; border-radius: 4px; margin: 8px 0 16px; display: inline-block; }
+
+  /* ── AD SECTION ── */
+  .ad-flow { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+  .ad-tier { display: grid; grid-template-columns: 100px 1fr; gap: 0; }
+  .ad-tier-label { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 10px 12px; text-align: right; border-right: 2px solid var(--border2); display: flex; align-items: center; justify-content: flex-end; }
+  .ad-tier-content { padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; color: var(--muted); line-height: 1.5; }
+  .ad-tier-content strong { color: var(--text); }
+  .ad-tier:last-child .ad-tier-content { border-bottom: none; }
+
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 160px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .acct-grid, .login-grid { grid-template-columns: 1fr; }
+    .def-item, .sec-row, .ad-tier { grid-template-columns: 1fr; }
+    .sec-label, .ad-tier-label { border-right: none; border-bottom: 1px solid var(--border); text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>2.2</strong> Given a Scenario, Configure and Apply Basic
+Microsoft Windows OS Security Settings</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./2_1-Security-Measures.html">2.1</a>
+    <a class="nav-next" href="./2_3-Wireless-Security-Protocols.html">2.3</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>2.2</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 2 — Security
+  </div>
+  <h1 class="book-title">Given a Scenario, Configure and Apply Basic<br>Microsoft Windows OS Security Settings</h1>
+  <div class="book-subtitle">
+    <span>Objective 2.2</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Scenario</span>
+    <span>12 topic areas</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW                                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>Objective 2.2 is the most hands-on security objective on the Core 2 exam. Where 2.1 asked you to <em>summarize</em> what security controls are, 2.2 asks you to <em>configure</em> them in real Windows environments. Every topic here maps to specific settings menus, control panel applets, command-line tools, or management consoles that a technician uses daily.</p>
+
+<p>The objective covers Windows built-in security tools (Defender Antivirus, Firewall, BitLocker, EFS), account management (local vs. Microsoft accounts, user types, UAC), login options (Windows Hello, PIN, biometric), file system security (NTFS permissions, share permissions, inheritance), and Active Directory administration for domain environments. Scenarios on the exam will describe a specific security problem and ask which setting to configure or which tool to use.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Where to Find These Settings</p>
+  <p>Most settings in this objective live in three places: <strong>Windows Security</strong> app (Defender, Firewall, Device Security) — accessible from the system tray shield icon or Settings → Privacy &amp; Security → Windows Security. <strong>Control Panel</strong> — still hosts User Accounts, BitLocker, Credential Manager, and more. <strong>Computer Management</strong> (<code>compmgmt.msc</code>) — contains Local Users and Groups, Disk Management, Event Viewer, and other MMC snap-ins. Active Directory management is performed from Domain Controller tools (ADUC — Active Directory Users and Computers).</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1: DEFENDER ANTIVIRUS            -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Windows Defender Antivirus</h2>
+
+<p><span class="key-term">Windows Defender Antivirus</span> is Microsoft's built-in endpoint protection platform, included at no additional cost with all editions of Windows 10 and Windows 11. It provides real-time protection against viruses, malware, ransomware, spyware, and other threats. In managed enterprise environments, Defender integrates with Microsoft Defender for Endpoint for centralized management and advanced threat detection.</p>
+
+<div class="path-bar">Windows Security → Virus &amp; threat protection</div>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Defender Antivirus — Configuration</span>
+    <span class="sec-panel-badge badge-path">Windows Security App</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Activate / Deactivate</div>
+    <div class="sec-desc"><strong>Windows Security → Virus &amp; threat protection → Manage settings → Real-time protection toggle.</strong> Real-time protection is on by default and monitors files as they are accessed. Turning it off leaves the machine unprotected against new threats. Windows automatically re-enables real-time protection after a short period if it is turned off manually — this is a safety mechanism.<br><br>Defender automatically deactivates real-time scanning when a <strong>third-party antivirus</strong> product is installed and registered with Windows Security Center, deferring to that product. If the third-party product is removed or expires, Defender reactivates automatically. Never run two competing real-time antivirus engines simultaneously — they will conflict and degrade system performance.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Update Definitions</div>
+    <div class="sec-desc"><strong>Virus &amp; threat protection → Virus &amp; threat protection updates → Check for updates.</strong> Defender's detection capability depends on its <span class="key-term">definition files</span> (also called signatures) — a database of known malware characteristics that Defender uses to identify threats. Definitions are typically updated multiple times per day via Windows Update.<br><br><strong>Why definitions must be current:</strong> Defender can only detect threats it has a signature for. New malware released after a definition update will not be detected until a new signature is published and downloaded. A machine with definitions that are days or weeks old is significantly less protected than one with current definitions. In environments with restricted internet access, WSUS (Windows Server Update Services) or SCCM can distribute definition updates internally.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Scan Types</div>
+    <div class="sec-desc"><strong>Quick scan</strong> — scans locations where malware most commonly hides: startup items, running processes, system folders. Fast (minutes). <strong>Full scan</strong> — scans every file on every drive. Thorough but slow (hours on large drives). <strong>Custom scan</strong> — scan a specific folder or drive. <strong>Microsoft Defender Offline scan</strong> — reboots the machine and scans before Windows loads, catching rootkits and boot-sector malware that hide from standard OS-level scans.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Exclusions</div>
+    <div class="sec-desc"><strong>Virus &amp; threat protection settings → Add or remove exclusions.</strong> Files, folders, file types, or processes can be excluded from scanning. Used when Defender generates a false positive on a legitimate business application. Exclusions reduce protection — apply them narrowly and document them. A common attack technique is to place malware in an excluded folder.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Quarantine &amp; History</div>
+    <div class="sec-desc"><strong>Protection history</strong> shows all past detections and actions taken. <strong>Quarantined</strong> threats have been isolated — their files are moved to a protected location and prevented from executing. A quarantined threat is not removed; it can be restored if incorrectly flagged. <strong>Allowed threats</strong> are items the user has explicitly allowed despite Defender's objection — review this list during incident response.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Defender and Third-Party AV</p>
+  <p>When a third-party antivirus is installed and active, Defender's real-time protection automatically deactivates. If the third-party AV expires or is uninstalled, Defender reactivates. A machine with <em>no active</em> real-time protection (third-party expired and Defender somehow disabled) shows a red alert in Windows Security. The fix is to either renew the third-party AV or re-enable Defender's real-time protection.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2: WINDOWS FIREWALL              -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Windows Defender Firewall</h2>
+
+<p>The <span class="key-term">Windows Defender Firewall</span> is a host-based, stateful packet filtering firewall that controls inbound and outbound network traffic to and from the local machine. Unlike a network perimeter firewall that protects the entire network, the Windows Firewall protects the individual endpoint — making it critical for laptops used outside the corporate network (hotels, coffee shops, airports) where no perimeter protection exists.</p>
+
+<div class="path-bar">Windows Security → Firewall &amp; network protection &nbsp;&nbsp;|&nbsp;&nbsp; Control Panel → Windows Defender Firewall &nbsp;&nbsp;|&nbsp;&nbsp; wf.msc (Advanced)</div>
+
+<h3 class="section">Network Profiles</h3>
+
+<p>Windows Firewall maintains <strong>three separate network profiles</strong>, each with independent rule sets. When a network connection is established, Windows assigns it to one of these profiles, and the appropriate rule set is applied automatically.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Firewall Network Profiles</span>
+    <span class="sec-panel-badge badge-path">wf.msc</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Domain Profile</div>
+    <div class="sec-desc">Applied when the computer is connected to a network where it can authenticate to a domain controller. Typically the most permissive profile — corporate IT manages the rules via Group Policy and the domain environment is considered relatively trusted. Used on the office LAN.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Private Profile</div>
+    <div class="sec-desc">Applied to networks the user has designated as private — typically a home network or a trusted small office network. More permissive than public, allows local network discovery, file and printer sharing. The user explicitly designates a network as Private when connecting.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Public Profile</div>
+    <div class="sec-desc">Applied to all other networks by default — hotel Wi-Fi, airport hotspots, coffee shop networks. The <strong>most restrictive</strong> profile. Disables network discovery and file sharing. Drops unsolicited inbound connections. This is the correct profile for any untrusted network. If a user sets a public Wi-Fi to "Private," they expose their machine to other devices on that public network.</div>
+  </div>
+</div>
+
+<h3 class="section">Activate and Deactivate</h3>
+
+<p>The Firewall can be turned on or off per profile independently. <strong>Windows Security → Firewall &amp; network protection → select a network type → toggle Microsoft Defender Firewall.</strong> Turning off the Firewall for any profile leaves the machine unprotected from unsolicited inbound connections on that network type. The Firewall should virtually never be turned off as a troubleshooting step — instead, identify the specific application or port causing the issue and create a targeted rule.</p>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Firewall Off Is Not a Troubleshooting Solution</p>
+  <p>When a user reports that an application "doesn't work," disabling the firewall entirely to test connectivity is a poor practice that leaves the machine exposed. The correct approach is to identify the port or application and create a specific allow rule. If disabling the Firewall does fix the issue, that confirms the Firewall is blocking something — the next step is to identify and allow the specific traffic, then re-enable the Firewall.</p>
+</div>
+
+<h3 class="section">Port Security</h3>
+
+<p>Port-based rules in the Windows Firewall control which TCP and UDP ports are allowed to receive inbound connections or make outbound connections. The <span class="key-term">Windows Defender Firewall with Advanced Security</span> (<code>wf.msc</code>) provides the full rule management interface.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Port and Rule Management</span>
+    <span class="sec-panel-badge badge-path">wf.msc → Inbound/Outbound Rules</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Inbound rules</div>
+    <div class="sec-desc">Control traffic <strong>arriving at</strong> this machine. By default, Windows Firewall blocks all unsolicited inbound connections. Creating an inbound rule for port 3389 (TCP) allows Remote Desktop connections to this machine. Inbound rules are the primary security concern — they control what can reach this machine from the network.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Outbound rules</div>
+    <div class="sec-desc">Control traffic <strong>leaving</strong> this machine. By default, all outbound connections are allowed. Outbound rules are used in higher-security scenarios to restrict which applications or destinations this machine can communicate with — for example, blocking a non-approved application from reaching the internet.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Creating a port rule</div>
+    <div class="sec-desc"><strong>wf.msc → Inbound Rules → New Rule → Port → TCP or UDP → Specific local ports → enter port number(s) → Allow the connection → select profiles → name the rule.</strong> Multiple ports can be listed comma-separated (80, 443) or as a range (8080-8090). Always restrict the rule to the minimum necessary profiles (e.g., Domain only, not Public).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Common ports to know</div>
+    <div class="sec-desc">TCP 80 = HTTP, TCP 443 = HTTPS, TCP 3389 = RDP, TCP 22 = SSH, TCP/UDP 53 = DNS, UDP 67/68 = DHCP, TCP 25 = SMTP, TCP 143 = IMAP, TCP 110 = POP3, TCP 445 = SMB file sharing, TCP 3306 = MySQL, TCP 1433 = MSSQL.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Rule precedence</div>
+    <div class="sec-desc">Block rules take precedence over Allow rules. If a block rule and an allow rule both match the same traffic, the block rule wins. Connection security rules (IPsec) are evaluated before standard inbound/outbound rules.</div>
+  </div>
+</div>
+
+<h3 class="section">Application Security</h3>
+
+<p>Application-based rules allow or block specific programs from communicating through the Firewall, regardless of port. When an application attempts to listen for inbound connections for the first time, Windows displays a pop-up asking whether to allow it on Private and/or Public networks. This creates an application-based allow rule in the Firewall.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Application Rules</span>
+    <span class="sec-panel-badge badge-path">wf.msc or Control Panel Firewall</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Allow an app through</div>
+    <div class="sec-desc"><strong>Control Panel → Windows Defender Firewall → Allow an app or feature through Windows Defender Firewall.</strong> This simpler interface lists all apps with checkboxes for Private and Public profiles. Checking both boxes creates inbound allow rules for that application on both profiles. This is the appropriate interface for non-technical users managing app exceptions.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Application rule in wf.msc</div>
+    <div class="sec-desc"><strong>wf.msc → New Rule → Program → browse to executable path.</strong> More granular — can specify direction (inbound/outbound), action (allow/block), profiles, scope (restrict to specific remote IP addresses), and protocol. Best for IT-managed rules. Example: allow only the corporate VPN client to make outbound connections to a specific server IP on specific ports.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Application control vs. port control</div>
+    <div class="sec-desc">Application rules are generally <strong>more secure</strong> than port rules because they restrict which specific program can use a port. A port rule for TCP 8080 allows <em>anything</em> to connect on that port. An application rule for a specific executable allows only that program. Where possible, create application rules rather than broad port rules.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3: USERS AND GROUPS              -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Users and Groups</h2>
+
+<h3 class="section">Local vs. Microsoft Account</h3>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Local Account</span>
+    <span>Stored in the local Security Account Manager (SAM) database on the machine. Credentials exist only on this device. No cloud sync, no Microsoft services integration, no cross-device settings. When the machine is not domain-joined, local accounts are the only option for sign-in without internet access. Created during Windows setup by choosing "Offline account" (increasingly hidden in Windows 11 Home, which pushes Microsoft account signup).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Microsoft Account</span>
+    <span>An email-based account (any @outlook.com, @hotmail.com, @live.com, or any email linked to a Microsoft account) that authenticates against Microsoft's cloud identity service. Credentials sync across devices; settings, themes, browser favorites, and OneDrive sync automatically. Purchasing from the Microsoft Store requires a Microsoft account. On a domain-joined machine, Microsoft accounts are not used for domain authentication — the domain account is used instead.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Key Differences</span>
+    <span>Microsoft accounts enable BitLocker Device Encryption recovery key backup to OneDrive (on Home editions), cross-device settings sync, and seamless integration with Microsoft 365. Local accounts provide more privacy (no data transmitted to Microsoft) and work without internet access. In enterprise environments, <strong>domain accounts</strong> managed by Active Directory replace both for primary authentication.</span>
+  </div>
+</div>
+
+<h3 class="section">Account Types</h3>
+
+<div class="acct-grid">
+  <div class="acct-card">
+    <div class="acct-card-head admin">Administrator</div>
+    <div class="acct-card-body">
+      <div class="acct-perm"><span class="sym sym-y">✓</span><span><strong>Full system control</strong> — install software, change system settings, manage all users</span></div>
+      <div class="acct-perm"><span class="sym sym-y">✓</span><span>Modify security settings, install drivers</span></div>
+      <div class="acct-perm"><span class="sym sym-y">✓</span><span>Access all files on the system regardless of NTFS permissions</span></div>
+      <div class="acct-perm"><span class="sym sym-y">✓</span><span>Create and manage other user accounts</span></div>
+      <div class="acct-perm"><span class="sym sym-n">—</span><span>Should not be used for daily tasks — privilege escalation risk</span></div>
+      <p style="margin-top:8px; font-size:12.5px; color:var(--muted);">The built-in Administrator account is disabled by default. Members of the Administrators group have equivalent rights. UAC prompts for consent/credentials when elevation is required.</p>
+    </div>
+  </div>
+
+  <div class="acct-card">
+    <div class="acct-card-head standard">Standard Account</div>
+    <div class="acct-card-body">
+      <div class="acct-perm"><span class="sym sym-y">✓</span><span>Run applications, use the internet, print documents</span></div>
+      <div class="acct-perm"><span class="sym sym-y">✓</span><span>Change own password and personal settings</span></div>
+      <div class="acct-perm"><span class="sym sym-y">✓</span><span>Access own files; read files explicitly shared with them</span></div>
+      <div class="acct-perm"><span class="sym sym-n">✗</span><span>Cannot install software to Program Files or modify system settings</span></div>
+      <div class="acct-perm"><span class="sym sym-n">✗</span><span>Cannot change security settings or manage other users</span></div>
+      <p style="margin-top:8px; font-size:12.5px; color:var(--muted);"><strong>Recommended for all day-to-day use</strong> — even for IT staff. Limits damage from malware and user error. UAC prompts for admin credentials when elevation is needed.</p>
+    </div>
+  </div>
+
+  <div class="acct-card">
+    <div class="acct-card-head guest">Guest User</div>
+    <div class="acct-card-body">
+      <div class="acct-perm"><span class="sym sym-l">~</span><span>Minimal temporary access — run applications, browse internet</span></div>
+      <div class="acct-perm"><span class="sym sym-n">✗</span><span>Cannot install software or change system settings</span></div>
+      <div class="acct-perm"><span class="sym sym-n">✗</span><span>Cannot access other users' files</span></div>
+      <div class="acct-perm"><span class="sym sym-n">✗</span><span>Profile is discarded at logoff — no persistence</span></div>
+      <div class="acct-perm"><span class="sym sym-n">✗</span><span><strong>Disabled by default</strong> in Windows 10/11 — and should remain disabled</span></div>
+      <p style="margin-top:8px; font-size:12.5px; color:var(--muted);">Security best practice: keep the Guest account disabled. An enabled Guest account creates an unauthenticated entry point. Use a Standard account for temporary users instead.</p>
+    </div>
+  </div>
+
+  <div class="acct-card">
+    <div class="acct-card-head power">Power User</div>
+    <div class="acct-card-body">
+      <div class="acct-perm"><span class="sym sym-l">~</span><span>Legacy group — had elevated privileges in Windows XP/Vista era</span></div>
+      <div class="acct-perm"><span class="sym sym-l">~</span><span>In Windows 10/11, Power Users group has <strong>no special privileges</strong> above Standard Users</span></div>
+      <div class="acct-perm"><span class="sym sym-n">—</span><span>Retained for backward compatibility only</span></div>
+      <div class="acct-perm"><span class="sym sym-n">—</span><span>Not a security boundary in modern Windows</span></div>
+      <p style="margin-top:8px; font-size:12.5px; color:var(--muted);">The Power Users group exists for legacy application compatibility. Do not use it as a middle ground between Standard and Administrator — it provides no meaningful additional privileges in modern Windows.</p>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Account Types</p>
+  <p>Know three things: <strong>(1)</strong> Standard accounts are the correct choice for everyday use — even for IT staff. <strong>(2)</strong> The Guest account is disabled by default and should remain disabled. <strong>(3)</strong> The Power Users group is a legacy artifact with no special privileges in modern Windows — it does not represent a useful middle tier between Standard and Administrator.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4: LOGIN OPTIONS                 -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Login OS Options</h2>
+
+<p>Windows 10 and 11 support multiple authentication methods for signing in to the OS. These are configured in <strong>Settings → Accounts → Sign-in options</strong>. Different methods offer different trade-offs between security strength, convenience, and hardware requirements.</p>
+
+<div class="path-bar">Settings → Accounts → Sign-in options</div>
+
+<div class="login-grid">
+
+  <div class="login-card standard">
+    <h4>Username &amp; Password</h4>
+    <p>The traditional method. A text-based password is entered at the login screen. Supports local accounts, Microsoft accounts, and domain accounts. Password complexity requirements are set via Group Policy or account settings. Weakest in terms of phishing and credential theft — the password can be stolen, shared, or guessed.</p>
+  </div>
+
+  <div class="login-card standard">
+    <h4>PIN</h4>
+    <p>A numeric (or alphanumeric) code specific to this device. Unlike a password, the PIN is <strong>device-bound</strong> — it only works on the machine it was set on. Even if a PIN is stolen, it cannot be used to log in from another device or access the Microsoft account online. Backed by the TPM chip for hardware-protected storage. Simpler to type, especially on touchscreens. Windows Hello PIN is not stored in the cloud.</p>
+  </div>
+
+  <div class="login-card biometric">
+    <h4>Fingerprint</h4>
+    <p>Uses an enrolled fingerprint via a compatible fingerprint scanner. Part of the Windows Hello framework. Fast, convenient, and hardware-backed by the TPM. Requires compatible fingerprint hardware. The fingerprint template is stored locally on the device (never leaves the device) and is processed by Windows Hello infrastructure, not transmitted to Microsoft.</p>
+  </div>
+
+  <div class="login-card biometric">
+    <h4>Facial Recognition</h4>
+    <p>Uses an infrared camera to perform 3D facial recognition. Part of Windows Hello. Requires compatible IR camera hardware (e.g., Intel RealSense, Surface cameras). Uses infrared and 3D depth sensing to prevent spoofing with a 2D photograph. Among the most convenient login methods — the user simply looks at the camera. Template stored locally, never uploaded.</p>
+  </div>
+
+  <div class="login-card hello">
+    <h4>Windows Hello</h4>
+    <p>Microsoft's framework for passwordless authentication on Windows. Encompasses PIN, fingerprint, and facial recognition. Credentials are stored in the TPM and never leave the device. FIDO2-compliant. When configured with a Microsoft account or Azure AD, Windows Hello acts as a strong second factor that replaces passwords entirely for local and cloud resource access.</p>
+  </div>
+
+  <div class="login-card hello">
+    <h4>SSO / Passwordless</h4>
+    <p>In domain and Azure AD environments, a successful Windows login (especially with Windows Hello) establishes an SSO session that grants access to connected resources without additional prompts. Passwordless authentication using Windows Hello for Business replaces the password entirely with asymmetric cryptography, achieving phishing-resistant authentication with no password to steal.</p>
+  </div>
+
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Windows Hello PIN Is Not a Simple Password</p>
+  <p>A common misconception: a Windows Hello PIN feels like a simple 4-digit code and therefore seems less secure than a long password. In fact, a Windows Hello PIN is <strong>more secure</strong> for local login because it is device-bound and hardware-backed by the TPM. A stolen password works anywhere on any device; a stolen PIN only works on the specific physical machine with the specific TPM it was configured on — and requires physical access to that machine. The TPM also enforces lockout after failed attempts, preventing brute-force attacks.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5: NTFS VS. SHARE PERMISSIONS    -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>NTFS vs. Share Permissions</h2>
+
+<p>Windows uses two distinct permission systems that interact when a resource is accessed over the network. Understanding how they work individually and together is critical for both security configuration and troubleshooting access problems.</p>
+
+<h3 class="section">NTFS Permissions</h3>
+
+<p><span class="key-term">NTFS permissions</span> are applied to files and folders stored on NTFS-formatted volumes and control access at the file system level. They apply <strong>both locally</strong> (when a user is logged in directly) and <strong>remotely</strong> (when accessing over the network). NTFS permissions are the primary and most granular access control mechanism for files in Windows.</p>
+
+<table class="perm-table">
+  <thead>
+    <tr>
+      <th>NTFS Permission</th>
+      <th>Read</th>
+      <th>Write</th>
+      <th>Execute</th>
+      <th>Delete</th>
+      <th>Change Permissions</th>
+      <th>Take Ownership</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Full Control</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+    <tr><td>Modify</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
+    <tr><td>Read &amp; Execute</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
+    <tr><td>List Folder Contents</td><td><span class="ltd">Dir</span></td><td><span class="no">✗</span></td><td><span class="ltd">Dir</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
+    <tr><td>Read</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
+    <tr><td>Write</td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
+  </tbody>
+</table>
+
+<h3 class="section">Share Permissions</h3>
+
+<p><span class="key-term">Share permissions</span> control access to a folder that has been shared over the network via Windows file sharing (SMB). They apply <strong>only to network access</strong> — when a user accesses the share over the network via a UNC path (<code>\\server\share</code>). Share permissions do not apply to local access. They are configured via: right-click folder → Properties → Sharing tab → Advanced Sharing → Permissions.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Share Permission Levels</span>
+    <span class="sec-panel-badge badge-path">Folder → Sharing → Advanced Sharing → Permissions</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Full Control</div>
+    <div class="sec-desc">Read, Write, and the ability to <strong>change permissions</strong> on the share itself. Equivalent to full control over the shared resource via the network. Rarely assigned to non-administrator users.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Change</div>
+    <div class="sec-desc">Read and write access — users can read, create, modify, and delete files in the share. Cannot change share permissions. This is the typical permission for users who need to work with files in a shared folder.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Read</div>
+    <div class="sec-desc">View files and subfolders, read file contents, run executable files. Cannot make any changes. Default permission when a folder is shared — the "Everyone" group gets Read by default on new shares.</div>
+  </div>
+</div>
+
+<h3 class="section">The Combined Effect — Most Restrictive Wins</h3>
+
+<p>When a user accesses a shared folder over the network, <strong>both</strong> NTFS permissions and Share permissions are evaluated. The effective access is the <strong>most restrictive</strong> (intersection) of the two permission sets. This is the most important rule for troubleshooting network file access.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Combined Permission Examples</span>
+    <span class="sec-panel-badge badge-warn">Most Restrictive Wins</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Example 1</div>
+    <div class="sec-desc">Share permission: <strong>Full Control</strong> / NTFS permission: <strong>Read</strong> → Effective network access = <strong>Read</strong>. NTFS is more restrictive, so it wins.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Example 2</div>
+    <div class="sec-desc">Share permission: <strong>Read</strong> / NTFS permission: <strong>Full Control</strong> → Effective network access = <strong>Read</strong>. Share is more restrictive, so it wins.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Example 3</div>
+    <div class="sec-desc">Share permission: <strong>Change</strong> / NTFS permission: <strong>Modify</strong> → Effective network access = <strong>Change/Modify</strong> (these are roughly equivalent — Read+Write+Delete, not Full Control).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Best Practice</div>
+    <div class="sec-desc">Set Share permissions to <strong>Everyone: Full Control</strong> and manage all actual access control through <strong>NTFS permissions only</strong>. This simplifies administration — you only manage one permission system rather than two. The broad share permission will never be the limiting factor because NTFS is more granular and more restrictive where it needs to be.</div>
+  </div>
+</div>
+
+<h3 class="section">File and Folder Attributes</h3>
+
+<p>File and folder <span class="key-term">attributes</span> are metadata flags that affect how Windows handles a file or folder. They are distinct from permissions — attributes do not control who can access a file, but rather how the file behaves. Attributes are visible and configurable via File Explorer (Properties dialog) and the <code>attrib</code> command.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Read-only (R)</span>
+    <span>The file can be read but not modified or deleted through normal means. Setting a document as read-only prevents accidental editing. Note: NTFS permissions are a stronger enforcement mechanism than the read-only attribute — an admin with Modify permission can override the read-only attribute.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Hidden (H)</span>
+    <span>The file does not appear in File Explorer or <code>dir</code> output by default. Not a security control — any user with access to the folder can reveal hidden files via View → Show hidden items (File Explorer) or <code>dir /a</code> (command line). Hides files from casual view, not from determined access.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">System (S)</span>
+    <span>Marks the file as a critical operating system file. System files are hidden and protected from modification by default. Removing the system attribute from a critical OS file could allow it to be accidentally deleted.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Archive (A)</span>
+    <span>Indicates the file has been modified since the last backup. Backup software checks the archive attribute to determine which files have changed and need to be backed up. After a backup, backup software clears the archive bit. When the file is modified again, Windows sets the archive bit again.</span>
+  </div>
+</div>
+
+<h3 class="section">Inheritance</h3>
+
+<p>NTFS permission <span class="key-term">inheritance</span> is the mechanism by which permissions set on a parent folder automatically flow down to all child files and subfolders within it. This simplifies administration — instead of setting permissions on every individual file, set them once on the parent folder and they propagate automatically.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Permission Inheritance</span>
+    <span class="sec-panel-badge badge-tip">Propagates Down</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">How it works</div>
+    <div class="sec-desc">When you grant a user Read access to <code>C:\Reports</code>, all files and subfolders within Reports automatically inherit that Read permission. New files created inside Reports also inherit the permissions automatically. Inherited permissions appear greyed out in the permissions dialog — they cannot be modified directly on the child object.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Disabling inheritance</div>
+    <div class="sec-desc">Right-click folder → Properties → Security tab → Advanced → Disable inheritance. You are then prompted to either <strong>convert inherited permissions to explicit permissions</strong> (copy the current inherited permissions as explicit, then you can modify them) or <strong>remove all inherited permissions</strong> (start with a blank permission list). Disabling inheritance is required when a subfolder needs different access than its parent.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Explicit vs. Inherited</div>
+    <div class="sec-desc"><strong>Explicit permissions</strong> are set directly on an object and take precedence over inherited permissions. An explicit Deny always wins over an inherited Allow. An explicit Allow can override an inherited Deny. When troubleshooting unexpected access, always check whether a permission is inherited (from a parent) or explicit (set directly on the object).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Copying vs. Moving files</div>
+    <div class="sec-desc">When a file is <strong>copied</strong> to a new location, it <strong>inherits the permissions of the destination folder</strong>. When a file is <strong>moved within the same volume</strong>, it <strong>retains its original permissions</strong>. When moved to a <strong>different volume</strong>, it inherits the destination's permissions (same as a copy). This is a frequently tested behavior.</span></div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Copy vs. Move Permissions</p>
+  <p><strong>Copy</strong> anywhere = inherits destination permissions. <strong>Move on same volume</strong> = keeps original permissions. <strong>Move to different volume</strong> = inherits destination permissions (because a cross-volume move is technically a copy + delete). This distinction is tested in scenarios about file access changing unexpectedly after moving files.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 6: RUN AS / UAC                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 6</span>Run as Administrator vs. Standard User</h2>
+
+<p>Windows implements <span class="key-term">privilege separation</span> — the concept that standard users run with limited rights, and elevated operations require explicit administrator-level privileges. Two mechanisms implement this separation: <strong>Run as administrator</strong> and <strong>User Account Control (UAC)</strong>.</p>
+
+<h3 class="section">Run as Administrator</h3>
+
+<p>Right-clicking an executable and selecting <strong>Run as administrator</strong> launches the program with a full administrator token. This is necessary for programs that modify system settings, install software, write to protected directories (<code>C:\Windows</code>, <code>C:\Program Files</code>), or modify the Registry at the HKLM level.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Standard user launching</span>
+    <span>When a standard user runs an application requiring elevation, Windows prompts for administrator credentials (the username and password of an admin account on this machine). This is the <strong>over-the-shoulder (OTS) credential prompt</strong> — an admin provides their credentials while sitting with the user, without giving the user the password.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Admin user launching</span>
+    <span>When an administrator user runs an application requiring elevation, UAC prompts for <em>consent</em> — a simple Yes/No dialog confirming intent to elevate. The admin does not re-enter their password (unless UAC is set to the highest level). This prompt exists to prevent silent, automatic privilege escalation by malware.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Command line elevation</span>
+    <span>Right-click Command Prompt or PowerShell → Run as administrator to launch an elevated shell. All commands run in that session execute with admin privileges. The title bar shows "Administrator:" prefix. Many diagnostic and repair commands (sfc, chkdsk /f, net user /add) require an elevated prompt.</span>
+  </div>
+</div>
+
+<h3 class="section">User Account Control (UAC)</h3>
+
+<p><span class="key-term">User Account Control (UAC)</span> is a Windows security feature that limits the privileges of running applications, even when the logged-in user is an Administrator. When an application attempts to perform an operation that requires elevated privileges, UAC intercepts the request and prompts for explicit authorization — preventing programs from silently acquiring administrator rights without user knowledge or consent.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Why UAC Exists</p>
+  <p>Before UAC (Windows XP era), most users ran as Administrator all the time. Any malware that ran under that user context automatically had full administrator rights — no prompts, no barriers. UAC was introduced in Vista to break this model: even administrator users run with a <em>split token</em> (a limited token for daily tasks and an elevated token that must be explicitly requested). This means malware that runs under a standard admin session still starts with limited rights and must trigger a UAC prompt to escalate — giving the user a chance to notice.</p>
+</div>
+
+<div class="uac-levels">
+  <div style="font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border);">UAC Notification Levels (High → Low)</div>
+  <div class="uac-row">
+    <div><div class="uac-dot" style="background: #c0392b;"></div></div>
+    <div class="uac-label">Always notify</div>
+    <div class="uac-desc"><strong>Most secure.</strong> Prompts every time any program (including Windows itself) attempts to make changes to system settings. Secure desktop dims the screen and prevents other interactions until the prompt is addressed. Recommended for high-security environments.</div>
+  </div>
+  <div class="uac-row">
+    <div><div class="uac-dot" style="background: #b5590a;"></div></div>
+    <div class="uac-label">Notify (changes to apps)</div>
+    <div class="uac-desc"><strong>Default setting.</strong> Prompts when apps attempt to make changes, but not when the user makes Windows setting changes. Uses secure desktop. Balances security with usability. The standard configuration for most environments.</div>
+  </div>
+  <div class="uac-row">
+    <div><div class="uac-dot" style="background: #d4ac0a;"></div></div>
+    <div class="uac-label">Notify (no secure desktop)</div>
+    <div class="uac-desc">Same as default but without the secure desktop (screen does not dim). The UAC prompt can be interacted with by other running programs — a security concern. Not recommended in general use.</div>
+  </div>
+  <div class="uac-row">
+    <div><div class="uac-dot" style="background: #888;"></div></div>
+    <div class="uac-label">Never notify</div>
+    <div class="uac-desc"><strong>Least secure. Effectively disables UAC.</strong> No prompts for any elevation. Administrator users always run with full privileges. Equivalent to Windows XP behavior. Not recommended for any production environment. Only acceptable in tightly controlled scenarios with other compensating controls.</div>
+  </div>
+</div>
+
+<div class="path-bar">Control Panel → User Accounts → Change User Account Control settings &nbsp;&nbsp;|&nbsp;&nbsp; secpol.msc → Local Policies → Security Options (UAC policies)</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 7: ENCRYPTION                    -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 7</span>Encryption — BitLocker, BitLocker-To-Go, and EFS</h2>
+
+<p>Windows provides three distinct encryption technologies, each serving a different scope and purpose. Understanding the difference between them, their hardware requirements, and their edition requirements is essential for this objective.</p>
+
+<h3 class="section">BitLocker Drive Encryption</h3>
+
+<p><span class="key-term">BitLocker</span> encrypts entire <strong>volumes</strong> (partitions) using AES encryption (128-bit or 256-bit). It protects data at rest — if a drive is removed from the machine and connected to another computer, the data is unreadable without the recovery key. The encryption is transparent to the user when the machine is running normally.</p>
+
+<div class="path-bar">Control Panel → System and Security → BitLocker Drive Encryption &nbsp;&nbsp;|&nbsp;&nbsp; Manage-bde command-line tool</div>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">BitLocker Configuration</span>
+    <span class="sec-panel-badge badge-warn">Pro / Enterprise Only</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Edition requirement</div>
+    <div class="sec-desc">BitLocker is available only on <strong>Windows 10/11 Pro, Pro for Workstations, and Enterprise</strong>. Home editions have "Device Encryption" — a simplified, automatically enabled subset of BitLocker with fewer management options and no management interface. Device Encryption requires a Microsoft account for recovery key backup. Full BitLocker is not available on Home.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">TPM requirement</div>
+    <div class="sec-desc">BitLocker's default configuration requires a <strong>TPM 1.2 or later</strong> to store the encryption key. The TPM seals the key to the system's hardware state — if critical hardware changes, the TPM refuses to release the key and BitLocker enters recovery mode. BitLocker can be configured to run without a TPM using a <strong>startup key on a USB drive</strong> (requires Group Policy change: <em>Require additional authentication at startup</em>) but this reduces convenience and is non-standard.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Authentication modes</div>
+    <div class="sec-desc"><strong>TPM only</strong> (transparent — no user interaction at boot). <strong>TPM + PIN</strong> (requires PIN entry before Windows loads — strong, recommended for laptops). <strong>TPM + USB key</strong> (requires USB drive inserted at boot). <strong>USB key only</strong> (no TPM; requires USB drive). <strong>Password</strong> (data-only volumes). TPM + PIN is the recommended mode for maximum security on laptop systems.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Recovery key</div>
+    <div class="sec-desc">A 48-digit numerical recovery key is generated when BitLocker is enabled. This key can unlock the drive if the normal unlock method fails (lost PIN, hardware change, TPM malfunction). <strong>Store the recovery key securely</strong> — options include: save to Microsoft account (Home Device Encryption), save to Active Directory/Entra ID (enterprise — automatically stored when domain-joined), save to a file (USB, network location), or print. If the recovery key is lost and normal access fails, data is permanently inaccessible.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Enabling BitLocker</div>
+    <div class="sec-desc">Control Panel → BitLocker Drive Encryption → Turn on BitLocker for the desired volume. The wizard walks through TPM check, recovery key storage, encryption scope (used space only vs. full drive — used space only is faster for new drives; full drive is better for drives with existing data that may contain recoverable deleted data), and encryption mode (XTS-AES for fixed drives, AES-CBC for removable drives for compatibility).</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — BitLocker Recovery</p>
+  <p>BitLocker recovery mode triggers when: the PIN is entered incorrectly too many times, a hardware component changes (new motherboard, new TPM), the drive is moved to a different computer, or BIOS/UEFI settings change (Secure Boot toggled, boot order changed). The only way out is to enter the 48-digit recovery key. This is why recovery key management is critical — always ensure the key is stored in a retrievable location before enabling BitLocker.</p>
+</div>
+
+<h3 class="section">BitLocker-To-Go</h3>
+
+<p><span class="key-term">BitLocker-To-Go</span> extends BitLocker encryption to <strong>removable storage devices</strong> — USB flash drives, external hard drives, and SD cards. It protects data on portable media that is easily lost or stolen.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">BitLocker-To-Go</span>
+    <span class="sec-panel-badge badge-warn">Pro / Enterprise Only (to encrypt)</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Encrypting</div>
+    <div class="sec-desc">Connect the removable drive → Control Panel → BitLocker Drive Encryption → Turn on BitLocker for the removable drive. Authentication uses a <strong>password or smart card</strong> (no TPM for removable media). The drive is encrypted with AES and is unreadable without the password or recovery key.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Reading on other machines</div>
+    <div class="sec-desc"><strong>Any Windows machine can read</strong> a BitLocker-To-Go encrypted drive — even Windows Home. When connected, Windows prompts for the password. The user enters the password and the drive mounts transparently. The ability to <em>encrypt</em> a drive requires Pro or Enterprise; the ability to <em>read</em> it does not.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Group Policy enforcement</div>
+    <div class="sec-desc">In enterprise environments, Group Policy can enforce that removable drives must be encrypted with BitLocker-To-Go before files can be written to them (<em>Deny write access to removable drives not protected by BitLocker</em>). This prevents sensitive data from being written to unencrypted USB drives — a DLP-style control enforced at the OS level.</div>
+  </div>
+</div>
+
+<h3 class="section">Encrypting File System (EFS)</h3>
+
+<p>The <span class="key-term">Encrypting File System (EFS)</span> is an NTFS feature that encrypts <strong>individual files and folders</strong> using certificate-based encryption tied to a specific user account. Unlike BitLocker (which encrypts an entire volume), EFS encrypts selectively at the file/folder level and is transparent only to the user whose certificate was used to encrypt the files.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">EFS — Encrypting File System</span>
+    <span class="sec-panel-badge badge-warn">Pro / Enterprise Only</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">How it works</div>
+    <div class="sec-desc">When a user encrypts a file with EFS: a <strong>File Encryption Key (FEK)</strong> is generated and used to encrypt the file content with AES. The FEK is then encrypted with the user's <strong>public key</strong> from their EFS certificate and stored in the file's header. To open the file, the user's <strong>private key</strong> decrypts the FEK, which then decrypts the file. The process is entirely transparent to the encrypting user — they see no prompts when opening EFS-encrypted files. Other users see "Access Denied" when trying to open the file, even administrators (unless they have the recovery agent certificate).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Enabling EFS</div>
+    <div class="sec-desc">Right-click a file or folder → Properties → General tab → Advanced → check <strong>"Encrypt contents to secure data"</strong> → OK → Apply. Windows prompts to encrypt the file only or the file and its parent folder (encrypting the folder is recommended so future files placed there are automatically encrypted). Encrypted files appear in green text in File Explorer by default.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">EFS certificate management</div>
+    <div class="sec-desc">EFS certificates are stored in the user's certificate store (<code>certmgr.msc</code> → Personal → Certificates). If the user's profile is deleted or the EFS certificate is lost, the encrypted files are <strong>permanently inaccessible</strong> — even to administrators — unless a <strong>Data Recovery Agent (DRA)</strong> certificate has been configured via Group Policy. Always back up EFS certificates before deleting user profiles or reformatting machines.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">EFS vs. BitLocker</div>
+    <div class="sec-desc"><strong>EFS</strong>: per-file/folder, user-specific, survives across sessions (encrypted even when logged in on same machine as different user), requires no additional hardware, manageable without admin rights. <strong>BitLocker</strong>: entire volume, transparent to all users of the volume, requires TPM for full protection, protects against physical theft of the drive. They can be used simultaneously — BitLocker encrypts the volume and EFS provides additional per-user file encryption within it.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">EFS Gotcha — Moving Encrypted Files</p>
+  <p>If a user copies an EFS-encrypted file to a FAT32 or exFAT volume (USB drive, for example), the file is automatically decrypted because those file systems do not support EFS. This is a data leakage risk — a user can unknowingly expose encrypted files by copying them to an unencrypted USB drive. BitLocker-To-Go on the USB drive would prevent the data from being readable if the drive is lost, but the file itself would no longer be EFS-encrypted on the USB volume.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 8: ACTIVE DIRECTORY              -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 8</span>Active Directory</h2>
+
+<p><span class="key-term">Active Directory (AD)</span> is Microsoft's directory service that provides centralized identity management, authentication, and policy enforcement for domain-joined Windows machines. In a domain environment, a technician's day-to-day AD tasks are performed using <span class="key-term">Active Directory Users and Computers (ADUC)</span> — the primary management console for managing users, computers, groups, and organizational units.</p>
+
+<div class="path-bar">Active Directory Users and Computers (dsa.msc) — run on Domain Controller or from RSAT tools on a workstation</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">RSAT — Remote Server Administration Tools</p>
+  <p>Active Directory management tools (including ADUC) are not installed on standard Windows workstations. Administrators install <strong>RSAT (Remote Server Administration Tools)</strong> — available as an optional feature in Settings → Apps → Optional features — to manage AD from their workstation without being physically present at a Domain Controller. RSAT includes ADUC, Group Policy Management Console (GPMC), and other management tools.</p>
+</div>
+
+<h3 class="section">Joining a Domain</h3>
+
+<p>A Windows PC must be explicitly joined to an Active Directory domain before it can use domain accounts, receive Group Policy, and access domain resources. Domain join requires administrator credentials (either local admin or domain admin, depending on environment policy) and network connectivity to a Domain Controller.</p>
+
+<div class="process-flow">
+  <div class="flow-title">Joining a Domain — Step by Step</div>
+  <div class="flow-step"><span class="flow-num">01</span><div class="flow-text"><strong>Verify prerequisites:</strong> The machine must have a static IP or reliable DHCP. DNS must be configured to point to the domain's DNS server (which is typically the Domain Controller). If DNS is wrong, domain join will fail with a "domain controller not found" error.</div></div>
+  <div class="flow-step"><span class="flow-num">02</span><div class="flow-text"><strong>Navigate to System Properties:</strong> Settings → System → About → Join a domain (Windows 10/11). Alternatively: Control Panel → System → Change settings → Computer Name tab → Change.</div></div>
+  <div class="flow-step"><span class="flow-num">03</span><div class="flow-text"><strong>Enter the domain name</strong> (e.g., corp.contoso.com). Windows contacts the domain's DNS server to locate a Domain Controller via SRV records.</div></div>
+  <div class="flow-step"><span class="flow-num">04</span><div class="flow-text"><strong>Authenticate with domain credentials.</strong> A domain administrator account (or an account with the "Add workstations to domain" right) must provide credentials. By default, each standard domain user can join up to 10 machines.</div></div>
+  <div class="flow-step"><span class="flow-num">05</span><div class="flow-text"><strong>Restart the machine.</strong> Domain join completes after a reboot. After reboot, users can log in with domain credentials and the machine appears in the default "Computers" container in ADUC.</div></div>
+  <div class="flow-step"><span class="flow-num">06</span><div class="flow-text"><strong>Move the computer account</strong> from the default Computers container to the appropriate Organizational Unit (OU) so that the correct Group Policy Objects are applied to it.</div></div>
+</div>
+
+<h3 class="section">Organizational Units (OUs) and Moving Objects</h3>
+
+<p>An <span class="key-term">Organizational Unit (OU)</span> is a container within Active Directory used to organize objects (users, computers, groups) hierarchically. OUs reflect the organization's structure — by department (Finance, Engineering, HR), by location (NewYork, London), or by function (Servers, Workstations, Laptops). Group Policy Objects are linked to OUs, so an object's OU placement determines which policies it receives.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Managing Objects in ADUC</span>
+    <span class="sec-panel-badge badge-path">ADUC (dsa.msc)</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Moving objects between OUs</div>
+    <div class="sec-desc">Right-click a user, computer, or group in ADUC → <strong>Move</strong> → select the destination OU. The object immediately receives the Group Policy of its new OU at the next policy refresh (or after <code>gpupdate /force</code>). Moving a laptop computer from the "Standard Workstations" OU to the "Executive Laptops" OU instantly changes which Group Policies apply to that machine — for example, more restrictive policies or BitLocker enforcement.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Creating OUs</div>
+    <div class="sec-desc">Right-click the domain or parent OU in ADUC → New → Organizational Unit. Enable "<strong>Protect container from accidental deletion</strong>" — this adds a Deny delete ACE on the OU that prevents accidental removal of an OU with objects in it (a catastrophic error that deletes all objects in the OU). Requires unchecking in Advanced Features → Properties → Object tab to delete a protected OU.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Finding objects</div>
+    <div class="sec-desc">ADUC → right-click domain or OU → Find (Ctrl+F in newer versions). Search by name, username, email, SID, or other attributes. Faster than manually navigating the OU tree in large environments with thousands of objects.</div>
+  </div>
+</div>
+
+<h3 class="section">Assigning Login Scripts</h3>
+
+<p>A <span class="key-term">logon script</span> is a batch file (.bat), VBScript (.vbs), or PowerShell script (.ps1) that runs automatically when a user logs in. It can map network drives, connect to printers, set environment variables, or perform any automated task. Login scripts are assigned per-user in their AD account properties.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Logon Script Assignment</span>
+    <span class="sec-panel-badge badge-path">ADUC → User → Profile tab</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Assigning via ADUC</div>
+    <div class="sec-desc">ADUC → find the user → double-click → <strong>Profile tab</strong> → Logon script field. Enter the script filename (e.g., <code>login.bat</code>). The script must be stored in the <strong>NETLOGON share</strong> on the domain controller (<code>\\domain\NETLOGON</code>, which maps to <code>%SystemRoot%\SYSVOL\sysvol\domain\scripts</code>). Windows automatically looks for the script in NETLOGON, so only the filename is needed — not the full path.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Group Policy scripts</div>
+    <div class="sec-desc">A more flexible alternative: Group Policy → User Configuration → Windows Settings → Scripts → Logon. Scripts assigned here apply to all users in the linked OU, not individual users. Supports PowerShell scripts. Preferred for new deployments over per-user logon scripts in ADUC.</div>
+  </div>
+</div>
+
+<h3 class="section">Assigning Home Folders</h3>
+
+<p>A <span class="key-term">home folder</span> is a personal network share assigned to each user where they store their documents. Centralizing user documents on a file server ensures they are backed up with server backup routines and accessible from any domain-joined machine the user logs into.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Home Folder Configuration</span>
+    <span class="sec-panel-badge badge-path">ADUC → User → Profile tab</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Assigning in ADUC</div>
+    <div class="sec-desc">ADUC → User → Profile tab → Home folder section → select <strong>Connect</strong> → choose a drive letter (commonly H:) → enter the UNC path: <code>\\fileserver\users\%username%</code>. The <code>%username%</code> variable automatically substitutes the user's login name, creating a unique path for each user. When saved, ADUC creates the folder on the server automatically and sets the correct NTFS permissions (the user has Full Control of their folder).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Benefits</div>
+    <div class="sec-desc">User files are stored on the server rather than the local machine. Roaming users log into any workstation and their H: drive is always available. IT can back up all user data from the central file server. Departing user data is preserved on the server even after the workstation is reimaged. Disaster recovery of user data is simplified.</div>
+  </div>
+</div>
+
+<h3 class="section">Applying Group Policy</h3>
+
+<p>Group Policy is the primary mechanism for applying security settings and configuration to domain-joined computers and users at scale. A <span class="key-term">Group Policy Object (GPO)</span> is a collection of settings that is linked to a container in Active Directory (domain, site, or OU). All objects in that container receive the GPO's settings.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Group Policy Application</span>
+    <span class="sec-panel-badge badge-path">Group Policy Management Console (gpmc.msc)</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">LSDOU processing order</div>
+    <div class="sec-desc">GPOs are applied in this order: <strong>L</strong>ocal policy → <strong>S</strong>ite → <strong>D</strong>omain → <strong>OU</strong> (and nested OUs, from parent to child). Later-applied policies override earlier ones for conflicting settings. This means OU-level GPOs generally win over domain-level GPOs for the same setting. Remember: <strong>LSDOU</strong> — "Last applied wins" for non-conflicting settings.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Linking GPOs</div>
+    <div class="sec-desc">gpmc.msc → right-click an OU → Link an Existing GPO (or Create a GPO and link it here). Linking connects the GPO to that container. A single GPO can be linked to multiple OUs. Multiple GPOs can be linked to a single OU — processed by link order (lower number = processed last = wins for conflicts).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Enforced &amp; Block Inheritance</div>
+    <div class="sec-desc"><strong>Enforced</strong> (formerly "No Override"): the GPO's settings cannot be overridden by lower-level GPOs. <strong>Block Inheritance</strong>: set on an OU to prevent higher-level GPOs from applying to it (except Enforced GPOs, which bypass Block Inheritance). Use sparingly — complex inheritance configurations are difficult to troubleshoot.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Loopback processing</div>
+    <div class="sec-desc">Normally, Computer Configuration GPOs apply to the computer and User Configuration GPOs apply to the user (from the user's OU). Loopback processing reverses or merges this — it applies the User Configuration settings from the <em>computer's</em> OU to the user, regardless of which OU the user account lives in. Used for kiosk machines, terminal servers, and lab computers where the machine's purpose defines the user experience regardless of who logs in.</div>
+  </div>
+</div>
+
+<h3 class="section">Security Groups</h3>
+
+<p><span class="key-term">Security groups</span> in Active Directory are containers that collect user accounts (and other security principals) to manage permissions efficiently. Instead of assigning permissions directly to individual users, permissions are assigned to groups, and users are made members of the appropriate groups.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Security Group Types and Scopes</span>
+    <span class="sec-panel-badge badge-path">ADUC → New → Group</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Global groups</div>
+    <div class="sec-desc">Contain members from the <strong>same domain</strong>. Used to organize users by job function or department. Can be granted access to resources in any domain in the forest. Example: "G_Finance_Analysts" in the CORP domain contains all finance analysts in CORP.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Domain Local groups</div>
+    <div class="sec-desc">Can contain members from <strong>any domain</strong>. Used to assign permissions to resources in the <em>local</em> domain. Best practice: assign permissions to Domain Local groups, then add Global groups to the Domain Local group. Example: "DL_FileShare_FinanceDocs_Read" grants read access to the finance docs share; the G_Finance_Analysts global group is added as a member.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Universal groups</div>
+    <div class="sec-desc">Can contain members from <strong>any domain in the forest</strong> and can be granted access to resources in any domain. Used in multi-domain forests to aggregate access across domains. Universal group membership is stored in the Global Catalog — changes to universal groups trigger Global Catalog replication across all DCs in the forest, so they should be used judiciously.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">A-G-DL-P best practice</div>
+    <div class="sec-desc">The recommended group nesting strategy: <strong>A</strong>ccounts → <strong>G</strong>lobal groups → <strong>D</strong>omain <strong>L</strong>ocal groups → <strong>P</strong>ermissions. Users go in Global groups by department; Global groups go into Domain Local groups that define access to specific resources; Domain Local groups are assigned permissions on files, folders, and printers. This structure simplifies access changes — moving a user to a different global group changes all their resource access automatically.</div>
+  </div>
+</div>
+
+<h3 class="section">Folder Redirection</h3>
+
+<p><span class="key-term">Folder Redirection</span> is a Group Policy feature that transparently redirects Windows special folders (Documents, Desktop, Downloads, AppData, etc.) from the user's local profile to a network location. The user's documents appear to be local but are physically stored on a file server.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Configuring Folder Redirection</span>
+    <span class="sec-panel-badge badge-path">GPMC → User Configuration → Windows Settings → Folder Redirection</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Configuration path</div>
+    <div class="sec-desc">Group Policy Management Console → edit a GPO → <strong>User Configuration → Policies → Windows Settings → Folder Redirection</strong>. Right-click a folder (e.g., Documents) → Properties → Setting: Basic (same location for everyone) or Advanced (different locations by security group membership). Target: <code>\\fileserver\homeshares\%username%\Documents</code>.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Benefits</div>
+    <div class="sec-desc"><strong>Roaming:</strong> users access their documents from any machine. <strong>Backup:</strong> IT backs up the file server, not individual workstations. <strong>Disaster recovery:</strong> workstation failure or theft does not result in data loss — documents are on the server. <strong>Performance:</strong> eliminates the need for full roaming profiles (which copy the entire profile at login/logoff, causing slow logons for large profiles).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Offline Files integration</div>
+    <div class="sec-desc">Folder Redirection typically works with <strong>Offline Files (Client-Side Caching)</strong> — a feature that caches the redirected folder contents locally so users can work offline (disconnected from the network). Changes sync to the server when reconnected. Configured in the same Folder Redirection GPO settings or separately via Group Policy → Offline Files.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Removing redirection</div>
+    <div class="sec-desc">If Folder Redirection is removed from a GPO, the "Policy Removal" setting determines what happens: <strong>Redirect the folder back to local</strong> (copies files back to the local profile) or <strong>Leave the folder in the new location</strong> (server). The redirect-back option is safer — it ensures the user's documents follow them.</div>
+  </div>
+</div>
+
+
+<!-- SUMMARY -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.2 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Defender + 3rd-party AV</span>3rd-party AV disables Defender real-time protection; expiry re-enables Defender</div>
+    <div class="summary-item"><span class="s-sym">Definition updates</span>Virus &amp; threat protection → Check for updates; stale definitions = reduced detection</div>
+    <div class="summary-item"><span class="s-sym">Firewall profiles</span>Domain (trusted corp LAN), Private (home), Public (most restrictive — hotels, airports)</div>
+    <div class="summary-item"><span class="s-sym">wf.msc</span>Full firewall rule management; inbound/outbound; port rules vs. application rules</div>
+    <div class="summary-item"><span class="s-sym">Standard account</span>Recommended for daily use — even admins; limits malware and user error blast radius</div>
+    <div class="summary-item"><span class="s-sym">Guest account</span>Disabled by default — keep it disabled; use Standard account for temporary users</div>
+    <div class="summary-item"><span class="s-sym">Power Users group</span>Legacy — no special privileges in modern Windows; not a useful middle tier</div>
+    <div class="summary-item"><span class="s-sym">Windows Hello PIN</span>Device-bound, TPM-backed; more secure than password for local sign-in</div>
+    <div class="summary-item"><span class="s-sym">NTFS vs. Share perms</span>Most restrictive wins when both apply (network access only); NTFS applies locally too</div>
+    <div class="summary-item"><span class="s-sym">Copy vs. Move perms</span>Copy = inherits destination; Move same volume = keeps original; Move different volume = inherits destination</div>
+    <div class="summary-item"><span class="s-sym">Inheritance</span>Parent permissions flow to children; explicit Deny overrides inherited Allow</div>
+    <div class="summary-item"><span class="s-sym">UAC</span>Split token for admins; consent prompt (admin) or credential prompt (standard user)</div>
+    <div class="summary-item"><span class="s-sym">BitLocker</span>Pro/Enterprise only; full volume; TPM-backed; 48-digit recovery key; TPM+PIN = best for laptops</div>
+    <div class="summary-item"><span class="s-sym">BitLocker-To-Go</span>Removable media; password-based; all Windows can read; only Pro+ can encrypt</div>
+    <div class="summary-item"><span class="s-sym">EFS</span>Per-file/folder; user certificate-based; other users (even admins) see Access Denied; lose cert = lose data</div>
+    <div class="summary-item"><span class="s-sym">EFS on FAT32</span>Copying EFS-encrypted file to FAT32/exFAT volume silently decrypts it</div>
+    <div class="summary-item"><span class="s-sym">Domain join</span>Requires DNS pointing to DC; Pro+ only; reboot required; move computer to correct OU after</div>
+    <div class="summary-item"><span class="s-sym">GPO LSDOU order</span>Local → Site → Domain → OU; last applied wins; OU wins over domain for conflicts</div>
+    <div class="summary-item"><span class="s-sym">Logon script</span>ADUC → User → Profile tab → Logon script; file must be in NETLOGON share on DC</div>
+    <div class="summary-item"><span class="s-sym">Folder Redirection</span>GPO → User Config → Windows Settings → Folder Redirection; stores user folders on file server</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> User cannot connect to a network application after Firewall was enabled → Create an inbound allow rule in wf.msc for the application or its port.<br>
+  <strong>Scenario 2:</strong> Third-party AV subscription expires; machine shows Defender is off → Renew AV or re-enable Defender real-time protection in Windows Security.<br>
+  <strong>Scenario 3:</strong> Standard user needs to install software → They cannot; admin must either perform the install or use Run as administrator with admin credentials (over-the-shoulder).<br>
+  <strong>Scenario 4:</strong> User copies a file from an NTFS folder with Full Control (share) to another with Read (NTFS) — effective access = Read.<br>
+  <strong>Scenario 5:</strong> Laptop is stolen; data must be protected → BitLocker (if Pro edition). Recovery key storage is critical before enabling.<br>
+  <strong>Scenario 6:</strong> User leaves company; their EFS-encrypted files must be accessible → The DRA (Data Recovery Agent) certificate is required; or export the user's EFS certificate before deleting the profile.<br>
+  <strong>Scenario 7:</strong> A new computer is not receiving the correct GPOs → Verify the computer account is in the correct OU; run gpupdate /force; check gpresult /r.<br>
+  <strong>Scenario 8:</strong> User's Documents folder should be stored on the server for backup → Configure Folder Redirection via Group Policy.<br>
+  <strong>Scenario 9:</strong> UAC prompt keeps appearing when running an application → The application requires elevation; add it to an elevated shortcut or investigate whether it was designed to run as standard user.<br>
+  <strong>Scenario 10:</strong> Windows Hello PIN doesn't work after hardware replacement → TPM change triggers Windows Hello re-enrollment; user must set up their PIN again.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.7 — Apply Workstation Security Options and Hardening Techniques</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* SEC PANEL — main display component */
+  .sec-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 20px 0 28px; }
+  .sec-panel-header { background: var(--surface2); border-bottom: 2px solid var(--border2); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .sec-panel-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .sec-panel-badge { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 9px; border-radius: 3px; }
+  .badge-path  { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b33; }
+  .badge-warn  { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b33; }
+  .badge-tip   { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a33; }
+  .badge-bios  { background: #1a1a18; color: rgba(255,255,255,0.7); }
+
+  .sec-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .sec-row:last-child { border-bottom: none; }
+  .sec-label { font-weight: 600; color: var(--accent2); padding: 11px 16px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .sec-desc  { padding: 11px 16px; color: var(--muted); line-height: 1.6; }
+  .sec-desc strong { color: var(--text); }
+  .sec-desc em { font-style: normal; color: var(--accent2); font-weight: 600; }
+
+  /* PASSWORD STRENGTH VISUAL */
+  .pw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0 28px; }
+  .pw-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .pw-card-head { padding: 9px 14px; font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 1px solid var(--border); }
+  .pw-card-head.bad    { background: var(--accent-light);  color: var(--accent); }
+  .pw-card-head.good   { background: var(--accent3-light); color: var(--accent3); }
+  .pw-card-head.best   { background: var(--accent2-light); color: var(--accent2); }
+  .pw-card-head.policy { background: var(--surface2); color: var(--muted); }
+  .pw-card-body { padding: 12px 14px; font-family: var(--mono); font-size: 13px; }
+  .pw-example { padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: center; font-size: 12.5px; }
+  .pw-example:last-child { border-bottom: none; }
+  .pw-sym { font-size: 12px; flex-shrink: 0; font-weight: 700; }
+  .sym-x { color: var(--accent); }
+  .sym-c { color: var(--accent3); }
+  .pw-val { color: var(--text); }
+  .pw-why { color: var(--muted); font-family: var(--sans); font-size: 12px; }
+
+  /* ACCOUNT POLICY TABLE */
+  .policy-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .policy-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .policy-table tbody tr { border-bottom: 1px solid var(--border); }
+  .policy-table tbody tr:last-child { border-bottom: none; }
+  .policy-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .policy-table td:first-child { font-weight: 600; color: var(--accent2); background: var(--surface2); font-size: 13px; white-space: nowrap; }
+  .policy-table td:nth-child(2) { font-family: var(--mono); font-size: 12px; color: var(--accent3); white-space: nowrap; }
+  .policy-table tr:nth-child(even) td { background: #fdfcfb; }
+  .policy-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+
+  /* HARDENING CHECKLIST */
+  .checklist { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 16px 0 24px; font-family: var(--sans); font-size: 14px; }
+  .checklist-header { background: var(--text); padding: 10px 18px; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+  .check-item { display: grid; grid-template-columns: 44px 1fr; border-bottom: 1px solid var(--border); }
+  .check-item:last-child { border-bottom: none; }
+  .check-box { display: flex; align-items: center; justify-content: center; background: var(--surface2); border-right: 1px solid var(--border); }
+  .check-box span { font-size: 16px; }
+  .check-content { padding: 10px 16px; }
+  .check-title { font-weight: 600; color: var(--text); font-size: 13.5px; line-height: 1.3; }
+  .check-detail { color: var(--muted); font-size: 12.5px; margin-top: 2px; line-height: 1.45; }
+  .check-path { font-family: var(--mono); font-size: 11px; color: var(--accent2); background: var(--accent2-light); padding: 1px 7px; border-radius: 3px; display: inline-block; margin-top: 4px; }
+
+  /* CMD BLOCK */
+  .cmd-block { background: #1a1a18; border-radius: 5px; padding: 14px 18px; margin: 12px 0 20px; font-family: var(--mono); font-size: 12.5px; overflow-x: auto; }
+  .cmd-block .cp { color: #4ec9b0; user-select: none; }
+  .cmd-block .c  { color: #e8845a; }
+  .cmd-block .sw { color: #7ec8e3; }
+  .cmd-block .a  { color: #f5d67b; }
+  .cmd-block .cm { color: rgba(255,255,255,0.3); font-style: italic; font-size: 11.5px; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 200px 1fr; gap: 20px; font-size: 15px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+  .path-bar { font-family: var(--mono); font-size: 11.5px; background: var(--accent2-light); border: 1px solid #2c3e6b22; color: var(--accent2); padding: 5px 12px; border-radius: 4px; margin: 8px 0 16px; display: inline-block; }
+
+  /* ENCRYPTION COMPARISON */
+  .enc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+  .enc-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .enc-head { padding: 9px 14px; font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 2px solid var(--border); }
+  .enc-head.b2  { background: var(--accent2-light); color: var(--accent2); }
+  .enc-head.btg { background: var(--accent3-light); color: var(--accent3); }
+  .enc-head.efs { background: var(--accent4-light); color: var(--accent4); }
+  .enc-body { padding: 12px 14px; font-family: var(--sans); font-size: 13px; }
+  .enc-row { padding: 4px 0; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.45; font-size: 12.5px; display: flex; gap: 8px; align-items: flex-start; }
+  .enc-row:last-child { border-bottom: none; }
+  .enc-row strong { color: var(--text); }
+  .enc-row .dot { color: var(--border2); flex-shrink: 0; font-size: 12px; padding-top: 2px; }
+
+  /* SUMMARY */
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 155px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .pw-grid, .enc-grid { grid-template-columns: 1fr; }
+    .def-item, .sec-row { grid-template-columns: 1fr; }
+    .sec-label { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>2.7</strong> Apply Workstation Security Options and Hardening Techniques</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./2_6-SOHO-Malware-Removal.html">2.6</a>
+    <a class="nav-next" href="./2_8-Mobile-Device-Security.html">2.8</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>2.7</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 2 — Security
+  </div>
+  <h1 class="book-title">Given a Scenario, Apply Workstation Security<br>Options and Hardening Techniques</h1>
+  <div class="book-subtitle">
+    <span>Objective 2.7</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Scenario</span>
+    <span>8 hardening categories</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW                                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction — What Is Workstation Hardening?</h2>
+
+<p><span class="key-term">Workstation hardening</span> is the process of reducing a system's attack surface by configuring security settings, removing unnecessary features, enforcing access controls, and establishing protective policies that minimize the risk of successful attack. Hardening transforms a machine from its default, out-of-the-box configuration — which prioritizes compatibility and ease of use — into a configuration that prioritizes security without sacrificing necessary functionality.</p>
+
+<p>A freshly installed Windows machine has many features enabled by default that represent unnecessary risk: AutoRun executes code from removable media, the Guest account provides unauthenticated access, default service accounts use well-known passwords, and services that are never used consume attack surface. Each configuration change in this objective removes one piece of that attack surface.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Scenario Verb — How This Is Tested</p>
+  <p>Objective 2.7 uses the "scenario" verb. Expect questions like: "A technician needs to prevent data from being accessible if a laptop is stolen — what should they configure?" (Data-at-rest encryption/BitLocker). "Users are leaving workstations logged in and unattended — what policy addresses this?" (Screen lock/timeout). "An attacker connected a USB drive and it auto-executed malware — what should have been configured?" (Disable AutoRun). Match the security problem described to the specific hardening technique.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1: DATA-AT-REST ENCRYPTION       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Data-at-Rest Encryption</h2>
+
+<p><span class="key-term">Data-at-rest encryption</span> protects stored data by rendering it unreadable without the correct decryption key. Unlike data-in-transit encryption (TLS/HTTPS) that protects data moving over networks, data-at-rest encryption protects data stored on drives, USB devices, and other storage media — specifically against the threat of physical theft or unauthorized physical access to the storage medium itself.</p>
+
+<p>The fundamental scenario: a laptop is stolen from a car. Without encryption, the thief can remove the drive, connect it to another machine as a secondary drive, and read every file on it — bypassing Windows login entirely, because Windows login only controls OS-level access. With full-disk encryption, the raw bytes on the drive are encrypted and unreadable without the key — the drive appears as garbage data to any machine other than the one with the correct key.</p>
+
+<div class="enc-grid">
+  <div class="enc-card">
+    <div class="enc-head b2">BitLocker (Full Volume)</div>
+    <div class="enc-body">
+      <div class="enc-row"><span class="dot">—</span><span><strong>Scope:</strong> Entire volume (system drive or data drive)</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Editions:</strong> Pro, Enterprise only</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Cipher:</strong> AES 128-bit (default) or 256-bit</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Requires:</strong> TPM 1.2+ (default), or USB key</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Best for:</strong> Laptops, sensitive workstations; any machine that may be physically stolen</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Recovery:</strong> 48-digit recovery key — store in AD or secure location</span></div>
+    </div>
+  </div>
+  <div class="enc-card">
+    <div class="enc-head btg">BitLocker-To-Go (Removable)</div>
+    <div class="enc-body">
+      <div class="enc-row"><span class="dot">—</span><span><strong>Scope:</strong> USB drives, external HDDs, SD cards</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Encrypt requires:</strong> Pro, Enterprise</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Read on any:</strong> Windows machine (password prompt)</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Auth:</strong> Password or smart card (no TPM)</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Best for:</strong> Protecting data on portable media; enforced by GP "deny write access to unencrypted removable drives"</span></div>
+    </div>
+  </div>
+  <div class="enc-card">
+    <div class="enc-head efs">EFS (Per-File)</div>
+    <div class="enc-body">
+      <div class="enc-row"><span class="dot">—</span><span><strong>Scope:</strong> Individual files and folders on NTFS</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Editions:</strong> Pro, Enterprise only</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Auth:</strong> User certificate (auto-created)</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Other users:</strong> See "Access Denied" — even admins</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Warning:</strong> Lose EFS cert = permanent data loss; backup cert before deleting profile</span></div>
+      <div class="enc-row"><span class="dot">—</span><span><strong>Gotcha:</strong> Copy to FAT32/exFAT silently decrypts</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Data-at-Rest Encryption Scenarios</p>
+  <p><strong>"A laptop is stolen — how should the data have been protected?"</strong> → BitLocker (full-volume encryption). <strong>"A user needs to encrypt individual files so no other user — including admins — can read them?"</strong> → EFS. <strong>"USB drives must be encrypted before sensitive data can be written to them?"</strong> → BitLocker-To-Go + Group Policy enforcement. Remember: BitLocker and EFS are Pro/Enterprise only — Home editions get Device Encryption (a limited subset of BitLocker) instead.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2: PASSWORD CONSIDERATIONS       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Password Considerations</h2>
+
+<p>Passwords remain the most common authentication mechanism, and their strength is critical to preventing unauthorized access. Password policy defines the rules that govern what passwords users are allowed to set and how they must be managed over time. In Windows environments, password policies are configured via Group Policy (for domain environments) or Local Security Policy (<code>secpol.msc</code>) for standalone machines.</p>
+
+<div class="path-bar">gpedit.msc → Computer Configuration → Windows Settings → Security Settings → Account Policies → Password Policy</div>
+
+<h3 class="section">Password Policy Elements</h3>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Password Policy Settings</span>
+    <span class="sec-panel-badge badge-path">secpol.msc / gpedit.msc</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Length</div>
+    <div class="sec-desc"><strong>Minimum password length</strong> is the single most impactful password policy control. Each additional character exponentially increases the number of possible passwords an attacker must try in a brute-force attack. NIST SP 800-63B recommends a <strong>minimum of 8 characters</strong> for standard accounts, with 12–16+ recommended for privileged accounts. Modern guidance increasingly favors <strong>passphrases</strong> — a sequence of random words ("correct-horse-battery-staple") — over shorter complex passwords, because length contributes more to security than complexity alone. Group Policy setting: <em>Minimum password length</em>.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Character Types</div>
+    <div class="sec-desc"><strong>Password complexity requirements</strong> specify which character categories must be present. Windows complexity requirements enforce that passwords must contain characters from at least three of four categories: <strong>uppercase letters (A–Z)</strong>, <strong>lowercase letters (a–z)</strong>, <strong>digits (0–9)</strong>, and <strong>symbols (!@#$%^&amp;*)</strong>. A larger character set means more possible combinations per character position, increasing resistance to brute-force attacks. Group Policy setting: <em>Password must meet complexity requirements</em> (Enabled/Disabled).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Uniqueness</div>
+    <div class="sec-desc"><strong>Enforce password history</strong> prevents users from recycling previous passwords. When a user changes their password, Windows stores a hash of the previous passwords and rejects any attempt to reuse them. Setting: remember the last 24 passwords (maximum). Without this control, users immediately change to a new password (satisfying a forced change policy) and then immediately change back to their favorite password. Combined with a <em>Minimum password age</em> setting (typically 1 day), this prevents the "change-and-change-back" workaround.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Complexity</div>
+    <div class="sec-desc">Beyond the character type requirements, true password complexity means the password is not easily guessed by dictionary attack — it does not use real words, names, dates, or predictable patterns (Password1!, Summer2024@, company-name123). Modern guidance has shifted: a longer passphrase of random words is both more secure <em>and</em> more memorable than a shorter complex password. The password <code>Tr0ub4dor&amp;3</code> is technically complex but guessable and hard to remember. <code>correct-horse-battery-staple</code> is longer, more random, and far stronger.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Expiration</div>
+    <div class="sec-desc"><strong>Maximum password age</strong> forces passwords to be changed after a defined period. Traditional guidance mandated 90-day expiration; <strong>NIST revised this in SP 800-63B</strong> to recommend against mandatory periodic expiration unless a compromise is suspected. The rationale: forced expiration leads users to make minor, predictable variations (Password1! → Password2!, Password3!) that attackers can predict, and the security benefit is minimal if the password was not compromised. Current best practice: require change only on suspected compromise; focus on complexity and MFA instead. Windows setting: <em>Maximum password age</em> (0 = never expires).</div>
+  </div>
+</div>
+
+<h3 class="section">Password Examples — Good vs. Bad</h3>
+
+<div class="pw-grid">
+  <div class="pw-card">
+    <div class="pw-card-head bad">Weak Passwords — Avoid</div>
+    <div class="pw-card-body">
+      <div class="pw-example"><span class="pw-sym sym-x">✗</span><div><div class="pw-val">password</div><div class="pw-why">Dictionary word; #1 most common password</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-x">✗</span><div><div class="pw-val">Password1!</div><div class="pw-why">Technically "complex" — easily guessable pattern</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-x">✗</span><div><div class="pw-val">Summer2024!</div><div class="pw-why">Seasonal pattern; in every dictionary wordlist</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-x">✗</span><div><div class="pw-val">CompanyName1</div><div class="pw-why">Company name prefix — first thing attackers try</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-x">✗</span><div><div class="pw-val">qwerty123</div><div class="pw-why">Keyboard walk pattern — in all crack wordlists</div></div></div>
+    </div>
+  </div>
+  <div class="pw-card">
+    <div class="pw-card-head best">Strong Passwords — Use These</div>
+    <div class="pw-card-body">
+      <div class="pw-example"><span class="pw-sym sym-c">✓</span><div><div class="pw-val">correct-horse-battery-staple</div><div class="pw-why">Passphrase — random words; long; memorable</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-c">✓</span><div><div class="pw-val">mT#9xK!vBqL2@wP</div><div class="pw-why">Random 16-char; use password manager to store</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-c">✓</span><div><div class="pw-val">purple-cloud-42-tiger!</div><div class="pw-why">Random words + digits + symbol; length wins</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-c">✓</span><div><div class="pw-val">wX#7mJ!2kQ@9nL$4</div><div class="pw-why">Password manager generated; max entropy</div></div></div>
+      <div class="pw-example"><span class="pw-sym sym-c">✓</span><div><div class="pw-val">Lemon-Sky-Delta-7!</div><div class="pw-why">Diceware-style passphrase; strong and writable</div></div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3: BIOS/UEFI PASSWORDS           -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>BIOS / UEFI Passwords</h2>
+
+<p>The BIOS or UEFI firmware initializes the machine's hardware and launches the OS bootloader before Windows loads. Without firmware-level protection, an attacker with physical access can boot from external media (bypassing Windows login entirely), change boot order to boot into a different OS, access or modify UEFI settings, or install a bootkit. BIOS/UEFI passwords provide pre-boot access control at the firmware level — the first security layer before any OS controls can apply.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">BIOS / UEFI Password Types</span>
+    <span class="sec-panel-badge badge-bios">Firmware Level</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Supervisor / Admin Password</div>
+    <div class="sec-desc">Controls <strong>access to the BIOS/UEFI setup utility itself</strong>. Without this password, an unauthorized person can enter the firmware settings (typically by pressing F2, DEL, or F10 at POST) and change any firmware setting — including disabling Secure Boot, changing the boot order, disabling TPM, or clearing the TPM. Setting a Supervisor password requires this password to be entered before UEFI settings can be viewed or modified. <strong>This is the most important BIOS/UEFI password to set on corporate laptops.</strong></div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">User / Power-On Password</div>
+    <div class="sec-desc">Controls <strong>whether the machine will boot at all</strong>. If a User/Power-On password is set, it must be entered every time the machine powers on — before any operating system begins loading. This prevents an unauthorized person from even starting the machine. More restrictive than a Supervisor password — the Supervisor password gates UEFI settings; the Power-On password gates the entire boot process. Most commonly used on kiosk machines and highly sensitive endpoints.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">HDD / Drive Password</div>
+    <div class="sec-desc">Some UEFI implementations support an <strong>HDD (ATA Security) password</strong> that is stored in the drive's firmware. When set, the drive itself requires a password to unlock — at a hardware level that is independent of the OS. Even if the drive is removed and connected to another machine, the drive firmware enforces the password requirement. Provides an additional layer of protection against drive removal, complementing BitLocker.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Resetting BIOS passwords</div>
+    <div class="sec-desc">BIOS/UEFI passwords are typically stored in CMOS memory powered by a small battery on the motherboard. On desktop systems, removing the CMOS battery for 30 seconds (or shorting the CLEAR CMOS jumper) resets the UEFI settings including the password. <strong>On modern laptops</strong>, most manufacturers have eliminated this reset vector — the password is stored in EEPROM that is not cleared by battery removal. Resetting a forgotten UEFI password on a modern laptop typically requires manufacturer service. This makes the protection much more robust on laptops than on desktops.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Integration with Secure Boot</div>
+    <div class="sec-desc">UEFI Secure Boot cryptographically verifies bootloader signatures. It should be <strong>enabled</strong> alongside a Supervisor password. A Supervisor password prevents an attacker from entering UEFI to disable Secure Boot. Secure Boot prevents an attacker from booting unauthorized OS images. Together they protect the pre-OS environment from both configuration tampering and unauthorized boot media.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4: END-USER BEST PRACTICES       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>End-User Best Practices</h2>
+
+<p>Technical security controls are only as effective as the behaviors of the people using secured systems. End-user best practices are the habits and procedures that users follow to avoid creating security gaps that technology alone cannot close. A properly hardened workstation can still be compromised if a user leaves it unlocked and unattended, writes passwords on sticky notes, or fails to physically secure a laptop.</p>
+
+<div class="checklist">
+  <div class="checklist-header">End-User Security Best Practices</div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🔒</span></div>
+    <div class="check-content">
+      <div class="check-title">Use Screensaver Locks</div>
+      <div class="check-detail">Configure the screensaver to require a password on resume after a short idle period (5–10 minutes). An unattended, unlocked workstation exposes all data and system access to anyone who walks by. The screensaver lock is the last line of defense against physical access to an active session. Quick lock: Win + L locks immediately without waiting for the screensaver timer.</div>
+      <span class="check-path">Settings → Personalization → Lock screen → Screen saver settings → On resume, display logon screen</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🚪</span></div>
+    <div class="check-content">
+      <div class="check-title">Log Off When Not in Use</div>
+      <div class="check-detail">For longer absences (end of workday, leaving the office), users should fully log off rather than just locking the screen. Logging off ends all active sessions, disconnects network drives, clears session tokens, and ensures no background processes run under the user's credentials. On shared workstations (reception desks, lab computers, training rooms), logging off is critical — a lock screen can be bypassed if someone knows the PIN or has access to the reset process.</div>
+      <span class="check-path">Start → User icon → Sign out &nbsp;|&nbsp; Ctrl + Alt + Del → Sign out</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>💼</span></div>
+    <div class="check-content">
+      <div class="check-title">Secure / Protect Critical Hardware</div>
+      <div class="check-detail">Laptops are particularly vulnerable to physical theft — they contain sensitive data and are easily carried away. Physical security measures: <strong>cable locks</strong> (Kensington locks) tether laptops to desks. <strong>Never leave laptops in visible locations in vehicles</strong> — store in trunks or take them inside. <strong>Do not leave equipment unattended in public spaces</strong> (coffee shops, airports) even briefly. <strong>Privacy screens</strong> prevent shoulder surfing in public. Enable full-disk encryption (BitLocker) so that theft of the physical hardware does not mean theft of the data.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🛡️</span></div>
+    <div class="check-content">
+      <div class="check-title">Secure PII and Passwords</div>
+      <div class="check-detail">Personally Identifiable Information (PII) — names, Social Security numbers, dates of birth, financial data, health records — must be handled according to security policy. Specific practices: never write passwords on sticky notes attached to monitors or keyboards. Never share passwords via email or instant messages. Lock file cabinets containing sensitive paper documents. Shred documents with PII before disposal. Do not discuss sensitive information in public spaces or on speakerphone in open offices. Clear the screen when leaving a workstation displaying sensitive data.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🔑</span></div>
+    <div class="check-content">
+      <div class="check-title">Use Password Managers</div>
+      <div class="check-detail">A <strong>password manager</strong> is an application that generates, stores, and retrieves strong, unique passwords for every account — secured by a single strong master password or biometric. Without a password manager, most users reuse passwords across multiple sites, meaning a breach of one site exposes all accounts sharing that password. Password manager benefits: unique strong password for every account (100+ characters, fully random); no need to memorize individual passwords; auto-fill prevents phishing on lookalike sites (the manager won't fill on a fake site); secure sharing of credentials in teams. Enterprise options: 1Password Business, Bitwarden Teams, LastPass Enterprise, KeePass (open source). Consumer options: Bitwarden (free tier is excellent), 1Password, Dashlane.</div>
+      <span class="check-path">Never store passwords in browser if the browser profile is not secured with a master password</span>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5: ACCOUNT MANAGEMENT            -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Account Management</h2>
+
+<p>Account management policies control how user accounts are created, configured, and maintained. These policies enforce security at the authentication layer — determining not just what users can access, but when they can access it, how many times they can fail to authenticate before being locked out, and when their access should automatically expire.</p>
+
+<div class="path-bar">secpol.msc → Account Policies → Account Lockout Policy &nbsp;&nbsp;|&nbsp;&nbsp; gpedit.msc → Computer Configuration → Security Settings → Account Policies</div>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Account Management Controls</span>
+    <span class="sec-panel-badge badge-path">lusrmgr.msc / secpol.msc / gpedit.msc</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Restrict User Permissions</div>
+    <div class="sec-desc">Apply the <strong>principle of least privilege</strong> — users should have only the permissions required for their job function and nothing more. Standard users (members of the Users group) cannot install software to Program Files, modify system settings, or access other users' files. Restricting permissions limits the damage a compromised account or negligent user can cause. Audit permissions regularly and remove access that is no longer justified (access creep). Implemented via NTFS permissions, group membership, and Group Policy.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Restrict Login Times</div>
+    <div class="sec-desc"><strong>Logon Hours</strong> restrict when a user account can authenticate to the system. Configured per-user in Active Directory Users and Computers (ADUC) → User properties → Account tab → Logon Hours. Example: a receptionist's account is permitted logon only Monday–Friday 7:00 AM–7:00 PM. Attempts to log in outside these hours are denied. For domain environments, when a user's logon hours expire while they are logged in, Windows can be configured to forcibly disconnect them. Effective for detecting unauthorized access (someone logging in at 3:00 AM with a compromised account).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Disable Guest Account</div>
+    <div class="sec-desc">The <strong>Guest account</strong> is built into Windows and provides unauthenticated (or minimally authenticated) access to the machine. It is <strong>disabled by default</strong> in Windows 10 and 11 and should remain disabled. An enabled Guest account allows anyone who can physically reach the login screen to access the machine with a known account name and no password. In Active Directory environments, it should be confirmed disabled on every domain-joined machine via Group Policy. Check via: <code>lusrmgr.msc</code> → Users → Guest (should show down-arrow indicating disabled).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Use Failed Attempts Lockout</div>
+    <div class="sec-desc"><strong>Account lockout policy</strong> automatically locks an account after a specified number of consecutive failed login attempts, preventing brute-force and automated credential-stuffing attacks. The three Group Policy settings: <strong>Account lockout threshold</strong> (how many failed attempts before lockout — typically 3–10), <strong>Account lockout duration</strong> (how long the account remains locked — typically 30–60 minutes, or 0 = admin must manually unlock), <strong>Reset account lockout counter after</strong> (how long before the failure count resets — typically same as or shorter than lockout duration). Lockout policies must balance security (preventing brute force) against availability (help desk burden from legitimate users being locked out).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Use Timeout / Screen Lock</div>
+    <div class="sec-desc">An automatic <strong>screen lock timeout</strong> locks the workstation after a defined period of inactivity, even if the user forgot to manually lock it. This is a last-resort protection for unattended workstations. Configured via: Group Policy → Computer Configuration → Administrative Templates → Control Panel → Personalization → Screen saver timeout (set seconds) + Force a specific screen saver + Password protect the screen saver. Or: Settings → System → Power &amp; sleep → Screen timeout. Recommended: 5–15 minutes for high-security environments; 15 minutes is a common baseline for standard office environments.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Apply Account Expiration Dates</div>
+    <div class="sec-desc"><strong>Account expiration dates</strong> automatically disable an account on a specified date, without requiring manual action from IT. This is especially valuable for: <strong>contractors and temporary employees</strong> (set expiration to the last day of the contract); <strong>interns</strong> (set expiration to end of internship); <strong>project-based access</strong> (disable when project ends). Without expiration dates, temporary accounts frequently remain active long after the individual no longer needs access — a common audit finding and insider threat vector. Set in: ADUC → User → Account tab → Account expires.</div>
+  </div>
+</div>
+
+<h3 class="section">Account Lockout Policy — Recommended Settings</h3>
+
+<table class="policy-table">
+  <thead>
+    <tr>
+      <th>Policy Setting</th>
+      <th>Recommended Value</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Account lockout threshold</td><td>5 attempts</td><td>Lock after 5 consecutive failures — blocks online brute force while limiting false lockouts</td></tr>
+    <tr><td>Account lockout duration</td><td>30 minutes</td><td>Auto-unlocks after 30 min — reduces help desk calls vs. indefinite lockout</td></tr>
+    <tr><td>Reset counter after</td><td>30 minutes</td><td>Failure counter resets after 30 min — prevents slow password guessing over hours</td></tr>
+    <tr><td>Minimum password length</td><td>12 characters</td><td>NIST recommendation for general accounts; 16+ for privileged accounts</td></tr>
+    <tr><td>Password history</td><td>24 passwords</td><td>Maximum — prevents recycling of old passwords</td></tr>
+    <tr><td>Minimum password age</td><td>1 day</td><td>Prevents immediate change-and-revert to bypass history enforcement</td></tr>
+    <tr><td>Maximum password age</td><td>0 (or 365) days</td><td>NIST: don't force expiration unless compromised; legacy: 90 days</td></tr>
+    <tr><td>Complexity requirements</td><td>Enabled</td><td>Requires mixed character types</td></tr>
+    <tr><td>Screen lock timeout</td><td>10–15 minutes</td><td>Auto-lock after inactivity</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 6: DEFAULT ADMIN ACCOUNT         -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 6</span>Change Default Administrator's User Account / Password</h2>
+
+<p>Every Windows installation contains a <span class="key-term">built-in Administrator account</span> — a well-known local account with a fixed, well-known username ("Administrator") that has full control of the machine. This account is a prime target for attackers: its username is known, making credential attacks require guessing only the password. The built-in Administrator account is disabled by default in Windows 10/11 but may be enabled in some deployment scenarios, requiring deliberate hardening.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Default Administrator Account Hardening</span>
+    <span class="sec-panel-badge badge-warn">High Priority</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Built-in Admin account</div>
+    <div class="sec-desc">The built-in Administrator account (SID ends in -500) is disabled by default in Windows 10/11 desktop editions. However, it may be enabled in: custom enterprise deployments, after the first account setup on a standalone machine, or via Group Policy. When enabled, it is the highest-privilege account on the system and is exempt from account lockout policy by default — meaning brute-force attacks against it cannot be stopped by lockout policies alone. This is why it must be specifically protected.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Rename the account</div>
+    <div class="sec-desc">Change the display name of the Administrator account to something non-obvious. This forces attackers to guess both the username and password rather than just the password. Configured via: <code>lusrmgr.msc</code> → Users → right-click Administrator → Rename. Or via Group Policy: Computer Configuration → Windows Settings → Security Settings → Local Policies → Security Options → <strong>Accounts: Rename administrator account</strong>. The SID (-500) does not change, but the visible name does, complicating most automated attack tools.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Change the default password</div>
+    <div class="sec-desc">If the Administrator account is enabled and in use, it must have a <strong>strong, unique password</strong> — never the default blank password, the company name, or a simple pattern. For local administrator accounts on domain-joined machines, use <strong>Microsoft LAPS (Local Administrator Password Solution)</strong> — a free tool that automatically sets a unique, random, rotating password for the local Administrator account on every domain-joined machine and stores it in Active Directory. This prevents lateral movement attacks (Pass-the-Hash) across machines that share a common local admin password.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Disable when not needed</div>
+    <div class="sec-desc">The built-in Administrator account should be disabled if not specifically required. Day-to-day administrative tasks should use named administrator accounts (members of the Administrators group) with individual accountability and password enforcement, not the shared built-in account. To disable: <code>lusrmgr.msc</code> → right-click Administrator → Properties → check "Account is disabled." Or: elevated command prompt → <code>net user Administrator /active:no</code>.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Default device credentials</div>
+    <div class="sec-desc">The principle extends to <strong>all devices with default credentials</strong>: routers (admin/admin, admin/password), network switches, printers, IP cameras, and IoT devices all ship with well-known default credentials that are published online. <strong>Every device with default credentials should have its password changed immediately upon deployment.</strong> Default credentials are the most commonly exploited vulnerability in SOHO and small enterprise environments — automated scanners find and exploit them within minutes of internet exposure.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Default Credentials</p>
+  <p>The exam frequently presents a scenario where a device (router, printer, camera, or workstation) was compromised. A key question is: were default credentials changed? The answer to "how could this have been prevented" is almost always "change default administrator credentials." This applies to every managed device — not just Windows workstations.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 7: DISABLE AUTORUN               -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 7</span>Disable AutoRun</h2>
+
+<p><span class="key-term">AutoRun</span> (and its related feature <span class="key-term">AutoPlay</span>) automatically executes or opens files from removable media (USB drives, optical discs, memory cards) when they are inserted into a computer. AutoRun reads an <code>autorun.inf</code> file on the media and executes the specified program without user interaction. This feature was a primary malware delivery mechanism for years — simply inserting an infected USB drive would automatically execute malware.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">AutoRun / AutoPlay Configuration</span>
+    <span class="sec-panel-badge badge-warn">Disable in All Environments</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">AutoRun vs. AutoPlay</div>
+    <div class="sec-desc"><strong>AutoRun</strong> — automatically executes a program specified in <code>autorun.inf</code> when removable media is inserted. The dangerous feature — it executes code without user confirmation. <strong>AutoPlay</strong> — displays a dialog asking what the user wants to do when media is inserted (open files, play music, run program, etc.). Safer than AutoRun but still represents an attack surface because the AutoPlay dialog can be manipulated to present malicious options that users click. Best practice: disable both. Minimum: disable AutoRun entirely; configure AutoPlay to take no action or open folder.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Why AutoRun is dangerous</div>
+    <div class="sec-desc">The Conficker worm (2008–2009) — which infected over 9 million Windows machines — spread primarily via AutoRun on infected USB drives. A user simply needed to insert a drive; Conficker's autorun.inf would immediately execute its installer. <strong>Baiting attacks</strong> (intentionally leaving malware-infected USB drives in parking lots, lobbies, or near target facilities for curious employees to find and plug in) rely entirely on AutoRun or AutoPlay to execute the payload without the user's knowledge. Microsoft began disabling AutoRun by default in Windows 7, but older systems and some configurations still have it enabled.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Disable via Group Policy</div>
+    <div class="sec-desc">
+      <strong>gpedit.msc</strong> → Computer Configuration → Administrative Templates → Windows Components → AutoPlay Policies:<br>
+      • <strong>Turn off AutoPlay</strong> → Enabled → All drives<br>
+      • <strong>Set the default behavior for AutoRun</strong> → Enabled → Do not execute any autorun commands<br>
+      • <strong>Disallow AutoPlay for non-volume devices</strong> → Enabled (prevents AutoRun on MTP/PTP devices)<br><br>
+      Or via Registry (same effect):
+      <div class="cmd-block">
+        <span class="cp">C:\&gt;</span> <span class="c">reg</span> <span class="sw">add</span> <span class="a">"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"</span> <span class="sw">/v</span> <span class="a">NoDriveTypeAutoRun</span> <span class="sw">/t</span> <span class="a">REG_DWORD</span> <span class="sw">/d</span> <span class="a">0xFF</span> <span class="sw">/f</span>
+        <span class="cm">— 0xFF disables AutoRun for all drive types</span>
+      </div>
+    </div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Disable via Settings (GUI)</div>
+    <div class="sec-desc"><strong>Settings → Bluetooth &amp; devices → AutoPlay → toggle off "Use AutoPlay for all media and devices."</strong> This disables the AutoPlay prompt entirely in Windows 10/11. While this prevents AutoPlay, it is not a Group Policy-enforced setting — a user or malware could re-enable it. For managed environments, Group Policy enforcement (above) is more robust because users cannot override it.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 8: DISABLE UNUSED SERVICES       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 8</span>Disable Unused Services</h2>
+
+<p>Every service running on a Windows machine represents a potential attack surface — a piece of code executing with system or network privileges that could contain exploitable vulnerabilities. Services that are not needed for a machine's business function should be disabled. This principle is called <span class="key-term">attack surface reduction</span>: the fewer services running, the fewer potential attack vectors exist.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Service Management</span>
+    <span class="sec-panel-badge badge-path">services.msc / sc.exe</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Services management console</div>
+    <div class="sec-desc"><strong>Win + R → services.msc</strong> opens the Services console listing all Windows services with their current state (Running/Stopped) and startup type (Automatic, Automatic Delayed Start, Manual, Disabled). To disable a service: double-click the service → change Startup type to <strong>Disabled</strong> → Stop the service if running → Apply → OK. A "Disabled" service will not start automatically or when triggered by another service — it can only be started manually by an administrator.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Startup types</div>
+    <div class="sec-desc"><strong>Automatic</strong> — starts during system boot without user action. <strong>Automatic (Delayed Start)</strong> — starts a few minutes after boot completes, reducing boot time impact. <strong>Manual</strong> — only starts when explicitly called by a user or another service. <strong>Disabled</strong> — cannot start by any means until explicitly re-enabled by an admin. For hardening: set unnecessary services to <strong>Disabled</strong> rather than just Manual — Manual services can still be triggered automatically by other components.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Services to consider disabling</div>
+    <div class="sec-desc">Which services to disable depends on the machine's role. Common candidates in SOHO/workstation environments:<br><br>
+    <strong>Remote Registry</strong> — allows remote modification of the Registry; rarely needed on workstations. <strong>Telnet</strong> — unencrypted remote access; deprecated; always disable. <strong>FTP (IIS-based)</strong> — only needed on file servers. <strong>SNMP (Simple Network Management Protocol)</strong> — network monitoring; not needed on workstations; has known vulnerabilities. <strong>Windows Remote Management (WinRM)</strong> — PowerShell remoting; disable if not needed. <strong>Print Spooler</strong> — on machines that never print (exploited by PrintNightmare CVE-2021-34527). <strong>SMBv1</strong> (not a service directly but disable via: PowerShell → <code>Set-SmbServerConfiguration -EnableSMB1Protocol $false</code>).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Command-line management</div>
+    <div class="sec-desc">
+      <div class="cmd-block">
+        <span class="cp">C:\&gt;</span> <span class="c">sc</span> <span class="sw">query</span> <span class="a">RemoteRegistry</span>      <span class="cm">— check service status</span><br>
+        <span class="cp">C:\&gt;</span> <span class="c">sc</span> <span class="sw">stop</span> <span class="a">RemoteRegistry</span>       <span class="cm">— stop the running service</span><br>
+        <span class="cp">C:\&gt;</span> <span class="c">sc</span> <span class="sw">config</span> <span class="a">RemoteRegistry</span> <span class="sw">start= disabled</span>  <span class="cm">— set startup type to Disabled</span><br>
+        <span class="cp">C:\&gt;</span> <span class="c">Get-Service</span> <span class="sw">| Where-Object</span> <span class="a">{$_.Status -eq "Running"}</span>  <span class="cm">— PowerShell: list running services</span>
+      </div>
+    </div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Document before disabling</div>
+    <div class="sec-desc">Before disabling any service, document its purpose and test the effect. Some services have unexpected dependencies — disabling one service may cause another to fail. Windows will warn about service dependencies when you attempt to disable a service that others depend on. Test changes in a non-production environment first. Maintain a change log so any unexpected behavior can be traced back to the service change. Services disabled for hardening should be documented in the machine's security baseline configuration.</div>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">CIS Benchmarks — A Hardening Reference</p>
+  <p>The <strong>Center for Internet Security (CIS) Benchmarks</strong> are free, consensus-based hardening guides for Windows (and many other platforms) that specify exactly which services to disable, which Group Policy settings to configure, and what values to set. They represent the industry standard for workstation hardening configurations. The CIS Benchmark for Windows 10 and Windows 11 covers hundreds of specific settings with justifications for each. For exam purposes, know the principles; for real-world implementation, reference the CIS Benchmarks.</p>
+</div>
+
+
+<!-- COMPLETE HARDENING CHECKLIST -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Complete Workstation Hardening Checklist</h2>
+
+<div class="checklist">
+  <div class="checklist-header">Workstation Hardening — All Objective 2.7 Controls</div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🔐</span></div>
+    <div class="check-content">
+      <div class="check-title">Enable BitLocker (Full Disk Encryption)</div>
+      <div class="check-detail">Pro/Enterprise only. TPM + PIN for laptops. Store recovery key in AD or secure location. Essential for any machine that may be physically stolen.</div>
+      <span class="check-path">Control Panel → BitLocker Drive Encryption → Turn on BitLocker</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🔏</span></div>
+    <div class="check-content">
+      <div class="check-title">Configure Password Policy</div>
+      <div class="check-detail">Minimum 12 characters; complexity enabled; history 24; min age 1 day; MFA where possible.</div>
+      <span class="check-path">secpol.msc → Account Policies → Password Policy</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>⚙️</span></div>
+    <div class="check-content">
+      <div class="check-title">Set BIOS/UEFI Supervisor Password</div>
+      <div class="check-detail">Prevents unauthorized UEFI setting changes; required before deploying laptops. Enable Secure Boot.</div>
+      <span class="check-path">UEFI settings (F2/DEL/F10 at POST) → Security → Set Supervisor Password</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>⏱️</span></div>
+    <div class="check-content">
+      <div class="check-title">Configure Screen Lock Timeout</div>
+      <div class="check-detail">10–15 minutes; password-protected screensaver or lock screen. Win+L for immediate manual lock.</div>
+      <span class="check-path">gpedit.msc → Personalization → Screen saver / Lock screen timeout</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🔒</span></div>
+    <div class="check-content">
+      <div class="check-title">Configure Account Lockout Policy</div>
+      <div class="check-detail">5 failed attempts → 30-minute lockout → counter resets after 30 minutes.</div>
+      <span class="check-path">secpol.msc → Account Policies → Account Lockout Policy</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>👻</span></div>
+    <div class="check-content">
+      <div class="check-title">Disable Guest Account</div>
+      <div class="check-detail">Confirm Guest is disabled (default). Never enable it. Use named Standard accounts for temporary users.</div>
+      <span class="check-path">lusrmgr.msc → Users → Guest → Properties → Account is disabled ✓</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>👤</span></div>
+    <div class="check-content">
+      <div class="check-title">Rename / Disable Built-in Administrator</div>
+      <div class="check-detail">Rename to a non-obvious name; use LAPS for managed local admin passwords on domain machines.</div>
+      <span class="check-path">lusrmgr.msc → Users → Administrator → Rename / Disable</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🚫</span></div>
+    <div class="check-content">
+      <div class="check-title">Disable AutoRun / AutoPlay</div>
+      <div class="check-detail">All drive types; prevents USB-delivered malware auto-execution. Group Policy enforcement preferred.</div>
+      <span class="check-path">gpedit.msc → Administrative Templates → Windows Components → AutoPlay Policies</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>⚡</span></div>
+    <div class="check-content">
+      <div class="check-title">Disable Unused Services</div>
+      <div class="check-detail">Remote Registry, Telnet, SMBv1, unnecessary network services. Set to Disabled, not just Manual.</div>
+      <span class="check-path">services.msc → double-click service → Startup type: Disabled</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🗝️</span></div>
+    <div class="check-content">
+      <div class="check-title">Deploy Password Manager</div>
+      <div class="check-detail">Ensures unique strong password for every account. Eliminates password reuse. Enterprise: 1Password, Bitwarden, LAPS.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>📅</span></div>
+    <div class="check-content">
+      <div class="check-title">Set Account Expiration for Temporary Accounts</div>
+      <div class="check-detail">Contractors, interns, temporary workers — set expiration to last day of access requirement.</div>
+      <span class="check-path">ADUC → User → Account tab → Account expires</span>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-box"><span>🕐</span></div>
+    <div class="check-content">
+      <div class="check-title">Restrict Logon Hours (Domain)</div>
+      <div class="check-detail">Domain accounts only; restrict to business hours for standard employees; alerts on out-of-hours access.</div>
+      <span class="check-path">ADUC → User → Account tab → Logon Hours</span>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.7 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">BitLocker</span>Full-volume encryption; Pro+ only; TPM-backed; 48-digit recovery key; stolen laptop → data protected</div>
+    <div class="summary-item"><span class="s-sym">BitLocker-To-Go</span>Removable media encryption; any Windows can read; only Pro+ can encrypt</div>
+    <div class="summary-item"><span class="s-sym">EFS</span>Per-file encryption; user certificate-based; admin can't read either; copy to FAT32 = decrypted</div>
+    <div class="summary-item"><span class="s-sym">Password length</span>Most impactful policy; 12+ characters minimum; passphrases beat complex short passwords</div>
+    <div class="summary-item"><span class="s-sym">Password complexity</span>3 of 4 character categories; Windows setting: "must meet complexity requirements"</div>
+    <div class="summary-item"><span class="s-sym">Password expiration</span>NIST: only change on suspected compromise; traditional: 90-day rotation (still on exam)</div>
+    <div class="summary-item"><span class="s-sym">Password history</span>Remember 24; prevents recycling; needs min age=1 day to prevent change-and-revert</div>
+    <div class="summary-item"><span class="s-sym">BIOS Supervisor PW</span>Gates UEFI settings access; prevents disabling Secure Boot / changing boot order</div>
+    <div class="summary-item"><span class="s-sym">BIOS Power-On PW</span>Gates boot entirely; must enter before OS loads; strongest pre-OS access control</div>
+    <div class="summary-item"><span class="s-sym">Screensaver lock</span>Auto-lock on inactivity; Win+L for immediate; password on resume required</div>
+    <div class="summary-item"><span class="s-sym">Guest account</span>Disabled by default — keep it disabled; never enable for temporary users</div>
+    <div class="summary-item"><span class="s-sym">Account lockout</span>5 attempts → 30-min lockout; does not apply to built-in admin by default</div>
+    <div class="summary-item"><span class="s-sym">Default admin</span>Rename + strong password + LAPS on domain; disable if not needed</div>
+    <div class="summary-item"><span class="s-sym">AutoRun disabled</span>Group Policy → AutoPlay Policies → Turn off AutoPlay → All drives; prevents USB malware auto-exec</div>
+    <div class="summary-item"><span class="s-sym">Unused services</span>Disable (not Manual) Remote Registry, Telnet, SMBv1; attack surface reduction</div>
+    <div class="summary-item"><span class="s-sym">Password manager</span>Unique password per account; eliminates credential reuse; enterprise-grade for orgs</div>
+    <div class="summary-item"><span class="s-sym">Account expiration</span>Set for contractors/temps to last day of access; prevents stale privileged accounts</div>
+    <div class="summary-item"><span class="s-sym">Logon hours</span>Restrict domain accounts to business hours; unusual off-hours login = red flag</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> A laptop is stolen from a user's car — how should the data have been protected? → BitLocker (full-volume encryption).<br>
+  <strong>Scenario 2:</strong> A user leaves their workstation unlocked and unattended — what two controls address this? → Screensaver lock (auto) + user training to use Win+L (manual).<br>
+  <strong>Scenario 3:</strong> An infected USB drive auto-executed malware when inserted — what hardening was missing? → AutoRun was not disabled via Group Policy.<br>
+  <strong>Scenario 4:</strong> An attacker is running a brute-force attack against a Windows login — what stops it? → Account lockout policy (locks after N failed attempts).<br>
+  <strong>Scenario 5:</strong> Multiple machines were compromised by an attacker using a known local admin password that was the same on all machines → LAPS not deployed; all local admin accounts shared the same password.<br>
+  <strong>Scenario 6:</strong> A contractor left 6 months ago but their account still exists and was used to access the system → Account expiration not configured; IAM deprovisioning failed.<br>
+  <strong>Scenario 7:</strong> A user can access UEFI settings and changed the boot order to boot from USB, bypassing Windows login → BIOS/UEFI Supervisor password not set.<br>
+  <strong>Scenario 8:</strong> A file is EFS-encrypted; the user's profile was deleted before the certificate was backed up — can the file be recovered? → Not without the EFS certificate or a pre-configured Data Recovery Agent (DRA).<br>
+  <strong>Scenario 9:</strong> Which password policy setting prevents a user from changing their password and immediately changing it back to bypass the history requirement? → Minimum password age (set to 1 day).</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

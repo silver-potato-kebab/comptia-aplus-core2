@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.11 — Configure Relevant Security Settings in a Browser</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* METHOD CARD */
+  .method-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 18px 0 28px; }
+  .method-header { padding: 13px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; border-bottom: 2px solid var(--border); }
+  .method-header.install  { background: var(--accent2-light); border-bottom-color: #2c3e6b33; }
+  .method-header.setting  { background: var(--accent3-light); border-bottom-color: #1a6b3a33; }
+  .method-header.danger   { background: var(--accent-light);  border-bottom-color: #c0392b33; }
+  .method-header.neutral  { background: var(--surface2);      border-bottom-color: var(--border2); }
+  .method-header.privacy  { background: var(--accent4-light); border-bottom-color: #b5590a33; }
+  .method-name { font-family: var(--mono); font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; line-height: 1.25; }
+  .method-sub  { font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .method-tags { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+  .tag-critical { background: #1a1a18; color: #fff; }
+  .tag-high     { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b44; }
+  .tag-medium   { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .tag-low      { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+  .tag-info     { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+
+  .method-body { }
+  .method-row { display: grid; grid-template-columns: 185px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .method-row:last-child { border-bottom: none; }
+  .method-label { font-weight: 600; color: var(--accent2); padding: 10px 14px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .method-desc  { padding: 10px 14px; color: var(--muted); line-height: 1.6; }
+  .method-desc strong { color: var(--text); }
+
+  /* SPEC ROW */
+  .method-spec-row { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+  .method-spec { padding: 9px 14px; border-right: 1px solid var(--border); font-family: var(--sans); font-size: 13px; }
+  .method-spec:last-child { border-right: none; }
+  .method-spec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .method-spec-value { font-weight: 600; color: var(--text); line-height: 1.35; }
+  .spec-final { color: var(--accent); }
+  .spec-good  { color: var(--accent3); }
+  .spec-med   { color: var(--accent4); }
+
+  /* COMPARISON TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; font-size: 13.5px; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); background: var(--surface2); font-size: 13px; white-space: nowrap; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .cell-yes  { color: var(--accent3); font-weight: 700; }
+  .cell-no   { color: var(--accent);  font-weight: 700; }
+  .cell-part { color: var(--accent4); font-weight: 700; }
+
+  /* DECISION FLOW */
+  .decision-flow { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-family: var(--sans); font-size: 14px; }
+  .df-title { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .df-row { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .df-row:last-child { border-bottom: none; }
+  .df-condition { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; font-size: 12.5px; color: var(--text); min-width: 190px; flex-shrink: 0; font-weight: 600; }
+  .df-arrow { color: var(--border2); font-size: 16px; padding-top: 5px; flex-shrink: 0; }
+  .df-result { color: var(--muted); line-height: 1.55; }
+  .df-result strong { color: var(--accent); }
+  .df-result .good { color: var(--accent3); font-weight: 600; }
+
+  /* CERTIFICATE ANATOMY */
+  .cert-block { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 18px 0 28px; font-family: var(--sans); font-size: 13.5px; }
+  .cert-header { background: var(--accent3-light); border-bottom: 2px solid #1a6b3a33; padding: 10px 18px; display: flex; align-items: center; gap: 12px; }
+  .cert-lock { font-size: 18px; }
+  .cert-header-text { }
+  .cert-header-title { font-weight: 700; font-size: 14px; color: var(--accent3); }
+  .cert-header-url { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .cert-row { display: grid; grid-template-columns: 160px 1fr; border-bottom: 1px solid var(--border); }
+  .cert-row:last-child { border-bottom: none; }
+  .cert-field { font-weight: 600; color: var(--accent2); padding: 8px 14px; background: var(--surface2); border-right: 1px solid var(--border); font-size: 12px; line-height: 1.4; }
+  .cert-value { padding: 8px 14px; color: var(--muted); line-height: 1.5; }
+  .cert-value strong { color: var(--text); }
+
+  /* HASH DISPLAY */
+  .hash-block { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 14px 18px; margin: 14px 0; font-family: var(--mono); font-size: 12px; }
+  .hash-label { font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .hash-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 6px; }
+  .hash-row:last-child { margin-bottom: 0; }
+  .hash-algo { color: var(--accent2); min-width: 60px; flex-shrink: 0; font-weight: 600; }
+  .hash-val { color: var(--text); word-break: break-all; line-height: 1.5; }
+  .hash-match { color: var(--accent3); font-family: var(--sans); font-size: 11px; font-weight: 600; margin-left: 8px; }
+  .hash-fail  { color: var(--accent);  font-family: var(--sans); font-size: 11px; font-weight: 600; margin-left: 8px; }
+
+  /* BROWSER STRIP */
+  .browser-strip { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; margin: 16px 0 28px; font-family: var(--sans); font-size: 12.5px; }
+  .browser-item { flex: 1; padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+  .browser-item:last-child { border-right: none; }
+  .browser-name { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+  .browser-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .browser-item.chrome  { background: #f0f8f3; } .browser-item.chrome .browser-name { color: var(--accent3); }
+  .browser-item.firefox { background: var(--accent4-light); } .browser-item.firefox .browser-name { color: var(--accent4); }
+  .browser-item.edge    { background: var(--accent2-light); } .browser-item.edge .browser-name { color: var(--accent2); }
+  .browser-item.safari  { background: var(--surface2); } .browser-item.safari .browser-name { color: var(--muted); }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 210px 1fr; gap: 20px; font-size: 15px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  /* SETTINGS CHECKLIST */
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+  .settings-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; font-family: var(--sans); font-size: 13px; }
+  .settings-card-title { font-weight: 700; color: var(--accent2); font-size: 13px; margin-bottom: 5px; display: flex; align-items: center; gap: 7px; }
+  .settings-card-title .sc-tag { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 1px 6px; border-radius: 2px; }
+  .sc-enable  { background: var(--accent3-light); color: var(--accent3); }
+  .sc-disable { background: var(--accent-light);  color: var(--accent); }
+  .sc-config  { background: var(--accent2-light); color: var(--accent2); }
+  .settings-card-body { color: var(--muted); line-height: 1.55; }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 155px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .settings-grid { grid-template-columns: 1fr; }
+    .def-item, .method-row, .cert-row { grid-template-columns: 1fr; }
+    .method-label, .cert-field { border-right: none; border-bottom: 1px solid var(--border); }
+    .method-spec-row { grid-template-columns: 1fr 1fr; }
+    .browser-strip { flex-direction: column; }
+    .browser-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .df-row { flex-direction: column; }
+    .df-condition { min-width: unset; }
+    .hash-row { flex-direction: column; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="index.html">Domain 2 — Security</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-current"><strong>2.11</strong> Browser Security Settings</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="2_10-SOHO-Network-Security.html">2.10</a>
+    <a class="nav-next" href="3_1-Windows-OS-Troubleshooting.html">3.1</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="book-header">
+  <div class="book-eyebrow"><span>2.11</span> CompTIA A+ Core 2 · Domain 2: Security</div>
+  <h1 class="book-title">Configure Relevant Security Settings in a Browser</h1>
+  <div class="book-subtitle">
+    <span>Trusted Sources &amp; Hashing</span>
+    <span>Certificates &amp; HTTPS</span>
+    <span>Privacy Settings</span>
+    <span>Extensions &amp; Features</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     INTRODUCTION
+     ═══════════════════════════════════════════════════ -->
+
+<p>The web browser is the most-used application on any endpoint — and because of that, it is one of the most targeted attack surfaces in modern computing. Phishing campaigns, drive-by malware downloads, credential theft, malicious extensions, certificate spoofing, and tracking all exploit the browser as the primary vector. A browser with default settings and no security hardening is an invitation to compromise.</p>
+
+<p>This objective covers the full scope of browser security from an IT support technician's perspective: safely sourcing and installing the browser itself, verifying software integrity with hashing, managing certificates and secure connections, configuring built-in privacy and security settings, and controlling the extension ecosystem. Every topic here corresponds to a real attack vector that a misconfigured browser enables.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Browser Scope on the Exam</p>
+  <p>The exam is browser-agnostic — it tests concepts that apply across Chrome, Firefox, Edge, and Safari rather than specific menu paths. When a scenario mentions a specific setting, focus on <em>what the setting does</em> and <em>what risk it mitigates</em>, not the exact navigation path in a particular browser. Where browser-specific paths are useful for practical application, they are noted, but the exam tests conceptual understanding.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION A — BROWSER DOWNLOAD AND INSTALLATION
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section A</span>Browser Download, Installation, and Patching</h2>
+
+<p>The security of a browser begins before it is even installed. Browsers obtained from unofficial sources may be trojanized — modified to include malware while appearing functionally identical to the legitimate browser. Verifying the integrity of downloaded software using cryptographic hashing is the technical control that ensures the file you downloaded is exactly what the publisher released.</p>
+
+<h3 class="section">Trusted vs. Untrusted Sources</h3>
+
+<div class="method-card">
+  <div class="method-header install">
+    <div>
+      <div class="method-name">Trusted vs. Untrusted Download Sources</div>
+      <div class="method-sub">Where you get the installer matters as much as what the installer does</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-critical">Foundation</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Trusted sources</div>
+      <div class="method-desc">A <span class="key-term">trusted source</span> is a distribution channel directly controlled by the software publisher — the official vendor website, a platform's official app store, or an enterprise software deployment system. For browsers: <strong>google.com/chrome</strong>, <strong>mozilla.org/firefox</strong>, <strong>microsoft.com/edge</strong>. The publisher controls these channels, can sign the hosted files with their code-signing certificate, and bears accountability for the software distributed through them. Downloads from official vendor sites always arrive over HTTPS, protecting the download from interception and tampering in transit.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Untrusted sources</div>
+      <div class="method-desc"><span class="key-term">Untrusted sources</span> include third-party download aggregators (CNET Download, Softonic, MajorGeeks), file-sharing sites, torrents, and any site that is not the official vendor. These sources introduce risk at two levels: <strong>(1) Bundled software</strong> — the installer wraps the legitimate browser with additional unwanted programs (toolbars, adware, PUPs); <strong>(2) Trojanized installers</strong> — the installer has been modified to include malware that runs during installation. Even if the resulting browser appears functional, a compromised installer may have silently backdoored the system. Additionally, search engine advertisements frequently impersonate official download pages — always navigate directly to the official URL rather than clicking sponsored search results.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Code signing</div>
+      <div class="method-desc">Legitimate browser installers from official vendors are <span class="key-term">code-signed</span> — digitally signed with the publisher's private key using a certificate issued by a trusted Certificate Authority (CA). When Windows executes a code-signed installer, it displays the publisher's verified name in the UAC (User Account Control) prompt: <strong>"Verified publisher: Google LLC"</strong> vs. an unsigned installer that shows <strong>"Unknown publisher"</strong>. An unknown publisher warning on a browser installer is a strong signal to stop and verify. Code signing does not guarantee software is benign (certificates can be stolen or issued fraudulently) but it establishes verified identity and means tampering is detectable.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Enterprise deployment</div>
+      <div class="method-desc">In managed enterprise environments, browsers are deployed through software management systems — SCCM/Intune, JAMF, Ansible, or similar tools — using pre-vetted, IT-approved installer packages. This prevents users from installing arbitrary browsers or browser versions from untrusted sources, and ensures all deployed browsers match the organization's security baseline. The IT department controls which browser versions are permitted and which extensions are allowed or blocked via Group Policy.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Hashing — Verifying Download Integrity</h3>
+
+<div class="method-card">
+  <div class="method-header install">
+    <div>
+      <div class="method-name">Cryptographic Hashing for File Verification</div>
+      <div class="method-sub">Mathematically confirming that a downloaded file has not been tampered with</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">Integrity Verification</span></div>
+  </div>
+  <div class="method-spec-row">
+    <div class="method-spec"><div class="method-spec-label">What it verifies</div><div class="method-spec-value">File has not been modified since publisher released it</div></div>
+    <div class="method-spec"><div class="method-spec-label">What it does NOT verify</div><div class="method-spec-value spec-med">That the publisher's copy was safe to begin with</div></div>
+    <div class="method-spec"><div class="method-spec-label">Common algorithms</div><div class="method-spec-value">MD5, SHA-1 (legacy), SHA-256 (preferred)</div></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">How hashing works</div>
+      <div class="method-desc">A <span class="key-term">cryptographic hash function</span> takes an input file of any size and produces a fixed-length output — the <span class="key-term">hash value</span> (also called a digest, checksum, or fingerprint). The critical properties: <strong>(1) Deterministic</strong> — the same input always produces the same hash; <strong>(2) Avalanche effect</strong> — changing even one byte of the input produces a completely different hash; <strong>(3) One-way</strong> — you cannot reconstruct the file from its hash; <strong>(4) Collision resistant</strong> — it is computationally infeasible to produce two different files with the same hash (for strong algorithms). These properties make the hash a reliable fingerprint of the file's exact contents.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">The verification workflow</div>
+      <div class="method-desc"><strong>Step 1:</strong> Navigate to the official vendor download page. Note the published hash value (SHA-256 is standard) for the specific installer version — this is the <em>expected hash</em>. <strong>Step 2:</strong> Download the installer file. <strong>Step 3:</strong> Compute the hash of the downloaded file using a trusted tool. <strong>Step 4:</strong> Compare the computed hash to the published expected hash. If they match exactly, the file is bit-for-bit identical to what the publisher published — no tampering occurred. If they do not match, the file was modified in transit or the source is not genuine — do not execute it.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Hashing tools</div>
+      <div class="method-desc"><strong>Windows (PowerShell):</strong> <code>Get-FileHash filename.exe -Algorithm SHA256</code>. <strong>Windows (CertUtil):</strong> <code>certutil -hashfile filename.exe SHA256</code>. <strong>Linux/macOS:</strong> <code>sha256sum filename.tar.gz</code> or <code>shasum -a 256 filename.dmg</code>. These built-in tools require no additional software and compute the SHA-256 hash of any file, ready for comparison against the published value.</div>
+    </div>
+  </div>
+</div>
+
+<p>The hash verification workflow looks like this in practice. Firefox publishes SHA-256 hashes for all release installers. After downloading the installer, a technician runs the hash tool and compares outputs:</p>
+
+<div class="hash-block">
+  <div class="hash-label">Hash Verification Example — Firefox Installer</div>
+  <div class="hash-row">
+    <span class="hash-algo">Published</span>
+    <span class="hash-val">a3f2c8e1b04d97f6c52e84a1079b3d56f8e2c41a7b3d0f9e6c82a14b5d07e3f2</span>
+  </div>
+  <div class="hash-row">
+    <span class="hash-algo">Computed</span>
+    <span class="hash-val">a3f2c8e1b04d97f6c52e84a1079b3d56f8e2c41a7b3d0f9e6c82a14b5d07e3f2</span>
+    <span class="hash-match">✓ MATCH — safe to install</span>
+  </div>
+</div>
+
+<div class="hash-block">
+  <div class="hash-label">Hash Verification Example — Tampered / Wrong Source</div>
+  <div class="hash-row">
+    <span class="hash-algo">Published</span>
+    <span class="hash-val">a3f2c8e1b04d97f6c52e84a1079b3d56f8e2c41a7b3d0f9e6c82a14b5d07e3f2</span>
+  </div>
+  <div class="hash-row">
+    <span class="hash-algo">Computed</span>
+    <span class="hash-val">9b17c4a2f3e05d8b6c4a91f2e07b5c38d91f3a2b8c6e0d4f7a1b9c3e5d7f2a4c</span>
+    <span class="hash-fail">✗ MISMATCH — do not execute</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Hash Algorithm Security Status</p>
+  <p><strong>MD5</strong> — 128-bit output. Cryptographically broken; collision attacks are practical. Still used for non-security purposes (detecting accidental corruption) but not suitable for security verification. <strong>SHA-1</strong> — 160-bit output. Deprecated for security use; collision attacks have been demonstrated (SHAttered attack, 2017). <strong>SHA-256</strong> (SHA-2 family) — 256-bit output. Current standard for file integrity verification; no practical attacks known. <strong>SHA-3</strong> — structurally different from SHA-2; equally strong; less common in practice. The exam tests that SHA-256 is the current appropriate choice; MD5 and SHA-1 are legacy/broken.</p>
+</div>
+
+<h3 class="section">Browser Patching</h3>
+
+<div class="method-card">
+  <div class="method-header install">
+    <div>
+      <div class="method-name">Browser Patching</div>
+      <div class="method-sub">Keeping the browser updated to eliminate known exploitable vulnerabilities</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-critical">Ongoing Requirement</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Why browsers need rapid patching</div>
+      <div class="method-desc">Browsers are extraordinarily complex software — Chrome is over 30 million lines of code. This complexity, combined with the browser's role executing untrusted content from arbitrary websites (JavaScript, WebAssembly, HTML/CSS rendering, media decoding), creates a large and continuously evolving attack surface. Browsers receive security updates far more frequently than most applications: Chrome releases major versions every four weeks and issues emergency security patches within days of critical vulnerability disclosure. An unpatched browser may have dozens of publicly known, actively exploited vulnerabilities. <span class="key-term">Zero-day exploits</span> targeting browsers are among the most valuable assets in the exploit market — the browser is the primary path for drive-by malware delivery.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Auto-update behavior</div>
+      <div class="method-desc">Modern browsers (Chrome, Firefox, Edge) update automatically in the background and apply updates on next restart. Chrome checks for updates every few hours. Firefox updates silently by default. Edge updates through Windows Update in addition to its own updater. <strong>Auto-update should never be disabled.</strong> The most common reason browsers are found unpatched is that the user never restarts the browser — a browser that has been running for weeks without restart may be several versions behind even with auto-update enabled. Encourage users to restart the browser periodically, or configure forced restart after update via policy.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Checking the current version</div>
+      <div class="method-desc"><strong>Chrome:</strong> <code>chrome://settings/help</code> — shows current version and triggers an update check. <strong>Firefox:</strong> Menu → Help → About Firefox — checks for updates. <strong>Edge:</strong> <code>edge://settings/help</code>. These pages display the version number and whether the browser is up to date. In enterprise environments, browser versions can be centrally monitored and enforced through Group Policy or endpoint management tools.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">EOL browsers</div>
+      <div class="method-desc">Browsers that are no longer supported by their vendor receive no security patches — Internet Explorer (retired June 2022) is the canonical example. Using an EOL browser exposes the system to all vulnerabilities discovered after the last patch, with no remediation path except replacement. Internet Explorer has hundreds of unpatched CVEs and should never be used for general browsing. Legacy web applications that require Internet Explorer should be accessed through <strong>IE Mode in Edge</strong>, which provides the IE rendering engine inside a supported, actively patched browser wrapper.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION B — EXTENSIONS AND PLUG-INS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section B</span>Extensions and Plug-ins</h2>
+
+<p>Browser extensions run with elevated privileges inside the browser — they can read and modify web page content, intercept network requests, access cookies, manage downloads, and communicate with external servers. This power makes malicious extensions one of the most effective browser-based attack techniques. Extension security requires both understanding where extensions come from and actively managing what is installed.</p>
+
+<h3 class="section">Trusted and Untrusted Extension Sources</h3>
+
+<div class="method-card">
+  <div class="method-header danger">
+    <div>
+      <div class="method-name">Extension Sources — Trusted vs. Untrusted</div>
+      <div class="method-sub">Where an extension comes from determines the baseline level of trust it deserves</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">High Risk Area</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Official stores (trusted)</div>
+      <div class="method-desc">Browser vendors operate official extension stores — the <strong>Chrome Web Store</strong>, <strong>Firefox Add-Ons (AMO)</strong>, and <strong>Microsoft Edge Add-ons</strong>. Extensions distributed through these stores are reviewed by the vendor before publication (though the depth of review varies) and are scanned for known malware signatures. If a malicious extension is discovered post-publication, the vendor can remotely remove it from all installations. Official store distribution also means extensions receive automatic updates through the browser's extension update mechanism. <strong>Prefer official store installations over sideloading.</strong></div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Untrusted sources and sideloading</div>
+      <div class="method-desc"><span class="key-term">Sideloading</span> is the installation of a browser extension from outside the official store — typically by loading an unpacked extension from a local directory, or installing a <code>.crx</code> file directly. Sideloaded extensions bypass store review entirely, receive no automatic security scanning, and are not subject to remote removal by the vendor if malicious. Social engineering attacks commonly direct users to sideload a malicious extension under a pretext ("install this extension to verify your account" or "required for accessing our company portal"). <strong>Chrome and Edge restrict sideloading by default</strong> — extensions installed outside the official store are disabled at next browser launch with a warning. This restriction can be overridden via enterprise policy.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Malicious extension behaviors</div>
+      <div class="method-desc">Malicious extensions have been documented performing: <strong>credential theft</strong> (reading form fields on banking and email sites), <strong>session hijacking</strong> (stealing authentication cookies), <strong>clipboard hijacking</strong> (replacing cryptocurrency wallet addresses copied to clipboard), <strong>ad injection</strong> (inserting advertisements into web pages), <strong>data exfiltration</strong> (sending browsing history and form data to external servers), and <strong>cryptomining</strong> (running cryptocurrency mining code in the background). Because extensions run persistently in the browser, they operate continuously — not just when you visit a specific site.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Extension permissions review</div>
+      <div class="method-desc">Every extension requests specific permissions during installation — "Read and change all your data on all websites," "Manage your downloads," "Read and change your browsing history." <strong>Review permissions before installing.</strong> A simple theme extension that requests "read all data on all websites" should raise immediate suspicion — that permission is far broader than a theme needs. The principle of least privilege applies: an extension should only have the permissions it legitimately needs for its stated function. Overly broad permission requests are a signal of malicious intent or poor security practice.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Supply chain attacks on extensions</div>
+      <div class="method-desc">Even a formerly trusted extension can become malicious through a <span class="key-term">supply chain attack</span>. Extension developers may be targeted by attackers who compromise their Google account, update the extension with malicious code, and push the update to all users — who receive it automatically. Alternatively, popular extensions are sometimes purchased by companies that subsequently add malicious functionality. Regularly audit installed extensions and remove any that are no longer maintained, have changed ownership, or whose permissions have expanded unexpectedly after an update.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION C — PASSWORD MANAGERS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section C</span>Password Managers</h2>
+
+<div class="method-card">
+  <div class="method-header setting">
+    <div>
+      <div class="method-name">Password Managers</div>
+      <div class="method-sub">Secure storage and auto-fill for unique, complex credentials on every site</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-low">Best Practice</span><span class="tag tag-high">High Value</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Why password managers matter</div>
+      <div class="method-desc">The single most common cause of account compromise is password reuse — using the same password across multiple sites. When one site suffers a data breach and credentials are exposed, attackers use automated <span class="key-term">credential stuffing</span> attacks to try those credentials against hundreds of other sites. A password manager solves this by generating and storing a unique, random, complex password for every site — the user only needs to remember one strong master password. Password managers also resist phishing: they match stored credentials to the exact domain, and will not autofill a saved credential for <code>paypa1.com</code> when it was saved for <code>paypal.com</code>.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Built-in browser password managers</div>
+      <div class="method-desc">All major browsers include built-in password managers (Chrome Password Manager, Firefox Lockwise, Edge Password Manager, Safari Keychain). These are convenient and secure for basic use — credentials are encrypted and synced across devices via the browser account. Limitations: they are browser-specific (credentials saved in Chrome are not accessible in Firefox), they do not typically provide cross-application password management, and their security is tied to the security of the browser account (Google account, Microsoft account). For most users, the built-in manager is a significant improvement over no manager or reused passwords.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Dedicated password managers</div>
+      <div class="method-desc">Dedicated password managers (Bitwarden, 1Password, Dashlane, KeePass) operate as browser extensions and standalone applications. They provide: <strong>cross-browser access</strong>, <strong>cross-device sync</strong>, <strong>secure note storage</strong>, <strong>breach monitoring</strong> (alerting when a saved site appears in known breach databases), <strong>password health reports</strong> (identifying reused, weak, or old passwords), and in some cases <strong>TOTP (two-factor authentication) token generation</strong>. KeePass is an offline, open-source option for users with high security requirements or no trust in cloud-based storage.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Security considerations</div>
+      <div class="method-desc">Password managers introduce a single point of failure — the master password. If an attacker obtains the master password, they obtain all stored credentials. Mitigations: use a long, unique master password (a passphrase works well — never reuse it anywhere); enable multi-factor authentication on the password manager account; use a reputable manager with a published security model (zero-knowledge architecture means even the provider cannot read your passwords). The risk of a single strong master password protecting all credentials is far lower than the risk of weak, reused passwords across all sites.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION D — SECURE CONNECTIONS AND CERTIFICATES
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section D</span>Secure Connections and Valid Certificates</h2>
+
+<p>HTTPS (HTTP over TLS) is the mechanism that encrypts communication between the browser and a web server, protecting credentials, session tokens, and data from interception. The <span class="key-term">TLS certificate</span> — the digital credential presented by the web server — serves two distinct purposes: it enables the encryption, and it proves the server's identity. Understanding certificates is fundamental to recognizing and responding correctly to browser certificate warnings.</p>
+
+<h3 class="section">How Certificates Establish Trust</h3>
+
+<div class="method-card">
+  <div class="method-header setting">
+    <div>
+      <div class="method-name">TLS Certificates and the Certificate Authority Chain</div>
+      <div class="method-sub">How the browser decides whether a certificate is valid and trustworthy</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-info">Core Concept</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Certificate purpose</div>
+      <div class="method-desc">A TLS certificate is a digitally signed document that contains: the domain name(s) it is valid for, the public key of the server, the issuing Certificate Authority (CA), the validity period (not before / not after dates), and the CA's digital signature over all of this data. When your browser connects to <code>https://example.com</code>, the server presents its certificate. The browser performs several validations: <strong>(1)</strong> Is the domain in the certificate the domain I connected to? <strong>(2)</strong> Is the current date within the validity period? <strong>(3)</strong> Was the certificate signed by a CA that my browser trusts?</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Certificate Authority chain</div>
+      <div class="method-desc">Certificates form a <span class="key-term">chain of trust</span>. A <strong>Root CA</strong> is a CA whose certificate is embedded directly in the browser (or OS) as inherently trusted — browsers ship with ~130–170 trusted root CA certificates. Root CAs typically do not issue end-entity certificates directly; instead, they sign <strong>Intermediate CA</strong> certificates, which then sign <strong>end-entity (leaf) certificates</strong> for individual websites. The browser validates the full chain: website cert → intermediate CA cert → root CA cert → trusted root store. If any link in the chain is broken, expired, or untrusted, the browser displays a certificate warning.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Certificate types</div>
+      <div class="method-desc"><strong>Domain Validation (DV)</strong> — the CA verified that the applicant controls the domain. Fast to obtain (minutes), free via Let's Encrypt, provides encryption but no organizational identity information. The padlock appears the same as EV. <strong>Organization Validation (OV)</strong> — the CA also verified the legal existence and identity of the organization. Certificate details show the organization name. <strong>Extended Validation (EV)</strong> — the most rigorous CA verification process; requires extensive organizational documentation. Historically displayed the company name in the browser address bar in green (most browsers removed this display, but EV certificates still exist in the certificate details). DV is sufficient for encryption; OV/EV provide additional identity assurance.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Self-signed certificates</div>
+      <div class="method-desc">A <span class="key-term">self-signed certificate</span> is signed by the same entity that issued it — it has no CA chain and is trusted by no browser's root store by default. Browsers display a certificate error when encountering self-signed certificates: "Your connection is not private" (Chrome), "Warning: Potential Security Risk Ahead" (Firefox). Self-signed certificates are commonly used on internal network devices (routers, NAS devices, development servers) where obtaining a CA-signed certificate is impractical. The browser warning does not mean the connection is being attacked — but it does mean you cannot verify the server's identity through a trusted CA chain. Proceed with explicit awareness.</div>
+    </div>
+  </div>
+</div>
+
+<p>A valid certificate from a trusted CA displays as follows in the browser's certificate viewer. This is what a technician sees when inspecting a certificate on a secured site:</p>
+
+<div class="cert-block">
+  <div class="cert-header">
+    <div class="cert-lock">🔒</div>
+    <div class="cert-header-text">
+      <div class="cert-header-title">Certificate is valid — Connection is secure</div>
+      <div class="cert-header-url">https://www.example-bank.com</div>
+    </div>
+  </div>
+  <div class="cert-row">
+    <div class="cert-field">Issued To</div>
+    <div class="cert-value"><strong>www.example-bank.com</strong> — must match the domain you are visiting exactly</div>
+  </div>
+  <div class="cert-row">
+    <div class="cert-field">Issued By</div>
+    <div class="cert-value"><strong>DigiCert TLS RSA SHA256 2020 CA1</strong> — intermediate CA signed this certificate</div>
+  </div>
+  <div class="cert-row">
+    <div class="cert-field">Valid From / To</div>
+    <div class="cert-value"><strong>January 15, 2025 – January 15, 2026</strong> — certificate must be within this window</div>
+  </div>
+  <div class="cert-row">
+    <div class="cert-field">Certificate Type</div>
+    <div class="cert-value"><strong>Organization Validation (OV)</strong> — CA verified organizational identity, not just domain control</div>
+  </div>
+  <div class="cert-row">
+    <div class="cert-field">Public Key</div>
+    <div class="cert-value"><strong>RSA 2048-bit</strong> (or ECDSA P-256) — used to establish the encrypted session</div>
+  </div>
+  <div class="cert-row">
+    <div class="cert-field">Signature Algorithm</div>
+    <div class="cert-value"><strong>SHA-256 with RSA</strong> — how the CA signed this certificate; SHA-1 here is a red flag</div>
+  </div>
+  <div class="cert-row">
+    <div class="cert-field">Chain of Trust</div>
+    <div class="cert-value"><strong>DigiCert Global Root CA → DigiCert TLS RSA SHA256 2020 CA1 → www.example-bank.com</strong></div>
+  </div>
+</div>
+
+<h3 class="section">Certificate Warnings — What They Mean</h3>
+
+<div class="method-card">
+  <div class="method-header danger">
+    <div>
+      <div class="method-name">Certificate Error Types and Responses</div>
+      <div class="method-sub">Every certificate warning has a specific cause — understanding the cause drives the correct response</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">Troubleshooting</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Name mismatch</div>
+      <div class="method-desc">The domain in the certificate does not match the domain you are connected to. Causes: connecting to an IP address directly instead of a hostname, a misconfigured server presenting the wrong certificate, a legitimate HTTPS interception proxy (corporate proxy or parental control appliance inserting its own certificate), or a <span class="key-term">man-in-the-middle (on-path) attack</span> where traffic has been redirected to an attacker's server presenting a certificate for the wrong domain. If this appears unexpectedly on a site you access regularly, investigate before proceeding.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Expired certificate</div>
+      <div class="method-desc">The current date is outside the certificate's validity period. Most commonly caused by the website operator forgetting to renew the certificate before expiration — a mundane administrative failure. Let's Encrypt certificates expire every 90 days and require automated renewal; manual renewals are commonly missed. An expired certificate indicates the site is poorly maintained; the encryption is still present, but the identity assurance is compromised. <strong>Also check the client's system clock</strong> — a system clock set to the wrong date will cause all certificates to appear expired or not-yet-valid. Always rule out clock error before assuming a site certificate problem.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Untrusted CA</div>
+      <div class="method-desc">The certificate was signed by a CA not in the browser's trusted root store. Common causes: self-signed certificates on internal devices, internal enterprise CAs whose root certificate has not been distributed to client machines (common in enterprise environments — IT resolves by deploying the internal root CA certificate via Group Policy), or in rare cases, a certificate from a CA that has been removed from the trusted store due to CA malpractice. In enterprise environments, the internal CA's root certificate must be deployed to all endpoints before users can browse internal HTTPS sites without warnings.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Revoked certificate</div>
+      <div class="method-desc">The CA has invalidated the certificate before its expiration date — typically because the private key was compromised, the certificate was issued in error, or the organization's relationship with the CA was terminated. Browsers check revocation status via <span class="key-term">CRL (Certificate Revocation List)</span> downloads or <span class="key-term">OCSP (Online Certificate Status Protocol)</span> queries. A revoked certificate warning on a site you regularly use should be treated as a potential security incident — either the site's private key was compromised (meaning attackers may be impersonating the site) or there is a CA administration issue.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Never Click Through Certificate Warnings on Sensitive Sites</p>
+  <p>Browsers make certificate errors difficult to bypass deliberately — they require extra clicks and display prominent warnings for a reason. For internal lab devices, development servers, and known self-signed deployments, accepting a certificate warning after verifying the cause is acceptable. For any site that involves login credentials, financial information, or sensitive data, a certificate warning should stop all interaction until the cause is understood. An attacker executing a man-in-the-middle attack will present a certificate that triggers exactly this type of warning — clicking through is exactly what the attacker needs you to do.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION E — BROWSER SETTINGS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section E</span>Browser Security and Privacy Settings</h2>
+
+<p>Modern browsers include a comprehensive set of built-in security and privacy settings. Most users never examine these settings, leaving them at defaults that optimize for convenience rather than security. A technician hardening a workstation or troubleshooting a browser-related security issue must know what each setting does, when to change it, and what risk it addresses.</p>
+
+<h3 class="section">Pop-up Blocker</h3>
+
+<div class="method-card">
+  <div class="method-header setting">
+    <div>
+      <div class="method-name">Pop-up Blocker</div>
+      <div class="method-sub">Preventing websites from opening new browser windows or tabs without user intent</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-low">Enable by Default</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What it blocks</div>
+      <div class="method-desc">The <span class="key-term">pop-up blocker</span> prevents websites from calling the JavaScript <code>window.open()</code> function to open new browser windows or tabs without the user clicking a link. Pop-ups have been used to: display scareware ("Your computer has a virus! Call 1-800-SCAM-NOW"), open fake login pages, initiate drive-by downloads, flood the browser with windows to make it unusable (pop-up storm), and redirect users to malicious sites. All major browsers enable pop-up blocking by default. Individual sites can be added to an allow list (Settings → Pop-ups and redirects → Allow) for legitimate use cases like online banking confirmation windows or ticketing systems.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Legitimate pop-ups</div>
+      <div class="method-desc">Some legitimate web applications use pop-up windows — payment processors opening a payment confirmation window, OAuth login flows, online meeting software. When the pop-up blocker prevents a legitimate pop-up, the browser typically displays a notification in the address bar ("Pop-up blocked"). The user or technician can then grant permission for that specific site. <strong>Never disable the pop-up blocker globally</strong> to fix a single-site issue — always add a site-specific exception.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Clearing Browsing Data and Cache</h3>
+
+<div class="method-card">
+  <div class="method-header privacy">
+    <div>
+      <div class="method-name">Clearing Browsing Data / Cache</div>
+      <div class="method-sub">Removing locally stored records of browsing activity and cached website resources</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-medium">Privacy &amp; Troubleshooting</span></div>
+  </div>
+  <div class="method-spec-row">
+    <div class="method-spec"><div class="method-spec-label">Keyboard shortcut</div><div class="method-spec-value">Ctrl+Shift+Delete (Windows/Linux) · Cmd+Shift+Delete (Mac)</div></div>
+    <div class="method-spec"><div class="method-spec-label">Scope options</div><div class="method-spec-value">Last hour / 24 hours / 7 days / All time</div></div>
+    <div class="method-spec"><div class="method-spec-label">Who clears it</div><div class="method-spec-value spec-med">User, technician, or policy enforcement</div></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Browsing history</div>
+      <div class="method-desc">The browser maintains a local record of every URL visited, including the page title, timestamp, and visit count. Clearing browsing history removes these records from the browser's local database. <strong>Privacy use cases:</strong> on a shared computer, clearing history prevents other users from seeing what sites were visited. <strong>Security use cases:</strong> browsing history is a target for malware that exfiltrates user activity; on compromised systems, browsing history may be collected for profiling. Note: clearing local browsing history does not remove records from the ISP, network router logs, or websites themselves.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Browser cache</div>
+      <div class="method-desc">The <span class="key-term">browser cache</span> stores copies of web page resources — HTML, CSS, JavaScript, images, fonts — locally, so that when you revisit a page, the browser can load cached resources instead of re-downloading them. This improves performance. Clearing the cache forces the browser to re-download all resources on next visit. <strong>Troubleshooting use case:</strong> a cached version of a web page may cause display problems after the site has been updated — clearing the cache forces a fresh download. <strong>Security use case:</strong> cached content may include sensitive page content or authentication tokens that persist after logout; clearing cache on a shared computer removes this residual data.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Cookies and site data</div>
+      <div class="method-desc"><span class="key-term">Cookies</span> are small text files stored by websites in the browser. Session cookies maintain login state — they are the reason you don't need to log in on every page of a website. Persistent cookies store preferences and track user behavior across visits and sites. Clearing cookies logs you out of all websites and removes stored preferences. <strong>Security relevance:</strong> session cookies are a high-value target for theft (session hijacking). If a user reports "I was still logged in to my account after logging out on a shared computer," the cause is a session cookie that wasn't cleared — clearing cookies and site data resolves this.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Saved passwords and autofill</div>
+      <div class="method-desc">The "Clear browsing data" dialog also includes options to clear saved passwords and autofill form data. In security incident response on a compromised machine, clearing saved passwords prevents exfiltration of credentials stored in the browser's password database. In enterprise environments, IT policy may prohibit storing passwords in the browser and require use of a dedicated password manager — clearing saved passwords enforces this posture.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Private Browsing Mode</h3>
+
+<div class="method-card">
+  <div class="method-header privacy">
+    <div>
+      <div class="method-name">Private / Incognito Browsing Mode</div>
+      <div class="method-sub">A session that does not persist browsing data locally after the window closes</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-info">Know the Limits</span></div>
+  </div>
+  <div class="method-spec-row">
+    <div class="method-spec"><div class="method-spec-label">Chrome</div><div class="method-spec-value">Incognito (Ctrl+Shift+N)</div></div>
+    <div class="method-spec"><div class="method-spec-label">Firefox</div><div class="method-spec-value">Private Window (Ctrl+Shift+P)</div></div>
+    <div class="method-spec"><div class="method-spec-label">Edge</div><div class="method-spec-value">InPrivate (Ctrl+Shift+N)</div></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What it DOES do</div>
+      <div class="method-desc">Private browsing mode opens a temporary session that: <strong>does not write to browsing history</strong>; <strong>does not save cookies or site data</strong> after the window closes (cookies exist during the session but are discarded at the end); <strong>does not use or save autofill data</strong>; <strong>does not use cached files from regular sessions</strong> (starts fresh); <strong>discards any downloads from the download list</strong> (though the files themselves remain on disk). This makes private mode useful for: one-time logins on shared computers, testing websites without cached/cookie state interfering, browsing as if logged out of all accounts, and accessing content you don't want in browsing history.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">What it does NOT do</div>
+      <div class="method-desc"><strong>Critical exam point: private browsing does not provide anonymity on the network.</strong> The following can still see your browsing activity: <strong>your ISP</strong> (sees DNS queries and IP-level traffic); <strong>your employer's network/proxy</strong> (if browsing through corporate infrastructure); <strong>network administrators</strong> (who can see traffic at the router level); <strong>websites themselves</strong> (they see your IP address and can still track you via fingerprinting); <strong>any installed monitoring software</strong> on the local machine. Private browsing hides activity from other users of the same browser on the same device. It is a local privacy tool, not an anonymization tool.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Extensions in private mode</div>
+      <div class="method-desc">By default, browser extensions are <strong>not active</strong> in private/incognito windows — this is a security feature that prevents extensions from having access to private session data. Extensions must be individually granted permission to run in private mode (in extension settings). A malicious extension that cannot run in private mode cannot exfiltrate activity from private sessions. Conversely, if a user finds that a website works in private mode but not in regular mode, it often means a conflicting extension is the culprit — disabling extensions one by one in the regular window isolates the problem.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — What Private Browsing Does NOT Prevent</p>
+  <p>The exam will test whether you understand the limitations of private browsing. The correct answer to "what does private/incognito mode prevent?" is: it prevents local storage of browsing data (history, cookies, cache) on the device. It does <strong>not</strong> prevent the ISP, employer, or network administrator from seeing your traffic. It does <strong>not</strong> make you anonymous to websites. It does <strong>not</strong> hide activity from monitoring software on the machine. Common wrong answers: "prevents ISP tracking," "makes browsing anonymous," "protects against malware."</p>
+</div>
+
+<h3 class="section">Sign-in and Browser Data Synchronization</h3>
+
+<div class="method-card">
+  <div class="method-header privacy">
+    <div>
+      <div class="method-name">Browser Sign-in and Data Sync</div>
+      <div class="method-sub">Cloud synchronization of bookmarks, history, passwords, and settings across devices</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-medium">Privacy &amp; Security Tradeoff</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What sync does</div>
+      <div class="method-desc">When a user signs into their browser with a Google, Microsoft, Apple, or Firefox account and enables sync, the browser uploads selected data — bookmarks, browsing history, saved passwords, extensions, open tabs, settings — to the provider's cloud and synchronizes it across all signed-in devices. This is convenient but means sensitive data (particularly saved passwords) is stored in the cloud under the browser account's security posture. If the browser account is compromised (account takeover), the attacker gains access to all synced data including saved credentials.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Security implications</div>
+      <div class="method-desc"><strong>Account security is browser security.</strong> A Google account without 2FA that has sync enabled means a stolen password gives an attacker every password stored in Chrome. <strong>Best practices:</strong> enable multi-factor authentication on the browser account, use a strong unique password for the browser account, and review what is and isn't synced — it may not be necessary or appropriate to sync browsing history or to enable sync at all on shared or public computers. Some organizations disable browser sync entirely via policy to prevent corporate browsing data from being uploaded to personal accounts.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Shared/public computers</div>
+      <div class="method-desc">A user who signs into their browser account on a shared or public computer and forgets to sign out leaves their synced data — including saved passwords — accessible to the next user. On public computers, browsing in private/incognito mode prevents accidental sign-in persistence, and the computer should be using a fresh, non-persistent session if possible. IT policy for public-access computers should include browser profile isolation (each user gets a fresh, isolated browser profile) and session clearing on logout.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Ad Blockers</h3>
+
+<div class="method-card">
+  <div class="method-header setting">
+    <div>
+      <div class="method-name">Ad Blockers</div>
+      <div class="method-sub">Filtering advertising content — and the security benefits beyond improved UX</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-low">Security Benefit</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Beyond convenience</div>
+      <div class="method-desc">Ad blockers are commonly thought of as quality-of-life tools, but they provide genuine security benefits. <span class="key-term">Malvertising</span> — malicious advertising — is a significant attack vector where attackers inject malicious code into legitimate advertising networks, causing it to run on high-traffic, reputable websites. Victims visiting a major news site or weather site can be silently served malware through the ad network without the site owner's knowledge or complicity. An ad blocker that prevents the advertising code from loading also prevents the malicious code embedded in it from executing.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Recommended tools</div>
+      <div class="method-desc"><strong>uBlock Origin</strong> is the most widely recommended ad blocker for security-conscious users — it is open source, lightweight, highly effective, has no "acceptable ads" program, and blocks tracking scripts in addition to display ads. <strong>AdBlock Plus</strong> is popular but operates an "acceptable ads" whitelist paid for by advertisers. Built-in ad blocking is available in Brave Browser and increasingly in other browsers. In enterprise environments, DNS-based ad and tracking blocking (Pi-hole, NextDNS, Cloudflare Gateway) can filter ads at the network level without requiring a browser extension on every device.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Tracking protection</div>
+      <div class="method-desc">Modern browsers include built-in tracking protection features (Firefox Enhanced Tracking Protection, Chrome Privacy Sandbox, Edge Tracking Prevention) that block third-party tracking cookies and fingerprinting scripts without requiring an extension. These provide a baseline of privacy protection. Extensions like uBlock Origin provide additional coverage. The combination of browser-native tracking protection and a reputable ad-blocking extension provides strong protection against ad-based malware and cross-site tracking.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Proxy Settings</h3>
+
+<div class="method-card">
+  <div class="method-header setting">
+    <div>
+      <div class="method-name">Proxy Settings</div>
+      <div class="method-sub">Routing browser traffic through an intermediary server for inspection, filtering, or privacy</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-info">Enterprise &amp; Privacy</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">How proxies work</div>
+      <div class="method-desc">A <span class="key-term">proxy server</span> is an intermediary through which browser traffic is routed. When a proxy is configured, the browser does not connect directly to websites — it sends all requests to the proxy, which forwards them to the destination and returns the responses. The website sees the proxy's IP address, not the user's. Proxies can cache content (improving performance), filter requests (blocking prohibited sites), and inspect traffic (for malware scanning or DLP in enterprise environments).</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Enterprise proxy configuration</div>
+      <div class="method-desc">In enterprise environments, an explicit proxy is commonly configured so that all web traffic passes through a corporate proxy/security appliance (e.g., Zscaler, Blue Coat, Forcepoint, Cisco Web Security). The proxy performs: <strong>URL filtering</strong> (blocking prohibited sites per policy), <strong>malware scanning</strong> (inspecting downloaded files), <strong>SSL inspection</strong> (decrypting HTTPS to inspect content — requires the corporate proxy's CA certificate to be trusted by all endpoints), and <strong>DLP scanning</strong> (preventing sensitive data from being uploaded externally). Proxy settings in enterprise environments are typically pushed via Group Policy or PAC (Proxy Auto-Configuration) files.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Malicious proxy hijacking</div>
+      <div class="method-desc">A common malware technique is to modify the browser's or OS's proxy settings to route all traffic through an attacker-controlled proxy — enabling man-in-the-middle interception of all browsing including HTTPS (if combined with a rogue CA certificate installation). Symptoms: sudden certificate warnings across all sites, traffic goes through an unexpected proxy, performance degrades. <strong>Check proxy settings as part of any malware investigation:</strong> Settings → System → Open your computer's proxy settings (Chrome/Edge), or about:config search for network.proxy (Firefox). Unexpected proxy settings indicate a potentially compromised system.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">PAC files</div>
+      <div class="method-desc">A <span class="key-term">PAC (Proxy Auto-Configuration) file</span> is a JavaScript file that the browser downloads and executes to determine which proxy (if any) to use for each URL. PAC files are powerful — they can route different domains through different proxies, or bypass the proxy for internal sites. Malware can modify the browser's PAC file URL to point to a malicious PAC file that routes all traffic through an attacker's proxy. Verify the PAC file URL in proxy settings points to a legitimate, expected location.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Secure DNS</h3>
+
+<div class="method-card">
+  <div class="method-header setting">
+    <div>
+      <div class="method-name">Secure DNS (DoH / DoT)</div>
+      <div class="method-sub">Encrypting DNS queries to prevent interception and manipulation</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-low">Privacy Enhancement</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">The DNS privacy problem</div>
+      <div class="method-desc">Traditional DNS queries are sent in plaintext over UDP port 53. Every DNS query (every hostname you resolve, every website you visit) is visible to: your ISP, your network administrator, any on-path observer on the network, and any router your traffic passes through. Even with HTTPS, the DNS query for a site reveals the domain name before the encrypted connection is established. This enables ISPs to build browsing profiles and enables network-level censorship by poisoning DNS responses.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">DNS over HTTPS (DoH)</div>
+      <div class="method-desc"><span class="key-term">DNS over HTTPS (DoH)</span> encrypts DNS queries inside standard HTTPS traffic (port 443). Because it looks like normal HTTPS traffic, it is difficult for network operators to block, inspect, or modify. Browsers implementing DoH send DNS queries directly to a DoH-capable resolver (Cloudflare 1.1.1.1, Google 8.8.8.8, NextDNS) rather than to the OS-configured DNS server. This bypasses the ISP's resolver (and its potential logging and manipulation) but means DNS queries go to the configured DoH provider instead. Enable in Chrome at <code>chrome://settings/security</code> → Use secure DNS; Firefox enables it by default for US users.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Enterprise consideration</div>
+      <div class="method-desc">DoH can conflict with enterprise environments that rely on the corporate DNS resolver for internal hostname resolution and split-horizon DNS. If DoH is configured to use a public resolver (Cloudflare, Google), the browser will not be able to resolve internal hostnames that only exist in the corporate DNS. Enterprises often disable DoH via policy to ensure all DNS queries go through the corporate resolver, which provides both internal name resolution and security filtering. A network-level DoH resolver that handles both internal and filtered queries is the enterprise-friendly solution.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">DNS over TLS (DoT)</div>
+      <div class="method-desc"><span class="key-term">DNS over TLS (DoT)</span> encrypts DNS queries using TLS over port 853. Unlike DoH (which blends into HTTPS traffic on port 443), DoT uses a dedicated port — making it easier for network operators to identify, and either allow or block explicitly. DoT is more commonly used at the OS or router level rather than within the browser itself; DoH is the browser-native implementation. Both provide equivalent privacy benefits — encrypted, tamper-resistant DNS.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION F — BROWSER FEATURE MANAGEMENT
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section F</span>Browser Feature Management</h2>
+
+<p>Modern browsers include numerous features that can be individually enabled or disabled — both through user-facing settings and through enterprise policy. Feature management is about reducing attack surface: features that are not needed should not be running, and features that present risk should be controlled through policy rather than left to individual user discretion.</p>
+
+<h3 class="section">Managing Plug-ins, Extensions, and Features</h3>
+
+<div class="settings-grid">
+  <div class="settings-card">
+    <div class="settings-card-title">JavaScript <span class="sc-tag sc-config">Selective Control</span></div>
+    <div class="settings-card-body">Enabled by default and required for most modern websites. Can be disabled globally in Settings → Privacy and security → Site settings → JavaScript for maximum restriction, with site-specific exceptions. NoScript (Firefox) and uBlock Origin's advanced mode allow granular per-site JavaScript control — blocking scripts from all domains except explicitly allowed ones.</div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-card-title">WebRTC <span class="sc-tag sc-config">Privacy Risk</span></div>
+    <div class="settings-card-body">Web Real-Time Communication — used for voice/video calls in browsers. A known privacy leak: WebRTC can expose your real IP address even when using a VPN (WebRTC IP leak). Users relying on VPN for IP privacy should use a browser extension (WebRTC Control) or browser with WebRTC disabled. Firefox allows disabling via <code>about:config</code>: set <code>media.peerconnection.enabled</code> to false.</div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-card-title">Cookies — Third-Party <span class="sc-tag sc-disable">Disable</span></div>
+    <div class="settings-card-body">Third-party cookies are the primary mechanism for cross-site tracking. Blocking third-party cookies (Settings → Privacy and security → Cookies) prevents advertising networks from building profiles of your browsing across sites. Firefox blocks third-party cookies by default. Chrome is phasing out third-party cookies. Some legacy web applications require them for SSO — add site-specific exceptions only when needed.</div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-card-title">Notifications <span class="sc-tag sc-disable">Block by Default</span></div>
+    <div class="settings-card-body">Browser notifications are a spam and phishing vector — users are social-engineered into granting notification permissions to malicious sites, which then push scareware or phishing messages. Set notifications permission to "Don't allow sites to send notifications" (Settings → Privacy and security → Notifications). Grant notification permissions only to specific, trusted sites that legitimately use them.</div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-card-title">Geolocation <span class="sc-tag sc-config">Prompt Only</span></div>
+    <div class="settings-card-body">Allow only on user prompt (the default). Never globally allow geolocation access — sites should request it only when needed and you decide per-site whether to grant it. Revoke permissions for sites you no longer actively use: Settings → Privacy and security → Site settings → Location → Review existing permissions.</div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-card-title">Camera and Microphone <span class="sc-tag sc-config">Prompt Only</span></div>
+    <div class="settings-card-body">Always prompt (default behavior is correct). Audit which sites have been granted persistent camera or microphone access: Settings → Privacy and security → Site settings. Revoke access for any site that no longer needs it. Legitimate video conferencing sites (Zoom web, Meet) will re-request permission when needed.</div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-card-title">Flash (NPAPI plug-ins) <span class="sc-tag sc-disable">Disable/Remove</span></div>
+    <div class="settings-card-body">Adobe Flash reached end-of-life on December 31, 2020. All major browsers have removed Flash support. Flash was one of the most exploited browser plug-ins in history. If somehow still present (extremely legacy system), it should be uninstalled immediately. NPAPI plug-ins generally have been removed from modern Chrome; Firefox has also removed NPAPI support except for a few exceptions.</div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-card-title">Download Behavior <span class="sc-tag sc-config">Prompt Location</span></div>
+    <div class="settings-card-body">Configure the browser to prompt for save location on every download rather than auto-saving to the Downloads folder. This prevents drive-by downloads from silently saving files that a user might later accidentally execute. Some browsers also offer "Ask where to save each file before downloading" (Chrome: Settings → Downloads). Enabling Safe Browsing (or equivalent) adds malware scanning of downloads.</div>
+  </div>
+</div>
+
+<h3 class="section">Enterprise Browser Management via Group Policy</h3>
+
+<div class="method-card">
+  <div class="method-header neutral">
+    <div>
+      <div class="method-name">Enterprise Policy-Based Browser Management</div>
+      <div class="method-sub">Centrally enforcing browser settings across all managed endpoints</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-info">Enterprise</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What can be policy-managed</div>
+      <div class="method-desc">Chrome, Edge, and Firefox all provide Group Policy Administrative Templates (ADMX files) that allow IT administrators to enforce browser settings via Active Directory Group Policy or Intune/MDM. Policy-enforceable settings include: <strong>allowed/blocked extensions</strong> (whitelist only approved extensions, prevent installation of others), <strong>forced installation of extensions</strong> (deploy a security extension to all endpoints without user action), <strong>disabled features</strong> (prevent users from changing security settings like safe browsing, certificate verification), <strong>homepage and search engine</strong>, <strong>proxy settings</strong>, <strong>password manager</strong> (enable or force disable in favor of enterprise password manager), and <strong>browser sync behavior</strong> (disable sync with personal accounts).</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Extension allowlisting</div>
+      <div class="method-desc">Extension allowlisting is one of the most effective enterprise browser security controls. Rather than relying on users to exercise judgment about extension safety, the IT department maintains an approved list of extensions that are permitted, and all others are blocked — including both installation and operation of unapproved extensions. This prevents malicious extension installation entirely (even by a compromised user account) and eliminates the extension supply chain attack surface on managed devices. Extensions on the approved list can be force-installed on all endpoints via policy.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Safe Browsing / SmartScreen</div>
+      <div class="method-desc">Google Safe Browsing (Chrome), Microsoft SmartScreen (Edge), and Firefox's built-in protection maintain databases of known phishing sites, malware-distributing URLs, and malicious downloads. When a user navigates to or downloads from a known-bad URL, the browser displays a warning or blocks the request entirely. These should never be disabled. In enterprise environments, confirm Safe Browsing / SmartScreen is enforced via policy and cannot be disabled by users. Enhanced Safe Browsing (Chrome) provides additional real-time checks at the cost of sending more URL data to Google.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION G — COMPARISON AND DECISION GUIDE
+     ═══════════════════════════════════════════════════ -->
+
+<div class="ch-divider"></div>
+
+<h2 class="chapter"><span class="ch-num">Section G</span>Reference Tables and Decision Guide</h2>
+
+<h3 class="section">Browser Data Types — What Clearing Each One Does</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Data Type</th>
+      <th>What It Stores</th>
+      <th>Risk if Not Cleared</th>
+      <th>When to Clear</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Browsing history</td>
+      <td>URLs, page titles, visit timestamps</td>
+      <td>Privacy — reveals sites visited to others on the device</td>
+      <td>On shared computers, post-incident, privacy requirement</td>
+    </tr>
+    <tr>
+      <td>Cache</td>
+      <td>HTML, CSS, images, scripts from visited sites</td>
+      <td>Stale content shown; sensitive page data persists</td>
+      <td>Troubleshooting display issues; shared computer cleanup</td>
+    </tr>
+    <tr>
+      <td>Cookies (session)</td>
+      <td>Login session tokens, shopping cart state</td>
+      <td>Session remains active after "logout" on shared devices</td>
+      <td>After logging out on shared computers; post-malware</td>
+    </tr>
+    <tr>
+      <td>Cookies (persistent/tracking)</td>
+      <td>User preferences, cross-site tracking identifiers</td>
+      <td>Ongoing tracking by advertisers across sites</td>
+      <td>Privacy cleanup; removing targeted advertising profiles</td>
+    </tr>
+    <tr>
+      <td>Saved passwords</td>
+      <td>Credentials for websites in browser's password store</td>
+      <td>Credentials accessible if device compromised or shared</td>
+      <td>Decommissioning a device; post-compromise incident response</td>
+    </tr>
+    <tr>
+      <td>Autofill data</td>
+      <td>Form data — addresses, credit card numbers, names</td>
+      <td>PII accessible on shared device; credit card data exposed</td>
+      <td>Shared computer cleanup; user leaving organization</td>
+    </tr>
+    <tr>
+      <td>Site permissions</td>
+      <td>Camera/mic/notification/geolocation grants</td>
+      <td>Sites retain permissions they no longer need</td>
+      <td>Periodic privacy audit; post-compromise</td>
+    </tr>
+    <tr>
+      <td>Hosted app data</td>
+      <td>Web app local storage, IndexedDB, service workers</td>
+      <td>Stale or malicious data persists in web app storage</td>
+      <td>Troubleshooting web app behavior; post-compromise cleanup</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="section">Certificate Warning Triage Guide</h3>
+
+<div class="decision-flow">
+  <div class="df-title">Certificate Error Response — Triage Workflow</div>
+
+  <div class="df-row">
+    <div class="df-condition">Certificate: expired</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">First check <strong class="good">system clock</strong> — an incorrect date causes all certificates to appear expired. If clock is correct: the website's certificate has genuinely expired, contact site owner. For an internal server you manage: renew the certificate immediately. Proceeding on an expired certificate is acceptable for internal, non-sensitive tools after confirming the cause.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Certificate: name mismatch</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Verify the URL in the address bar matches the site you intended to visit. Check for typosquatting (look-alike domains). If this appears on a site that previously worked normally, investigate for a <strong>man-in-the-middle attack or DNS hijacking</strong> before proceeding. For internal devices (routers, switches), this is expected if connecting by IP address — acceptable for admin use with awareness.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Certificate: untrusted CA</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Self-signed certificate on an internal device is expected — confirm it's the device you intended to reach. If on a corporate internal site: <strong class="good">deploy the internal CA root certificate</strong> via Group Policy so all endpoints trust it automatically. If unexpected on an external site: investigate for certificate substitution attack before proceeding.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Certificate: revoked</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><strong>Do not proceed.</strong> Revocation indicates the certificate's private key may be compromised or the certificate was issued in error. The site may be actively impersonated by an attacker using the compromised key. Report the issue to the site owner and use an alternative means of contact to verify.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">All HTTPS sites suddenly show certificate warnings</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Investigate: <strong>(1)</strong> Check system clock; <strong>(2)</strong> Check proxy settings for unauthorized proxy; <strong>(3)</strong> Check trusted root CA store for unexpected root certificates (a rogue CA cert installed by malware enables MITM on all HTTPS); <strong>(4)</strong> Check for malware — SSL interception is a common malware technique. Run a malware scan. Look for unauthorized certificates in <code>certmgr.msc</code> → Trusted Root Certification Authorities.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Corporate site shows certificate warning on managed endpoints</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Internal CA root certificate has not been deployed to affected endpoints. <strong class="good">Deploy the internal root CA certificate via Group Policy</strong>: Computer Configuration → Windows Settings → Security Settings → Public Key Policies → Trusted Root Certification Authorities. After policy refresh (<code>gpupdate /force</code>), the warning resolves on all domain-joined machines.</div>
+  </div>
+</div>
+
+<h3 class="section">Browser Security Settings — Recommended Baseline</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Recommended State</th>
+      <th>What It Protects Against</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Auto-updates</td>
+      <td><span class="cell-yes">Always enabled</span></td>
+      <td>Known vulnerability exploitation in unpatched browser versions</td>
+    </tr>
+    <tr>
+      <td>Safe Browsing / SmartScreen</td>
+      <td><span class="cell-yes">Enabled (Enhanced if available)</span></td>
+      <td>Phishing sites, malware download URLs, malicious scripts</td>
+    </tr>
+    <tr>
+      <td>Pop-up blocker</td>
+      <td><span class="cell-yes">Enabled; per-site exceptions only</span></td>
+      <td>Scareware, adware pop-up storms, drive-by redirect</td>
+    </tr>
+    <tr>
+      <td>Notifications</td>
+      <td><span class="cell-yes">Block by default; prompt on request</span></td>
+      <td>Notification spam and phishing from malicious sites</td>
+    </tr>
+    <tr>
+      <td>Third-party cookies</td>
+      <td><span class="cell-yes">Block by default</span></td>
+      <td>Cross-site tracking by advertising networks</td>
+    </tr>
+    <tr>
+      <td>HTTPS-Only Mode</td>
+      <td><span class="cell-yes">Enable where supported</span></td>
+      <td>Downgrade attacks forcing HTTP on HTTPS-capable sites</td>
+    </tr>
+    <tr>
+      <td>Secure DNS (DoH)</td>
+      <td><span class="cell-part">Enable if not on enterprise network</span></td>
+      <td>DNS interception, manipulation, and ISP tracking</td>
+    </tr>
+    <tr>
+      <td>Extension count</td>
+      <td><span class="cell-yes">Minimize; remove unused</span></td>
+      <td>Credential theft, data exfiltration, session hijacking by malicious extensions</td>
+    </tr>
+    <tr>
+      <td>Extension permissions</td>
+      <td><span class="cell-yes">Review before installing</span></td>
+      <td>Over-privileged extensions harvesting sensitive data</td>
+    </tr>
+    <tr>
+      <td>Password storage in browser</td>
+      <td><span class="cell-part">Use dedicated manager; enable 2FA on browser account if using built-in</span></td>
+      <td>Credential theft via browser account compromise</td>
+    </tr>
+    <tr>
+      <td>Sync on shared computers</td>
+      <td><span class="cell-no">Disable or use private mode</span></td>
+      <td>Personal data and credentials persisting on shared devices</td>
+    </tr>
+    <tr>
+      <td>Flash and legacy NPAPI</td>
+      <td><span class="cell-no">Remove/disable completely</span></td>
+      <td>Exploitation of EOL plug-in with no patches</td>
+    </tr>
+    <tr>
+      <td>JavaScript</td>
+      <td><span class="cell-part">Enabled; control with NoScript/uBO for high-security use</span></td>
+      <td>XSS, drive-by downloads, cryptomining scripts</td>
+    </tr>
+    <tr>
+      <td>Proxy settings</td>
+      <td><span class="cell-yes">Audit periodically for unauthorized changes</span></td>
+      <td>Malware-induced MITM via unauthorized proxy</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════
+     SUMMARY
+     ═══════════════════════════════════════════════════ -->
+
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.11 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Trusted sources</span>Download browsers only from official vendor websites or app stores. Third-party download aggregators may bundle adware or distribute trojanized installers.</div>
+    <div class="summary-item"><span class="s-sym">Hashing</span>SHA-256 is the current standard. Compare computed hash of downloaded file against publisher's published hash. Mismatch = do not install. MD5 and SHA-1 are broken/deprecated.</div>
+    <div class="summary-item"><span class="s-sym">Code signing</span>Legitimate installers display a verified publisher name in the UAC prompt. "Unknown publisher" on a browser installer is a red flag. Code signing verifies identity, not safety.</div>
+    <div class="summary-item"><span class="s-sym">Browser patching</span>Enable auto-updates. Browsers release security patches frequently. Unpatched browsers have known CVEs actively exploited in drive-by campaigns. EOL browsers (IE) must be replaced.</div>
+    <div class="summary-item"><span class="s-sym">Extension sources</span>Prefer official store extensions. Sideloaded extensions bypass review. Malicious extensions can steal credentials, hijack sessions, and exfiltrate browsing data.</div>
+    <div class="summary-item"><span class="s-sym">Extension permissions</span>Review before installing. An extension with "read all data on all websites" has unnecessary breadth for most functions. Minimize permissions per least-privilege principle.</div>
+    <div class="summary-item"><span class="s-sym">Supply chain (extensions)</span>Trusted extensions can become malicious if the developer's account is compromised or the extension is sold to a malicious new owner. Audit extensions regularly.</div>
+    <div class="summary-item"><span class="s-sym">Password managers</span>Prevent credential reuse and credential stuffing. Built-in browser managers are acceptable; dedicated managers add cross-browser access, breach monitoring, and audit features.</div>
+    <div class="summary-item"><span class="s-sym">Certificates — valid</span>Browser validates: domain matches, date within validity period, signed by trusted CA, not revoked. All four must pass for the padlock to appear without warning.</div>
+    <div class="summary-item"><span class="s-sym">Self-signed cert</span>Expected on internal devices. Triggers browser warning because no CA chain exists. Acceptable for known internal devices; investigate before accepting on external sites.</div>
+    <div class="summary-item"><span class="s-sym">Expired cert — first step</span>Check the system clock first. An incorrect date causes all certificates to appear expired or invalid. Rule out clock error before assuming a site has a certificate problem.</div>
+    <div class="summary-item"><span class="s-sym">Rogue root CA</span>Malware can install a rogue root CA certificate enabling MITM on all HTTPS connections. Symptom: unexpected warnings across all HTTPS sites. Check certmgr.msc Trusted Roots.</div>
+    <div class="summary-item"><span class="s-sym">Pop-up blocker</span>Enabled by default. Prevents scareware and drive-by redirect popups. Add per-site exceptions for legitimate uses; never disable globally.</div>
+    <div class="summary-item"><span class="s-sym">Clearing browsing data</span>Ctrl+Shift+Delete. Clears history, cache, cookies, saved passwords depending on selection. Session cookies hold login state — clearing logs you out of all sites.</div>
+    <div class="summary-item"><span class="s-sym">Private / Incognito</span>Prevents local storage of browsing data on the device. Does NOT prevent ISP, employer, or network admin from seeing traffic. Not anonymization — local privacy only.</div>
+    <div class="summary-item"><span class="s-sym">Browser sync security</span>Sync security = browser account security. Enable MFA on Google/Microsoft/Firefox account. Disable sync on shared computers. Compromised sync account = all passwords stolen.</div>
+    <div class="summary-item"><span class="s-sym">Ad blockers</span>Security benefit beyond convenience: blocks malvertising (malicious code in ad networks). uBlock Origin is open-source, highly effective, blocks tracking scripts.</div>
+    <div class="summary-item"><span class="s-sym">Proxy hijacking</span>Malware may change proxy settings to route traffic through attacker-controlled proxy for MITM. Check proxy settings as part of any malware investigation.</div>
+    <div class="summary-item"><span class="s-sym">Secure DNS (DoH)</span>Encrypts DNS queries inside HTTPS traffic. Prevents ISP from monitoring DNS. Bypasses OS resolver — may conflict with enterprise internal DNS. Disable via policy in enterprise environments.</div>
+    <div class="summary-item"><span class="s-sym">Internal root CA</span>Enterprise HTTPS sites signed by internal CA require deploying the internal root CA certificate via Group Policy to all endpoints. Resolves "untrusted CA" warnings on internal sites.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> A user downloaded a browser from a third-party site. The file's SHA-256 hash does not match the hash published on the official vendor site. What should the technician do? → Do not install the file. The hash mismatch indicates the file has been modified — it may contain malware. Download the installer directly from the official vendor site and verify the hash before installing.<br><br>
+  <strong>Scenario 2:</strong> A user complains that every HTTPS website is showing certificate errors. What should the technician check first? → System clock — an incorrect date causes all certificates to appear invalid. If the clock is correct, check for malware that may have installed a rogue root CA certificate or modified proxy settings.<br><br>
+  <strong>Scenario 3:</strong> A user browsing in incognito mode asks whether their employer can see their web activity. What is the correct answer? → Yes. Incognito/private mode prevents local storage of browsing data on the device but does not hide traffic from the network — the employer's network infrastructure, proxy servers, and DNS logging can still record all browsing activity.<br><br>
+  <strong>Scenario 4:</strong> After visiting a website, a user's browser began displaying pop-ups claiming the computer is infected and demanding they call a support number. What most likely happened and what is the fix? → The user likely clicked "Allow" on a browser notification permission request from a malicious site. Fix: Settings → Site settings → Notifications → review and revoke the malicious site's notification permission. Run a malware scan to confirm no actual infection.<br><br>
+  <strong>Scenario 5:</strong> Users on a managed corporate network cannot browse the company's internal HTTPS portal without certificate warnings. What is the solution? → Deploy the company's internal root CA certificate to all endpoints via Group Policy (Computer Configuration → Windows Settings → Security Settings → Public Key Policies → Trusted Root CAs). This allows all domain-joined computers to trust certificates signed by the internal CA.<br><br>
+  <strong>Scenario 6:</strong> A technician discovers a browser extension that was not installed by the user, has permissions to "read and change all your data on all websites," and was sideloaded from outside the official store. What should be done? → Remove the extension immediately and investigate for compromise — check for other signs of malware, review browsing history and saved credentials for unauthorized activity, change passwords for sensitive accounts, and run a full malware scan. The extension characteristics describe a malicious browser extension.<br><br>
+  <strong>Scenario 7:</strong> A small business wants to prevent employees from installing any browser extensions not approved by IT. What is the correct technical control? → Configure browser extension allowlisting via Group Policy using the browser's ADMX Group Policy templates. This blocks all extensions not on the approved list from being installed or running, regardless of what the user attempts.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

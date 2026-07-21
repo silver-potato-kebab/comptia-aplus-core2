@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.8 — Apply Common Methods for Securing Mobile Devices</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* MAIN PANEL */
+  .sec-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 20px 0 28px; }
+  .sec-panel-header { background: var(--surface2); border-bottom: 2px solid var(--border2); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .sec-panel-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .sec-panel-badge { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 9px; border-radius: 3px; }
+  .badge-android { background: #e8f5e9; color: #2e7d32; border: 1px solid #2e7d3244; }
+  .badge-ios     { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b33; }
+  .badge-both    { background: var(--surface2); color: var(--muted); border: 1px solid var(--border2); }
+  .badge-mdm     { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a33; }
+  .badge-warn    { background: var(--accent-light); color: var(--accent); border: 1px solid #c0392b33; }
+
+  .sec-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .sec-row:last-child { border-bottom: none; }
+  .sec-label { font-weight: 600; color: var(--accent2); padding: 11px 16px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .sec-desc  { padding: 11px 16px; color: var(--muted); line-height: 1.6; }
+  .sec-desc strong { color: var(--text); }
+
+  /* SCREEN LOCK CARDS */
+  .lock-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+  .lock-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .lock-head { padding: 9px 14px; font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 2px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .lock-head.biometric { background: var(--accent3-light); color: var(--accent3); }
+  .lock-head.knowledge { background: var(--accent2-light); color: var(--accent2); }
+  .lock-head.weak      { background: var(--accent-light);  color: var(--accent); }
+  .lock-security { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.06em; opacity: 0.7; }
+  .lock-body { padding: 11px 14px; font-family: var(--sans); font-size: 13px; }
+  .lock-row { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.45; font-size: 12.5px; }
+  .lock-row:last-child { border-bottom: none; }
+  .lock-row strong { color: var(--text); }
+  .lock-row .dot { color: var(--border2); flex-shrink: 0; font-size: 11px; padding-top: 3px; }
+
+  /* BYOD VS CORPORATE */
+  .ownership-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 16px 0 24px; font-family: var(--sans); font-size: 14px; }
+  .own-header { padding: 11px 18px; font-weight: 600; font-size: 13px; text-align: center; border-bottom: 2px solid var(--border); }
+  .own-header.byod { background: var(--accent4-light); color: var(--accent4); border-right: 1px solid var(--border); }
+  .own-header.corp { background: var(--accent2-light); color: var(--accent2); }
+  .own-row-l, .own-row-r { padding: 9px 16px; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.5; }
+  .own-row-l { border-right: 1px solid var(--border2); background: var(--surface); }
+  .own-row-r { background: var(--surface); }
+  .own-row-l:last-child, .own-row-r:last-child { border-bottom: none; }
+  .own-row-l strong, .own-row-r strong { color: var(--text); }
+
+  /* MDM CAPABILITY TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; font-size: 13.5px; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); background: var(--surface2); font-size: 13px; white-space: nowrap; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .yes { color: var(--accent3); font-weight: 700; font-family: var(--sans); }
+  .ltd { color: var(--accent4); font-weight: 700; font-family: var(--sans); }
+  .no  { color: var(--border2); font-weight: 600; font-family: var(--sans); }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 200px 1fr; gap: 20px; font-size: 15px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* THREAT MODEL BAR */
+  .threat-bar { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; margin: 16px 0 28px; font-family: var(--sans); font-size: 12.5px; }
+  .threat-item { flex: 1; padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+  .threat-item:last-child { border-right: none; }
+  .threat-name { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+  .threat-example { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .threat-item.t1 { background: #fff0ef; }
+  .threat-item.t1 .threat-name { color: var(--accent); }
+  .threat-item.t2 { background: var(--accent4-light); }
+  .threat-item.t2 .threat-name { color: var(--accent4); }
+  .threat-item.t3 { background: #fffef0; }
+  .threat-item.t3 .threat-name { color: #8a7a00; }
+  .threat-item.t4 { background: var(--accent2-light); }
+  .threat-item.t4 .threat-name { color: var(--accent2); }
+
+  /* SUMMARY */
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 155px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .lock-grid, .ownership-grid { grid-template-columns: 1fr; }
+    .def-item, .sec-row { grid-template-columns: 1fr; }
+    .sec-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .threat-bar { flex-direction: column; }
+    .threat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>2.8</strong> Apply Common Methods for Securing Mobile Devices</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./2_7-Workstation-Security-Hardening.html">2.7</a>
+    <a class="nav-next" href="./2_9-Data-Destruction-Disposal.html">2.9</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>2.8</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 2 — Security
+  </div>
+  <h1 class="book-title">Given a Scenario, Apply Common Methods<br>for Securing Mobile Devices</h1>
+  <div class="book-subtitle">
+    <span>Objective 2.8</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Scenario</span>
+    <span>5 categories · 16 controls</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW                                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction — The Mobile Security Challenge</h2>
+
+<p>Mobile devices — smartphones and tablets — present a unique security profile that differs significantly from workstations. They are always with the user, always connected, always on, and always carrying sensitive data. They leave the organization's physical perimeter constantly. They run applications from third-party stores with varying quality controls. They mix personal and corporate data. And they get lost — a lot.</p>
+
+<p>The combination of portability, persistent connectivity, and personal/corporate data mixing makes mobile devices one of the most difficult platforms to secure effectively. Objective 2.8 covers the layered controls available to a technician to reduce the risk of data breach from a lost, stolen, or compromised mobile device.</p>
+
+<div class="threat-bar">
+  <div class="threat-item t1">
+    <div class="threat-name">Physical Theft</div>
+    <div class="threat-example">Stolen phone; unauthorized data access</div>
+  </div>
+  <div class="threat-item t2">
+    <div class="threat-name">Malicious Apps</div>
+    <div class="threat-example">Trojanized apps; unofficial stores</div>
+  </div>
+  <div class="threat-item t3">
+    <div class="threat-name">Network Attacks</div>
+    <div class="threat-example">Evil twin; unsecured public Wi-Fi</div>
+  </div>
+  <div class="threat-item t4">
+    <div class="threat-name">Policy Violations</div>
+    <div class="threat-example">Jailbreak; corporate data on personal apps</div>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Android vs. iOS Platform Differences</p>
+  <p>The two dominant mobile platforms — <strong>Android</strong> (Google) and <strong>iOS/iPadOS</strong> (Apple) — implement security differently. iOS has a closed ecosystem with strict App Store vetting, hardware-backed encryption enabled by default, and limited sideloading. Android is more open, supports multiple app stores, and security varies across device manufacturers and Android versions. Most security controls in this objective apply to both platforms, but the implementation path differs. MDM solutions handle both platforms through their respective APIs.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1: HARDENING TECHNIQUES          -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Hardening Techniques</h2>
+
+<h3 class="section">Device Encryption</h3>
+
+<p><span class="key-term">Device encryption</span> on mobile platforms protects data stored on the device's internal storage and (where applicable) the external SD card. Like BitLocker on a Windows laptop, device encryption ensures that if the phone is stolen, the data is cryptographically inaccessible without the correct authentication credentials.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Mobile Device Encryption</span>
+    <span class="sec-panel-badge badge-both">iOS + Android</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">iOS (iPhone/iPad)</div>
+    <div class="sec-desc"><strong>Encryption is always on and cannot be disabled</strong> on iOS. Every iPhone and iPad since the 3GS uses hardware-backed AES-256 encryption for all stored data. The encryption keys are derived from the device's unique hardware UID (unique identifier burned into the processor) combined with the user's passcode. When a device is wiped, the master keys are discarded, making all data cryptographically unrecoverable without physically breaking the hardware. This is why Apple can truthfully say they cannot unlock a seized iPhone — the key is partially derived from hardware they do not control.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Android</div>
+    <div class="sec-desc">Modern Android devices (Android 10+ on most devices, Android 6+ on devices certified for it) also enable <strong>file-based encryption (FBE)</strong> by default. FBE encrypts files individually with keys derived from the user's PIN/password and the device hardware, providing encrypted-at-rest protection for all data. Older Android devices used full-disk encryption (FDE) which was less efficient. The encryption is only as strong as the PIN or password protecting the key — a 4-digit PIN provides very weak key derivation. Longer PINs and alphanumeric passwords strengthen the encryption.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">SD card encryption</div>
+    <div class="sec-desc">On Android devices with microSD card slots, external storage may <strong>not</strong> be encrypted by default. Android offers an "adoptable storage" mode that encrypts the SD card and ties it to the specific device (the card becomes unusable in other devices). If an SD card is removed from a device in non-adoptable mode, its contents are readable on any card reader. Enterprises using Android devices should enforce SD card encryption via MDM or require adoptable storage for any device with removable storage.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Encryption effectiveness</div>
+    <div class="sec-desc">Mobile encryption is only as effective as the screen lock protecting it. A device with strong encryption but no screen lock (or a swipe-only lock) is effectively unencrypted against a motivated attacker — they just turn on the screen to access data. <strong>Encryption + strong screen lock is the required combination.</strong> Encryption protects against someone physically removing the storage chip; the screen lock protects against someone who picks up the running device.</div>
+  </div>
+</div>
+
+<h3 class="section">Screen Locks</h3>
+
+<p>A <span class="key-term">screen lock</span> is the authentication mechanism that protects a mobile device when it is idle — requiring the user to prove identity before gaining access to the running OS and data. Screen locks are the primary protection against unauthorized access to a found or stolen device and the foundation on which device encryption effectiveness rests.</p>
+
+<div class="lock-grid">
+
+  <div class="lock-card">
+    <div class="lock-head biometric">Facial Recognition<span class="lock-security">HIGH SECURITY</span></div>
+    <div class="lock-body">
+      <div class="lock-row"><span class="dot">—</span><span><strong>Mechanism:</strong> Infrared 3D face mapping (Face ID) or 2D camera-based recognition</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Apple Face ID:</strong> TrueDepth IR + dot projector; 3D; extremely spoof-resistant; 1 in 1,000,000 false accept rate</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Android face unlock:</strong> Varies widely by device; many use 2D camera (less secure); premium devices use 3D IR</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Falls back to:</strong> PIN if face not recognized (illness, mask, glasses change)</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Limitation:</strong> Cannot use in some environments (mask mandates); requires specific hardware</span></div>
+    </div>
+  </div>
+
+  <div class="lock-card">
+    <div class="lock-head biometric">Fingerprint<span class="lock-security">HIGH SECURITY</span></div>
+    <div class="lock-body">
+      <div class="lock-row"><span class="dot">—</span><span><strong>Mechanism:</strong> Capacitive, optical, or ultrasonic fingerprint scanner reads ridge patterns</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Under-display optical:</strong> Common on Android flagships; adequate security</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Under-display ultrasonic:</strong> Samsung Qualcomm ultrasonic; more secure; works with wet fingers</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Side-mounted:</strong> Common on mid-range; fast and reliable</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Limitation:</strong> Gloves, wet hands, certain injuries; can be compelled legally in some jurisdictions unlike passcode</span></div>
+    </div>
+  </div>
+
+  <div class="lock-card">
+    <div class="lock-head knowledge">PIN Code<span class="lock-security">MEDIUM-HIGH</span></div>
+    <div class="lock-body">
+      <div class="lock-row"><span class="dot">—</span><span><strong>4-digit PIN:</strong> 10,000 combinations; weak — cracked in minutes with tools if lockout not enforced</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>6-digit PIN:</strong> 1,000,000 combinations; significantly better; Apple default recommendation</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Alphanumeric passcode:</strong> Full keyboard; strongest knowledge-based option; use with password manager</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Protects encryption key:</strong> The PIN contributes to the key derivation for device encryption — longer PIN = stronger encryption</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Cannot be compelled:</strong> 5th Amendment protection in U.S. (vs. biometrics which can be compelled)</span></div>
+    </div>
+  </div>
+
+  <div class="lock-card">
+    <div class="lock-head knowledge">Pattern<span class="lock-security">MEDIUM</span></div>
+    <div class="lock-body">
+      <div class="lock-row"><span class="dot">—</span><span><strong>Mechanism:</strong> Android only; draw a pattern connecting dots on a 3×3 grid</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Theory:</strong> 389,112 possible patterns of length 4–9</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Reality:</strong> People use predictable L-, Z-, or N-shaped patterns; effective combinations far fewer</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Smudge attack:</strong> Finger oil left on screen often reveals the pattern on a reflective surface; wipe screen after use</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Better than swipe:</strong> Still provides some protection; preferable to no lock at all</span></div>
+    </div>
+  </div>
+
+  <div class="lock-card">
+    <div class="lock-head weak">Swipe<span class="lock-security">NO SECURITY</span></div>
+    <div class="lock-body">
+      <div class="lock-row"><span class="dot">—</span><span><strong>Mechanism:</strong> Swipe a finger across the screen to unlock — no authentication</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Security value:</strong> Zero. Prevents accidental unlocking in pocket only. Anyone can unlock it.</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Use case:</strong> Personal devices with no sensitive data; never acceptable for corporate use</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>MDM enforcement:</strong> Corporate profiles should prevent swipe as the sole screen lock; require minimum PIN</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Exam note:</strong> Swipe is included in the exam objectives specifically to contrast with more secure methods</span></div>
+    </div>
+  </div>
+
+  <div class="lock-card">
+    <div class="lock-head knowledge" style="background: #f5f0ff; color: #7b3fa0; border-bottom-color: #7b3fa044;">None<span class="lock-security">CRITICAL RISK</span></div>
+    <div class="lock-body">
+      <div class="lock-row"><span class="dot">—</span><span><strong>No screen lock at all</strong> means no authentication barrier; immediate full device access</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Encryption useless:</strong> If device is unlocked (running), encryption protects nothing — the OS has already decrypted everything in memory</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>Never acceptable</strong> on a device that accesses corporate data</span></div>
+      <div class="lock-row"><span class="dot">—</span><span><strong>MDM must enforce:</strong> Compliance check; non-compliant devices blocked from corporate resources</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Screen Lock Security Rankings</p>
+  <p>From strongest to weakest: <strong>Biometric (Face ID/3D IR fingerprint) + PIN backup</strong> → <strong>Alphanumeric passcode</strong> → <strong>6-digit PIN</strong> → <strong>4-digit PIN</strong> → <strong>Pattern</strong> → <strong>Swipe (no security)</strong> → <strong>No lock (critical risk)</strong>. The exam may ask which method provides the least security (swipe or none) or which biometric is most secure (Face ID with IR depth sensing).</p>
+</div>
+
+<h3 class="section">Configuration Profiles</h3>
+
+<p>A <span class="key-term">configuration profile</span> is a signed XML file (on iOS/iPadOS, called a <em>mobileconfig</em> file; on Android, implemented via MDM policy) that enforces specific settings and restrictions on a mobile device. Configuration profiles are the mechanism by which MDM systems push policies to enrolled devices. They represent the "how" of enterprise mobile policy enforcement.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Configuration Profiles — What They Control</span>
+    <span class="sec-panel-badge badge-mdm">MDM Deployed</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Security settings</div>
+    <div class="sec-desc">Minimum passcode length and complexity; maximum screen lock idle time; maximum number of failed passcode attempts before wipe; require passcode change every N days; disable biometrics if required (high-security environments may require PIN-only for auditing). These settings are <strong>enforced</strong> — the user cannot change them to be less secure while the profile is installed.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Restrictions</div>
+    <div class="sec-desc">Disable camera (secure facilities, classified environments); prevent screenshots; disable iCloud/Google Drive sync (data sovereignty); restrict App Store to approved apps only; prevent sideloading (Android); disable AirDrop/NFC for data transfer; prevent installation of apps outside the corporate app catalog; lock down Siri/voice assistant; restrict browser to approved browsers.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Network configuration</div>
+    <div class="sec-desc">Pre-configure Wi-Fi credentials (SSID, security type, certificate for 802.1X); force VPN "always on" for all traffic on unrecognized networks; configure email accounts (Exchange, Gmail, IMAP); deploy certificates for Wi-Fi authentication and email signing/encryption. The user receives working configurations without needing to know or enter credentials — and without being able to change or remove them.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Managed apps</div>
+    <div class="sec-desc">Deploy corporate apps silently (no user action required); separate managed (corporate) apps from personal apps in a containerized workspace; enforce data boundaries between managed and unmanaged apps (e.g., prevent corporate email data from being pasted into personal apps); require app-level PIN separate from device PIN; enable mobile app management (MAM) features.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Compliance enforcement</div>
+    <div class="sec-desc">Define what constitutes a compliant device (minimum OS version, no jailbreak/root, required apps installed, encryption enabled). MDM continuously evaluates devices against compliance rules. A non-compliant device is automatically blocked from corporate resources (email, SharePoint, corporate Wi-Fi) until the issue is resolved. The user receives a notification explaining what needs to be corrected.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2: PATCH MANAGEMENT              -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Patch Management</h2>
+
+<p>Mobile devices, like all computing platforms, require regular security patches to address vulnerabilities in the OS and installed applications. Mobile patch management is complicated by the diversity of hardware manufacturers (Android especially), carrier involvement in update distribution, and users' tendency to defer or ignore update prompts.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Mobile Patch Management</span>
+    <span class="sec-panel-badge badge-both">iOS + Android</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">OS Updates — iOS</div>
+    <div class="sec-desc">Apple provides iOS updates directly to devices without carrier intermediation. Updates are available simultaneously to all supported devices. Apple maintains relatively long support windows (5–6 years for major devices). Users can apply updates via <strong>Settings → General → Software Update</strong>. MDM can enforce a minimum iOS version — devices below the minimum are quarantined until updated. MDM can also <strong>delay updates</strong> by up to 90 days (in supervised mode) to allow enterprise testing before forcing the update on managed devices.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">OS Updates — Android</div>
+    <div class="sec-desc">Android updates are fragmented — Google provides the core Android update (including monthly security patches via <strong>Project Mainline</strong>), but device manufacturers and sometimes carriers must adapt and distribute it. A Samsung Galaxy device's update schedule is different from a Pixel's. <strong>Google Pixel</strong> devices receive updates fastest (5 years of Android/security updates). Enterprise Android deployments should standardize on devices with predictable update schedules. MDM can enforce minimum patch levels and quarantine out-of-date devices.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Application Updates — App Stores</div>
+    <div class="sec-desc">Apps installed from the App Store (iOS) or Google Play Store (Android) receive security patches via app updates. <strong>Enable automatic app updates</strong> — most vulnerabilities in popular apps (browsers, email clients, PDF viewers) are patched quickly after discovery; staying current is the most effective protection. On iOS: Settings → App Store → App Updates toggle. On Android: Play Store → Settings → Network preferences → Auto-update apps. MDM can enforce minimum app version requirements for managed apps.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Enterprise patch enforcement</div>
+    <div class="sec-desc">MDM platforms can <strong>require minimum OS and security patch levels</strong> for device compliance. Devices that fail to update within a defined window lose access to corporate resources. For iOS in supervised mode, admins can defer updates to a testing window and then <em>force</em> the update. For Android, enterprise device management (Android Enterprise) provides similar controls on fully managed devices. The challenge remains with BYOD — users may defer updates; the MDM compliance policy and conditional access enforcement is the lever.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">End of Support risks</div>
+    <div class="sec-desc">A mobile device that no longer receives OS updates (out of support) accumulates permanent vulnerabilities that can never be patched — the mobile equivalent of an EOL workstation OS. MDM compliance policies should define a minimum supported OS version and flag or block devices running versions that are no longer receiving security updates. The safest remediation is device replacement.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3: ENDPOINT SECURITY SOFTWARE    -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Endpoint Security Software</h2>
+
+<p>Mobile endpoint security software extends traditional endpoint protection concepts to smartphones and tablets. The nature of mobile security differs from desktop: iOS's sandboxed app model and closed ecosystem makes traditional AV scanning largely unnecessary (and architecturally impossible), while Android's more open ecosystem makes malware detection more relevant.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Mobile Endpoint Security</span>
+    <span class="sec-panel-badge badge-both">Protection Layers</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Antivirus / Anti-malware</div>
+    <div class="sec-desc"><strong>Android:</strong> Traditional malware (Trojans, spyware, adware) does exist in the Android ecosystem, primarily distributed via unofficial app stores and sideloaded APKs. Mobile AV products (Malwarebytes Mobile, Lookout, Bitdefender Mobile Security) scan installed apps against malware signatures, detect malicious APKs before installation, and monitor for behavior anomalies. Google Play Protect — built into Android — provides basic malware scanning of installed apps automatically.<br><br><strong>iOS:</strong> Apple's sandboxing model prevents apps from accessing other apps' data, making traditional virus/malware behavior architecturally impossible. AV products on iOS cannot scan other apps or system files. iOS security products focus instead on network threat detection, phishing protection, and device posture assessment rather than traditional AV scanning.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Content Filtering</div>
+    <div class="sec-desc"><strong>Content filtering</strong> on mobile devices restricts access to categories of websites or applications — protecting users from phishing sites, malware-hosting URLs, inappropriate content, and productivity-draining sites. Implementation options:<br><br>
+    <strong>DNS-based filtering</strong> — configure the device to use a content-filtering DNS resolver (Cisco Umbrella, CleanBrowsing, OpenDNS) that blocks resolution of known malicious or policy-violating domains. Works at the network level; filters all apps, not just browsers.<br><br>
+    <strong>VPN-based filtering</strong> — route all device traffic through the organization's proxy/content filter via always-on VPN. Most comprehensive; allows consistent policy enforcement regardless of which network the device is connected to.<br><br>
+    <strong>MDM app restrictions</strong> — whitelist approved browsers and require managed browser (Microsoft Edge managed, Intune Managed Browser) that enforces web filtering policies.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Mobile Threat Defense (MTD)</div>
+    <div class="sec-desc">A more advanced category than basic AV — <span class="key-term">Mobile Threat Defense (MTD)</span> solutions (Lookout, Zimperium, Microsoft Defender for Endpoint mobile) provide: network threat detection (identify evil twin APs, SSL stripping, MITM attacks), device posture assessment (detect jailbreak/root, OS manipulation, suspicious configurations), app analysis (identify risky app behaviors), and integration with MDM/Zero Trust conditional access. MTD integrates with MDM compliance frameworks — a device that detects an active network attack is automatically quarantined from corporate resources until the threat is resolved.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4: LOCATOR / REMOTE CAPABILITIES -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Locator Applications, Remote Wipe, and Remote Backup</h2>
+
+<p>Lost and stolen mobile devices are an ever-present reality. The controls in this section allow organizations and individuals to respond to a lost or stolen device after the fact — locating it, protecting data on it, and recovering data from it. These controls are the "what do we do now?" response plan that must be configured <em>before</em> a device is lost, not after.</p>
+
+<h3 class="section">Locator Applications</h3>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Device Location Services</span>
+    <span class="sec-panel-badge badge-both">iOS + Android</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Find My (iOS)</div>
+    <div class="sec-desc">Apple's <strong>Find My</strong> network (formerly Find My iPhone) tracks the device's location using GPS, Wi-Fi positioning, and the crowdsourced Find My network (Bluetooth pings from nearby Apple devices). Accessible from icloud.com or the Find My app on another Apple device. Find My must be enabled in Settings → [Apple ID] → Find My → Find My iPhone before loss. Requires iCloud account. The <strong>Activation Lock</strong> feature (tied to Find My) prevents a wiped iPhone from being activated without the original Apple ID — making stolen iPhones significantly less valuable to thieves.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Find My Device (Android)</div>
+    <div class="sec-desc">Google's <strong>Find My Device</strong> (findmydevice.google.com) locates a device logged in with a Google account, with location services enabled. Requires: location enabled on device, device signed into Google account, device online (Wi-Fi or mobile data). The Find My Device network (Android 6+) also uses a crowdsourced network of nearby Android devices. Accessible via the Find My Device app on another device or the Google web interface.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">MDM-based location</div>
+    <div class="sec-desc">MDM platforms provide centralized device location independent of the device's native location service. Enterprise MDM (Intune, Jamf) can show the last known location of enrolled devices on a map. For <strong>corporate-owned devices</strong>, location tracking is fully justifiable and enforceable. For <strong>BYOD devices</strong>, location tracking raises significant privacy concerns — employees typically object to their employer tracking their personal device's location 24/7. Most enterprise MDM policies track only corporate-owned devices or limit BYOD location access to the moment of a theft report.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Location prerequisites</div>
+    <div class="sec-desc">Location services must be enabled before the device is lost. A device in airplane mode or with GPS/location disabled cannot be located. The device must have battery charge and network connectivity. <strong>These prerequisites must be enforced via MDM compliance policy</strong> for corporate devices — a device with location services disabled should be flagged as non-compliant, because in the event of loss it cannot be located or remotely wiped.</div>
+  </div>
+</div>
+
+<h3 class="section">Remote Wipe</h3>
+
+<p>A <span class="key-term">remote wipe</span> is a command sent to a lost or stolen device that erases its data, protecting the organization from unauthorized access to corporate information. Remote wipe must be configured before loss — the device must be enrolled in MDM or connected to a platform that supports remote commands (iCloud, Google, Exchange ActiveSync).</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Remote Wipe Options</span>
+    <span class="sec-panel-badge badge-warn">Execute Only When Certain</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Full device wipe</div>
+    <div class="sec-desc">Erases <strong>all data on the device</strong> — both corporate and personal — and restores it to factory default settings. The most destructive option; appropriate for: corporate-owned devices confirmed lost or stolen; devices belonging to employees who have been terminated; devices with confirmed malware compromise. On <strong>iOS</strong>: triggered from iCloud Find My or MDM; erases everything and disables Activation Lock if triggered by MDM. On <strong>Android</strong>: triggered from Find My Device or MDM; returns to factory state.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Selective wipe</div>
+    <div class="sec-desc">Removes <strong>only corporate data and managed apps</strong> while leaving personal photos, contacts, and apps intact. The appropriate option for BYOD devices — the organization has no right to destroy the employee's personal data. A selective wipe removes the MDM profile, corporate email accounts, managed app data, configuration profiles, and certificates. Personal data is untouched. Available on iOS (MDM unenrollment wipes managed content) and Android (Android Enterprise work profile removal wipes the work profile container, leaving personal profile intact).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">When to initiate wipe</div>
+    <div class="sec-desc">The decision to wipe a device should be deliberate and documented. Common triggers: device confirmed lost or stolen by the user; employee termination (corporate-owned devices immediately; BYOD selective wipe); device not reporting compliance for extended period (suspected compromise or abandonment); user request when switching to a new device. A wipe should not be initiated until attempts to locate the device have been exhausted — a wipe makes the device unlocatable.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Remote wipe limitations</div>
+    <div class="sec-desc">Remote wipe only works if: the device has network connectivity (Wi-Fi or cellular) to receive the wipe command, and the device has battery charge. A device in airplane mode, powered off, or with a dead battery cannot receive the wipe command until it reconnects. The wipe command is queued and will execute when the device reconnects. This is why <strong>device encryption</strong> (which does not require connectivity) provides protection when remote wipe cannot.</div>
+  </div>
+</div>
+
+<h3 class="section">Remote Backup Applications</h3>
+
+<p><span class="key-term">Remote backup</span> automatically copies device data to a cloud service, ensuring that data is recoverable after a device is lost, stolen, wiped, or damaged. Remote backup is the complement to remote wipe — it ensures that wiping a device to protect data does not also mean permanently losing that data.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">iCloud Backup (iOS)</span>
+    <span>Automatically backs up: app data, Apple Watch backups, device settings, Home screen and app organization, iMessages/SMS, photos and videos (via iCloud Photos), purchase history, ringtones, and Visual Voicemail. Backups are encrypted in iCloud. Runs automatically when device is connected to power, locked, and on Wi-Fi. Requires sufficient iCloud storage. Configure via: Settings → [Apple ID] → iCloud → iCloud Backup → Back Up Now (on-demand) or toggle automatic backup on.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Google One / Android Backup</span>
+    <span>Android backup copies: app data, call history, contacts, device settings, SMS messages, and photos/videos (Google Photos). Backs up to Google Drive/Google One. Configure via: Settings → System → Backup → Back up to Google Drive. Google Photos provides unlimited photo/video backup (quality-limited) independent of the system backup. Consistency of what is backed up varies more across Android manufacturers than iOS.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Enterprise backup considerations</span>
+    <span>For corporate data, MDM platforms can enforce that corporate app data is backed up to enterprise storage rather than personal cloud accounts. Microsoft Intune's App Protection Policies can restrict corporate app data backup to approved corporate storage (OneDrive for Business, SharePoint) and prevent backup of corporate data to personal iCloud or Google accounts — a DLP control within the backup mechanism.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Backup before wipe</span>
+    <span>When a device is being intentionally wiped (not an emergency remote wipe after theft), confirm that a recent backup exists before initiating the wipe. For BYOD devices undergoing a selective wipe, remind the user to verify their personal data is backed up before the IT team initiates the wipe — even though the selective wipe should not affect personal data, backup is prudent insurance against unexpected outcomes.</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5: FAILED LOGIN RESTRICTIONS     -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Failed Login Attempts Restrictions</h2>
+
+<p>Limiting the number of consecutive failed authentication attempts before taking protective action defends against in-person brute-force attacks — someone with physical possession of a locked device systematically trying PINs or patterns. This control is distinct from network account lockout (covered in 2.7) and applies specifically to the mobile device's local authentication.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Failed Authentication Limits</span>
+    <span class="sec-panel-badge badge-both">iOS + Android</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">iOS failed attempt limit</div>
+    <div class="sec-desc">iOS implements a graduated lockout that escalates with each failure:<br><br>
+    After <strong>6 failures</strong>: 1-minute lockout<br>
+    After <strong>7 failures</strong>: 5-minute lockout<br>
+    After <strong>8 failures</strong>: 15-minute lockout<br>
+    After <strong>9 failures</strong>: 60-minute lockout<br>
+    After <strong>10 failures</strong>: Device disabled ("iPhone is disabled") or wiped<br><br>
+    The "Erase Data after 10 failed attempts" option in Settings → Face ID &amp; Passcode is disabled by default but can be enabled for high-security environments. MDM can enforce this setting and set the failure threshold lower (minimum 3 attempts, maximum 11).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Android failed attempt limit</div>
+    <div class="sec-desc">Android's response to failed PIN/pattern attempts varies by device and Android version. Generally: after several failures, Android shows a cooldown timer (30-second to multi-minute delays before retry). After a configurable number of failures (set by MDM or device settings), the device may require the Google account password to unlock, or a full factory reset. Google-managed devices through Android Enterprise can enforce wipe after N failed attempts via MDM policy.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">MDM enforcement</div>
+    <div class="sec-desc">MDM policy (iOS: Passcode Payload; Android: Password Policy) sets the <strong>maximum number of failed attempts before wipe</strong> across all enrolled devices — overriding or supplementing the device's default behavior. For high-security environments, this can be set as low as 5–6 attempts. The MDM-enforced limit applies regardless of what the user has configured in their device settings (MDM settings take precedence over user-accessible settings for managed devices).</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Biometric + PIN fallback</div>
+    <div class="sec-desc">When biometric authentication fails too many times (typically 5 failures for Face ID, 5 for fingerprint), the device requires the passcode/PIN instead of continuing biometric retries. The PIN fallback is what ultimately prevents brute-force — it applies the failed attempt counter and lockout/wipe enforcement. This ensures that an attacker who defeats biometric authentication still cannot brute-force the PIN without triggering the lockout policy.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 6: POLICIES AND PROCEDURES       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 6</span>Policies and Procedures</h2>
+
+<h3 class="section">Mobile Device Management (MDM)</h3>
+
+<p><span class="key-term">Mobile Device Management (MDM)</span> is the software infrastructure that enables central management, monitoring, configuration, and enforcement of security policies across a fleet of mobile devices. MDM is the enabling technology for nearly every enterprise mobile security control — without MDM, policies exist only as user guidelines that individuals can choose to follow or ignore.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">MDM Platform Capabilities</span>
+    <span class="sec-panel-badge badge-mdm">Enterprise MDM</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Policy enforcement</div>
+    <div class="sec-desc">MDM pushes <strong>configuration profiles</strong> (iOS) or <strong>device policies</strong> (Android Enterprise) that enforce security requirements directly on the device — users cannot change MDM-managed settings. Examples: minimum 6-character PIN enforced; camera disabled in the MDM profile; VPN always-on for all traffic; approved app list enforced. The user may see that a setting is controlled by their organization and cannot modify it — a visible lock icon appears next to managed settings on iOS.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Application management</div>
+    <div class="sec-desc"><strong>Over-the-air (OTA) app deployment:</strong> push required corporate apps to enrolled devices silently (no user action). <strong>App blocking:</strong> prevent installation of blacklisted apps. <strong>Approved app catalog:</strong> provide a curated in-house app store. <strong>Managed app configurations:</strong> pre-configure app settings (Exchange server address, SharePoint URL, VPN configurations) so users don't need to manually configure corporate apps. <strong>App license management:</strong> deploy and revoke volume-purchased app licenses.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Compliance monitoring</div>
+    <div class="sec-desc">MDM continuously evaluates each device against the organization's compliance baseline. Compliance checks include: minimum OS version, minimum security patch level, encryption enabled, screen lock set, no jailbreak/root detected, required apps installed, prohibited apps absent. Non-compliant devices are flagged in the MDM console. Via integration with conditional access (Azure AD / Intune), non-compliant devices are automatically blocked from corporate email, SharePoint, Teams, and other services until compliance is restored.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Inventory and reporting</div>
+    <div class="sec-desc">MDM maintains a real-time inventory of all enrolled devices: device model, serial number, OS version, installed apps, last check-in time, compliance status, and assigned user. This inventory supports security incident response (identify which devices access sensitive data), compliance reporting (audit evidence), procurement planning (identify aging devices nearing end of support), and capacity management.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Remote actions</div>
+    <div class="sec-desc">In addition to policy enforcement, MDM provides on-demand remote actions: <strong>remote lock</strong> (lock immediately regardless of idle timeout), <strong>remote wipe</strong> (full or selective), <strong>remote passcode reset</strong> (iOS — remove the passcode so IT can access a device), <strong>location query</strong> (GPS coordinates), <strong>push notification</strong> (display message on device), and <strong>unenroll device</strong> (remove MDM profile and all managed content). Enterprise MDM examples: Microsoft Intune, Jamf (Apple-focused), VMware Workspace ONE, Ivanti MobileIron.</div>
+  </div>
+</div>
+
+<h3 class="section">BYOD vs. Corporate-Owned Devices</h3>
+
+<p>The choice between allowing employees to use their personal devices (BYOD) or providing organization-owned devices (corporate-owned, also called COPE — Corporate Owned, Personally Enabled) is one of the most consequential mobile security policy decisions an organization makes. Each model has distinct security capabilities, management levels, privacy implications, and cost profiles.</p>
+
+<div class="ownership-grid">
+  <div class="own-header byod">BYOD — Bring Your Own Device</div>
+  <div class="own-header corp">Corporate-Owned (COPE)</div>
+
+  <div class="own-row-l"><strong>Ownership:</strong> Employee owns device</div>
+  <div class="own-row-r"><strong>Ownership:</strong> Organization owns device</div>
+
+  <div class="own-row-l"><strong>Cost to org:</strong> Lower (no hardware purchase)</div>
+  <div class="own-row-r"><strong>Cost to org:</strong> Higher (purchase, replace, manage)</div>
+
+  <div class="own-row-l"><strong>Employee privacy:</strong> High concern — MDM may see personal data; employees often resist full MDM enrollment</div>
+  <div class="own-row-r"><strong>Employee privacy:</strong> Lower expectation — employee knows org owns device; work profile vs. personal may still be separated</div>
+
+  <div class="own-row-l"><strong>MDM scope:</strong> Limited — typically work profile (Android) or MAM (iOS) to avoid personal data visibility</div>
+  <div class="own-row-r"><strong>MDM scope:</strong> Full device management; all settings configurable; no privacy limitations</div>
+
+  <div class="own-row-l"><strong>Wipe:</strong> Selective wipe only — remove corporate data, not personal</div>
+  <div class="own-row-r"><strong>Wipe:</strong> Full wipe authorized; org may wipe entire device if lost/stolen/compromised</div>
+
+  <div class="own-row-l"><strong>Enforcement power:</strong> Must incentivize compliance; cannot mandate personal device settings beyond what user agrees to in enrollment</div>
+  <div class="own-row-r"><strong>Enforcement power:</strong> Full — org can configure any setting, disable any feature, monitor any usage</div>
+
+  <div class="own-row-l"><strong>Best for:</strong> Cost-sensitive environments; employees who prefer using their own devices; limited corporate data exposure</div>
+  <div class="own-row-r"><strong>Best for:</strong> High-security environments; employees who handle sensitive data; environments requiring full policy control</div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — BYOD vs. Corporate Owned Key Differences</p>
+  <p>The exam tests three key BYOD vs. corporate distinctions: <strong>(1) Wipe scope:</strong> BYOD = selective wipe only; Corporate = full wipe acceptable. <strong>(2) MDM scope:</strong> BYOD = limited (work profile/container); Corporate = full device management. <strong>(3) Privacy:</strong> BYOD = significant employee privacy considerations; Corporate = minimal privacy expectation for work use. A scenario asking "a company lost an employee's personal phone containing corporate data — what remote action should they take?" → selective wipe (not full wipe, as it is a personal device).</p>
+</div>
+
+<h3 class="section">Profile Security Requirements</h3>
+
+<p><span class="key-term">Profile security requirements</span> are the minimum security standards a mobile device must meet to be enrolled in MDM and maintain access to corporate resources. These requirements are defined in the MDM compliance policy and enforced through conditional access integration. They ensure that devices in the corporate environment meet a defined security baseline — neither the hardware nor the user's choices can create a security gap that compromises corporate data.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Common Profile Security Requirements</span>
+    <span class="sec-panel-badge badge-mdm">MDM Compliance Policy</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Screen lock requirements</div>
+    <div class="sec-desc">Minimum passcode length (typically 6+ characters); require alphanumeric passcode for high-security environments; maximum screen lock timeout (5–15 minutes); disallow swipe-only unlock; maximum failed attempts before wipe (6–10). These settings are pushed via configuration profile — users cannot set a weaker passcode than the policy minimum while the profile is installed. On iOS, if a user removes the profile, they lose access to corporate resources.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">OS version requirements</div>
+    <div class="sec-desc">Define the minimum supported iOS or Android version. Devices running EOL or outdated OS versions are blocked from corporate access. The compliance policy automatically re-evaluates compliance when OS updates are detected — a device that updates to a compliant OS version is automatically granted access again without IT intervention.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Jailbreak / root detection</div>
+    <div class="sec-desc"><strong>Jailbreaking (iOS)</strong> — exploiting vulnerabilities to remove Apple's restrictions, allowing unsigned app installation and root access. Bypasses the security model entirely. <strong>Rooting (Android)</strong> — gaining root (superuser) access, bypassing manufacturer restrictions. Both fundamentally undermine the device's security model and make enterprise security controls ineffective. MDM compliance checks detect common jailbreak/root indicators. A jailbroken/rooted device should be immediately flagged as non-compliant and blocked from corporate resources.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Encryption requirement</div>
+    <div class="sec-desc">Compliance policy should require device encryption enabled. On modern iOS devices, encryption is always on (non-configurable), so this check is automatically satisfied. On Android, some older devices or custom ROMs may not have encryption enabled — MDM verifies encryption status via the Android management API and flags devices without encryption as non-compliant.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Approved device types</div>
+    <div class="sec-desc">Organizations can restrict enrollment to specific device models, manufacturers, or iOS/Android versions. Example: allow only Apple devices running iOS 16+, or only Samsung Knox-enabled devices for Android. This ensures hardware security features (Secure Enclave, Samsung Knox) are present and functioning. Unapproved device types are rejected at enrollment.</div>
+  </div>
+</div>
+
+
+<!-- CAPABILITY COMPARISON TABLE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Mobile Security Control Quick Reference</h2>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Control</th>
+      <th>iOS</th>
+      <th>Android</th>
+      <th>BYOD Available</th>
+      <th>Requires MDM</th>
+      <th>Primary Threat Mitigated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Device Encryption</td><td><span class="yes">Always On</span></td><td><span class="yes">Default (Modern)</span></td><td><span class="yes">✓</span></td><td><span class="no">No</span></td><td>Physical theft / drive removal</td></tr>
+    <tr><td>Biometric Screen Lock</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">No</span></td><td>Unauthorized physical access</td></tr>
+    <tr><td>PIN / Passcode</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">No</span></td><td>Unauthorized physical access</td></tr>
+    <tr><td>Configuration Profile</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="ltd">Limited</span></td><td><span class="yes">Yes</span></td><td>Policy violations; misconfiguration</td></tr>
+    <tr><td>OS Updates</td><td><span class="yes">Direct</span></td><td><span class="ltd">Fragmented</span></td><td><span class="yes">✓</span></td><td><span class="no">No</span></td><td>Vulnerability exploitation</td></tr>
+    <tr><td>Mobile AV/Anti-malware</td><td><span class="no">Limited</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">No</span></td><td>Malicious apps; malware</td></tr>
+    <tr><td>Content Filtering</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="ltd">Limited</span></td><td><span class="ltd">Partial</span></td><td>Phishing; malware delivery; policy</td></tr>
+    <tr><td>Locator App</td><td><span class="yes">Find My</span></td><td><span class="yes">Find My Device</span></td><td><span class="yes">✓</span></td><td><span class="no">No</span></td><td>Physical loss / theft recovery</td></tr>
+    <tr><td>Remote Full Wipe</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">No (personal)</span></td><td><span class="ltd">Partial (iCloud)</span></td><td>Data breach after theft</td></tr>
+    <tr><td>Remote Selective Wipe</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">Yes</span></td><td>Corporate data on personal device</td></tr>
+    <tr><td>Remote Backup</td><td><span class="yes">iCloud</span></td><td><span class="yes">Google One</span></td><td><span class="yes">✓</span></td><td><span class="no">No</span></td><td>Data loss after wipe/damage</td></tr>
+    <tr><td>Failed Attempt Limit</td><td><span class="yes">Built-in</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="ltd">For enforcement</span></td><td>Local brute-force attack</td></tr>
+    <tr><td>Jailbreak/Root Detection</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">Yes</span></td><td>Security model bypass</td></tr>
+  </tbody>
+</table>
+
+
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.8 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">iOS encryption</span>Always on — hardware AES-256; cannot be disabled; key destroyed on wipe</div>
+    <div class="summary-item"><span class="s-sym">Android encryption</span>File-based encryption (FBE) default on Android 10+; PIN/password strengthens key</div>
+    <div class="summary-item"><span class="s-sym">Face ID (iOS)</span>3D infrared depth map; 1:1,000,000 false accept; most secure mobile biometric</div>
+    <div class="summary-item"><span class="s-sym">Swipe unlock</span>Zero security — prevents pocket-dials only; never acceptable for corporate use</div>
+    <div class="summary-item"><span class="s-sym">6-digit PIN</span>1,000,000 combinations; significantly stronger than 4-digit (10,000)</div>
+    <div class="summary-item"><span class="s-sym">Configuration profile</span>MDM-pushed XML policy; enforces settings user cannot override</div>
+    <div class="summary-item"><span class="s-sym">iOS updates</span>Direct from Apple; simultaneous; 5–6 year support; MDM can delay up to 90 days</div>
+    <div class="summary-item"><span class="s-sym">Android updates</span>Fragmented by manufacturer; Pixel = fastest; MDM enforces minimum patch level</div>
+    <div class="summary-item"><span class="s-sym">Mobile AV</span>More relevant on Android (open ecosystem); iOS sandboxing limits traditional AV</div>
+    <div class="summary-item"><span class="s-sym">Content filtering</span>DNS-based or VPN-based; filters all apps, not just browser</div>
+    <div class="summary-item"><span class="s-sym">Find My (iOS)</span>Must enable before loss; Activation Lock makes stolen iPhone less valuable</div>
+    <div class="summary-item"><span class="s-sym">Remote full wipe</span>Erases everything; corporate-owned devices; requires network connectivity</div>
+    <div class="summary-item"><span class="s-sym">Selective wipe</span>Corporate data only; BYOD standard; preserves personal data</div>
+    <div class="summary-item"><span class="s-sym">iOS failed attempts</span>Graduated lockout → wipe after 10 (configurable); MDM can lower threshold</div>
+    <div class="summary-item"><span class="s-sym">BYOD wipe rule</span>Selective wipe only on personal devices — cannot full wipe employee-owned hardware</div>
+    <div class="summary-item"><span class="s-sym">COPE (corporate)</span>Full MDM management; full wipe authorized; no employee privacy limitations</div>
+    <div class="summary-item"><span class="s-sym">Jailbreak / root</span>Bypasses OS security model; MDM detects and marks non-compliant; blocks corporate access</div>
+    <div class="summary-item"><span class="s-sym">MDM examples</span>Microsoft Intune, Jamf (Apple), VMware Workspace ONE, Ivanti MobileIron</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> An employee's corporate iPhone is stolen — what two actions should IT take? → Remote wipe (full — corporate-owned) AND locate via Find My.<br>
+  <strong>Scenario 2:</strong> An employee's personal Android phone with corporate email is lost — what is the appropriate remote action? → Selective wipe only — removes corporate data without erasing personal photos and apps.<br>
+  <strong>Scenario 3:</strong> A user has no screen lock on their BYOD device that accesses corporate email — what should happen? → MDM compliance check fails; conditional access blocks corporate resource access until a compliant screen lock is set.<br>
+  <strong>Scenario 4:</strong> A device shows as jailbroken in the MDM console — what should happen? → Mark non-compliant; block corporate access; investigate; full wipe if corporate-owned.<br>
+  <strong>Scenario 5:</strong> A company wants to prevent corporate data from being copied from Outlook to personal apps on BYOD iPhones → MDM App Protection Policy (MAM) with managed app restrictions on cut/copy/paste between managed and unmanaged apps.<br>
+  <strong>Scenario 6:</strong> Which screen lock method provides the lowest security? → Swipe (no authentication required).<br>
+  <strong>Scenario 7:</strong> A company is rolling out Android devices in a high-security environment — which screen lock should be required? → Minimum 6-digit PIN enforced via MDM compliance policy; biometric as secondary method.<br>
+  <strong>Scenario 8:</strong> An employee is leaving the company and had corporate apps on their personal iPhone — what happens during BYOD offboarding? → Selective wipe removes corporate apps and data; personal content untouched.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

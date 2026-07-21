@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.5 — Use the Appropriate Microsoft Command-Line Tools</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EDITION PANEL — custom for this page */
+  .edition-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .edition-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
+  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
+  .edition-panel-body { padding: 0; }
+  .edition-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .edition-row:last-child { border-bottom: none; }
+  .edition-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .edition-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .edition-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* UPGRADE PATH DIAGRAM */
+  .upgrade-path {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 24px;
+    font-family: var(--sans);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .up-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .up-node .up-label {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .up-node .up-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .up-arrow {
+    font-size: 18px;
+    color: var(--border2);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
+  .up-node.target .up-label { color: var(--accent3); }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .edition-row { grid-template-columns: 1fr; }
+    .upgrade-path { flex-direction: column; align-items: flex-start; }
+    .up-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.5</strong> Given a Scenario, Use the Appropriate
+Microsoft Command-Line Tools</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_4-Windows-Features-Tools.html">1.4</a>
+    <a class="nav-next" href="./1_6-Windows-Settings.html">1.6</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.5</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Given a Scenario, Use the Appropriate<br>Microsoft Command-Line Tools</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.5</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Scenario</span>
+    <span>6 categories · 22 commands</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW                                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>The Windows command line is an indispensable tool for IT support technicians. Many diagnostic and repair operations are faster, more precise, and sometimes only possible from a command prompt. When a system is unbootable, when a graphical tool fails to load, or when automating tasks via scripts, command-line proficiency is not optional — it is a core competency.</p>
+
+<p>Objective 1.5 tests 22 specific commands organized into six functional categories: navigation, networking, disk management, file management, system information, and OS management. For each command, the exam expects you to know its <em>purpose</em>, its <em>key switches</em>, and — critically — <em>which command to use in a given scenario</em>. A scenario might describe a network problem, a corrupt disk, a group policy issue, or a need to create a directory structure; you must identify the correct tool.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Opening a Command Prompt</p>
+  <p>Three ways to open an elevated (administrator) command prompt: <strong>(1)</strong> Win + X → Windows Terminal (Admin) or Command Prompt (Admin). <strong>(2)</strong> Search → type "cmd" → right-click → Run as administrator. <strong>(3)</strong> Win + R → type <code>cmd</code> → Ctrl + Shift + Enter (runs with elevation). Many commands in this objective require elevation — always run as administrator when in doubt. In Windows 11, "Command Prompt" in the Win+X menu has been replaced by "Terminal."</p>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">The /? Switch — Built-In Help for Every Command</p>
+  <p>Every command covered in this objective supports the <code>/?</code> switch, which displays the command's syntax, all available switches, and usage examples directly in the terminal. This is explicitly tested on the exam. When you cannot remember a switch, type <code>command /?</code> before anything else. Example: <code>ipconfig /?</code>, <code>chkdsk /?</code>, <code>robocopy /?</code>. The help output is comprehensive and formatted clearly.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1: NAVIGATION                    -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Navigation</h2>
+
+<div class="cat-label cat-nav">Navigation Commands</div>
+
+<p>Navigation commands allow a technician to move through the file system, list directory contents, and orient themselves within the directory tree. These are foundational — every command-line session begins with knowing where you are and being able to move to where you need to be.</p>
+
+<h3 class="section">cd — Change Directory</h3>
+
+<p>The <code>cd</code> command (short for <span class="key-term">change directory</span>) moves the command prompt's working directory to a specified location. All subsequent commands without explicit paths operate relative to this working directory. It is the single most frequently used navigation command.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">cd</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">cd</span> <span class="cmd-opt">[</span><span class="cmd-arg">path</span><span class="cmd-opt">]</span> &nbsp;&nbsp;&nbsp;
+      <span class="cmd-c">chdir</span> <span class="cmd-opt">[</span><span class="cmd-arg">path</span><span class="cmd-opt">]</span> &nbsp;&nbsp;
+      <span class="cmd-opt">(cd and chdir are identical)</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">cd</span> <span class="a">Windows</span> <span class="cm">— move into C:\Windows (relative path)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\Windows&gt;</span>
+        <span class="cmd-line"><span class="c">cd</span> <span class="a">C:\Users\Mike\Documents</span> <span class="cm">— jump to absolute path</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\Users\Mike\Documents&gt;</span>
+        <span class="cmd-line"><span class="c">cd</span> <span class="a">..</span> <span class="cm">— move up one directory level to C:\Users\Mike</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\Users\Mike&gt;</span>
+        <span class="cmd-line"><span class="c">cd</span> <span class="a">..\..</span> <span class="cm">— move up two levels to C:\</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\Users\Mike&gt;</span>
+        <span class="cmd-line"><span class="c">cd</span> <span class="a">\</span> <span class="cm">— jump to root of current drive (C:\)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">cd</span> <span class="cm">— typed alone, prints the current working directory path</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Concepts</div>
+      <div class="flag-row"><span class="flag-key">..</span><span class="flag-desc">Parent directory shortcut. <code>cd ..</code> always moves one level up. Can be chained: <code>cd ..\..</code></span></div>
+      <div class="flag-row"><span class="flag-key">\</span><span class="flag-desc">Root of the current drive. <code>cd \</code> goes to C:\ (or D:\, etc.) regardless of depth.</span></div>
+      <div class="flag-row"><span class="flag-key">Absolute path</span><span class="flag-desc">Starts with a drive letter: <code>C:\Windows\System32</code>. Goes directly to that location from anywhere.</span></div>
+      <div class="flag-row"><span class="flag-key">Relative path</span><span class="flag-desc">No drive letter. Navigates relative to current directory. <code>cd System32</code> from C:\Windows goes to C:\Windows\System32.</span></div>
+      <div class="flag-row"><span class="flag-key">Spaces in paths</span><span class="flag-desc">Wrap paths containing spaces in double quotes: <code>cd "C:\Program Files\Mozilla Firefox"</code></span></div>
+      <div class="flag-row"><span class="flag-key">/D switch</span><span class="flag-desc"><strong>cd /D D:\Folder</strong> — changes both the drive and the directory simultaneously. Without /D, <code>cd D:\</code> changes directory but does not switch the active drive.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">dir — Directory Listing</h3>
+
+<p>The <code>dir</code> command lists the contents of a directory — file names, subdirectory names, file sizes, and modification dates. It is the command-line equivalent of opening a folder in File Explorer and is essential for verifying that files exist, checking modification times, and finding files by pattern.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">dir</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">dir</span> <span class="cmd-opt">[</span><span class="cmd-arg">path\pattern</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">switches</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">dir</span> <span class="cm">— list all files and folders in current directory</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">dir</span> <span class="a">C:\Windows\System32</span> <span class="cm">— list contents of a specific path</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">dir</span> <span class="a">*.exe</span> <span class="cm">— list only .exe files in current directory</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">dir</span> <span class="sw">/a</span> <span class="cm">— show ALL files including hidden and system files</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">dir</span> <span class="sw">/s</span> <span class="a">*.log</span> <span class="cm">— search recursively for all .log files in all subdirectories</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">dir</span> <span class="sw">/p</span> <span class="cm">— pause output after each screenful (prevents scrolling past results)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">dir</span> <span class="sw">/o:s</span> <span class="cm">— sort output by file size (smallest first)</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches</div>
+      <div class="flag-row"><span class="flag-key">/a</span><span class="flag-desc">Show <strong>all</strong> files including hidden (H) and system (S) files. Can be combined: <code>/ah</code> = hidden only, <code>/as</code> = system only.</span></div>
+      <div class="flag-row"><span class="flag-key">/s</span><span class="flag-desc"><strong>Subdirectories</strong> — recursive listing. Searches the specified directory and all directories below it. Combine with a wildcard to search the entire drive: <code>dir /s *.txt</code></span></div>
+      <div class="flag-row"><span class="flag-key">/p</span><span class="flag-desc"><strong>Pause</strong> — halts after each screen of output. Press any key to continue. Essential when listing directories with hundreds of entries.</span></div>
+      <div class="flag-row"><span class="flag-key">/w</span><span class="flag-desc"><strong>Wide</strong> format — displays file names across the width of the screen in columns, sacrificing date/size detail for compactness.</span></div>
+      <div class="flag-row"><span class="flag-key">/o:[sort]</span><span class="flag-desc">Sort order: <code>/o:n</code> = name, <code>/o:s</code> = size, <code>/o:d</code> = date, <code>/o:e</code> = extension. Add <code>-</code> to reverse: <code>/o:-s</code> = largest first.</span></div>
+      <div class="flag-row"><span class="flag-key">Wildcards</span><span class="flag-desc"><code>*</code> = any characters, <code>?</code> = single character. <code>*.exe</code> = all executables, <code>report?.txt</code> = report1.txt, report2.txt, etc.</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2: NETWORK                       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Network Commands</h2>
+
+<div class="cat-label cat-network">Network Commands</div>
+
+<p>Network commands diagnose connectivity problems, query DNS, inspect active connections, map network drives, and trace the path packets take to a destination. These are among the most frequently tested commands on the A+ exam because network troubleshooting is a daily activity in IT support. The standard network troubleshooting sequence — from most basic to most advanced — is: <code>ipconfig</code> → <code>ping</code> → <code>tracert</code> / <code>pathping</code> → <code>netstat</code> → <code>nslookup</code>.</p>
+
+<h3 class="section">ipconfig — IP Configuration</h3>
+
+<p><code>ipconfig</code> displays and manages the TCP/IP configuration of all network adapters on the local machine. It is the first command run in virtually any network troubleshooting scenario — verifying that the machine has a valid IP address, subnet mask, default gateway, and DNS server addresses.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">ipconfig</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">ipconfig</span> <span class="cmd-opt">[</span><span class="cmd-p">switch</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ipconfig</span> <span class="cm">— summary: IP, subnet mask, default gateway for each adapter</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ipconfig</span> <span class="sw">/all</span> <span class="cm">— full detail: MAC, DHCP server, DNS servers, lease times</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ipconfig</span> <span class="sw">/release</span> <span class="cm">— release (surrender) the DHCP-assigned IP address</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ipconfig</span> <span class="sw">/renew</span> <span class="cm">— request a new IP address from the DHCP server</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ipconfig</span> <span class="sw">/flushdns</span> <span class="cm">— clear the local DNS resolver cache</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ipconfig</span> <span class="sw">/displaydns</span> <span class="cm">— show all entries currently in the DNS cache</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches &amp; Diagnostic Interpretation</div>
+      <div class="flag-row"><span class="flag-key">/all</span><span class="flag-desc">The most useful switch. Shows Physical Address (MAC), DHCP Enabled/Disabled, DHCP server IP, DNS servers, lease obtained/expires times, and IPv6 addresses.</span></div>
+      <div class="flag-row"><span class="flag-key">/release + /renew</span><span class="flag-desc">The standard DHCP troubleshooting sequence. Release surrenders the current lease; renew requests a fresh IP from the DHCP server. Use when a device has no IP or a stale/conflicting address.</span></div>
+      <div class="flag-row"><span class="flag-key">/flushdns</span><span class="flag-desc"><strong>Most exam-tested switch.</strong> Clears the DNS resolver cache — the local table of recently resolved hostnames. Use when DNS changes have been made (new DNS record, domain migration) but the machine still resolves an old IP. Requires elevation on Windows 8+.</span></div>
+      <div class="flag-row"><span class="flag-key">APIPA address</span><span class="flag-desc">An IP of <strong>169.254.x.x</strong> with subnet mask 255.255.0.0 means the machine could not reach a DHCP server and self-assigned an Automatic Private IP Address. The machine cannot communicate beyond the local subnet. Check the physical connection and DHCP server availability.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — ipconfig /flushdns</p>
+  <p>A user reports they cannot access a website that was recently moved to a new server, even though other users on different machines can access it fine. The fix is <code>ipconfig /flushdns</code> — their DNS cache has the old IP address cached. This is one of the highest-probability ipconfig scenarios on the exam.</p>
+</div>
+
+<h3 class="section">ping — Packet Internet Groper</h3>
+
+<p><code>ping</code> sends ICMP Echo Request packets to a target host and measures whether a response is received and how long it takes. It is the most fundamental network connectivity test — confirming whether a host is reachable at the IP layer. Ping does not test application-layer connectivity (a host can respond to ping but have a web server that is down), but a failed ping confirms a fundamental connectivity problem.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">ping</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">ping</span> <span class="cmd-opt">[</span><span class="cmd-p">switches</span><span class="cmd-opt">]</span> <span class="cmd-arg">target_name_or_IP</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ping</span> <span class="a">google.com</span> <span class="cm">— ping by hostname (tests DNS resolution AND connectivity)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ping</span> <span class="a">8.8.8.8</span> <span class="cm">— ping by IP (tests connectivity only, skips DNS)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ping</span> <span class="a">127.0.0.1</span> <span class="cm">— ping loopback: tests local TCP/IP stack (does not leave the machine)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ping</span> <span class="a">192.168.1.1</span> <span class="cm">— ping the default gateway: tests local network segment</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ping</span> <span class="sw">-t</span> <span class="a">8.8.8.8</span> <span class="cm">— continuous ping until Ctrl+C (monitor stability)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ping</span> <span class="sw">-n 20</span> <span class="a">8.8.8.8</span> <span class="cm">— send 20 packets instead of the default 4</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ping</span> <span class="sw">-l 1400</span> <span class="a">8.8.8.8</span> <span class="cm">— send 1400-byte packets (test MTU/fragmentation)</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Troubleshooting Methodology with Ping</div>
+      <div class="flag-row"><span class="flag-key">Step 1: 127.0.0.1</span><span class="flag-desc">Ping loopback. If this fails, TCP/IP is not functioning on this machine — reinstall the network protocol stack.</span></div>
+      <div class="flag-row"><span class="flag-key">Step 2: Own IP</span><span class="flag-desc">Ping the machine's own IP address. If loopback succeeds but this fails, the NIC or driver has a problem.</span></div>
+      <div class="flag-row"><span class="flag-key">Step 3: Default gateway</span><span class="flag-desc">Ping the router/gateway IP. If this fails, the machine cannot reach the local network — check cable, switch, or wireless connection.</span></div>
+      <div class="flag-row"><span class="flag-key">Step 4: Remote IP</span><span class="flag-desc">Ping a known external IP (8.8.8.8). If this fails but gateway ping succeeds, the router is not forwarding traffic to the internet.</span></div>
+      <div class="flag-row"><span class="flag-key">Step 5: Hostname</span><span class="flag-desc">Ping a hostname (google.com). If IP ping succeeds but hostname ping fails, DNS is not resolving — check DNS server settings.</span></div>
+      <div class="flag-row"><span class="flag-key">Request Timed Out</span><span class="flag-desc">Packets sent but no response received. The host may be unreachable, a firewall may be blocking ICMP, or the host may have ICMP responses disabled.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">netstat — Network Statistics</h3>
+
+<p><code>netstat</code> displays active network connections, listening ports, protocol statistics, and the routing table. It answers the question: "what network connections does this machine currently have open, and what is listening for inbound connections?" It is an essential tool for identifying unexpected outbound connections from malware and verifying that a service is listening on the expected port.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">netstat</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">netstat</span> <span class="cmd-opt">[</span><span class="cmd-p">switches</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-arg">interval</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">netstat</span> <span class="cm">— show active TCP connections (no listening ports)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">netstat</span> <span class="sw">-a</span> <span class="cm">— all connections AND listening ports (TCP + UDP)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">netstat</span> <span class="sw">-b</span> <span class="cm">— show the executable (process) responsible for each connection</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">netstat</span> <span class="sw">-n</span> <span class="cm">— show IP addresses and port numbers numerically (skip DNS resolution)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">netstat</span> <span class="sw">-ano</span> <span class="cm">— all connections, numeric, with PID — most useful for security analysis</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">netstat</span> <span class="sw">-r</span> <span class="cm">— display the routing table (same as "route print")</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">netstat</span> <span class="sw">-ano</span> <span class="a">5</span> <span class="cm">— refresh every 5 seconds automatically</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches &amp; States</div>
+      <div class="flag-row"><span class="flag-key">-ano</span><span class="flag-desc">The most useful combination. <strong>-a</strong> = all connections/ports, <strong>-n</strong> = numeric (fast, no DNS lookup), <strong>-o</strong> = show PID. Use the PID with Task Manager → Details tab to identify the owning process.</span></div>
+      <div class="flag-row"><span class="flag-key">-b</span><span class="flag-desc">Shows the executable name responsible for each connection. Requires administrator privileges. Useful for identifying which program opened a suspicious connection.</span></div>
+      <div class="flag-row"><span class="flag-key">ESTABLISHED</span><span class="flag-desc">An active, open connection. Data is flowing or has flowed recently.</span></div>
+      <div class="flag-row"><span class="flag-key">LISTENING</span><span class="flag-desc">A port is open and waiting for inbound connections. Services listening on unexpected ports warrant investigation.</span></div>
+      <div class="flag-row"><span class="flag-key">TIME_WAIT</span><span class="flag-desc">Connection is closed but the OS is waiting to ensure all packets have been received before fully releasing the port.</span></div>
+      <div class="flag-row"><span class="flag-key">CLOSE_WAIT</span><span class="flag-desc">Remote end has closed the connection; local end has not yet closed its side. May indicate an application not releasing connections cleanly.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">nslookup — Name Server Lookup</h3>
+
+<p><code>nslookup</code> queries DNS servers to resolve hostnames to IP addresses (and vice versa) and diagnose DNS configuration issues. It directly queries a DNS server, bypassing the local DNS cache, making it ideal for diagnosing DNS resolution failures and verifying that DNS records are correct.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">nslookup</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">nslookup</span> <span class="cmd-opt">[</span><span class="cmd-arg">hostname</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-arg">DNS_server</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">nslookup</span> <span class="a">google.com</span> <span class="cm">— resolve hostname using the system's configured DNS server</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">nslookup</span> <span class="a">google.com</span> <span class="a">8.8.8.8</span> <span class="cm">— query a specific DNS server (Google's public DNS)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">nslookup</span> <span class="a">8.8.8.8</span> <span class="cm">— reverse DNS lookup: find hostname for an IP address</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">nslookup</span> <span class="cm">— enters interactive mode (type hostnames at the &gt; prompt; "exit" to quit)</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Diagnostic Interpretation</div>
+      <div class="flag-row"><span class="flag-key">Server: / Address:</span><span class="flag-desc">The first two lines show which DNS server nslookup is querying. If this shows 127.0.0.1 or an unexpected server, DNS is misconfigured.</span></div>
+      <div class="flag-row"><span class="flag-key">Non-authoritative answer</span><span class="flag-desc">Normal response — means the DNS server returned a cached answer, not a direct answer from the authoritative nameserver for the domain. Expected in most queries.</span></div>
+      <div class="flag-row"><span class="flag-key">Can't find / NXDOMAIN</span><span class="flag-desc">The hostname does not exist in DNS. Either the name is wrong, the DNS record doesn't exist, or you're querying the wrong DNS server.</span></div>
+      <div class="flag-row"><span class="flag-key">Query a different server</span><span class="flag-desc">If <code>nslookup hostname</code> fails but <code>nslookup hostname 8.8.8.8</code> succeeds, the problem is the machine's configured DNS server — not DNS in general.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">net use — Map Network Drives</h3>
+
+<p><code>net use</code> connects (maps) or disconnects network drives and printers from the command line. It is part of the broader <code>net</code> command family and provides scripted, persistent network share connections — useful for login scripts and automated deployment.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">net use</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">net use</span> <span class="cmd-opt">[</span><span class="cmd-arg">drive:</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-arg">\\server\share</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">password</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/user:domain\username</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/persistent:yes|no</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net use</span> <span class="cm">— list all current network drive mappings and their status</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net use</span> <span class="a">Z:</span> <span class="a">\\fileserver\shared</span> <span class="cm">— map Z: to a network share</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net use</span> <span class="a">Z:</span> <span class="a">\\server\docs</span> <span class="sw">/persistent:yes</span> <span class="cm">— reconnect automatically at each login</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net use</span> <span class="a">Z:</span> <span class="a">\\server\docs</span> <span class="sw">/user:DOMAIN\jdoe</span> <span class="a">P@ssword1</span> <span class="cm">— map with alternate credentials</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net use</span> <span class="a">Z:</span> <span class="sw">/delete</span> <span class="cm">— disconnect (unmap) drive Z:</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net use</span> <span class="a">*</span> <span class="sw">/delete</span> <span class="cm">— disconnect ALL mapped network drives</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Options</div>
+      <div class="flag-row"><span class="flag-key">/persistent:yes</span><span class="flag-desc">Reconnects the drive mapping at every login. Without this, the mapping is only for the current session.</span></div>
+      <div class="flag-row"><span class="flag-key">/user:domain\user</span><span class="flag-desc">Connect with specific credentials. Useful when the share requires a different account than the logged-in user.</span></div>
+      <div class="flag-row"><span class="flag-key">UNC path</span><span class="flag-desc">Network shares are referenced via Universal Naming Convention (UNC): <code>\\servername\sharename</code>. The server can be a hostname or IP address.</span></div>
+      <div class="flag-row"><span class="flag-key">* (wildcard letter)</span><span class="flag-desc">Use <code>*</code> instead of a drive letter to let Windows assign the next available drive letter automatically.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">tracert — Trace Route</h3>
+
+<p><code>tracert</code> traces the network path (the sequence of routers) that packets travel from the local machine to a destination. It reveals each <span class="key-term">hop</span> along the route, the IP address of each hop, and the round-trip time to each hop. It is the standard tool for identifying <em>where</em> in the network a connectivity failure or performance degradation occurs.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">tracert</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">tracert</span> <span class="cmd-opt">[</span><span class="cmd-p">switches</span><span class="cmd-opt">]</span> <span class="cmd-arg">target_name_or_IP</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">tracert</span> <span class="a">google.com</span> <span class="cm">— trace route to google.com, resolving each hop's hostname</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">tracert</span> <span class="sw">-d</span> <span class="a">8.8.8.8</span> <span class="cm">— trace without DNS resolution (faster output)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">tracert</span> <span class="sw">-h 15</span> <span class="a">google.com</span> <span class="cm">— limit to 15 hops maximum (default is 30)</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Reading Output &amp; Diagnostic Interpretation</div>
+      <div class="flag-row"><span class="flag-key">Hop number</span><span class="flag-desc">Each row is one router in the path. Hop 1 is usually your default gateway (router). The final hop is the destination.</span></div>
+      <div class="flag-row"><span class="flag-key">Three RTT values</span><span class="flag-desc">Each hop shows three round-trip time measurements in milliseconds. Minor variation is normal. Large variation (jitter) or consistently high values indicate latency at that point.</span></div>
+      <div class="flag-row"><span class="flag-key">* * *</span><span class="flag-desc">Three asterisks mean no response was received for that hop. Could mean the router blocks ICMP (common and not a problem), or it could indicate the hop is down. If asterisks appear from a certain hop onward, that hop is likely the failure point.</span></div>
+      <div class="flag-row"><span class="flag-key">-d switch</span><span class="flag-desc">Skips reverse DNS lookups, making output appear faster. Useful when you only need IP addresses and don't need hostnames resolved.</span></div>
+      <div class="flag-row"><span class="flag-key">Stops at a hop</span><span class="flag-desc">If tracert stops responding at a specific hop and all subsequent hops are asterisks, the failure is at or beyond that hop — useful for escalating to an ISP or upstream network team.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">pathping — Path Ping</h3>
+
+<p><code>pathping</code> combines the route-tracing capability of <code>tracert</code> with the packet-loss statistics of <code>ping</code>. It first maps the route (like tracert), then sends 100 packets to each hop and calculates per-hop packet loss percentages and latency statistics. The result is a far more detailed view of network quality than either tool alone.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">pathping</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">pathping</span> <span class="cmd-opt">[</span><span class="cmd-p">switches</span><span class="cmd-opt">]</span> <span class="cmd-arg">target_name_or_IP</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">pathping</span> <span class="a">8.8.8.8</span> <span class="cm">— full analysis to 8.8.8.8 (takes ~1–2 minutes)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">pathping</span> <span class="sw">-n</span> <span class="a">google.com</span> <span class="cm">— skip hostname resolution for faster output</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Concepts</div>
+      <div class="flag-row"><span class="flag-key">Phase 1: Route trace</span><span class="flag-desc">Discovers the path like tracert. Lists each hop with IP and hostname.</span></div>
+      <div class="flag-row"><span class="flag-key">Phase 2: Statistics</span><span class="flag-desc">Sends 100 packets to each hop. Reports <strong>This Node/Link Lost/Sent</strong> — the packet loss percentage at each individual hop. Pinpoints the specific router causing packet loss.</span></div>
+      <div class="flag-row"><span class="flag-key">tracert vs. pathping</span><span class="flag-desc"><strong>tracert</strong> is fast (seconds) and good for identifying where a route fails. <strong>pathping</strong> is slow (minutes) but quantifies packet loss at each hop — better for diagnosing intermittent or quality-related issues rather than hard failures.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — tracert vs. pathping</p>
+  <p>Both trace the route to a destination. The key distinction: <strong>tracert</strong> shows the path and latency quickly; <strong>pathping</strong> adds <em>packet loss statistics per hop</em> and takes longer to run. If a scenario asks which tool identifies packet loss at a specific router, the answer is pathping. If the scenario just needs to find where connectivity breaks, either works but tracert is faster.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3: DISK MANAGEMENT               -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Disk Management Commands</h2>
+
+<div class="cat-label cat-disk">Disk Management Commands</div>
+
+<p>Disk management commands perform operations on physical drives and their file systems: checking for errors, formatting volumes, and managing partitions from the command line. These commands are especially important in recovery scenarios where the graphical Disk Management tool is unavailable — for example, when working from the Windows Recovery Environment (WinRE).</p>
+
+<h3 class="section">chkdsk — Check Disk</h3>
+
+<p><code>chkdsk</code> scans a disk volume for file system errors and bad sectors. On NTFS volumes, it verifies the integrity of the file system metadata and can repair many types of corruption. It is the first tool to run when a drive is misbehaving — taking unusually long to open files, showing corruption errors, or after an unexpected shutdown.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">chkdsk</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">chkdsk</span> <span class="cmd-opt">[</span><span class="cmd-arg">volume</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">switches</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">chkdsk</span> <span class="cm">— check current drive, read-only (no repairs, just report)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">chkdsk</span> <span class="a">D:</span> <span class="cm">— check the D: drive, read-only report</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">chkdsk</span> <span class="a">C:</span> <span class="sw">/f</span> <span class="cm">— fix file system errors on C: (schedules for next reboot if volume is in use)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">chkdsk</span> <span class="a">C:</span> <span class="sw">/r</span> <span class="cm">— locate bad sectors and recover readable data (implies /f, very slow)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">chkdsk</span> <span class="a">D:</span> <span class="sw">/f /r /x</span> <span class="cm">— fix errors, scan bad sectors, and force dismount first</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches</div>
+      <div class="flag-row"><span class="flag-key">/f</span><span class="flag-desc"><strong>Fix</strong> errors. Without /f, chkdsk only reports problems without repairing them. If the volume (e.g., C:) is in use, Windows schedules the check to run before Windows loads on the next reboot.</span></div>
+      <div class="flag-row"><span class="flag-key">/r</span><span class="flag-desc"><strong>Recover</strong> — locates bad sectors and attempts to recover readable data. Implies /f. Performs a physical scan of the drive surface — can take hours on large HDDs. Essential when a drive reports physical errors.</span></div>
+      <div class="flag-row"><span class="flag-key">/x</span><span class="flag-desc">Forces the volume to <strong>dismount</strong> before checking, closing any open file handles. Required for non-system volumes that are actively in use. Do not use on the system drive (use /f scheduling instead).</span></div>
+      <div class="flag-row"><span class="flag-key">Requires elevation</span><span class="flag-desc">chkdsk /f requires administrator privileges. Running without elevation performs a read-only check only.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">format — Format Volume</h3>
+
+<p><code>format</code> prepares a disk volume by writing a new file system structure, effectively erasing all data on the volume. It is used to prepare a new partition for use, change the file system type of a volume, or securely wipe a volume before reuse.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">format</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">format</span> <span class="cmd-arg">volume</span> <span class="cmd-opt">[</span><span class="cmd-p">/fs:filesystem</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/q</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/v:label</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">format</span> <span class="a">D:</span> <span class="sw">/fs:ntfs</span> <span class="cm">— full format of D: with NTFS file system</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">format</span> <span class="a">E:</span> <span class="sw">/fs:fat32</span> <span class="sw">/q</span> <span class="cm">— quick format of E: with FAT32</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">format</span> <span class="a">F:</span> <span class="sw">/fs:exfat</span> <span class="sw">/v:BackupDrive</span> <span class="cm">— exFAT with volume label "BackupDrive"</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches &amp; File System Choices</div>
+      <div class="flag-row"><span class="flag-key">/fs:ntfs</span><span class="flag-desc"><strong>NTFS</strong> — New Technology File System. Standard for internal Windows drives. Supports permissions, encryption (EFS), compression, large files, and journaling.</span></div>
+      <div class="flag-row"><span class="flag-key">/fs:fat32</span><span class="flag-desc"><strong>FAT32</strong> — maximum file size 4 GB, maximum volume size 32 GB via Windows format (larger via third-party tools). Compatible with virtually all OSes and devices. Used for boot USB drives and older compatibility requirements.</span></div>
+      <div class="flag-row"><span class="flag-key">/fs:exfat</span><span class="flag-desc"><strong>exFAT</strong> — Extended FAT. Removes FAT32's 4 GB file size limit. Designed for flash storage (USB drives, SD cards). Cross-platform compatible (Windows, macOS, Linux).</span></div>
+      <div class="flag-row"><span class="flag-key">/q</span><span class="flag-desc"><strong>Quick format</strong> — writes a new file system structure without scanning for bad sectors. Fast but does not detect physical disk problems. Avoid /q if the drive health is uncertain.</span></div>
+      <div class="flag-row"><span class="flag-key">/v:label</span><span class="flag-desc">Sets the <strong>volume label</strong> — the name that appears for the drive in File Explorer. Up to 11 characters for FAT32, 32 for NTFS.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">format is Destructive — No Undo</p>
+  <p>The <code>format</code> command destroys all data on the target volume. There is no confirmation prompt beyond the initial "Proceed with Format (Y/N)?" question. A quick format is not a secure wipe — data can be recovered with forensic tools. For secure disposal, use multiple-pass overwrites or physical destruction.</p>
+</div>
+
+<h3 class="section">diskpart — Disk Partition Utility</h3>
+
+<p><code>diskpart</code> is a powerful command-line disk management utility that performs all the operations available in the Disk Management GUI — and more. It is especially valuable in the Windows Recovery Environment (WinRE) or when building custom deployment scenarios, where the Disk Management GUI is unavailable. diskpart operates interactively through a sub-prompt after launch.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax &amp; Interactive Session</span>
+    <span class="cmd-block-name">diskpart</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">diskpart</span> &nbsp;&nbsp; <span class="cmd-opt">(launches interactive prompt — all commands entered at DISKPART&gt; prompt)</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">diskpart</span> <span class="cm">— launch diskpart, enters interactive mode</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">list disk</span> <span class="cm">— show all physical disks (Disk 0, Disk 1, etc.)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">select disk</span> <span class="a">0</span> <span class="cm">— select Disk 0 as the target for subsequent commands</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">list partition</span> <span class="cm">— show all partitions on the selected disk</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">select partition</span> <span class="a">1</span> <span class="cm">— select partition 1</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">list volume</span> <span class="cm">— show all volumes with drive letters, file systems, and sizes</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">clean</span> <span class="cm">— <strong>DESTRUCTIVE:</strong> removes all partitions and data from selected disk</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">convert gpt</span> <span class="cm">— convert selected disk from MBR to GPT (disk must have no partitions)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">create partition primary size=51200</span> <span class="cm">— create 50 GB primary partition</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">assign letter=D</span> <span class="cm">— assign drive letter D to selected volume</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">DISKPART&gt;</span>
+        <span class="cmd-line"><span class="c">exit</span> <span class="cm">— leave diskpart and return to normal command prompt</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Workflow: Select Before Acting</div>
+      <div class="flag-row"><span class="flag-key">Select model</span><span class="flag-desc">diskpart uses a focus model: you must <strong>select</strong> an object before acting on it. <code>select disk 0</code> → then partition commands operate on Disk 0. <code>select partition 1</code> → then commands act on Partition 1.</span></div>
+      <div class="flag-row"><span class="flag-key">clean</span><span class="flag-desc">Removes all partition and volume information from the selected disk. <strong>All data is lost.</strong> Used to prepare a disk for a fresh installation. This is the standard first step when converting a drive from MBR to GPT.</span></div>
+      <div class="flag-row"><span class="flag-key">convert gpt</span><span class="flag-desc">Converts the selected disk's partition scheme from MBR to GPT. Requires the disk to be empty (run <code>clean</code> first). Required for Windows 11 system disks.</span></div>
+      <div class="flag-row"><span class="flag-key">active</span><span class="flag-desc">Marks the selected partition as active — designates it as the bootable partition on an MBR disk. Used when rebuilding boot partitions.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — diskpart clean</p>
+  <p>The <code>clean</code> command in diskpart is the most dangerous and most tested. It wipes all partitions from the selected disk with no undo. A common exam scenario: "A technician needs to convert a disk from MBR to GPT. What command is used to remove all existing partitions?" The answer is <code>clean</code> (run inside diskpart after selecting the disk). After cleaning, <code>convert gpt</code> changes the partition table type.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4: FILE MANAGEMENT               -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>File Management Commands</h2>
+
+<div class="cat-label cat-file">File Management Commands</div>
+
+<p>File management commands create and remove directory structures, and copy files with precision. These are fundamental to scripted deployments, system maintenance, and recovery operations where the graphical interface is not available.</p>
+
+<h3 class="section">md — Make Directory</h3>
+
+<p><code>md</code> (or <code>mkdir</code>) creates one or more new directories (folders). It can create nested directory structures in a single command, which is useful for scripted setup of complex folder hierarchies.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">md / mkdir</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">md</span> <span class="cmd-arg">path</span> &nbsp;&nbsp;&nbsp; <span class="cmd-c">mkdir</span> <span class="cmd-arg">path</span> &nbsp;&nbsp; <span class="cmd-opt">(identical commands)</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">md</span> <span class="a">Projects</span> <span class="cm">— create folder "Projects" in current directory</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">md</span> <span class="a">C:\Data\Reports\2024</span> <span class="cm">— create nested path; all intermediate folders created automatically</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">md</span> <span class="a">"My New Folder"</span> <span class="cm">— folder name with spaces requires double quotes</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Behaviors</div>
+      <div class="flag-row"><span class="flag-key">Recursive creation</span><span class="flag-desc">Unlike some Unix equivalents, Windows' <code>md</code> automatically creates all intermediate directories in a path — no separate switch required.</span></div>
+      <div class="flag-row"><span class="flag-key">Already exists</span><span class="flag-desc">If the directory already exists, <code>md</code> returns "A subdirectory or file already exists." This is not a fatal error — the existing directory is unaffected.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">rmdir — Remove Directory</h3>
+
+<p><code>rmdir</code> (or <code>rd</code>) removes an empty directory, or with the right switches, removes a directory tree entirely. By default it only removes empty directories — a safety behavior that prevents accidental data loss.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">rmdir / rd</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">rmdir</span> <span class="cmd-opt">[</span><span class="cmd-p">/s</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/q</span><span class="cmd-opt">]</span> <span class="cmd-arg">path</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">rmdir</span> <span class="a">OldFolder</span> <span class="cm">— remove empty directory (fails if not empty)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">rmdir</span> <span class="sw">/s</span> <span class="a">C:\Temp\OldProject</span> <span class="cm">— remove directory and all contents (prompts for confirmation)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">rmdir</span> <span class="sw">/s /q</span> <span class="a">C:\Temp\OldProject</span> <span class="cm">— remove silently without prompting (quiet mode)</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches</div>
+      <div class="flag-row"><span class="flag-key">/s</span><span class="flag-desc"><strong>Subdirectories</strong> — removes the directory tree including all files and subfolders. Without this, rmdir fails if the directory has any contents.</span></div>
+      <div class="flag-row"><span class="flag-key">/q</span><span class="flag-desc"><strong>Quiet</strong> — suppresses the "Are you sure (Y/N)?" confirmation prompt. Always pair with /s carefully — <code>rmdir /s /q</code> deletes everything without asking.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">robocopy — Robust File Copy</h3>
+
+<p><code>robocopy</code> (Robust File Copy) is a powerful, enterprise-grade file copy utility that handles complex copy tasks that <code>copy</code> and <code>xcopy</code> cannot manage reliably: large file trees with thousands of files, network shares with intermittent connectivity, mirror synchronization, and preservation of all NTFS file attributes and permissions.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">robocopy</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">robocopy</span> <span class="cmd-arg">source</span> <span class="cmd-arg">destination</span> <span class="cmd-opt">[</span><span class="cmd-arg">file(s)</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">options</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">robocopy</span> <span class="a">C:\Source</span> <span class="a">D:\Backup</span> <span class="cm">— copy top-level files from Source to Backup</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">robocopy</span> <span class="a">C:\Source</span> <span class="a">D:\Backup</span> <span class="sw">/e</span> <span class="cm">— copy all subdirectories including empty ones</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">robocopy</span> <span class="a">C:\Source</span> <span class="a">D:\Mirror</span> <span class="sw">/mir</span> <span class="cm">— mirror: exact copy, deletes files in dest not in source</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">robocopy</span> <span class="a">C:\Users</span> <span class="a">\\server\backup\users</span> <span class="sw">/e /copyall /r:3 /w:5</span> <span class="cm">— enterprise backup to network share</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">robocopy</span> <span class="a">C:\Source</span> <span class="a">D:\Dest</span> <span class="sw">/log:C:\robocopy.log</span> <span class="cm">— save detailed log file</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches</div>
+      <div class="flag-row"><span class="flag-key">/e</span><span class="flag-desc">Copy all subdirectories, including <strong>empty</strong> ones. Without /e, robocopy only copies the top-level directory contents. This is the standard switch for recursive copies.</span></div>
+      <div class="flag-row"><span class="flag-key">/mir</span><span class="flag-desc"><strong>Mirror</strong> — makes the destination an exact copy of the source. Files present in the destination but not the source are <strong>deleted</strong>. Powerful for keeping backups in sync but destructive if used carelessly.</span></div>
+      <div class="flag-row"><span class="flag-key">/copyall</span><span class="flag-desc">Copies all file information: data, attributes, timestamps, NTFS security (permissions/ACLs), owner, and auditing information. Essential for migrating user profiles while preserving permissions.</span></div>
+      <div class="flag-row"><span class="flag-key">/r:n</span><span class="flag-desc"><strong>Retries</strong> — number of times to retry a failed copy (default: 1,000,000). Set /r:3 to retry only 3 times before moving on. Critical for network copies that may hit transient errors.</span></div>
+      <div class="flag-row"><span class="flag-key">/w:n</span><span class="flag-desc"><strong>Wait</strong> — seconds to wait between retries (default: 30). Set /w:5 for a 5-second wait. Used with /r to control retry behavior on unreliable network connections.</span></div>
+      <div class="flag-row"><span class="flag-key">/log:file</span><span class="flag-desc">Write the output log to a file rather than the console. Append with /log+: to add to an existing log. Essential for unattended backup operations where results need to be reviewed afterward.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">robocopy vs. xcopy</p>
+  <p><code>xcopy</code> is an older file copy command that still exists in Windows but lacks robocopy's reliability features (no automatic retry, limited network support, no resumable copies). For any serious file migration or backup task, <code>robocopy</code> is the correct choice. <code>xcopy</code> is effectively deprecated for technical use — use robocopy.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5: INFORMATIONAL                 -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Informational Commands</h2>
+
+<div class="cat-label cat-info">Informational Commands</div>
+
+<p>Informational commands return data about the system's identity, user accounts, OS version, and provide access to built-in command help. These are quick-fire commands — each takes seconds to run and returns a specific piece of information that a technician frequently needs.</p>
+
+<h3 class="section">hostname</h3>
+
+<p><code>hostname</code> returns the computer's network name — the name by which it is identified on the local network and in Active Directory. It takes no switches and produces a single line of output.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">hostname</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">hostname</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt"></span>
+        <span class="cmd-line"><span class="out">DESKTOP-MH7X3K2</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Use Cases</div>
+      <div class="flag-row"><span class="flag-key">Remote support</span><span class="flag-desc">Ask a user to run hostname when you need the computer name for remote connection or ticket documentation without having to navigate through System Properties.</span></div>
+      <div class="flag-row"><span class="flag-key">Scripting</span><span class="flag-desc">Used in scripts to dynamically determine the current machine's name for logging or conditional logic. Can also be retrieved via environment variable <code>%COMPUTERNAME%</code>.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">net user — User Account Information</h3>
+
+<p><code>net user</code> is part of the <code>net</code> command family and provides information about and management of local user accounts from the command line. It can list accounts, display account details, create, modify, and delete local user accounts.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">net user</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">net user</span> <span class="cmd-opt">[</span><span class="cmd-arg">username</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-arg">password</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">options</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net user</span> <span class="cm">— list all local user accounts on this computer</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net user</span> <span class="a">Mike</span> <span class="cm">— detailed info for user "Mike": groups, last logon, lockout status, password info</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net user</span> <span class="a">newuser</span> <span class="a">P@ssw0rd!</span> <span class="sw">/add</span> <span class="cm">— create new local user account</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net user</span> <span class="a">Mike</span> <span class="a">NewP@ss!</span> <span class="cm">— reset/change Mike's password</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net user</span> <span class="a">Mike</span> <span class="sw">/active:no</span> <span class="cm">— disable Mike's account</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">net user</span> <span class="a">olduser</span> <span class="sw">/delete</span> <span class="cm">— permanently delete a local user account</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Options &amp; Information Returned</div>
+      <div class="flag-row"><span class="flag-key">net user username</span><span class="flag-desc">The detail view shows: full name, account active status, last logon date/time, password last set, password expiration, logon hours allowed, local group memberships, and account lockout status. Extremely useful for diagnosing login problems.</span></div>
+      <div class="flag-row"><span class="flag-key">/add</span><span class="flag-desc">Creates a new local user account. Password may be * to prompt interactively (avoids password in command history).</span></div>
+      <div class="flag-row"><span class="flag-key">/active:no / yes</span><span class="flag-desc">Enables or disables the account without deleting it. The secure way to handle departing users at the command line.</span></div>
+      <div class="flag-row"><span class="flag-key">Requires elevation</span><span class="flag-desc">Creating, modifying, and deleting accounts requires administrator rights. Viewing account details for your own account may work without elevation.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">winver — Windows Version</h3>
+
+<p><code>winver</code> displays a GUI dialog box showing the Windows version, edition, build number, and licensee information. It is the quickest single command for confirming exactly which version and build of Windows is installed.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">winver</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">winver</span> <span class="cm">— opens the "About Windows" dialog box</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt"></span>
+        <span class="cmd-line"><span class="out">Shows: Windows 10 Pro · Version 22H2 · OS Build 19045.3803</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Information Displayed</div>
+      <div class="flag-row"><span class="flag-key">Windows version + edition</span><span class="flag-desc">Confirms "Windows 10 Home," "Windows 11 Pro," etc. — useful for support documentation.</span></div>
+      <div class="flag-row"><span class="flag-key">Version number</span><span class="flag-desc">The feature update version (e.g., 22H2, 23H2). Indicates which feature release the machine is on — relevant for compatibility and support lifecycle questions.</span></div>
+      <div class="flag-row"><span class="flag-key">OS Build number</span><span class="flag-desc">The exact build (e.g., 19045.3803). Useful for confirming a specific patch level or comparing against known-issue build numbers.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">whoami — Who Am I</h3>
+
+<p><code>whoami</code> displays the username of the currently logged-in user, in the format <code>domain\username</code> or <code>computername\username</code>. It confirms identity in a multi-user or remote environment and, with switches, reveals group memberships and security privileges for the current session.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">whoami</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">whoami</span> <span class="cmd-opt">[</span><span class="cmd-p">switches</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">whoami</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt"></span>
+        <span class="cmd-line"><span class="out">desktop-mh7x3k2\mike</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">whoami</span> <span class="sw">/groups</span> <span class="cm">— list all security groups the current user belongs to</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">whoami</span> <span class="sw">/priv</span> <span class="cm">— list all privileges assigned to the current user token</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">whoami</span> <span class="sw">/all</span> <span class="cm">— full dump: username, groups, privileges, and logon ID</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Use Cases</div>
+      <div class="flag-row"><span class="flag-key">/groups</span><span class="flag-desc">Confirms which security groups the current user token includes — including elevation state. An elevated prompt shows the Administrators group as present with "Enabled" attribute; a non-elevated prompt shows it as "Group used for deny only."</span></div>
+      <div class="flag-row"><span class="flag-key">Domain vs. local</span><span class="flag-desc">Output format: <code>DOMAIN\username</code> = domain account. <code>COMPUTERNAME\username</code> = local account. Useful for confirming whether a user is logged in with a domain or local account.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">[command name] /? — Built-In Help</h3>
+
+<p>Every command-line tool in Windows supports the <code>/?</code> switch, which displays the command's full syntax, all available switches, and brief examples. This is the built-in documentation system for the command line and is explicitly included in Objective 1.5 as a testable item.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">[command] /?</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">ipconfig</span> <span class="sw">/?</span> <span class="cm">— display help for ipconfig</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">chkdsk</span> <span class="sw">/?</span> <span class="cm">— display all chkdsk switches with descriptions</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">robocopy</span> <span class="sw">/?</span> <span class="cm">— robocopy has one of the most comprehensive /? outputs of any command</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">help</span> <span class="a">dir</span> <span class="cm">— alternative: "help [command]" works for many built-in commands</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Exam Relevance</div>
+      <div class="flag-row"><span class="flag-key">First resort</span><span class="flag-desc">The /? switch is the correct first step when you know the command name but cannot remember a specific switch. It is faster than searching online and does not require internet access.</span></div>
+      <div class="flag-row"><span class="flag-key">Pipe through more</span><span class="flag-desc">Long help output can be piped: <code>robocopy /? | more</code> pauses after each screenful so you can read all the output without it scrolling by.</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 6: OS MANAGEMENT                 -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 6</span>OS Management Commands</h2>
+
+<div class="cat-label cat-os">OS Management Commands</div>
+
+<p>OS management commands interact with the core configuration of Windows: enforcing Group Policy, reporting policy application results, and verifying the integrity of protected system files. These are particularly relevant to enterprise environments and system repair scenarios.</p>
+
+<h3 class="section">gpupdate — Group Policy Update</h3>
+
+<p><code>gpupdate</code> forces an immediate refresh of Group Policy settings from the Domain Controller (in a domain environment) or applies local Group Policy (in standalone scenarios). By default, Group Policy refreshes automatically every 90 minutes (with a random offset) in background — <code>gpupdate</code> is used when a policy change needs to take effect immediately without waiting for the background cycle.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">gpupdate</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">gpupdate</span> <span class="cmd-opt">[</span><span class="cmd-p">/force</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/target:{computer|user}</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpupdate</span> <span class="cm">— refresh only changed policies (incremental update)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpupdate</span> <span class="sw">/force</span> <span class="cm">— reapply ALL policies, even those that haven't changed</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpupdate</span> <span class="sw">/target:computer</span> <span class="cm">— refresh only computer-side policies</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpupdate</span> <span class="sw">/target:user</span> <span class="cm">— refresh only user-side policies</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches</div>
+      <div class="flag-row"><span class="flag-key">/force</span><span class="flag-desc">Forces reapplication of all Group Policy settings regardless of whether they have changed. Use after making policy changes that should take effect immediately, or when troubleshooting a policy that appears not to have been applied.</span></div>
+      <div class="flag-row"><span class="flag-key">Reboot prompt</span><span class="flag-desc">Some policy changes (like software installation or folder redirection) can only take effect at logon or reboot. gpupdate will prompt: "Do you want to restart?" if such policies are pending.</span></div>
+      <div class="flag-row"><span class="flag-key">Standalone vs. domain</span><span class="flag-desc">On a standalone (non-domain) machine, gpupdate refreshes local Group Policy settings from gpedit.msc. On a domain machine, it contacts the Domain Controller to download updated domain policy.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">gpresult — Group Policy Result</h3>
+
+<p><code>gpresult</code> displays a report of which Group Policy Objects (GPOs) are actually applied to the current computer and/or user — along with what settings each policy is enforcing, what policies were blocked, and why. It is the primary tool for troubleshooting Group Policy application issues.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">gpresult</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">gpresult</span> <span class="cmd-opt">[</span><span class="cmd-p">/r</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/h filename.html</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/v</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpresult</span> <span class="sw">/r</span> <span class="cm">— summary: list applied GPOs for computer and current user</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpresult</span> <span class="sw">/h C:\gpreport.html</span> <span class="cm">— save full HTML report (open in a browser)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpresult</span> <span class="sw">/v</span> <span class="cm">— verbose: full details of applied settings, not just policy names</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">gpresult</span> <span class="sw">/r /scope computer</span> <span class="cm">— computer configuration section only</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Switches &amp; Output</div>
+      <div class="flag-row"><span class="flag-key">/r</span><span class="flag-desc"><strong>Summary</strong> — the most commonly used option. Lists: OS info, domain/site, last policy application time, slow link detection, and the list of GPOs applied to computer and user (in order of application — Last Write Wins for conflicts).</span></div>
+      <div class="flag-row"><span class="flag-key">/h file.html</span><span class="flag-desc">Generates a comprehensive, browser-readable HTML report with full GPO details, filtered/blocked policies, and setting-level detail. The most useful output for complex policy troubleshooting.</span></div>
+      <div class="flag-row"><span class="flag-key">Denied GPOs section</span><span class="flag-desc">The /r output includes "The following GPOs were not applied because they were filtered out." This section explains WHY a policy did not apply — security filtering, WMI filtering, or OU structure.</span></div>
+      <div class="flag-row"><span class="flag-key">gpupdate then gpresult</span><span class="flag-desc">Standard sequence: run <code>gpupdate /force</code> first to ensure the latest policies are applied, then run <code>gpresult /r</code> to verify what is actually in effect.</span></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">sfc — System File Checker</h3>
+
+<p><code>sfc</code> (System File Checker) scans all protected Windows system files and replaces corrupted or missing files with a correct version from a cached copy stored in <code>C:\Windows\System32\dllcache</code> or the Windows component store (<code>WinSxS</code>). It is the standard first-line tool for repairing OS corruption — when system files are missing or damaged by malware, failed updates, or accidental deletion.</p>
+
+<div class="cmd-block">
+  <div class="cmd-block-header">
+    <span class="cmd-block-title">Syntax</span>
+    <span class="cmd-block-name">sfc</span>
+  </div>
+  <div class="cmd-body">
+    <div class="cmd-syntax">
+      <span class="cmd-c">sfc</span> <span class="cmd-opt">[</span><span class="cmd-p">/scannow</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/verifyonly</span><span class="cmd-opt">]</span> <span class="cmd-opt">[</span><span class="cmd-p">/scanfile</span><span class="cmd-opt">]</span>
+    </div>
+    <div class="cmd-examples">
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">sfc</span> <span class="sw">/scannow</span> <span class="cm">— scan all protected system files and repair any corruption (most common)</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">sfc</span> <span class="sw">/verifyonly</span> <span class="cm">— scan only, no repairs — report integrity violations without fixing</span></span>
+      </div>
+      <div class="cmd-ex">
+        <span class="cmd-prompt">C:\&gt;</span>
+        <span class="cmd-line"><span class="c">sfc</span> <span class="sw">/scanfile=C:\Windows\System32\notepad.exe</span> <span class="cm">— check and repair a single specific file</span></span>
+      </div>
+    </div>
+    <div class="cmd-flags">
+      <div class="cmd-flags-title">Key Details</div>
+      <div class="flag-row"><span class="flag-key">Requires elevation</span><span class="flag-desc">sfc /scannow must be run from an elevated command prompt (Run as administrator). Without elevation it reports insufficient access and does not scan.</span></div>
+      <div class="flag-row"><span class="flag-key">Possible results</span><span class="flag-desc"><strong>"Windows Resource Protection did not find any integrity violations"</strong> = no corruption found. <strong>"Windows Resource Protection found corrupt files and successfully repaired them"</strong> = repaired. <strong>"Windows Resource Protection found corrupt files but was unable to fix some of them"</strong> = see CBS.log for details.</span></div>
+      <div class="flag-row"><span class="flag-key">CBS.log</span><span class="flag-desc">The Component-Based Servicing log at <code>C:\Windows\Logs\CBS\CBS.log</code> contains detailed results of sfc operations. When sfc cannot repair files, the log identifies which files are affected.</span></div>
+      <div class="flag-row"><span class="flag-key">DISM before or after</span><span class="flag-desc">If sfc reports unrepairable corruption, the component store itself may be damaged. Run <code>DISM /Online /Cleanup-Image /RestoreHealth</code> first to repair the component store, then re-run sfc /scannow. DISM downloads replacement files from Windows Update if needed.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — sfc /scannow</p>
+  <p>When a scenario describes Windows system files that are corrupt, missing, or were altered by malware — and the solution is to repair the OS without reinstalling — the answer is <code>sfc /scannow</code> run from an elevated command prompt. This is one of the most frequently tested commands in the OS management category. Remember: it requires administrator elevation, and the correct switch is <code>/scannow</code> (not /scan or /check).</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- QUICK REFERENCE TABLE                    -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Complete Command Quick Reference</h2>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Category</th>
+      <th>Primary Purpose / Key Exam Scenario</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>cd</td><td>Navigation</td><td>Change working directory; cd .. = up one level; cd /D = change drive+directory</td></tr>
+    <tr><td>dir</td><td>Navigation</td><td>List directory contents; /a = show hidden; /s = recursive; /p = pause output</td></tr>
+    <tr><td>ipconfig</td><td>Network</td><td>View/manage IP config; /all = full detail; /flushdns = clear DNS cache; APIPA 169.254.x.x = DHCP failure</td></tr>
+    <tr><td>ping</td><td>Network</td><td>Test connectivity; sequential test: loopback → own IP → gateway → external IP → hostname</td></tr>
+    <tr><td>netstat</td><td>Network</td><td>Show active connections/listening ports; -ano = all + numeric + PID; -b = show process name</td></tr>
+    <tr><td>nslookup</td><td>Network</td><td>Query DNS servers; diagnose DNS failures; test with alternate server to isolate DNS issue</td></tr>
+    <tr><td>net use</td><td>Network</td><td>Map/unmap network drives; /persistent:yes; /user: for alternate credentials</td></tr>
+    <tr><td>tracert</td><td>Network</td><td>Trace route to destination; identify where connectivity fails; -d = skip DNS</td></tr>
+    <tr><td>pathping</td><td>Network</td><td>Trace route + per-hop packet loss statistics; slower than tracert but more detailed</td></tr>
+    <tr><td>chkdsk</td><td>Disk</td><td>Check/repair file system errors; /f = fix; /r = bad sectors (slow); requires elevation</td></tr>
+    <tr><td>format</td><td>Disk</td><td>Wipe &amp; create file system; /fs:ntfs/fat32/exfat; /q = quick format</td></tr>
+    <tr><td>diskpart</td><td>Disk</td><td>CLI disk partitioning; list/select/clean/convert gpt; clean = destructive wipe; interactive sub-prompt</td></tr>
+    <tr><td>md / mkdir</td><td>File</td><td>Create directory (and nested path in one command)</td></tr>
+    <tr><td>rmdir / rd</td><td>File</td><td>Remove directory; /s = with contents; /q = no confirmation prompt</td></tr>
+    <tr><td>robocopy</td><td>File</td><td>Robust file copy; /e = recursive; /mir = mirror; /copyall = preserve permissions; /r /w = retry logic</td></tr>
+    <tr><td>hostname</td><td>Informational</td><td>Display the computer's network name</td></tr>
+    <tr><td>net user</td><td>Informational</td><td>List/view/create/modify/delete local user accounts; view last logon, lockout status</td></tr>
+    <tr><td>winver</td><td>Informational</td><td>Display Windows version, edition, and exact OS build number in a GUI dialog</td></tr>
+    <tr><td>whoami</td><td>Informational</td><td>Show current logged-in user; /groups = group memberships; /priv = privileges</td></tr>
+    <tr><td>[cmd] /?</td><td>Informational</td><td>Display built-in help for any command — first resort when a switch is forgotten</td></tr>
+    <tr><td>gpupdate</td><td>OS Mgmt</td><td>Force immediate Group Policy refresh; /force = reapply all policies</td></tr>
+    <tr><td>gpresult</td><td>OS Mgmt</td><td>Report applied GPOs; /r = summary; /h = HTML report; diagnose why a policy isn't applying</td></tr>
+    <tr><td>sfc</td><td>OS Mgmt</td><td>Scan and repair Windows system file corruption; /scannow; requires elevation; check CBS.log for failures</td></tr>
+  </tbody>
+</table>
+
+
+<!-- SUMMARY BOX -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 1.5 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">cd ..</span>Move up one directory level; cd /D for cross-drive navigation</div>
+    <div class="summary-item"><span class="s-sym">dir /a /s</span>Show hidden files; recursive search across subdirectories</div>
+    <div class="summary-item"><span class="s-sym">ipconfig /flushdns</span>Fix stale DNS cache; user sees old site IP after DNS record change</div>
+    <div class="summary-item"><span class="s-sym">APIPA 169.254.x.x</span>DHCP failure — machine self-assigned, cannot reach beyond local subnet</div>
+    <div class="summary-item"><span class="s-sym">ping sequence</span>127.0.0.1 → own IP → gateway → 8.8.8.8 → hostname</div>
+    <div class="summary-item"><span class="s-sym">netstat -ano</span>All connections, numeric, with PID — security analysis of open connections</div>
+    <div class="summary-item"><span class="s-sym">tracert vs pathping</span>tracert = fast path trace; pathping = slow + per-hop packet loss stats</div>
+    <div class="summary-item"><span class="s-sym">nslookup hostname server</span>Query specific DNS server — isolates whether local DNS or global DNS is the issue</div>
+    <div class="summary-item"><span class="s-sym">chkdsk /f</span>Fix file system errors; schedules reboot scan if system volume is in use</div>
+    <div class="summary-item"><span class="s-sym">chkdsk /r</span>Physical bad sector scan — implies /f; very slow on large HDDs</div>
+    <div class="summary-item"><span class="s-sym">diskpart clean</span>Wipes ALL partitions from selected disk — destructive, no undo</div>
+    <div class="summary-item"><span class="s-sym">diskpart convert gpt</span>Convert MBR to GPT after clean; required for Windows 11 system disks</div>
+    <div class="summary-item"><span class="s-sym">robocopy /mir</span>Mirror — exact copy, deletes destination files not in source</div>
+    <div class="summary-item"><span class="s-sym">robocopy /copyall</span>Preserves NTFS permissions/ACLs — essential for profile migration</div>
+    <div class="summary-item"><span class="s-sym">sfc /scannow</span>Scan and repair Windows system files; requires elevation; check CBS.log</div>
+    <div class="summary-item"><span class="s-sym">gpupdate /force</span>Immediately reapply all Group Policy settings from DC</div>
+    <div class="summary-item"><span class="s-sym">gpresult /r</span>Summary of applied GPOs; /h for full HTML report</div>
+    <div class="summary-item"><span class="s-sym">winver</span>Windows version + edition + OS build number in one GUI dialog</div>
+    <div class="summary-item"><span class="s-sym">net user username</span>Shows last logon, lockout status, group memberships for a local account</div>
+    <div class="summary-item"><span class="s-sym">[cmd] /?</span>Built-in help for every command — first step when a switch is unknown</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> User can't access a recently moved website, others can → <code>ipconfig /flushdns</code>.<br>
+  <strong>Scenario 2:</strong> IP address shows 169.254.x.x → DHCP unreachable; <code>ipconfig /release</code> then <code>/renew</code>.<br>
+  <strong>Scenario 3:</strong> Internet works by IP but not by name → DNS problem → <code>nslookup</code> to diagnose.<br>
+  <strong>Scenario 4:</strong> Connectivity fails to a remote host — identify where → <code>tracert</code>.<br>
+  <strong>Scenario 5:</strong> Need packet loss data per hop → <code>pathping</code>.<br>
+  <strong>Scenario 6:</strong> Suspicious outbound connection — identify the process → <code>netstat -ano</code>, match PID in Task Manager.<br>
+  <strong>Scenario 7:</strong> Disk errors / corruption after unexpected shutdown → <code>chkdsk C: /f</code>.<br>
+  <strong>Scenario 8:</strong> Need to convert drive from MBR to GPT for Windows 11 → diskpart → select disk → clean → convert gpt.<br>
+  <strong>Scenario 9:</strong> Windows system files corrupted by malware → <code>sfc /scannow</code> (elevated).<br>
+  <strong>Scenario 10:</strong> Group Policy change not taking effect → <code>gpupdate /force</code>, then verify with <code>gpresult /r</code>.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

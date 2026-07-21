@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.9 (Core 2) — Common Features and Tools of Linux</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EDITION PANEL — custom for this page */
+  .edition-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .edition-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
+  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
+  .edition-panel-body { padding: 0; }
+  .edition-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .edition-row:last-child { border-bottom: none; }
+  .edition-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .edition-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .edition-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* UPGRADE PATH DIAGRAM */
+  .upgrade-path {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 24px;
+    font-family: var(--sans);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .up-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .up-node .up-label {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .up-node .up-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .up-arrow {
+    font-size: 18px;
+    color: var(--border2);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
+  .up-node.target .up-label { color: var(--accent3); }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .edition-row { grid-template-columns: 1fr; }
+    .upgrade-path { flex-direction: column; align-items: flex-start; }
+    .up-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.9</strong> Identify common features and tools of the Linux client/desktop operating system</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_8-macOS-Features-Tools.html">1.8</a>
+    <a class="nav-next" href="./1_10-Install-Applications.html">1.10</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.9</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Identify common features and tools of the Linux client/desktop operating system</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.9</span>
+    <span>Domain weight: 28%</span>
+    <span>~25 commands · 5 config files · 3 OS components</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>Objective 1.9 covers Linux — the third major desktop operating system family alongside Windows (objective 1.7) and macOS (objective 1.8) — with a strong emphasis on the command-line interface, since Linux administration is overwhelmingly terminal-driven compared to the more GUI-centric workflows of Windows and macOS. This objective is dense with specific commands, and the exam expects recognition-level familiarity: given a command, know what it does; given a task, know which command accomplishes it.</p>
+
+<p>Organize this material the way the objective itself does — commands grouped by what they're <em>for</em> (file management, filesystem management, administrative tasks, package management, network diagnostics, system information, text editing) — plus a handful of critical configuration files and core OS components that tie the command-line tools together into a working system.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">A Note on Distributions</p>
+  <p>"Linux" isn't a single operating system but a kernel (Part on OS Components, below) at the core of many different <span class="key-term">distributions</span> (distros) — Ubuntu, Debian, Fedora, Red Hat Enterprise Linux (RHEL), and many others. Most of the commands in this objective work identically across virtually all distributions, since they're part of the standard core Unix/Linux toolset. The one major exception is package management (Part 4), where the specific command differs depending on which distribution family you're working with.</p>
+</div>
+
+<!-- ═══ PART 1: FILE MANAGEMENT ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 1</span>File Management</h2>
+
+<table class="cmd-table">
+  <thead><tr><th>Command</th><th>Syntax Example</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd-name">ls</td><td class="cmd-syntax">ls -la</td><td class="cmd-desc">Lists the contents (files/folders) of a directory; common flags include <code>-l</code> (long/detailed format) and <code>-a</code> (show hidden files, which begin with a dot)</td></tr>
+    <tr><td class="cmd-name">pwd</td><td class="cmd-syntax">pwd</td><td class="cmd-desc">"Print working directory" — displays the full path of the current directory the user is in</td></tr>
+    <tr><td class="cmd-name">mv</td><td class="cmd-syntax">mv file.txt /new/path/</td><td class="cmd-desc">Moves a file or directory to a new location, and is also used to rename a file (moving it to the same directory under a different name)</td></tr>
+    <tr><td class="cmd-name">cp</td><td class="cmd-syntax">cp file.txt /backup/</td><td class="cmd-desc">Copies a file or directory, leaving the original in place (unlike <code>mv</code>); the <code>-r</code> flag is required to copy directories recursively</td></tr>
+    <tr><td class="cmd-name">rm</td><td class="cmd-syntax">rm -rf folder/</td><td class="cmd-desc">Removes (deletes) files or directories; <code>-r</code> deletes recursively (required for directories), <code>-f</code> forces deletion without confirmation prompts</td></tr>
+    <tr><td class="cmd-name">chmod</td><td class="cmd-syntax">chmod 755 script.sh</td><td class="cmd-desc">Changes a file/directory's <strong>permissions</strong> — read, write, and execute access for the owner, group, and others (covered in more depth below)</td></tr>
+    <tr><td class="cmd-name">chown</td><td class="cmd-syntax">chown user:group file.txt</td><td class="cmd-desc">Changes a file/directory's <strong>ownership</strong> — which user and/or group owns it, distinct from permissions, which control what actions owners/others can take</td></tr>
+    <tr><td class="cmd-name">grep</td><td class="cmd-syntax">grep "error" logfile.txt</td><td class="cmd-desc">Searches for a specific text pattern within a file (or piped input from another command), returning matching lines — extremely common for searching log files</td></tr>
+    <tr><td class="cmd-name">find</td><td class="cmd-syntax">find / -name "*.log"</td><td class="cmd-desc">Searches the filesystem for files/directories matching specified criteria (name, type, size, modification date), starting from a given directory and searching recursively</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Common Pitfall — rm Has No Recycle Bin</p>
+  <p>Unlike deleting a file through a graphical file manager, <code>rm</code> at the command line permanently deletes the target with no Recycle Bin/Trash safety net by default — especially dangerous when combined with <code>-rf</code> (recursive, forced, no confirmation) on the wrong path. This is a frequently cited real-world cautionary tale in Linux administration, and the exam expects you to understand <code>rm -rf</code> as a powerful, unforgiving command that demands careful use.</p>
+</div>
+
+<h3 class="section">chmod — Understanding Permission Syntax</h3>
+
+<p><code>chmod</code> permissions are commonly expressed as a three-digit number, where each digit represents permissions for <strong>owner</strong>, <strong>group</strong>, and <strong>others</strong> respectively, calculated by adding together: <strong>4</strong> (read), <strong>2</strong> (write), and <strong>1</strong> (execute).</p>
+
+<table class="data-table">
+  <thead><tr><th>Value</th><th>Permissions Granted</th></tr></thead>
+  <tbody>
+    <tr><td>7</td><td>Read + Write + Execute (4+2+1)</td></tr>
+    <tr><td>6</td><td>Read + Write (4+2)</td></tr>
+    <tr><td>5</td><td>Read + Execute (4+1)</td></tr>
+    <tr><td>4</td><td>Read only</td></tr>
+    <tr><td>0</td><td>No permissions</td></tr>
+  </tbody>
+</table>
+
+<p>So <code>chmod 755 script.sh</code> grants the owner full read/write/execute (7), while the group and others each get read/execute only (5) — a very common permission set for an executable script meant to be run, but not modified, by other users.</p>
+
+<!-- ═══ PART 2: FILESYSTEM MANAGEMENT ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 2</span>Filesystem Management</h2>
+
+<table class="cmd-table">
+  <thead><tr><th>Command</th><th>Syntax Example</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd-name">fsck</td><td class="cmd-syntax">fsck /dev/sda1</td><td class="cmd-desc">"File system consistency check" — scans a filesystem for errors/corruption and attempts repair; conceptually parallel to chkdsk on Windows, typically run on an unmounted filesystem to avoid conflicts with active use</td></tr>
+    <tr><td class="cmd-name">mount</td><td class="cmd-syntax">mount /dev/sdb1 /mnt/usb</td><td class="cmd-desc">Attaches a filesystem (a drive, partition, or network share) to a specific point in the directory tree, making its contents accessible at that location; <code>umount</code> performs the reverse, detaching it</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-info">
+  <p class="callout-title">Why "Mounting" Matters on Linux</p>
+  <p>Unlike Windows, which assigns separate drive letters (C:, D:, E:) to different drives/partitions, Linux integrates all storage into a single unified directory tree starting at the root (<code>/</code>) — a newly connected drive doesn't get its own letter, it gets <strong>mounted</strong> at a specific folder/path within that existing tree (commonly somewhere under <code>/mnt</code> or <code>/media</code>), after which its contents simply appear as a folder at that location.</p>
+</div>
+
+<!-- ═══ PART 3: ADMINISTRATIVE ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 3</span>Administrative</h2>
+
+<table class="cmd-table">
+  <thead><tr><th>Command</th><th>Syntax Example</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd-name">su</td><td class="cmd-syntax">su - username</td><td class="cmd-desc">"Switch user" — starts a new session logged in as a different user (commonly root), requiring that target user's password; without a username specified, defaults to switching to root</td></tr>
+    <tr><td class="cmd-name">sudo</td><td class="cmd-syntax">sudo apt update</td><td class="cmd-desc">"Superuser do" — runs a single specified command with elevated (root-level) privileges, requiring the <em>current</em> user's own password (not root's), rather than switching the entire session to another user</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — su vs. sudo</p>
+  <p>This is a frequently tested distinction: <strong>su</strong> switches the entire active session to a different user account (commonly root) and stays that way until the user exits that session, requiring the <em>target</em> account's password. <strong>sudo</strong> elevates privileges for just a single command, then immediately returns to the normal user's own session, requiring the <em>current</em> user's own password rather than root's. <code>sudo</code> is generally considered the safer, more auditable practice in modern Linux administration, since it avoids leaving an entire session running with full root privileges longer than necessary.</p>
+</div>
+
+<!-- ═══ PART 4: PACKAGE MANAGEMENT ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 4</span>Package Management</h2>
+
+<p>Unlike Windows or macOS, where software is typically installed via individual downloaded installers, Linux distributions overwhelmingly install and update software through a centralized <span class="key-term">package manager</span>, which downloads software (and automatically resolves any required dependencies) from a configured repository.</p>
+
+<table class="cmd-table">
+  <thead><tr><th>Command</th><th>Syntax Example</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd-name">apt</td><td class="cmd-syntax">sudo apt install nginx</td><td class="cmd-desc">The package manager used on <strong>Debian-based</strong> distributions (Debian, Ubuntu, and their many derivatives) — installs, updates, and removes software packages</td></tr>
+    <tr><td class="cmd-name">dnf</td><td class="cmd-syntax">sudo dnf install nginx</td><td class="cmd-desc">The package manager used on <strong>Red Hat-based</strong> distributions (Fedora, RHEL, and related distributions) — serves the same fundamental role as <code>apt</code>, but on a different distribution family</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>The key takeaway: <strong>apt = Debian/Ubuntu family, dnf = Red Hat/Fedora family</strong> — the same fundamental task (install/update/remove software) is accomplished with a different command depending on which distribution family you're working with. Don't try to use <code>apt</code> on a Fedora system or <code>dnf</code> on an Ubuntu system; they belong to different distribution ecosystems.</p>
+</div>
+
+<!-- ═══ PART 5: NETWORK ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 5</span>Network</h2>
+
+<table class="cmd-table">
+  <thead><tr><th>Command</th><th>Syntax Example</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd-name">ip</td><td class="cmd-syntax">ip addr show</td><td class="cmd-desc">Displays and configures network interface information — IP addresses, routing tables, and link status; the modern replacement for the older <code>ifconfig</code> command</td></tr>
+    <tr><td class="cmd-name">ping</td><td class="cmd-syntax">ping google.com</td><td class="cmd-desc">Tests basic connectivity to a remote host by sending ICMP echo requests and measuring whether/how quickly replies are received — the most fundamental network connectivity test, identical in concept to <code>ping</code> on Windows</td></tr>
+    <tr><td class="cmd-name">curl</td><td class="cmd-syntax">curl https://example.com</td><td class="cmd-desc">Transfers data to/from a server using a URL, supporting many protocols (HTTP/HTTPS, FTP, and others) — commonly used to test whether a web service is responding, download files from the command line, or interact directly with APIs</td></tr>
+    <tr><td class="cmd-name">dig</td><td class="cmd-syntax">dig example.com</td><td class="cmd-desc">Queries DNS servers directly and displays detailed DNS resolution information — a more detailed/flexible alternative to <code>nslookup</code>, commonly used to troubleshoot DNS issues (objective 2.1/2.3 concepts)</td></tr>
+    <tr><td class="cmd-name">traceroute</td><td class="cmd-syntax">traceroute google.com</td><td class="cmd-desc">Maps the network path (each router "hop") a packet takes to reach a destination, showing response time at each hop — useful for identifying exactly where along a network path a connectivity problem or excessive delay is occurring; the Linux equivalent of Windows' <code>tracert</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Connecting Back to Core 1 Networking</p>
+  <p>These commands are the practical, hands-on tools for testing the concepts covered throughout Core 1's networking domain: <code>ping</code> tests basic reachability, <code>dig</code> troubleshoots DNS resolution (objective 2.3), and <code>traceroute</code> reveals the path packets take across routers (objective 2.5). Recognizing each command's purpose is largely a matter of connecting it back to the underlying networking concept it's used to test or diagnose.</p>
+</div>
+
+<!-- ═══ PART 6: INFORMATIONAL ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 6</span>Informational</h2>
+
+<table class="cmd-table">
+  <thead><tr><th>Command</th><th>Syntax Example</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd-name">man</td><td class="cmd-syntax">man ls</td><td class="cmd-desc">Displays the <strong>manual page</strong> for a given command — detailed built-in documentation covering syntax, available flags/options, and usage examples; the first place to look when uncertain how a command works</td></tr>
+    <tr><td class="cmd-name">cat</td><td class="cmd-syntax">cat file.txt</td><td class="cmd-desc">"Concatenate" — displays the full contents of a file directly to the terminal; also commonly used to quickly combine multiple files together</td></tr>
+    <tr><td class="cmd-name">top</td><td class="cmd-syntax">top</td><td class="cmd-desc">Displays a real-time, continuously updating view of running processes, CPU usage, and memory usage — the Linux command-line equivalent of Windows Task Manager's performance view</td></tr>
+    <tr><td class="cmd-name">ps</td><td class="cmd-syntax">ps aux</td><td class="cmd-desc">Displays a snapshot (not continuously updating, unlike <code>top</code>) of currently running processes, commonly used together with <code>grep</code> to find a specific process by name</td></tr>
+    <tr><td class="cmd-name">du</td><td class="cmd-syntax">du -sh folder/</td><td class="cmd-desc">"Disk usage" — reports the space consumed by files/directories, commonly used with <code>-sh</code> for a human-readable summary of how much space a specific folder occupies</td></tr>
+    <tr><td class="cmd-name">df</td><td class="cmd-syntax">df -h</td><td class="cmd-desc">"Disk free" — reports overall available and used space across mounted filesystems/drives, commonly used with <code>-h</code> for human-readable output (GB/MB rather than raw blocks)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — du vs. df</p>
+  <p>A commonly tested distinction: <strong>du</strong> reports how much space a specific file or folder is using (a bottom-up view, asking "how big is this thing?"), while <strong>df</strong> reports how much total space is used/free across entire mounted filesystems (a top-down view, asking "how full is this drive?"). A scenario asking "which specific folder is consuming all the disk space" points to <code>du</code>; a scenario asking "is this drive nearly full" points to <code>df</code>.</p>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">top vs. ps — Real-Time vs. Snapshot</p>
+  <p><strong>top</strong> provides a continuously refreshing, interactive live view — ideal for actively watching resource usage as it happens, such as identifying a runaway process consuming excessive CPU in real time. <strong>ps</strong> provides a single, static snapshot at the moment the command runs — useful for scripting, piping to other commands (like <code>grep</code> to filter for a specific process), or simply getting a quick one-time listing without an ongoing interactive display.</p>
+</div>
+
+<!-- ═══ PART 7: TEXT EDITORS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 7</span>Text Editors</h2>
+
+<p><span class="key-term">nano</span> is a simple, beginner-friendly command-line text editor commonly used for quickly viewing and editing configuration files (Part 8, below) directly within the terminal. Compared to other Linux text editors (such as vim or emacs, which have steeper learning curves but more advanced capabilities), nano displays its available keyboard commands directly at the bottom of the screen, making it especially approachable for technicians who need to make a quick edit without memorizing a separate command set first.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>For the A+ exam, recognize <code>nano</code> specifically as the approachable, beginner-friendly choice among Linux text editors — a scenario describing a technician needing to make a quick edit to a configuration file directly from the command line, without extensive editor experience, points to <code>nano</code> as a reasonable, low-friction choice.</p>
+</div>
+
+<!-- ═══ PART 8: COMMON CONFIGURATION FILES ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 8</span>Common Configuration Files</h2>
+
+<div class="config-file">
+  <div class="config-file-head"><span class="config-file-path">/etc/passwd</span></div>
+  <p>Contains basic information about every user account on the system — username, user ID (UID), group ID (GID), home directory path, and default shell. Despite the name, modern Linux systems do <strong>not</strong> store actual password hashes here (this file is world-readable, which would be a serious security risk if it held real passwords) — that sensitive data lives in <code>/etc/shadow</code> instead.</p>
+</div>
+
+<div class="config-file">
+  <div class="config-file-head"><span class="config-file-path">/etc/shadow</span></div>
+  <p>Contains the actual <strong>encrypted password hashes</strong> for user accounts, along with password aging/expiration information. Unlike <code>/etc/passwd</code>, this file has tightly restricted permissions, readable only by the root account — a deliberate security separation between basic account information (passwd) and sensitive credential data (shadow).</p>
+</div>
+
+<div class="config-file">
+  <div class="config-file-head"><span class="config-file-path">/etc/hosts</span></div>
+  <p>A local, manually-editable file mapping hostnames directly to IP addresses, checked by the system <strong>before</strong> querying DNS (objective 2.1/2.3) — conceptually identical in role to the Windows hosts file. Commonly used to manually define a hostname-to-IP mapping for testing purposes, or to override/block a specific domain at the local machine level.</p>
+</div>
+
+<div class="config-file">
+  <div class="config-file-head"><span class="config-file-path">/etc/fstab</span></div>
+  <p>"File system table" — defines which filesystems/drives should be automatically mounted at boot, and at what mount point each one should appear, eliminating the need to manually run <code>mount</code> for every drive after each restart. Misconfiguring this file is a classic cause of a Linux system failing to boot properly, since the system expects to mount the listed filesystems during startup.</p>
+</div>
+
+<div class="config-file">
+  <div class="config-file-head"><span class="config-file-path">/etc/resolv.conf</span></div>
+  <p>Specifies which DNS server(s) the system should use for name resolution (objective 2.1/2.3/2.6 concepts) — the Linux equivalent of manually configured DNS server settings in Windows' network adapter properties. On many modern systems this file is automatically managed/overwritten by network management services rather than edited directly by hand.</p>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Common Pitfall — passwd vs. shadow</p>
+  <p>A frequently tested point of confusion: many people assume <code>/etc/passwd</code> stores passwords given its name, but it does not — actual password hashes live exclusively in the much more restricted <code>/etc/shadow</code> file. Recognizing this passwd/shadow separation, and <em>why</em> it exists (passwd must remain widely readable for normal system operations to look up basic account info, while shadow must stay locked down since it holds the sensitive credential data), is a core, testable security concept.</p>
+</div>
+
+<!-- ═══ PART 9: OS COMPONENTS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 9</span>OS Components</h2>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">systemd</span>
+    <span>The modern <span class="key-term">init system</span> used by most major Linux distributions today — the first process started by the kernel at boot, responsible for starting, stopping, and managing all other system services (often called "units" in systemd terminology) throughout the system's runtime, and for orchestrating an orderly, parallelized boot sequence.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Kernel</span>
+    <span>The core of the operating system itself — the layer that directly manages hardware (CPU, memory, storage, devices) and provides the fundamental services that everything else (including systemd, and ultimately every user application) relies on. "Linux" technically refers specifically to the kernel; a complete, usable operating system built around that kernel plus a collection of additional software is what constitutes a full distribution.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Bootloader</span>
+    <span>The very first software that runs when a computer powers on (after firmware/BIOS-UEFI initialization), responsible for loading the Linux kernel into memory and starting the boot process. <span class="key-term">GRUB (GRand Unified Bootloader)</span> is the most common Linux bootloader, and on systems with more than one installed operating system, the bootloader is typically also what presents a boot menu allowing the user to choose which OS to start.</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">The Boot Sequence, Tied Together</p>
+  <p>Putting the pieces in order: firmware (BIOS/UEFI, objective 3.5) initializes hardware first, then hands off control to the <strong>bootloader</strong> (commonly GRUB), which loads the <strong>kernel</strong> into memory, which in turn starts <strong>systemd</strong> as the very first user-space process — and systemd then brings up every other service and ultimately the full working system from there.</p>
+</div>
+
+<!-- ═══ PART 10: ROOT ACCOUNT ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 10</span>Root Account</h2>
+
+<p>The <span class="key-term">root account</span> is Linux's superuser/administrator account, possessing unrestricted access to every file, every system setting, and every process on the system — directly analogous in role to the Administrator account on Windows. Because root has essentially no built-in safety restrictions on what it can do (including the ability to delete critical system files or break the system entirely), modern Linux best practice strongly favors using <code>sudo</code> (Part 3, above) to perform specific administrative actions as needed, rather than staying logged in directly as root for routine, everyday work.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>Recognize root as the Linux equivalent of the Windows Administrator account in terms of privilege level, while also recognizing that the prevailing best practice — using <code>sudo</code> for individual elevated commands rather than working as root directly — reflects the same general security principle of least privilege that recurs throughout the exam: grant only the access actually needed for a specific task, rather than operating with maximum privilege by default.</p>
+</div>
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Linux Commands and Components</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">ls / pwd</span><span>List directory contents / show current directory</span></div>
+    <div class="summary-item"><span class="s-sym">mv / cp / rm</span><span>Move-rename / copy / delete files</span></div>
+    <div class="summary-item"><span class="s-sym">chmod / chown</span><span>Change permissions / change ownership</span></div>
+    <div class="summary-item"><span class="s-sym">grep / find</span><span>Search within files / search the filesystem</span></div>
+    <div class="summary-item"><span class="s-sym">fsck / mount</span><span>Check/repair filesystem / attach a filesystem</span></div>
+    <div class="summary-item"><span class="s-sym">su / sudo</span><span>Switch user session / elevate one command</span></div>
+    <div class="summary-item"><span class="s-sym">apt / dnf</span><span>Debian/Ubuntu package manager / Red Hat/Fedora package manager</span></div>
+    <div class="summary-item"><span class="s-sym">ping / traceroute</span><span>Test reachability / map the path to a host</span></div>
+    <div class="summary-item"><span class="s-sym">dig / curl</span><span>Query DNS directly / transfer data via URL</span></div>
+    <div class="summary-item"><span class="s-sym">top / ps</span><span>Live process view / process snapshot</span></div>
+    <div class="summary-item"><span class="s-sym">du / df</span><span>Folder space usage / drive space usage</span></div>
+    <div class="summary-item"><span class="s-sym">man / cat</span><span>Show manual page / display file contents</span></div>
+    <div class="summary-item"><span class="s-sym">/etc/passwd vs. shadow</span><span>Basic account info vs. actual password hashes</span></div>
+    <div class="summary-item"><span class="s-sym">/etc/fstab</span><span>Filesystems to auto-mount at boot</span></div>
+    <div class="summary-item"><span class="s-sym">systemd / kernel / bootloader</span><span>Service manager / OS core / first-stage loader</span></div>
+    <div class="summary-item"><span class="s-sym">Root account</span><span>Linux superuser; equivalent to Windows Administrator</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE TOOLS -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>1.9 Quick Reference</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Linux ↔ Windows Equivalents</h4>
+    <ul>
+      <li><strong>top</strong> ↔ Task Manager</li>
+      <li><strong>fsck</strong> ↔ chkdsk</li>
+      <li><strong>traceroute</strong> ↔ tracert</li>
+      <li><strong>/etc/hosts</strong> ↔ Windows hosts file</li>
+      <li><strong>root</strong> ↔ Administrator</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Disk Space Commands</h4>
+    <ul>
+      <li><strong>"How big is this folder?"</strong> → du</li>
+      <li><strong>"Is this drive full?"</strong> → df</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Privilege Elevation</h4>
+    <ul>
+      <li><strong>One command, current user's password</strong> → sudo</li>
+      <li><strong>Whole session, target account's password</strong> → su</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Package Manager By Distro Family</h4>
+    <ul>
+      <li><strong>Debian, Ubuntu</strong> → apt</li>
+      <li><strong>Fedora, RHEL</strong> → dnf</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top: 28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>su</strong> = switches the whole session (target's password). <strong>sudo</strong> = elevates one command (your own password). sudo is the modern best practice.</p>
+  <p><strong>apt</strong> = Debian/Ubuntu family. <strong>dnf</strong> = Red Hat/Fedora family. Different commands, same fundamental job.</p>
+  <p><strong>du</strong> = how big is this folder. <strong>df</strong> = how full is this drive. Easy to confuse by name alone.</p>
+  <p><strong>top</strong> = live, continuously updating. <strong>ps</strong> = one-time snapshot, scriptable/pipeable.</p>
+  <p><strong>/etc/passwd</strong> = basic account info, world-readable. <strong>/etc/shadow</strong> = actual password hashes, root-only. Passwords are NOT in passwd despite the name.</p>
+  <p><strong>/etc/fstab</strong> = controls what mounts automatically at boot; misconfiguration can break booting.</p>
+  <p><strong>Boot order</strong> = firmware → bootloader (GRUB) → kernel → systemd → rest of the system.</p>
+  <p><strong>root</strong> = Linux's unrestricted superuser account, equivalent in role to Windows Administrator.</p>
+</div>
+
+</div>
+</body>
+</html>

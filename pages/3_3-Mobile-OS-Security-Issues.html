@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 3.3 — Troubleshoot Common Mobile OS and Application Security Issues</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-eyebrow .dom-badge { background: var(--accent4); }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* THREAT CARD — main content pattern */
+  .threat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 20px 0 32px; }
+  .threat-header { padding: 14px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; border-bottom: 2px solid var(--border); }
+  .threat-header.red    { background: var(--accent-light);  border-bottom-color: #c0392b33; }
+  .threat-header.blue   { background: var(--accent2-light); border-bottom-color: #2c3e6b33; }
+  .threat-header.grn    { background: var(--accent3-light); border-bottom-color: #1a6b3a33; }
+  .threat-header.org    { background: var(--accent4-light); border-bottom-color: #b5590a33; }
+  .threat-header.neu    { background: var(--surface2);      border-bottom-color: var(--border2); }
+  .threat-header.dark   { background: #1a1a18; border-bottom-color: #444; }
+  .threat-header.dark .threat-name { color: #f0ede6; }
+  .threat-header.dark .threat-sub  { color: #888; }
+  .threat-name { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; line-height: 1.25; }
+  .threat-sub  { font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .threat-tags { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+  .tag-critical { background: #1a1a18; color: #fff; }
+  .tag-high     { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b44; }
+  .tag-med      { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .tag-low      { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+  .tag-info     { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+
+  /* SPEC ROW */
+  .spec-row { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+  .spec-cell { padding: 9px 14px; border-right: 1px solid var(--border); font-family: var(--sans); font-size: 13px; }
+  .spec-cell:last-child { border-right: none; }
+  .spec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .spec-value { font-weight: 600; color: var(--text); line-height: 1.35; }
+  .sv-red { color: var(--accent); }
+  .sv-grn { color: var(--accent3); }
+  .sv-org { color: var(--accent4); }
+  .sv-blu { color: var(--accent2); }
+
+  /* CARD BODY ROWS */
+  .card-body { }
+  .card-row { display: grid; grid-template-columns: 190px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .card-row:last-child { border-bottom: none; }
+  .card-label { font-weight: 600; color: var(--accent2); padding: 10px 14px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .card-desc  { padding: 10px 14px; color: var(--muted); line-height: 1.6; }
+  .card-desc strong { color: var(--text); }
+  .card-desc code   { font-family: var(--mono); font-size: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+
+  /* SYMPTOM → CAUSE MATRIX */
+  .symptom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 28px; }
+  .symptom-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; font-family: var(--sans); font-size: 13px; border-left: 3px solid var(--border2); }
+  .symptom-card.critical { border-left-color: var(--accent); }
+  .symptom-card.high     { border-left-color: var(--accent4); }
+  .symptom-card.med      { border-left-color: var(--accent2); }
+  .symptom-card.low      { border-left-color: var(--accent3); }
+  .sc-symptom { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .sc-causes  { color: var(--muted); line-height: 1.55; }
+  .sc-causes strong { color: var(--accent2); }
+
+  /* RISK LEVEL STRIP — root/jailbreak */
+  .risk-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 16px 0 28px; font-family: var(--sans); font-size: 12.5px; }
+  .risk-cell { padding: 12px 14px; border-right: 1px solid var(--border); text-align: center; }
+  .risk-cell:last-child { border-right: none; }
+  .risk-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; font-family: var(--mono); }
+  .risk-value { font-weight: 700; font-size: 13px; line-height: 1.35; }
+  .risk-cell.r1 { background: #fff8f8; } .risk-cell.r1 .risk-value { color: var(--accent); }
+  .risk-cell.r2 { background: var(--accent4-light); } .risk-cell.r2 .risk-value { color: var(--accent4); }
+  .risk-cell.r3 { background: var(--accent2-light); } .risk-cell.r3 .risk-value { color: var(--accent2); }
+  .risk-cell.r4 { background: var(--accent3-light); } .risk-cell.r4 .risk-value { color: var(--accent3); }
+
+  /* ATTACK CHAIN */
+  .chain { display: flex; align-items: stretch; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 16px 0 28px; font-family: var(--sans); font-size: 13px; }
+  .chain-step { flex: 1; padding: 12px 13px; border-right: 1px solid var(--border); }
+  .chain-step:last-child { border-right: none; }
+  .chain-num  { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 4px; }
+  .chain-name { font-weight: 700; font-size: 12.5px; margin-bottom: 4px; color: var(--text); }
+  .chain-desc { color: var(--muted); font-size: 11.5px; line-height: 1.5; }
+  .chain-step.c1 { background: #fff8f8; } .chain-step.c1 .chain-name { color: var(--accent); }
+  .chain-step.c2 { background: var(--accent4-light); } .chain-step.c2 .chain-name { color: var(--accent4); }
+  .chain-step.c3 { background: var(--accent-light); } .chain-step.c3 .chain-name { color: var(--accent); }
+  .chain-step.c4 { background: #1a1a18; } .chain-step.c4 .chain-name { color: #e8b47a; } .chain-step.c4 .chain-desc { color: #888; } .chain-step.c4 .chain-num { color: #555; }
+
+  /* COMPARISON TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; font-size: 13.5px; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); background: var(--surface2); font-size: 13px; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .cell-yes  { color: var(--accent3); font-weight: 700; }
+  .cell-no   { color: var(--accent);  font-weight: 700; }
+  .cell-part { color: var(--accent4); font-weight: 700; }
+
+  /* DECISION FLOW */
+  .decision-flow { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-family: var(--sans); font-size: 14px; }
+  .df-title { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .df-row { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .df-row:last-child { border-bottom: none; }
+  .df-condition { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; font-size: 12.5px; color: var(--text); min-width: 205px; flex-shrink: 0; font-weight: 600; line-height: 1.4; }
+  .df-arrow { color: var(--border2); font-size: 16px; padding-top: 5px; flex-shrink: 0; }
+  .df-result { color: var(--muted); line-height: 1.55; }
+  .df-result strong { color: var(--accent); }
+  .df-result .good { color: var(--accent3); font-weight: 600; }
+
+  /* STEP LIST */
+  .step-list { margin: 16px 0 24px; }
+  .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .step-item:last-child { border-bottom: none; }
+  .step-num { font-family: var(--mono); font-size: 11px; font-weight: 600; background: var(--accent2); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-num.red-step { background: var(--accent); }
+  .step-content { color: var(--muted); line-height: 1.6; flex: 1; }
+  .step-content strong { color: var(--text); }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY */
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 155px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .symptom-grid { grid-template-columns: 1fr; }
+    .card-row, .spec-row { grid-template-columns: 1fr; }
+    .card-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .risk-strip { grid-template-columns: 1fr 1fr; }
+    .chain { flex-direction: column; }
+    .chain-step { border-right: none; border-bottom: 1px solid var(--border); }
+    .df-row { flex-direction: column; }
+    .df-condition { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-current"><strong>3.3</strong> Mobile OS Security Issues</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="3_2-Mobile-OS-Troubleshooting.html">3.2</a>
+    <a class="nav-next" href="3_4-PC-Security-Issues.html">3.4</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="book-header">
+  <div class="book-eyebrow">
+    <span>3.3</span>
+    CompTIA A+ Core 2 · Software Troubleshooting
+  </div>
+  <h1 class="book-title">Troubleshoot Common Mobile OS and Application Security Issues</h1>
+  <div class="book-subtitle">
+    <span>Unauthorized Sources</span>
+    <span>Root / Jailbreak</span>
+    <span>Malicious Apps</span>
+    <span>Compromise Symptoms</span>
+  </div>
+</header>
+
+<!-- INTRO -->
+<p>Mobile devices carry credentials, email, financial accounts, corporate data, and personal communications — making them high-value targets for attackers. Unlike desktop malware, mobile threats exploit a different attack surface: unofficial app stores, OS-level privilege escalation through rooting and jailbreaking, social-engineered permission grants, and users who trust a familiar-looking app icon without verifying its authenticity.</p>
+
+<p>This objective has two distinct parts. The first covers the <span class="key-term">security concern categories</span> — the conditions that make a device vulnerable or compromised: where apps came from, whether the OS has been modified, and what kind of malicious software is present. The second covers the <span class="key-term">observable symptoms</span> — the signs that a compromise has occurred or is in progress. A technician must be able to recognize symptoms, map them to probable causes, and prescribe the correct remediation. Because many symptoms overlap across multiple threat types, systematic diagnosis is essential.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Approach</p>
+  <p>The exam presents scenarios in both directions: given a <strong>threat</strong> (e.g., "a user rooted their Android phone"), identify the security risks; or given a <strong>symptom</strong> (e.g., "data usage suddenly spiked"), identify the most likely cause and appropriate response. Master both mappings. Note that multiple symptoms can point to the same underlying threat, and a single threat can produce multiple symptoms simultaneously.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION A — MOBILE SECURITY ARCHITECTURE
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section A</span>Mobile Security Architecture — Why These Threats Exist</h2>
+
+<p>To understand mobile security threats, a technician must first understand the security model that those threats attempt to bypass. Both iOS and Android are built around several interlocking security principles that, when intact, make it very difficult to compromise a device. The threats in this objective are, in most cases, attacks on one or more of these principles.</p>
+
+<div class="threat-card">
+  <div class="threat-header blue">
+    <div>
+      <div class="threat-name">The Mobile Security Model</div>
+      <div class="threat-sub">App sandboxing, store vetting, OS integrity protection, and permission controls</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-info">Foundation</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">App sandboxing</div>
+      <div class="card-desc">Every app on both iOS and Android runs in a <span class="key-term">sandbox</span> — an isolated execution environment where the app can only access its own files and resources unless the user explicitly grants permission. An app cannot read another app's data, access the file system arbitrarily, or escalate its own privileges. This is why mobile malware, even when installed, has limited reach compared to desktop malware — without root/jailbreak privileges, a malicious app is contained in its sandbox. Breaking out of the sandbox requires exploiting a kernel vulnerability (the basis of rooting and jailbreaking).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">App store vetting</div>
+      <div class="card-desc">The Apple App Store and Google Play Store review apps before distribution, scanning for malware signatures and enforcing API usage policies. This gatekeeping is imperfect (malicious apps do occasionally pass review) but dramatically reduces the risk compared to installing apps from arbitrary web sources. The vetting process is why Apple prohibits sideloading entirely on consumer iOS devices (in most regions) — every app must pass App Store review. Google Play Protect adds a runtime layer that continuously scans installed apps for malicious behavior even after installation.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Permission model</div>
+      <div class="card-desc">Apps must request explicit user permission before accessing sensitive resources: camera, microphone, location, contacts, calendar, health data. <strong>Android 10+</strong> and <strong>iOS 13+</strong> granularized these controls — location can be granted "only while using the app" rather than always; one-time permissions expire after the session. The permission model limits damage from malicious apps: an app that cannot obtain camera permission cannot silently capture photos or video. Malicious apps circumvent this by social-engineering users into granting broad permissions ("This app requires access to your contacts to function") for permissions they don't actually need.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">OS integrity and secure boot</div>
+      <div class="card-desc">Both platforms implement <span class="key-term">secure boot</span> — each stage of the boot process is cryptographically verified before it executes, ensuring only Apple/Google-signed OS code runs. iOS adds <span class="key-term">System Integrity Protection</span> and cryptographic signatures on system files. Android implements <span class="key-term">Verified Boot</span> (dm-verity) which detects modifications to the OS partition at boot time. Rooting and jailbreaking specifically attack these integrity mechanisms — their goal is to run unsigned code at the kernel level, bypassing all protections above.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION B — SECURITY CONCERNS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section B</span>Security Concerns</h2>
+
+<h3 class="section">Application Source / Unofficial App Stores</h3>
+
+<div class="threat-card">
+  <div class="threat-header red">
+    <div>
+      <div class="threat-name">Unofficial Application Sources</div>
+      <div class="threat-sub">Apps obtained outside the official App Store or Google Play — sideloading and third-party stores</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-high">High Risk</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Android format</div><div class="spec-value sv-org">.apk file (sideloading)</div></div>
+    <div class="spec-cell"><div class="spec-label">iOS format</div><div class="spec-value sv-red">.ipa file (restricted)</div></div>
+    <div class="spec-cell"><div class="spec-label">Primary risk</div><div class="spec-value sv-red">No vetting → undetected malware</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What unofficial sources are</div>
+      <div class="card-desc"><span class="key-term">Unofficial application sources</span> are any distribution mechanism for mobile apps other than the platform-official stores. On Android, this includes: direct <code>.apk</code> file downloads from websites, third-party app stores (Amazon Appstore, F-Droid, APKPure, Aptoide), and app stores bundled with non-Google Android devices (Samsung Galaxy Store, Huawei AppGallery). On iOS, this includes: enterprise distribution certificates used to distribute non-App Store apps, AltStore, and — in the European Union following the Digital Markets Act — third-party marketplaces that Apple has been compelled to allow on EU devices. Unofficial sources bypass the gatekeeping review that official stores provide.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Why unofficial sources are dangerous</div>
+      <div class="card-desc">Without store review, there is no check for malware, no API enforcement, and no mechanism for the platform to remotely remove malicious apps after discovery. Common attacks using unofficial sources: <strong>repackaged legitimate apps</strong> — an attacker takes a popular app, injects malicious code, and redistributes the modified APK on third-party sites; the app functions normally (making the user trust it) while simultaneously performing malicious actions. <strong>Cracked paid apps</strong> — users seeking to use paid apps for free download cracked APKs that almost universally contain bundled malware — the "free" version of a paid app is one of the most reliably malware-laden distribution vectors in mobile security. <strong>Direct social engineering</strong> — a phishing message instructs the user to download an APK from a link "to verify their account" or "update their banking app."</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Android — "Unknown Sources" / Install Unknown Apps</div>
+      <div class="card-desc">Android requires explicit user action to enable installation from unofficial sources, specifically to reduce the attack surface of sideloading. <strong>Android 8+:</strong> the permission is per-source-app rather than a global toggle — Settings → Apps → [browser or file manager] → Install unknown apps → Allow. After sideloading a trusted app, this permission should be immediately disabled. On enterprise devices managed by MDM, the ability to enable unknown sources is typically blocked by policy. A technician who discovers that "Install unknown apps" is enabled on a corporate device for a browser or messaging app should flag this as a policy violation — it indicates either a policy gap or a potential social engineering attack that convinced the user to enable it.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Legitimate use cases for unofficial sources</div>
+      <div class="card-desc">Not all unofficial source usage is malicious. Legitimate scenarios: <strong>enterprise in-house apps</strong> distributed via MDM or enterprise certificates (corporate line-of-business apps that are not in the public store); <strong>beta testing</strong> (TestFlight on iOS, internal testing tracks on Android); <strong>open-source apps</strong> on F-Droid (a curated repository of free and open-source Android apps with its own review process); <strong>regional apps</strong> unavailable in certain country app stores. In these cases, the risk is managed through organizational controls, known publishers, and trusted certificate chains rather than open-internet distribution.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Google Play Protect</div>
+      <div class="card-desc"><span class="key-term">Google Play Protect</span> continuously scans all installed apps (including sideloaded ones) for malicious behavior. It is Android's primary runtime defense against malware. Even if a malicious app is installed from an unofficial source, Play Protect may detect and flag it during its background scans. Check Play Protect status: Play Store → profile icon → Play Protect. Play Protect should always be enabled. Its effectiveness against sideloaded malware is lower than against Play Store malware because it must detect behavioral anomalies rather than relying on pre-publication review. iOS has no equivalent because sideloading is generally prohibited — the app review process is the primary defense.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Developer Mode</h3>
+
+<div class="threat-card">
+  <div class="threat-header org">
+    <div>
+      <div class="threat-name">Developer Mode</div>
+      <div class="threat-sub">An OS state that enables advanced capabilities intended for app development — expanding the attack surface</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-med">Elevated Risk</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What developer mode enables</div>
+      <div class="card-desc"><span class="key-term">Developer mode</span> unlocks advanced capabilities on mobile devices intended for app developers and testers. On <strong>Android</strong>: tap Build Number seven times in Settings → About → enables Settings → Developer Options, which includes: USB debugging (ADB access), mock location providers, background process limits override, Wi-Fi verbose logging, pointer location overlays, and the ability to install apps via ADB (Android Debug Bridge) over USB or network — effectively enabling sideloading without going through the "Install Unknown Apps" flow. On <strong>iOS</strong>: enabled via Xcode or Settings → Privacy & Security → Developer Mode (iOS 16+); enables apps to run in development mode, Instruments profiling, and TestFlight beta installs.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Security risks</div>
+      <div class="card-desc">The primary security risk of developer mode is <span class="key-term">USB debugging (ADB)</span>. When USB debugging is enabled and a device is connected to a computer with an authorized ADB host key, a technician (or attacker) can: install arbitrary APKs without any store review (<code>adb install app.apk</code>), extract the contents of accessible storage, execute shell commands on the device, screen capture or record, and bypass lock screen protection on some Android versions. <strong>Practical attack scenario:</strong> a device left unattended at a desk with USB debugging enabled can be compromised in seconds by connecting a USB cable to a prepared laptop — no password is required if the host key is already authorized, or if the attacker can briefly authorize their key during the window when the screen is on.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Who should have it enabled</div>
+      <div class="card-desc">Developer mode should only be enabled on devices actively used for app development or testing. On corporate devices, MDM policy should block developer mode if it is not operationally required. A technician who discovers developer mode enabled on an end-user's device should: inquire about the reason (was it enabled intentionally by the user, or by someone with temporary access?), disable it, and report to the security team if no legitimate reason is identified. Developer mode being enabled on a device that was "slow" or "acting strange" is a significant indicator of potential compromise.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Disabling developer mode</div>
+      <div class="card-desc"><strong>Android:</strong> Settings → Developer Options → toggle off the master switch at the top of Developer Options. On some Samsung devices, this is under Settings → Developer Options → disable via the toggle at the top. Disabling developer mode disables USB debugging and all associated capabilities immediately. <strong>iOS:</strong> Settings → Privacy & Security → Developer Mode → toggle off → the device restarts to apply the change. After disabling, a passcode is required to re-enable, providing some protection against re-enablement by an unauthorized party with brief physical access.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Root Access and Jailbreaking</h3>
+
+<div class="threat-card">
+  <div class="threat-header dark">
+    <div>
+      <div class="threat-name">Root Access (Android) / Jailbreak (iOS)</div>
+      <div class="threat-sub">Exploiting kernel vulnerabilities to gain superuser / administrator access — dismantling the OS security model</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-critical">Critical Risk</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Android term</div><div class="spec-value sv-red">Rooting — gaining root (superuser) access</div></div>
+    <div class="spec-cell"><div class="spec-label">iOS term</div><div class="spec-value sv-red">Jailbreaking — bypassing iOS restrictions</div></div>
+    <div class="spec-cell"><div class="spec-label">Corporate policy</div><div class="spec-value sv-grn">MDM detects and may wipe rooted/jailbroken devices</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What rooting/jailbreaking is</div>
+      <div class="card-desc"><span class="key-term">Rooting</span> on Android and <span class="key-term">jailbreaking</span> on iOS both refer to exploiting kernel-level vulnerabilities in the mobile OS to gain <span class="key-term">superuser (root) privileges</span> — the equivalent of administrator access on a desktop OS. With root access, code can bypass all sandbox restrictions, read any app's data, modify system files, disable security controls, install system-level modifications, and operate completely outside the OS's normal security model. Rooting/jailbreaking typically requires chaining together multiple OS exploits to escalate privileges from the user level to the kernel level. Tools like Magisk (Android) and checkra1n/unc0ver (iOS) automate this process.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">What the security model loses</div>
+      <div class="card-desc">A rooted or jailbroken device has fundamentally compromised security because every protection that depends on the OS enforcing rules is now circumventable: <strong>App sandboxing</strong> — any app with root access can read other apps' sandboxes, including authentication tokens, session cookies, and local database files containing credentials; <strong>Verified Boot / Secure Boot</strong> — the boot chain integrity is broken; modified OS code may run without detection; <strong>Permission model</strong> — root-capable apps can self-grant any permission without user interaction; <strong>Certificate stores</strong> — root access allows installing arbitrary CA certificates, enabling man-in-the-middle attacks against all HTTPS traffic on the device; <strong>Full disk encryption</strong> — keys accessible at root level; device storage readable without the user's PIN.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Attack chain enabled by root</div>
+      <div class="card-desc">The most dangerous scenario is a rooted device with a malicious app that takes advantage of root access. Without root, a malicious app is confined to its sandbox. With root, it can: extract credentials from all other apps' databases (banking apps, password managers, email); intercept all network traffic (by installing a rogue CA certificate); log all keystrokes across all apps; silently send any file from the device to an external server; establish a persistent backdoor that survives reboots; and prevent its own removal by modifying system files. This is why security researchers describe rooting a device as "handing the attacker the keys to the kingdom."</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Detecting root/jailbreak</div>
+      <div class="card-desc">Signs that a device may be rooted or jailbroken: <strong>Android</strong> — presence of apps like SuperSU, Magisk Manager, or KingRoot in the app drawer; warnings from banking apps ("This device is not secure"); Google Play Protect showing "Device not Play certified" or SafetyNet/Play Integrity API failing; unusual apps in system app list; device is marked "Rooted" in MDM console. <strong>iOS</strong> — presence of Cydia, Sileo, or Zebra (jailbreak app stores) on the home screen; apps loading that are not available on the App Store; abnormal battery drain; MDM enrollment failing with "device integrity check failed." Many MDM solutions (Intune, Jamf, VMware) include jailbreak/root detection and can automatically quarantine or wipe detected devices.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Corporate policy response</div>
+      <div class="card-desc">Most enterprise MDM policies include a <span class="key-term">compliance rule</span> that triggers an automated response when a rooted or jailbroken device is detected: <strong>block access</strong> to corporate email, VPN, and apps; <strong>selective wipe</strong> (remove only corporate data while leaving personal data); or <strong>full wipe</strong> (factory reset the device). These responses are applied automatically without requiring IT intervention — the MDM continuously checks device integrity. A technician asked to investigate a device flagged by MDM for root/jailbreak detection should: confirm the detection, inform the user that corporate data access is suspended pending investigation, and escalate to the security team. The correct remediation for a rooted/jailbroken device is a factory reset — not attempting to "unroot" the device, as unrooting tools may not fully restore security integrity.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Root vs. Jailbreak — Platform Differences</p>
+  <p>While conceptually similar, rooting and jailbreaking differ in prevalence and current risk. <strong>Android rooting</strong> is more common historically because many Android device manufacturers (particularly budget devices) used to ship with unlockable bootloaders, making rooting accessible to non-experts. Modern Android and Google's Play Integrity API have made root harder to hide and actively block rooted devices from running banking apps. <strong>iOS jailbreaking</strong> has become increasingly difficult as Apple patches exploits rapidly — modern jailbreaks on current iOS versions are rare and often require sophisticated exploit chains. However, a successfully jailbroken iOS device is arguably more dangerous because users expect iOS to be more secure, making them less vigilant about what they install through Cydia.</p>
+</div>
+
+<h3 class="section">Unauthorized and Malicious Applications</h3>
+
+<div class="threat-card">
+  <div class="threat-header red">
+    <div>
+      <div class="threat-name">Unauthorized / Malicious Applications</div>
+      <div class="threat-sub">Apps designed to harm the user or device — spanning adware, spyware, trojans, and credential stealers</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-critical">Critical</span><span class="tag tag-high">Data Loss Risk</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Malware categories on mobile</div>
+      <div class="card-desc"><strong>Adware</strong> — displays intrusive advertisements, often outside the app that installed it (full-screen ads appearing on the home screen or notification shade); monetizes by generating fraudulent ad impressions. <strong>Spyware / Stalkerware</strong> — silently monitors user activity (SMS messages, call logs, location, photos) and exfiltrates data to a remote server; often installed by a person with physical access to the device (intimate partner surveillance). <strong>Trojans</strong> — apps that appear legitimate but contain hidden malicious functionality; a "free version" of a paid game that also subscribes the user to premium SMS services in the background. <strong>Banking Trojans</strong> — specifically target financial apps by overlaying fake login screens over legitimate banking apps to capture credentials. <strong>Cryptominers</strong> — run cryptocurrency mining code in the background, consuming CPU, battery, and data.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">How malicious apps evade detection</div>
+      <div class="card-desc">Malicious apps on official stores evade initial review through several techniques: <strong>delayed malicious behavior</strong> — the app behaves benignly during the review period, then switches to malicious behavior after a time delay or triggered by a server command; <strong>dynamic code loading</strong> — the initial package is clean, but it downloads and executes additional code from a remote server after installation; <strong>legitimate functionality plus hidden payload</strong> — the app genuinely does what it claims (flashlight, QR reader, calendar) while also performing malicious background tasks; <strong>permission escalation over time</strong> — the app gradually requests additional permissions through in-app prompts framed as necessary for new features.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Indicators of a malicious app</div>
+      <div class="card-desc">Behavioral signs: excessive permission requests (a wallpaper app requesting contact list access, microphone, or location); high data usage from a low-use app; battery drain correlated with the app running in the background; ads appearing when the app is not in the foreground; new apps appearing that the user did not install (malware can install additional payloads); banking apps showing overlay screens with slightly different designs. Structural signs: very few reviews, recently published account, no publisher website, reviews that seem generic or copied.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Removal and remediation</div>
+      <div class="card-desc">For a confirmed malicious app: <strong>(1)</strong> Uninstall immediately — Settings → Apps → [app] → Uninstall. <strong>(2)</strong> Revoke all permissions it was granted and audit whether other apps were installed by it. <strong>(3)</strong> Change passwords for any accounts accessed while the malicious app was installed — it may have captured credentials. <strong>(4)</strong> Contact financial institutions if banking app credentials may be compromised. <strong>(5)</strong> Run a mobile security scanner (Malwarebytes, Bitdefender, Lookout) to check for additional malware. <strong>(6)</strong> If the full scope of compromise is unclear, perform a factory reset — it is the only way to guarantee the device is clean.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Application Spoofing</h3>
+
+<div class="threat-card">
+  <div class="threat-header red">
+    <div>
+      <div class="threat-name">Application Spoofing</div>
+      <div class="threat-sub">Fake apps that impersonate legitimate ones to steal credentials or deceive users</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-critical">Credential Theft</span></div>
+  </div>
+  <div class="spec-row">
+    <div class="spec-cell"><div class="spec-label">Primary goal</div><div class="spec-value sv-red">Credential harvesting</div></div>
+    <div class="spec-cell"><div class="spec-label">Detection method</div><div class="spec-value sv-org">Check publisher, reviews, rating count</div></div>
+    <div class="spec-cell"><div class="spec-label">Also called</div><div class="spec-value sv-blu">Fake app, counterfeit app</div></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What application spoofing is</div>
+      <div class="card-desc"><span class="key-term">Application spoofing</span> is the creation of a fake app that closely resembles a legitimate, trusted application — copying its icon, name, color scheme, and interface — to trick users into entering credentials or other sensitive information into the fake version. The fake app may appear in the official store (if the attacker managed to get it published before removal) or be distributed via unofficial stores and phishing links. When the user "logs in" to the spoofed app, their credentials are sent to the attacker's server rather than the legitimate service. Examples include: fake banking apps, fake two-factor authentication apps, fake VPN apps, and fake antivirus apps.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">How to identify a spoofed app</div>
+      <div class="card-desc"><strong>Check the publisher/developer name</strong> — the official Chase bank app is published by "JPMorgan Chase Bank, National Association"; a spoof might be published by "Chase Banking Services" or a generic developer account. <strong>Check the number of reviews and install count</strong> — a legitimate popular app has millions of installs; a spoof published recently has hundreds or thousands. <strong>Check the publish date</strong> — a banking app that has been in the store for two months is almost certainly not the real bank's app. <strong>Navigate directly to the legitimate website</strong> to find the official app store link — never search for banking or financial apps by name in the store; always link from the official website. <strong>Verify the URL/developer</strong> in the app store listing — scammers often use slightly misspelled names (<code>Citi-Bank</code> instead of <code>Citibank</code>).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Overlay attacks (a related technique)</div>
+      <div class="card-desc">A variant of app spoofing that does not require a separate fake app is the <span class="key-term">overlay attack</span>. A malicious app that has been granted the "Draw Over Other Apps" permission on Android can display its own interface on top of a legitimate banking app — the user thinks they are entering their credentials into the real bank app, but they are actually typing into an overlay window controlled by the malicious app. The legitimate bank app is running underneath but never receives the keystrokes. Prevention: revoke "Draw Over Other Apps" permission from any app that does not legitimately need it (accessibility tools, screen recorders). On iOS, the sandboxing model prevents overlay attacks entirely — apps cannot draw over other apps.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Enterprise context — authorized app lists</div>
+      <div class="card-desc">In corporate environments, MDM systems maintain an <span class="key-term">authorized app catalog</span> — a list of approved apps that users may install. This directly addresses application spoofing: employees install apps from the MDM-managed catalog rather than searching the public store, and the catalog contains only verified, IT-approved versions of required apps. A new employee who is told to "install the company's expense reporting app" should be directed to the MDM company portal, not the public store, to ensure they install the genuine version rather than a spoofed one that may have been planted in the store with a similar name.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION C — COMPROMISE SYMPTOMS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section C</span>Common Symptoms of Mobile Security Compromise</h2>
+
+<p>The nine symptoms listed in this objective are the observable manifestations of the security concerns covered above. A technician who encounters one or more of these symptoms must be able to construct a differential diagnosis — which of the possible underlying causes best explains what the user is seeing, and what additional evidence would confirm or rule out each possibility.</p>
+
+<div class="symptom-grid">
+  <div class="symptom-card critical">
+    <div class="sc-symptom">High network traffic</div>
+    <div class="sc-causes">Most likely: <strong>spyware/malware exfiltrating data</strong>, cryptominer sending results, botnet activity. Also: legitimate app update, video streaming.</div>
+  </div>
+  <div class="symptom-card critical">
+    <div class="sc-symptom">Leaked personal files/data</div>
+    <div class="sc-causes">Most likely: <strong>spyware, malicious app with excessive permissions</strong>, root-level compromise with data exfiltration. Rarely: legitimate sync misconfiguration.</div>
+  </div>
+  <div class="symptom-card high">
+    <div class="sc-symptom">Data-usage limit notification</div>
+    <div class="sc-causes">Most likely: <strong>malware background network activity</strong>, cryptominer, adware loading ads. Also: new streaming app, large software update.</div>
+  </div>
+  <div class="symptom-card high">
+    <div class="sc-symptom">High number of ads</div>
+    <div class="sc-causes">Most likely: <strong>adware installed</strong> (possibly via unofficial source), legitimate free app with aggressive ad SDK. Ads outside the app = adware.</div>
+  </div>
+  <div class="symptom-card high">
+    <div class="sc-symptom">Fake security warnings</div>
+    <div class="sc-causes">Most likely: <strong>scareware app or malicious browser notification</strong> granted notification permission. Goal is to scare user into installing another malicious app or paying "removal fee."</div>
+  </div>
+  <div class="symptom-card med">
+    <div class="sc-symptom">Degraded response time</div>
+    <div class="sc-causes">Most likely: <strong>malware consuming CPU/RAM</strong> (cryptominer). Also: battery degradation causing throttling, insufficient storage, too many background processes.</div>
+  </div>
+  <div class="symptom-card med">
+    <div class="sc-symptom">Unexpected application behavior</div>
+    <div class="sc-causes">Most likely: <strong>trojan app performing unauthorized actions</strong>, malware interfering with legitimate apps. Also: app bug, incompatible OS update.</div>
+  </div>
+  <div class="symptom-card low">
+    <div class="sc-symptom">Limited internet connectivity</div>
+    <div class="sc-causes">Most likely: <strong>malware consuming bandwidth</strong>, or malicious app redirecting DNS. Also: legitimate network issue, ISP throttling, too many devices on Wi-Fi.</div>
+  </div>
+  <div class="symptom-card low">
+    <div class="sc-symptom">No internet connectivity</div>
+    <div class="sc-causes">Most likely: <strong>malware blocking network</strong> (anti-forensic), malicious proxy/VPN profile installed. Also: legitimate network outage, misconfigured proxy.</div>
+  </div>
+</div>
+
+<h3 class="section">High Network Traffic and Data-Usage Notifications</h3>
+
+<div class="threat-card">
+  <div class="threat-header org">
+    <div>
+      <div class="threat-name">High Network Traffic / Data-Usage Limit Notification</div>
+      <div class="threat-sub">Unexpected cellular or Wi-Fi data consumption — often indicates covert background exfiltration</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-high">Data Exfiltration Indicator</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Identifying the cause</div>
+      <div class="card-desc">The device or carrier sends a data-usage notification because total data consumption has exceeded a threshold — but not all unexplained data usage is malicious. First, rule out legitimate causes: a recent app update (large games can be 1–5 GB), auto-backup initiating on cellular, a video streaming app left running in the background. Then investigate security causes: <strong>Android</strong>: Settings → Network & Internet → Data Usage → sort by usage — any unfamiliar app appearing near the top, or a known app with disproportionate usage, is the focus of investigation. <strong>iOS</strong>: Settings → Cellular → scroll down to see per-app cellular data usage. An app that shows high data usage but that the user rarely opens is the primary suspect.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Malware data exfiltration</div>
+      <div class="card-desc"><span class="key-term">Spyware</span> and <span class="key-term">data-exfiltrating malware</span> consume network traffic to send stolen data to command-and-control (C2) servers. The exfiltrated content may include: photos and videos (high volume = high data usage), contacts and calendar, SMS messages, location history, app credential databases, and microphone recordings. Exfiltration is often timed to occur during Wi-Fi connectivity to avoid triggering cellular data alerts — a device that suddenly uses large amounts of data when connected to Wi-Fi but the user wasn't actively streaming should be investigated. Spyware may also be triggered when the device charges overnight, exfiltrating a day's worth of collected data in one transmission.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Cryptominer behavior</div>
+      <div class="card-desc">Mobile <span class="key-term">cryptomining malware</span> uses the device's CPU to mine cryptocurrency and submits results to a mining pool server — creating continuous network traffic. The traffic pattern is distinctive: small, frequent outbound connections to the same remote server, occurring even when the device is at idle from the user's perspective. Combined symptom signature: high data usage + degraded performance + high battery drain + device runs warm at idle. This combination strongly suggests a cryptominer. Diagnosis: check data usage by app, check battery usage by app — the same suspicious app should appear elevated in both.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Remediation</div>
+      <div class="card-desc">Identify the high-traffic app and investigate it: check when it was installed (correlate with when the data spike began), check reviews for reports of malicious behavior, verify the publisher is legitimate, check what permissions it has. If the app is confirmed malicious or suspicious, uninstall it immediately. Monitor data usage for 24–48 hours after removal to confirm the spike resolves. If data usage remains abnormally high after removing the suspect app, there may be additional malware — run a mobile security scanner. If the device was rooted or jailbroken, a factory reset may be required to guarantee removal of all malware components.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Degraded Response Time</h3>
+
+<div class="threat-card">
+  <div class="threat-header org">
+    <div>
+      <div class="threat-name">Degraded Response Time</div>
+      <div class="threat-sub">Unusual slowness — especially when not correlated with battery age or storage — may indicate a malware process running at high CPU</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-med">Investigate Cause</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Security vs. hardware cause</div>
+      <div class="card-desc">Degraded response time can be caused by battery degradation causing CPU throttling (covered in objective 3.2) or by a malicious process consuming CPU. The distinguishing factor is onset pattern: <strong>gradual, progressive slowness over months</strong> → battery degradation (hardware); <strong>sudden onset of slowness</strong> that correlates with installing a new app or receiving a suspicious link → malware. Confirm by checking battery health — if battery is healthy (above 80%) and the device is slow, a software cause (malware or rogue legitimate app) is more likely.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Diagnosis steps</div>
+      <div class="card-desc"><strong>Android:</strong> Settings → Battery → Battery Usage — identify the app consuming the most CPU in the background. Developer Options → Running Services shows active services and their memory consumption. An unfamiliar service with high memory consumption that was not running before is suspicious. <strong>iOS:</strong> Settings → Battery → Battery Usage by App — an app with high background activity consumption when the user has not been actively using it is suspicious. Additionally, a device that is warm to the touch when idle indicates high background CPU activity — combined with slowness, this strongly suggests malware (cryptominer or aggressive adware).</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Limited / No Internet Connectivity</h3>
+
+<div class="threat-card">
+  <div class="threat-header blue">
+    <div>
+      <div class="threat-name">Limited / No Internet Connectivity</div>
+      <div class="threat-sub">Connectivity that worked before now fails — potentially caused by malicious proxy or VPN profile installation</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-med">Check Proxy / VPN Profile</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Malicious proxy / VPN profile</div>
+      <div class="card-desc">A significant and underappreciated mobile attack vector is the installation of a malicious <span class="key-term">configuration profile</span> (iOS) or a rogue <span class="key-term">VPN app or proxy setting</span> (Android/iOS) that routes all device traffic through an attacker-controlled server. Once installed, the proxy intercepts all HTTP and HTTPS traffic — enabling man-in-the-middle attacks, credential theft, and traffic monitoring. Malicious configuration profiles are distributed via phishing websites that prompt the user to "install this profile to access the content" or "update your carrier settings." The profile installs a rogue CA certificate alongside the proxy settings, enabling decryption of HTTPS traffic.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Detecting and removing malicious profiles</div>
+      <div class="card-desc"><strong>iOS:</strong> Settings → General → VPN & Device Management — review all installed profiles. Any profile not explicitly installed by IT or the user is suspicious; tap it to view the issuer and what it configures (proxy settings, CA certificates). Delete any unauthorized profile. Also check: Settings → General → VPN & Device Management → Certificate Trust Settings — any third-party root certificate installed here enables HTTPS interception; remove any unexpected entries. <strong>Android:</strong> Settings → Network & Internet → Private DNS or Advanced Wi-Fi → Proxy — check for unexpected proxy settings. Settings → Security → Encryption & Credentials → Trusted Credentials → User tab — any user-added CA certificate that the user did not explicitly install is suspicious and should be removed.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Limited vs. no connectivity</div>
+      <div class="card-desc"><strong>Limited connectivity</strong> (can reach some sites but not others) may indicate DNS manipulation — the malware has changed the DNS resolver to redirect specific domains (banking sites, security update servers) to attacker-controlled servers or to block them. <strong>No connectivity</strong> may indicate the malware is actively blocking outbound connections as an anti-forensic measure (preventing the user from researching the malware) or that a misconfigured proxy/VPN is preventing all traffic. In both cases, check proxy settings, VPN settings, and installed profiles before investigating network hardware.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">High Number of Ads</h3>
+
+<div class="threat-card">
+  <div class="threat-header org">
+    <div>
+      <div class="threat-name">High Number of Ads</div>
+      <div class="threat-sub">Intrusive advertisements — especially those appearing outside any specific app — are the hallmark of adware</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-med">Adware</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Adware behavior</div>
+      <div class="card-desc"><span class="key-term">Adware</span> is malware that generates revenue for the attacker through fraudulent advertising impressions. Mobile adware can manifest as: full-screen ads appearing on the home screen (outside any app), ads in the notification shade, browser redirects to advertisement pages, persistent banner ads that overlay other app interfaces, and "push notification ads" (ads disguised as system notifications). The key diagnostic question is whether ads appear <strong>outside</strong> a specific app — ads that appear within a free app are expected (the app is ad-supported); ads that appear when no app is open, on the home screen, or in the lock screen indicate adware installed as a separate app or embedded in a recently installed app.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Identifying the adware source</div>
+      <div class="card-desc">Correlate when the ads started with what was installed around that time. On Android: check recently installed apps in the Play Store → profile → Manage apps & devices → Installed tab → sort by Last Updated or Recently Used. An app installed just before the ads started is the prime candidate. Adware is frequently disguised as utility apps (flashlights, battery savers, file cleaners, QR scanners) that have no reason to display ads at the OS level. <strong>Check for notification-based ads:</strong> if the ads arrive as notifications, long-press the notification to identify which app sent it — this directly reveals the adware source on Android.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Remediation</div>
+      <div class="card-desc">Uninstall the identified adware app. If the source is a browser notification rather than an installed app, go to the browser's Settings → Notifications (or Site Settings → Notifications) and revoke notification permission from any unexpected domain. Run a mobile security scanner after removal to confirm no additional adware components remain. Educate the user: free apps from unofficial sources that are "too good to be true" (free versions of paid apps, no-ads claimed versions) are primary adware vectors. Use the official paid version or the official free version from the official store.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Fake Security Warnings</h3>
+
+<div class="threat-card">
+  <div class="threat-header red">
+    <div>
+      <div class="threat-name">Fake Security Warnings</div>
+      <div class="threat-sub">Scareware pop-ups claiming the device is infected — designed to cause panic and social-engineer a malicious action</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-high">Scareware</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What fake security warnings look like</div>
+      <div class="card-desc"><span class="key-term">Scareware</span> presents fake security alerts claiming the device is infected with a specific number of viruses, has been hacked, or will be damaged unless the user takes immediate action. Common formats: browser pop-up that appears while browsing and cannot be dismissed (JavaScript alert loop); push notification from a site that was granted notification permission ("URGENT: Your phone has 3 viruses!"); within an already-installed adware app showing a fake scan result; or a full-screen overlay (on Android with Draw Over Other Apps permission) that mimics a system security warning. The goal is always to convince the user to either call a phone number, install an "antivirus" app (which is itself malware), or pay a fee.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Key identification markers</div>
+      <div class="card-desc">Legitimate mobile OS security alerts never: demand a phone call; ask for payment; claim an exact number of viruses; appear as pop-up browser alerts with countdown timers; instruct the user to install a specific app immediately. A warning with any of these characteristics is fake. The operating system itself handles genuine security issues through Settings and system notifications — not through browser pop-ups or push notifications from websites. When a user receives what they believe is a security warning, have them show it to the technician before taking any action — most users who respond to scareware make the situation worse.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Remediation</div>
+      <div class="card-desc"><strong>Browser-based scareware:</strong> close the browser tab. If the alert prevents closing (JavaScript loop preventing dismissal): force-close the browser from the app switcher. Clear the browser's history and cache to prevent the page from reloading on restart. Revoke notification permissions from the domain that delivered push notification scareware (browser Settings → Notifications → remove the offending domain). <strong>App-based scareware:</strong> uninstall the app that displayed the warning. <strong>What not to do:</strong> never call the number displayed, never install an app the warning recommends, never pay any amount. If the user has already responded to the scareware (installed the recommended app, entered payment information), treat this as a full security incident — investigate for malware, change financial credentials, contact financial institutions.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Unexpected Application Behavior</h3>
+
+<div class="threat-card">
+  <div class="threat-header org">
+    <div>
+      <div class="threat-name">Unexpected Application Behavior</div>
+      <div class="threat-sub">Apps doing things the user did not initiate — accessing contacts, camera, sending messages, making purchases</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-high">Possible Trojan</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">What to look for</div>
+      <div class="card-desc">Unexpected behaviors that indicate a malicious or compromised app: <strong>contacts being accessed</strong> without the user initiating a contact-dependent action; <strong>camera activating</strong> without the user opening the camera; <strong>SMS messages sent from the user's number</strong> that the user did not send (premium SMS trojan); <strong>unauthorized in-app purchases</strong> charged to the account; <strong>apps installed without the user's action</strong> (requires root, or another app with Install Packages permission on Android); <strong>accounts or services the user doesn't recognize</strong> appearing in the account list; <strong>settings changed</strong> without user action (Wi-Fi settings, screen timeout, security settings). Any of these warrant immediate investigation.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Permission audit</div>
+      <div class="card-desc">When unexpected behavior is observed, audit the permissions of recently installed apps: <strong>Android:</strong> Settings → Privacy → Permission Manager — view which apps have access to Camera, Microphone, Location, Contacts, SMS, etc. Any app with permissions it does not legitimately need should have those permissions revoked or the app uninstalled. <strong>iOS:</strong> Settings → Privacy & Security → [each permission type] — review the app list for each sensitive permission. Specifically check Camera, Microphone, Contacts, Location Services, Photos. An app that does not require camera access (a simple utility, a shopping app) having camera permission granted is a red flag.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Leaked Personal Files and Data</h3>
+
+<div class="threat-card">
+  <div class="threat-header red">
+    <div>
+      <div class="threat-name">Leaked Personal Files / Data</div>
+      <div class="threat-sub">Private data appearing externally — photos, documents, credentials discovered in places the user did not put them</div>
+    </div>
+    <div class="threat-tags"><span class="tag tag-critical">Incident Response Required</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-row">
+      <div class="card-label">Signs of data leakage</div>
+      <div class="card-desc">Data leakage may be discovered by: the user receiving a ransom demand that includes sample files proving access; unexpected login notifications to accounts from unknown locations (the attacker used stolen credentials from the device); a contact reporting that they received messages from the user's account that the user didn't send; the user's photos appearing on external sites; financial transactions the user didn't initiate; and in enterprise settings, confidential business files being found externally (triggering a DLP alert or audit finding).</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Spyware and stalkerware</div>
+      <div class="card-desc"><span class="key-term">Stalkerware</span> is a specific category of spyware typically installed by someone with physical access to the device (an abusive partner, an employer monitoring employee devices without disclosure). Stalkerware apps are specifically designed to be hard to detect — they may not appear in the app drawer, disguise themselves as system apps, and suppress their notifications. Signs: device battery drains faster than expected, device is occasionally warm when not in use, data usage is higher than the user's activities explain. Stalkerware detection and removal resources include the Coalition Against Stalkerware (stopstalkerware.org) and tools like Malwarebytes and Lookout which specifically detect stalkerware.</div>
+    </div>
+    <div class="card-row">
+      <div class="card-label">Incident response steps</div>
+      <div class="card-desc">A confirmed or suspected data leak requires an escalated response: <strong>(1)</strong> Preserve evidence — document what data was leaked, when it was discovered, and how. Do not factory reset before documenting (a reset destroys forensic evidence). <strong>(2)</strong> Identify the vector — is there a malicious app, a compromised account, a rooted device? <strong>(3)</strong> Change all account passwords immediately, from a different device — the compromised device may have a keylogger. <strong>(4)</strong> Enable MFA on all accounts. <strong>(5)</strong> Notify affected parties if corporate data was involved — this may trigger HIPAA, GDPR, or other regulatory breach notification obligations. <strong>(6)</strong> Factory reset the device after evidence collection. <strong>(7)</strong> File a report with the organization's security team and, if warranted, law enforcement.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION D — INVESTIGATION AND REMEDIATION
+     ═══════════════════════════════════════════════════ -->
+
+<div class="ch-divider"></div>
+
+<h2 class="chapter"><span class="ch-num">Section D</span>Mobile Security Investigation and Remediation</h2>
+
+<p>When a mobile device displays one or more compromise symptoms, the technician must work through a structured investigation before taking action. Acting too quickly (immediately factory-resetting without investigation) destroys forensic evidence; acting too slowly (leaving a compromised device connected to corporate networks while investigating) allows the compromise to continue or spread.</p>
+
+<div class="step-list">
+  <div class="step-item">
+    <div class="step-num red-step">1</div>
+    <div class="step-content"><strong>Quarantine the device.</strong> Disconnect it from corporate Wi-Fi and revoke its access to corporate email and VPN while investigation proceeds. On MDM-managed devices, the administrator can block corporate resource access remotely without physically handling the device. This prevents ongoing exfiltration or lateral movement to corporate systems.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num red-step">2</div>
+    <div class="step-content"><strong>Document the symptoms and timeline.</strong> When did symptoms start? What apps were installed around that time? Have any unusual permissions been requested recently? Did the user click any suspicious links, download any files, or install anything from outside the official store? This information guides the investigation and, if the incident is reportable, forms part of the incident record.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">3</div>
+    <div class="step-content"><strong>Check for device modification.</strong> Is the device rooted or jailbroken? (Cydia on home screen, Magisk installed, MDM showing integrity check failure, banking apps showing security warnings.) If yes, treat as a full compromise — the entire security model is broken. Proceed to factory reset after evidence documentation.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">4</div>
+    <div class="step-content"><strong>Review installed apps.</strong> Check for apps installed from unofficial sources (on Android, apps without Play Store origin). Check for recently installed apps that correlate with symptom onset. Check permission usage — which apps have access to camera, microphone, contacts, location, SMS. Uninstall any confirmed or highly suspicious malicious apps.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">5</div>
+    <div class="step-content"><strong>Check network configuration.</strong> Review proxy settings, VPN profiles, and installed certificates. Remove any unauthorized proxy configuration or CA certificates. On iOS, check Settings → General → VPN & Device Management for unauthorized profiles. On Android, check Settings → Network → Private DNS and Advanced Wi-Fi settings for proxy configuration.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">6</div>
+    <div class="step-content"><strong>Run a mobile security scanner.</strong> Malwarebytes, Bitdefender, Lookout, or the built-in Google Play Protect scan can detect known malware signatures and behavioral anomalies. A clean scan does not guarantee no compromise — novel malware evades signature detection — but a positive detection confirms and identifies the threat.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">7</div>
+    <div class="step-content"><strong>Change credentials from a clean device.</strong> Regardless of whether malware was confirmed, if the device had access to sensitive accounts (corporate email, banking, password manager), change those passwords from a different, known-clean device. The compromised device may have a keylogger that will capture new passwords typed on it.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">8</div>
+    <div class="step-content"><strong>Factory reset if full compromise is confirmed or suspected.</strong> Factory reset is the definitive remediation for mobile malware — it returns the device to a known-clean state. For iOS: Settings → General → Transfer or Reset iPhone → Erase All Content. For Android: Settings → General Management → Reset → Factory Reset. After reset, restore from a backup taken before the suspected compromise date (do not restore from a backup that may contain the malware).</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION E — COMPARISON AND DECISION GUIDE
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section E</span>Symptom-to-Cause Mapping and Decision Guide</h2>
+
+<h3 class="section">Comprehensive Symptom-to-Threat Table</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Symptom</th>
+      <th>Most Likely Security Cause</th>
+      <th>Other Possible Causes</th>
+      <th>Key Diagnostic Step</th>
+      <th>Remediation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>High network traffic</td>
+      <td>Spyware/malware exfiltration, cryptominer</td>
+      <td>Large app update, streaming, backup</td>
+      <td>Data usage by app (Settings → Network → Data Usage)</td>
+      <td>Identify and uninstall malicious app; factory reset if root confirmed</td>
+    </tr>
+    <tr>
+      <td>Data-usage limit hit unexpectedly</td>
+      <td>Malware background activity, botnet membership</td>
+      <td>Auto-updates on cellular, video streaming</td>
+      <td>Per-app cellular data usage; correlate with recent installs</td>
+      <td>Uninstall suspect app; restrict background data; run scanner</td>
+    </tr>
+    <tr>
+      <td>Degraded response time</td>
+      <td>Cryptominer consuming CPU, adware background activity</td>
+      <td>Battery degradation (throttling), low storage</td>
+      <td>Battery usage by app; check battery health; device warm at idle?</td>
+      <td>Uninstall malicious app; if battery, schedule replacement</td>
+    </tr>
+    <tr>
+      <td>Limited internet connectivity</td>
+      <td>Malicious proxy, DNS manipulation, bandwidth consumed by malware</td>
+      <td>Network issue, ISP throttling, router problem</td>
+      <td>Check proxy settings; test on different network</td>
+      <td>Remove unauthorized proxy/VPN profile; check installed CA certs</td>
+    </tr>
+    <tr>
+      <td>No internet connectivity</td>
+      <td>Malicious proxy/VPN misconfiguration, anti-forensic malware blocking</td>
+      <td>Network outage, misconfigured Wi-Fi</td>
+      <td>Check VPN and proxy settings; test other devices on same network</td>
+      <td>Remove unauthorized profiles; reset network settings; factory reset if malware confirmed</td>
+    </tr>
+    <tr>
+      <td>High number of ads</td>
+      <td>Adware app installed (often via unofficial source)</td>
+      <td>Free app with aggressive ad SDK (normal for that app)</td>
+      <td>Do ads appear outside any app (home screen, lock screen, notification shade)?</td>
+      <td>Find recently installed utility apps; uninstall; revoke notification permissions</td>
+    </tr>
+    <tr>
+      <td>Fake security warnings</td>
+      <td>Scareware browser notification or adware app</td>
+      <td>Legitimate security tool displaying a finding</td>
+      <td>Is the warning from the OS, a trusted security app, or a browser/notification?</td>
+      <td>Do not act on the warning; close it; revoke notification permission from source domain</td>
+    </tr>
+    <tr>
+      <td>Unexpected application behavior</td>
+      <td>Trojan app, overlay attack, spyware accessing sensors</td>
+      <td>App bug, OS update compatibility issue</td>
+      <td>Permission audit; check which apps have camera/mic/contacts/SMS access</td>
+      <td>Revoke unneeded permissions; uninstall malicious app; change passwords</td>
+    </tr>
+    <tr>
+      <td>Leaked personal files/data</td>
+      <td>Spyware/stalkerware, rooted device with data theft, malicious app with file access</td>
+      <td>Misconfigured cloud backup sharing</td>
+      <td>Check installed apps, root/jailbreak status, cloud sharing settings</td>
+      <td>Full incident response; change all credentials; factory reset; notify affected parties</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="section">Scenario Decision Guide</h3>
+
+<div class="decision-flow">
+  <div class="df-title">Mobile Security Troubleshooting — Symptom to Action</div>
+
+  <div class="df-row">
+    <div class="df-condition">User's cellular data spiked to 8 GB this week — normally uses 2 GB</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Check Settings → Network → Data Usage → sort by consumption. <span class="good">Identify the app with abnormal data usage.</span> If it is a legitimate app the user was actively using (streaming, video calls), explain the cause. If it is an unfamiliar app or one with disproportionate usage, investigate for malware — check install date, permissions, reviews. Uninstall if malicious.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">User sees virus warning pop-ups every few minutes on their Android phone</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><span class="good">Scareware — do not act on the warnings.</span> Determine source: if browser-based, clear browser cache and revoke notification permission from the offending site. If from a notification, long-press to identify the app source and uninstall it. Reassure the user that the warnings are fake and explain how to identify legitimate security alerts.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">MDM console flags an employee's Android device as "rooted"</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Quarantine the device immediately — MDM should auto-block corporate access. Notify the security team. Investigate: was the device rooted intentionally (policy violation) or unknowingly (malware with root exploit)? Either way: <strong class="good">full factory reset required.</strong> Do not attempt to "unroot" — restore from a clean backup or set up from scratch. Document and report per incident response policy.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">A user downloaded a free version of a paid app from a website and now sees ads everywhere — even on the home screen</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Classic adware via unofficial source. <span class="good">Uninstall the app</span> (Settings → Apps → [app] → Uninstall). If it was installed as an APK, also check that "Install Unknown Apps" is disabled for that source. Run Google Play Protect scan. Educate the user: free versions of paid apps from unofficial sites almost always contain malware.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">User reports their phone feels like it was set up fresh — all their apps are gone</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Device was either remotely wiped by MDM (common if MDM detected root/jailbreak or a compliance violation) or the user inadvertently triggered a factory reset. Check MDM console for any automated compliance wipe actions on that device. If MDM-initiated: inform the user of the compliance issue that triggered it. If no MDM explanation: investigate whether someone with physical access performed a factory reset.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">A user's iPhone will not browse the internet even though Wi-Fi shows connected — started after visiting a website that asked them to "update Safari"</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">The "Safari update" was likely a <strong>malicious configuration profile</strong> that installed a proxy redirecting all traffic. <span class="good">Settings → General → VPN & Device Management</span> — remove any unauthorized profile. Also check Settings → General → VPN & Device Management → Certificate Trust Settings for unauthorized CA certificates. Remove both. Test connectivity after removal.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">User installed an app that claimed to be their bank's new app from a link in a text message — now their bank account shows unauthorized transactions</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><strong>Application spoofing / credential theft — treat as a financial fraud incident.</strong> <span class="good">(1)</span> Uninstall the fake app immediately. <span class="good">(2)</span> Contact the bank to freeze accounts and dispute transactions. <span class="good">(3)</span> Change banking credentials from a clean device. <span class="good">(4)</span> Enable MFA on banking accounts. <span class="good">(5)</span> Factory reset the device. <span class="good">(6)</span> File a report with the bank's fraud department and consider a police report. Remind: always install banking apps by linking from the official bank website, never from a text message or email link.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">User's partner knows details of private conversations they should not know</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Suspected <strong>stalkerware</strong>. Check for unfamiliar apps, especially those disguised as utilities or system apps. Run Malwarebytes or Lookout which specifically detect stalkerware. Check battery usage and data usage for unexplained background activity. Factory reset the device. Change all account passwords from a clean device. Refer the user to the Coalition Against Stalkerware (stopstalkerware.org) and, if in a safety concern situation, to local support resources.</div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 3.3 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Unofficial app stores</span>No vetting = no malware screening. Common vectors: cracked paid apps, "free" versions, APKs from websites. Repackaged legitimate apps with injected malware are the primary threat.</div>
+    <div class="summary-item"><span class="s-sym">Google Play Protect</span>Continuously scans installed apps including sideloaded ones. Should always be enabled. Less effective against novel sideloaded malware than against Play Store malware.</div>
+    <div class="summary-item"><span class="s-sym">Android unknown sources</span>Android 8+: per-source-app permission (Settings → Apps → [app] → Install Unknown Apps). Should be disabled after use. MDM can block globally. Enabled on a corporate device = policy violation.</div>
+    <div class="summary-item"><span class="s-sym">Developer mode risk</span>Enables USB debugging (ADB). Device connected to a computer with ADB authorization = arbitrary APK install, data extraction, shell commands — no password required if host key authorized.</div>
+    <div class="summary-item"><span class="s-sym">Rooting (Android)</span>Gains superuser/root access via kernel exploit. Breaks sandboxing, Verified Boot, permission model, certificate stores. Malicious app with root = full compromise. Fix: factory reset.</div>
+    <div class="summary-item"><span class="s-sym">Jailbreaking (iOS)</span>Bypasses iOS security via kernel exploit. Cydia/Sileo appears on home screen. Allows unsigned code at kernel level. MDM detects and can quarantine/wipe. Fix: factory reset.</div>
+    <div class="summary-item"><span class="s-sym">Root detection signs</span>Android: SuperSU/Magisk Manager present, SafetyNet/Play Integrity failing, banking apps showing security warnings. iOS: Cydia on home screen, MDM integrity check failed.</div>
+    <div class="summary-item"><span class="s-sym">Application spoofing</span>Fake app mimicking a legitimate one (bank, authenticator). Identify by checking publisher name, install count, publish date. Always install banking apps from the official website link, not store search.</div>
+    <div class="summary-item"><span class="s-sym">Overlay attack</span>Malicious app with "Draw Over Other Apps" draws fake UI over a real banking app. Android only — iOS sandboxing prevents this. Prevention: revoke Draw Over Other Apps permission from untrusted apps.</div>
+    <div class="summary-item"><span class="s-sym">High network traffic</span>Security cause: spyware exfiltrating data, cryptominer, botnet. Diagnose: Settings → Network → Data Usage → sort by app. Correlate with recent installs.</div>
+    <div class="summary-item"><span class="s-sym">Degraded + warm at idle</span>Device slow AND warm when not in active use = cryptominer strongly suspected. Check battery usage and data usage — same app will be elevated in both.</div>
+    <div class="summary-item"><span class="s-sym">Ads outside apps</span>Ads on home screen, lock screen, or notification shade = adware app. Long-press notification to identify source app. Uninstall. Ads only inside one app = that app is ad-supported (normal).</div>
+    <div class="summary-item"><span class="s-sym">Fake security warnings</span>Never: demand a phone call, require payment, claim a virus count, instruct to install a specific app. Source is scareware. Do not act. Close it. Revoke notification permission from source.</div>
+    <div class="summary-item"><span class="s-sym">Malicious iOS profile</span>Distributed via phishing sites ("install to view content"). Installs proxy settings + rogue CA certificate → enables HTTPS MITM. Check: Settings → General → VPN & Device Management → remove unauthorized profiles and certificates.</div>
+    <div class="summary-item"><span class="s-sym">Stalkerware</span>Installed by someone with physical access. Hides from app drawer. Signs: unexplained battery drain, warmth at idle, data usage. Use Malwarebytes/Lookout for detection. Factory reset for removal. Refer user to stopstalkerware.org.</div>
+    <div class="summary-item"><span class="s-sym">Data leak response</span>(1) Document evidence. (2) Change all passwords from a clean device. (3) Enable MFA. (4) Notify affected parties and security team. (5) Factory reset AFTER evidence documented. (6) Regulatory notification if corporate data involved.</div>
+    <div class="summary-item"><span class="s-sym">MDM compliance wipe</span>MDM automatically quarantines/wipes on root/jailbreak detection. Technician cannot override MDM policy. Escalate to MDM admin. Correct remediation is factory reset, not attempting to unroot.</div>
+    <div class="summary-item"><span class="s-sym">Factory reset — when required</span>Confirmed root/jailbreak; confirmed malware that cannot be fully removed; data leakage with unknown scope; device in boot loop. Always after evidence documentation. Restore from pre-compromise backup only.</div>
+    <div class="summary-item"><span class="s-sym">iOS profile check</span>Settings → General → VPN & Device Management. Also check Certificate Trust Settings tab for unauthorized user-installed CA certificates (enables HTTPS interception). Both should have only IT-authorized or carrier entries.</div>
+    <div class="summary-item"><span class="s-sym">Change passwords — clean device</span>Always change passwords from a DIFFERENT, known-clean device after any suspected compromise. A compromised device may have a keylogger — new passwords typed on it are immediately captured.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> An Android user downloaded a free cracked version of a popular paid game from a third-party website. Their phone now shows full-screen ads at random intervals on the home screen. What is the most likely cause, and what is the first step? → Adware installed via the unofficial APK. First step: uninstall the cracked game app. Also check Settings → Apps for any other recently installed apps from the same period. Run Google Play Protect. Educate the user that unofficial APKs commonly contain malware.<br><br>
+  <strong>Scenario 2:</strong> A technician receives a notification from the MDM console that an employee's iPhone has failed the jailbreak detection check. What is the appropriate response? → Quarantine the device (MDM blocks corporate access automatically per policy). Notify the security team. The device must be factory reset — do not attempt to "unjailbreak." Investigate whether the jailbreak was intentional (policy violation) or caused by a drive-by exploit. Document in the incident management system.<br><br>
+  <strong>Scenario 3:</strong> A user's Android phone is very slow and warm even when idle. Data usage is three times the normal amount this month. What is the most likely security cause? → Cryptomining malware. The combination of CPU-intensive background processing (causing warmth and slowness) with abnormal network activity (submitting mining results) is the classic cryptominer signature. Check Settings → Battery → Battery Usage and Settings → Network → Data Usage — the same suspicious app should appear elevated in both. Uninstall it; factory reset if it cannot be removed or if root access was used.<br><br>
+  <strong>Scenario 4:</strong> A user visited a website on their iPhone that asked them to install a "carrier update" to improve performance. They installed it. Now all websites load a strange search engine and HTTPS sites show certificate warnings. What happened and how is it fixed? → The "carrier update" was a malicious configuration profile that installed a rogue CA certificate and proxy settings. Fix: Settings → General → VPN & Device Management → remove the malicious profile. Also check Certificate Trust Settings and remove any unauthorized user-installed CA certificate. Test connectivity after removal.<br><br>
+  <strong>Scenario 5:</strong> A user reports they received a text message with a link to download their bank's "new security app." They installed it, and their bank account now shows unauthorized transactions. What type of attack is this, and what must be done? → Application spoofing — a fake banking app harvested their credentials. Immediate actions: (1) uninstall the fake app; (2) contact the bank to freeze accounts and dispute transactions; (3) change banking credentials from a clean device; (4) enable MFA; (5) factory reset the device. Remind: banking apps should always be installed by navigating to the bank's official website directly, never from a link in a text message.<br><br>
+  <strong>Scenario 6:</strong> A technician is examining a user's Android phone and notices that "Install Unknown Apps" is enabled in the browser app's settings, developer mode is on, and USB debugging is enabled. The user says they don't remember enabling any of these. What is the most likely explanation? → The device was likely compromised — either through a social engineering attack that convinced the user to enable these settings, or through brief physical access by someone who enabled them. These settings together represent a significant attack surface: sideloading is enabled, and USB debugging allows arbitrary code execution via ADB. All three should be disabled immediately, the device audited for sideloaded apps, and the incident reported to the security team.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

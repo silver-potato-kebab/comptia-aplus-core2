@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.10 — Apply Security Settings on SOHO Wireless and Wired Networks</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* METHOD CARD */
+  .method-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 18px 0 28px; }
+  .method-header { padding: 13px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; border-bottom: 2px solid var(--border); }
+  .method-header.router   { background: var(--accent-light);  border-bottom-color: #c0392b33; }
+  .method-header.wireless { background: var(--accent2-light); border-bottom-color: #2c3e6b33; }
+  .method-header.firewall { background: var(--accent3-light); border-bottom-color: #1a6b3a33; }
+  .method-header.neutral  { background: var(--surface2);      border-bottom-color: var(--border2); }
+  .method-name { font-family: var(--mono); font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; line-height: 1.25; }
+  .method-sub  { font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .method-tags { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+  .tag-critical { background: #1a1a18; color: #fff; }
+  .tag-high     { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b44; }
+  .tag-medium   { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .tag-low      { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+  .tag-wireless { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+
+  .method-body { }
+  .method-row { display: grid; grid-template-columns: 185px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .method-row:last-child { border-bottom: none; }
+  .method-label { font-weight: 600; color: var(--accent2); padding: 10px 14px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .method-desc  { padding: 10px 14px; color: var(--muted); line-height: 1.6; }
+  .method-desc strong { color: var(--text); }
+
+  /* SPEC ROW */
+  .method-spec-row { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+  .method-spec { padding: 9px 14px; border-right: 1px solid var(--border); font-family: var(--sans); font-size: 13px; }
+  .method-spec:last-child { border-right: none; }
+  .method-spec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .method-spec-value { font-weight: 600; color: var(--text); line-height: 1.35; }
+  .spec-final { color: var(--accent); }
+  .spec-good  { color: var(--accent3); }
+  .spec-med   { color: var(--accent4); }
+
+  /* COMPARISON TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; font-size: 13.5px; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); background: var(--surface2); font-size: 13px; white-space: nowrap; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .cell-yes  { color: var(--accent3); font-weight: 700; }
+  .cell-no   { color: var(--accent);  font-weight: 700; }
+  .cell-part { color: var(--accent4); font-weight: 700; }
+
+  /* DECISION FLOW */
+  .decision-flow { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-family: var(--sans); font-size: 14px; }
+  .df-title { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .df-row { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .df-row:last-child { border-bottom: none; }
+  .df-condition { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; font-size: 12.5px; color: var(--text); min-width: 190px; flex-shrink: 0; font-weight: 600; }
+  .df-arrow { color: var(--border2); font-size: 16px; padding-top: 5px; flex-shrink: 0; }
+  .df-result { color: var(--muted); line-height: 1.55; }
+  .df-result strong { color: var(--accent); }
+  .df-result .good { color: var(--accent3); font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 200px 1fr; gap: 20px; font-size: 15px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* NETWORK TOPOLOGY STRIP */
+  .topo-strip { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; margin: 16px 0 28px; font-family: var(--sans); font-size: 12.5px; }
+  .topo-item { flex: 1; padding: 12px 14px; text-align: center; border-right: 1px solid var(--border); }
+  .topo-item:last-child { border-right: none; }
+  .topo-name { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+  .topo-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .topo-item.internet  { background: var(--accent-light); }
+  .topo-item.internet  .topo-name { color: var(--accent); }
+  .topo-item.router    { background: var(--accent4-light); }
+  .topo-item.router    .topo-name { color: var(--accent4); }
+  .topo-item.dmz       { background: var(--accent2-light); }
+  .topo-item.dmz       .topo-name { color: var(--accent2); }
+  .topo-item.lan       { background: var(--accent3-light); }
+  .topo-item.lan       .topo-name { color: var(--accent3); }
+
+  /* ENCRYPTION TIER STRIP */
+  .enc-strip { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; margin: 16px 0 28px; font-family: var(--sans); font-size: 12.5px; }
+  .enc-item { flex: 1; padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+  .enc-item:last-child { border-right: none; }
+  .enc-name { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+  .enc-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .enc-item.wep   { background: #fff0f0; } .enc-item.wep  .enc-name { color: var(--accent); }
+  .enc-item.wpa1  { background: var(--accent4-light); } .enc-item.wpa1 .enc-name { color: var(--accent4); }
+  .enc-item.wpa2  { background: #fffbe8; } .enc-item.wpa2 .enc-name { color: #7a6200; }
+  .enc-item.wpa3  { background: var(--accent3-light); } .enc-item.wpa3 .enc-name { color: var(--accent3); }
+
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 150px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .def-item, .method-row { grid-template-columns: 1fr; }
+    .method-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .method-spec-row { grid-template-columns: 1fr 1fr; }
+    .topo-strip, .enc-strip { flex-direction: column; }
+    .topo-item, .enc-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .df-row { flex-direction: column; }
+    .df-condition { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-current"><strong>2.10</strong> SOHO Network Security</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="2_9-Data-Destruction-Disposal.html">2.9</a>
+    <a class="nav-next" href="2_11-Browser-Security.html">2.11</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="book-header">
+  <div class="book-eyebrow"><span>2.10</span> CompTIA A+ Core 2 · Domain 2: Security</div>
+  <h1 class="book-title">Apply Security Settings on SOHO Wireless and Wired Networks</h1>
+  <div class="book-subtitle">
+    <span>Router Settings</span>
+    <span>Wireless Security</span>
+    <span>Firewall Configuration</span>
+    <span>Encryption Protocols</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     INTRODUCTION
+     ═══════════════════════════════════════════════════ -->
+
+<p>A <span class="key-term">Small Office/Home Office (SOHO)</span> network is the single most common network environment an A+ technician encounters in the field. These are networks built around a consumer or prosumer combination device — typically a wireless router that integrates a modem connection, NAT gateway, Wi-Fi access point, and a basic stateful firewall into a single box. Because SOHO devices are purchased off the shelf and deployed by non-technical users, they ship with permissive default configurations that must be actively hardened to resist attack.</p>
+
+<p>This objective covers the full lifecycle of SOHO network security: hardening the router itself, configuring wireless settings correctly, and tuning the built-in firewall. Many of the most common real-world network compromises — unauthorized access, data interception, router hijacking — are the direct result of skipping one or more of the steps covered here.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Scope</p>
+  <p>Objective 2.10 is scenario-based. You will be given a situation — a home user's router was compromised, a guest is accessing internal resources, traffic is being intercepted on the wireless network — and asked to identify the <em>correct setting or procedure</em> that would have prevented it or would fix it. Know not just the name of each setting, but what it does, why it matters, and what goes wrong when it is left at the default.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SOHO TOPOLOGY OVERVIEW
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section A</span>Understanding the SOHO Network Architecture</h2>
+
+<p>Before diving into individual settings, it helps to have a clear mental model of how a SOHO network is structured. A typical SOHO router sits at the boundary between the public internet and your private network. Traffic flows inbound from the ISP's modem or the router's WAN port, passes through NAT and firewall logic, and is distributed to connected devices on the LAN — both wired via Ethernet and wireless via the integrated access point.</p>
+
+<div class="topo-strip">
+  <div class="topo-item internet">
+    <div class="topo-name">Internet / WAN</div>
+    <div class="topo-note">Public IP, ISP modem, untrusted zone — all inbound threats originate here</div>
+  </div>
+  <div class="topo-item router">
+    <div class="topo-name">SOHO Router</div>
+    <div class="topo-note">NAT gateway · firewall · DHCP server · wireless AP · management interface</div>
+  </div>
+  <div class="topo-item dmz">
+    <div class="topo-name">DMZ / Screened Subnet</div>
+    <div class="topo-note">Optional semi-trusted zone for servers reachable from the internet (optional on most SOHO routers)</div>
+  </div>
+  <div class="topo-item lan">
+    <div class="topo-name">LAN / WLAN</div>
+    <div class="topo-note">Trusted internal zone — wired clients, wireless devices, guest network (if segmented)</div>
+  </div>
+</div>
+
+<p>Understanding this architecture explains <em>why</em> each security setting matters. The router is the single chokepoint between the untrusted internet and all of your internal devices. If the router itself is compromised, the attacker has bypassed every other layer of security. If wireless traffic is unencrypted, an attacker in radio range can read everything. If the firewall allows ports inbound that don't need to be open, it creates attack surface where none is needed.</p>
+
+<!-- ═══════════════════════════════════════════════════
+     ROUTER SETTINGS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section B</span>Router Settings</h2>
+
+<p>Router settings are the foundational layer of SOHO security. These are configurations applied to the router itself — its administrative access, its network behavior, and its built-in traffic controls. Most SOHO routers ship from the factory configured for maximum convenience, which means minimum security. A technician deploying or servicing a SOHO network must treat every default as potentially insecure until verified.</p>
+
+<h3 class="section">Change Default Passwords</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">Change Default Passwords</div>
+      <div class="method-sub">Router admin credentials — the single highest-priority hardening step</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-critical">Critical Priority</span></div>
+  </div>
+  <div class="method-spec-row">
+    <div class="method-spec"><div class="method-spec-label">Risk if skipped</div><div class="method-spec-value spec-final">Complete router takeover</div></div>
+    <div class="method-spec"><div class="method-spec-label">Attack vector</div><div class="method-spec-value spec-final">LAN, WAN if mgmt exposed</div></div>
+    <div class="method-spec"><div class="method-spec-label">Effort required</div><div class="method-spec-value spec-good">Very Low — 2 minutes</div></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Why defaults are dangerous</div>
+      <div class="method-desc">Every SOHO router model ships with a documented default admin username and password — typically printed on the label on the bottom of the device, published in the product manual, and indexed in public databases like <strong>routerpasswords.com</strong> and <strong>defaultpassword.us</strong>. An attacker who reaches the router's management interface simply looks up the model number and tries the well-known defaults. Many SOHO compromises require no technical skill whatsoever — the attacker logs in with <code>admin / admin</code> or <code>admin / password</code>.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">What to change</div>
+      <div class="method-desc">Change <strong>both the username and the password</strong> if the interface allows it; if only the password is changeable, change the password. Use a strong password: minimum 12 characters, mixing uppercase, lowercase, digits, and symbols. For a SOHO router admin credential, a passphrase works well — something long and random that you will store in a password manager. <strong>Also change the Wi-Fi password (the WPA passphrase)</strong> — this is separate from the admin password and is equally important to change from the default.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Admin interface access</div>
+      <div class="method-desc">Most SOHO routers serve their management interface over HTTP (port 80) or HTTPS (port 443) on the LAN interface — typically reachable at <code>192.168.1.1</code> or <code>192.168.0.1</code>. After changing the admin password, consider: <strong>(1)</strong> enabling HTTPS-only access to the admin interface; <strong>(2)</strong> disabling remote (WAN-side) management if not needed — this prevents attackers on the internet from reaching the admin login page at all; <strong>(3)</strong> changing the default management port from 80/443/8080 to an obscure port as a secondary, minor deterrent.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Forgotten credentials</div>
+      <div class="method-desc">If admin credentials have been lost, a factory reset (usually via a recessed button on the router) restores the device to defaults, including the original credentials printed on the label. Factory reset also erases all custom configuration, so the router must be fully reconfigured afterward. This is also the recovery procedure when a router has been compromised and the attacker changed the admin password.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">IP Filtering</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">IP Filtering</div>
+      <div class="method-sub">Access control based on source or destination IP address</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">High Value</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What it is</div>
+      <div class="method-desc"><span class="key-term">IP filtering</span> (also called IP address filtering or MAC address filtering) allows the router to permit or deny traffic based on source IP address, destination IP address, or in the wireless context, the MAC address of connecting devices. On SOHO routers, IP filtering is most commonly encountered in two forms: <strong>MAC address filtering for wireless access</strong> (only pre-approved MAC addresses can join the Wi-Fi network) and <strong>inbound/outbound IP block lists</strong> (deny traffic to/from specific IP ranges).</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">MAC address filtering</div>
+      <div class="method-desc">The router maintains an <span class="key-term">access control list (ACL)</span> of approved wireless client MAC addresses. Only devices whose MAC address is in the allow list are permitted to associate with the wireless network. While this adds a layer of access control, it is <strong>not a primary security mechanism</strong> — MAC addresses are visible in wireless frames even when a network is encrypted, and MAC spoofing (changing your device's reported MAC address to match an approved one) is trivial on any OS. MAC filtering is best used as defense-in-depth alongside strong encryption, not as a substitute for it.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">IP allow/block lists</div>
+      <div class="method-desc">Some SOHO routers support inbound IP filtering that blocks traffic from specific source addresses or ranges — useful for blocking known malicious IP blocks, entire countries, or restricting management access to a specific IP address. For example: locking the admin interface so only <code>192.168.1.100</code> (the admin's workstation) can reach it provides meaningful protection against unauthorized management access from other LAN clients.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Limitations</div>
+      <div class="method-desc">IP filtering at the SOHO level is limited in scope compared to enterprise ACLs on managed switches. SOHO IP filtering is applied at the router level, not on each switch port, meaning any device on the LAN that bypasses the router (a compromised switch, direct cross-over connection) is not subject to the filter. Additionally, source IP addresses can be spoofed, making inbound IP filtering imperfect for blocking determined attackers — but effective against automated scans and opportunistic attacks.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Firmware Updates</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">Firmware Updates</div>
+      <div class="method-sub">Patching the router's operating software to address known vulnerabilities</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-critical">Critical</span><span class="tag tag-high">Ongoing</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Why it matters</div>
+      <div class="method-desc">A router runs its own embedded operating system — called <span class="key-term">firmware</span>. Like any software, firmware contains bugs, and some of those bugs are security vulnerabilities. Router firmware vulnerabilities have been exploited in massive campaigns — the <strong>VPNFilter</strong> malware in 2018 infected over 500,000 SOHO routers globally by exploiting unpatched firmware. A router running outdated firmware may have known, publicly documented vulnerabilities that automated attack tools actively scan for and exploit.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">How to update</div>
+      <div class="method-desc">Most modern SOHO routers offer automatic firmware updates or a one-click update check from the admin interface. The update process: <strong>(1)</strong> navigate to the firmware/update section of the admin interface; <strong>(2)</strong> check for updates (the router will query the manufacturer's update server); <strong>(3)</strong> download and apply the update — the router will reboot. Some manufacturers also allow manual firmware upload for offline environments. <strong>Important:</strong> never interrupt a firmware update in progress — a power loss mid-update can brick the router.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">EOL routers</div>
+      <div class="method-desc">Routers that have reached <span class="key-term">end of life (EOL)</span> no longer receive firmware updates from the manufacturer, even when new vulnerabilities are discovered. An EOL router with a known unpatched critical vulnerability should be replaced — no configuration hardening can compensate for a vulnerability in the firmware itself. As an A+ technician, recognizing EOL equipment and recommending replacement is part of the job.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Auto-update considerations</div>
+      <div class="method-desc">Automatic firmware updates are generally recommended for SOHO environments where the user is not technically sophisticated enough to manually apply updates. The risk — that an update could introduce a regression or change behavior — is far outweighed by the benefit of timely security patches. In managed enterprise environments, firmware updates typically go through a change management process and are tested before deployment; in SOHO, auto-update is the pragmatic choice.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Content Filtering</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">Content Filtering</div>
+      <div class="method-sub">Blocking access to websites or categories of content at the network level</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-medium">Policy Control</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What it is</div>
+      <div class="method-desc"><span class="key-term">Content filtering</span> allows the router to block access to specific websites, domain categories, or types of content. On SOHO routers, this is typically implemented via a DNS-based blocklist (the router intercepts DNS queries and returns a block page for prohibited domains) or by integrating with a third-party content filtering service. Common built-in features include: blocking by category (adult content, gambling, social media, malware-known domains), scheduling (block certain sites only during school hours), and per-device rules.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Security use case</div>
+      <div class="method-desc">Beyond parental controls, content filtering serves a genuine security purpose: blocking access to <strong>known malware distribution domains, phishing sites, and command-and-control (C2) infrastructure</strong>. Many commercial SOHO routers integrate with threat intelligence feeds — automatically blocking domains associated with malware campaigns. If a device on the network is infected, C2 blocking can prevent the malware from receiving instructions or exfiltrating data even if it has already bypassed endpoint security.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">DNS-based filtering</div>
+      <div class="method-desc">The router can be configured to use a <strong>DNS resolver that enforces content filtering</strong> — services like Cisco Umbrella, Cloudflare for Families (<code>1.1.1.3</code>), or OpenDNS FamilyShield (<code>208.67.222.123</code>). Any device on the network that uses the router as its DNS server automatically receives filtered results without any per-device configuration. Note that devices that hard-code alternate DNS servers (bypassing the router's DNS) will circumvent this control — a more sophisticated implementation forces all DNS traffic through the router using firewall rules.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Physical Placement and Secure Locations</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">Physical Placement / Secure Locations</div>
+      <div class="method-sub">Physical access to the router is equivalent to administrative access</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">Physical Security</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Physical access = full control</div>
+      <div class="method-desc">Any person with physical access to a SOHO router can factory-reset it in seconds using the recessed reset button. A factory reset clears all passwords and security configuration, restoring known defaults — which the attacker then uses to log in. Physical security of the router is therefore a prerequisite to all other security controls. <strong>An attacker who can touch the router can own the network.</strong></div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Placement recommendations</div>
+      <div class="method-desc">Place the router in a <strong>locked room, closet, or equipment cabinet</strong> where access can be controlled. In a home office, this may simply mean keeping it out of common areas where visitors could access it. In a small business, it should be in a locked server closet or IT room. Avoid placing the router where it is visible and accessible to walk-in customers, cleaning staff, or other untrusted parties.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Signal coverage planning</div>
+      <div class="method-desc">Physical placement also affects wireless security from a radio perspective. A router placed near an exterior wall or window will extend its wireless signal significantly beyond the physical premises — allowing unauthorized users outside the building to attempt connections. Ideally, place the router <strong>near the center of the coverage area</strong> to minimize signal leakage outside the building. Reducing the transmit power of the wireless radio (if the router supports it) can further confine coverage to the intended area.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Universal Plug and Play (UPnP)</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">Universal Plug and Play (UPnP)</div>
+      <div class="method-sub">Protocol that allows devices to automatically open ports on the router — a major security risk</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-critical">Disable if Possible</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What UPnP does</div>
+      <div class="method-desc"><span class="key-term">Universal Plug and Play (UPnP)</span> is a network protocol that allows devices on the LAN to automatically request port forwarding rules from the router — without any authentication. A device (game console, smart TV, NAS, IoT sensor) sends a UPnP request saying "please open port X and forward it to my IP address," and the router complies automatically. This was designed to make consumer devices "just work" without manual port configuration.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Security risk</div>
+      <div class="method-desc">UPnP has no authentication mechanism — <strong>any device on the LAN can make UPnP requests</strong>, including malware. Malware that infects a device inside your network can use UPnP to punch holes in the firewall, opening inbound ports for remote access without any user interaction or notification. High-profile attacks including the <strong>Mirai botnet</strong> leveraged UPnP to expose internal devices directly to the internet. The FBI and cybersecurity agencies have repeatedly recommended disabling UPnP on SOHO routers.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">When UPnP might be needed</div>
+      <div class="method-desc">Some gaming consoles and peer-to-peer applications rely on UPnP for optimal connectivity (NAT traversal for multiplayer games). If disabling UPnP breaks a legitimate use case, the better approach is to <strong>manually configure port forwarding</strong> for only the specific ports and applications that need it, then disable UPnP. Manual port forwarding requires deliberate action by the administrator, which eliminates the attack surface while preserving the functionality.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Screened Subnet (DMZ)</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">Screened Subnet (DMZ)</div>
+      <div class="method-sub">A network segment that sits between the untrusted internet and the trusted LAN</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-medium">Network Architecture</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Concept and purpose</div>
+      <div class="method-desc">A <span class="key-term">screened subnet</span> (historically called a DMZ — demilitarized zone) is a network segment that is reachable from the internet but <strong>isolated from the internal LAN</strong>. Servers that must be accessible from the internet — web servers, mail servers, FTP servers — are placed in the screened subnet. If one of those servers is compromised, the attacker gains access to the screened subnet but is blocked from reaching the trusted LAN by firewall rules. This containment is the core value of the architecture.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">SOHO DMZ feature</div>
+      <div class="method-desc">Most SOHO routers offer a simplified "DMZ host" feature — it exposes a single device's IP address to the internet, forwarding all inbound traffic that doesn't match another rule to that host. This is sometimes called a <strong>single-leg DMZ or exposed host</strong>. It is <em>not</em> a true screened subnet (the DMZ host is still on the same LAN segment as other devices on many SOHO routers), but it is useful for isolating a game server or NAS from needing explicit per-port forwarding rules while concentrating internet exposure on one device.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">True screened subnet</div>
+      <div class="method-desc">A proper screened subnet requires two firewalls (or a single firewall with three interfaces: WAN, DMZ, LAN) configured so that: <strong>(1)</strong> internet traffic can reach DMZ hosts on allowed ports; <strong>(2)</strong> LAN devices can initiate connections to DMZ hosts; <strong>(3)</strong> DMZ hosts <em>cannot</em> initiate connections into the LAN; <strong>(4)</strong> internet traffic cannot directly reach LAN devices. This architecture is standard in enterprise environments and achievable in SOHO environments only with more capable hardware (a dedicated firewall appliance) or multiple routers.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Configure Secure Management Access</h3>
+
+<div class="method-card">
+  <div class="method-header router">
+    <div>
+      <div class="method-name">Secure Management Access</div>
+      <div class="method-sub">Controlling how and from where the router's admin interface is accessible</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">High Priority</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Disable remote management</div>
+      <div class="method-desc"><span class="key-term">Remote management</span> (also called WAN-side management or remote access) allows the router's admin interface to be reached from the internet — useful for a network administrator managing multiple sites, but dangerous for most SOHO deployments. When remote management is enabled, the admin login page is reachable by anyone on the internet, who can then attempt brute-force password attacks. <strong>Disable remote management unless there is a specific, documented need for it.</strong> If it must be enabled, restrict it to a specific source IP address (the admin's home IP or office IP) using IP filtering.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Use HTTPS for admin access</div>
+      <div class="method-desc">Router admin interfaces that use plain HTTP transmit the admin username, password, and all configuration data in cleartext — readable by anyone on the LAN who can capture network traffic. Always configure the router to use <strong>HTTPS</strong> for the admin interface. Accept the browser's self-signed certificate warning (the router uses a self-signed certificate, which triggers the warning but still provides encryption). Some modern routers allow upload of a proper certificate for the management interface.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Change the management port</div>
+      <div class="method-desc">Changing the management port from the default (80 or 8080 for HTTP; 443 for HTTPS) to a non-standard port is a minor security improvement — automated scanners commonly probe default ports. An attacker who doesn't know your non-standard port will have a harder time finding the management interface. This is <strong>security through obscurity</strong> and should not be relied upon alone, but as a layer it reduces noise from automated attacks.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Session timeout</div>
+      <div class="method-desc">Configure the admin interface to <strong>time out after a period of inactivity</strong> (typically 5–15 minutes). If a technician walks away from an open admin session without logging out, a timeout ensures the session expires automatically, preventing an unauthorized user from accessing the open session. Always log out explicitly after finishing router configuration.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     WIRELESS SPECIFIC
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section C</span>Wireless-Specific Settings</h2>
+
+<p>Wireless networking introduces a unique attack surface that wired networking does not have: the radio signal extends beyond the physical boundaries of the premises and is accessible to anyone within range. An attacker sitting in a car outside your office can attempt to connect to your wireless network, capture wireless traffic, or run attacks against wireless clients — without needing physical access to the building. Properly configuring the wireless settings on the SOHO router is what prevents these attacks from succeeding.</p>
+
+<h3 class="section">Changing the Service Set Identifier (SSID)</h3>
+
+<div class="method-card">
+  <div class="method-header wireless">
+    <div>
+      <div class="method-name">Changing the SSID</div>
+      <div class="method-sub">The network name broadcast by the wireless access point</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-wireless">Wireless</span><span class="tag tag-medium">Baseline</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Why change the default SSID</div>
+      <div class="method-desc">The <span class="key-term">Service Set Identifier (SSID)</span> is the name of the wireless network — the string that appears in the list of available networks on your phone or laptop. Router manufacturers ship devices with default SSIDs that typically include the brand and/or model name: <code>NETGEAR_5G</code>, <code>TP-Link_2.4GHz_A7B3</code>, <code>ASUS_RT-AX88U</code>. An SSID that reveals the router model tells an attacker exactly which vendor and firmware vulnerabilities to target. Change the SSID to something that does not reveal the router brand, model, or your identity (avoid using your name, address, or business name).</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Multiple SSIDs</div>
+      <div class="method-desc">Most modern SOHO routers broadcast at least two SSIDs simultaneously — one on the 2.4 GHz band and one on the 5 GHz band (and some also on 6 GHz with Wi-Fi 6E). Some routers allow these to be combined into a single SSID that clients connect to and the router steers to the appropriate band automatically (band steering). Change the SSID name on both bands. Many administrators name them with a suffix to distinguish: <code>NetworkName</code> and <code>NetworkName_5G</code>. Both bands require the same security settings — a misconfigured 2.4 GHz band remains exploitable even if 5 GHz is properly secured.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">SSID and security</div>
+      <div class="method-desc">Changing the SSID is a minor security improvement — it does not provide encryption or authentication — but it removes information leakage about your hardware. The SSID change is most valuable when combined with all other wireless security settings. Note: some people name their SSIDs to discourage casual use ("VIRUS_INFECTED_PC" or "FBI_SURVEILLANCE_VAN") — these are humorous but provide no actual security.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Disabling SSID Broadcast</h3>
+
+<div class="method-card">
+  <div class="method-header wireless">
+    <div>
+      <div class="method-name">Disabling SSID Broadcast</div>
+      <div class="method-sub">Preventing the AP from advertising its network name in beacon frames</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-wireless">Wireless</span><span class="tag tag-low">Defense in Depth</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What it does</div>
+      <div class="method-desc">By default, every wireless access point continuously broadcasts <span class="key-term">beacon frames</span> — management frames that advertise the network's SSID, supported rates, security capabilities, and other parameters. Devices scanning for networks receive these beacons and display the SSID in the available networks list. Disabling SSID broadcast causes the AP to omit the SSID from its beacon frames — the network effectively becomes invisible in a casual scan of available networks.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">How to connect to a hidden SSID</div>
+      <div class="method-desc">When SSID broadcast is disabled, clients cannot see the network in the available networks list. They must connect by <strong>manually entering the SSID</strong> exactly (case-sensitive), the security type, and the passphrase. On Windows: Network Settings → Manage known networks → Add a network → enter the SSID manually. On smartphones: the option is usually labeled "Add network" or "Other network."</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Security value and limitations</div>
+      <div class="method-desc">SSID hiding provides <strong>minimal security</strong> against a determined attacker. The SSID is still transmitted in several other 802.11 frame types — probe responses, association requests, and probe requests from already-configured clients. Any wireless packet capture tool (Wireshark, Kismet, Aircrack-ng) will reveal the "hidden" SSID within seconds. <strong>SSID hiding is security through obscurity</strong> — it stops casual users from seeing the network and reduces the number of opportunistic connection attempts, but does nothing against anyone who specifically targets the network. It should never be relied upon as a primary security control.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Operational considerations</div>
+      <div class="method-desc">Disabling SSID broadcast has real operational downsides: users cannot easily see and connect to the network (especially from mobile devices), guest onboarding becomes more difficult, and devices configured for the hidden network will continuously broadcast probe requests exposing the SSID anyway. For most SOHO environments, a visible SSID with strong encryption is preferable to a hidden SSID with weak encryption or other misconfiguration.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Trap — SSID Hiding</p>
+  <p>The exam may describe SSID hiding as making the network "invisible" or "undetectable." Technically, the SSID is hidden from casual scans but is <em>not</em> undetectable — wireless traffic analysis tools reveal it immediately. The correct answer to "what is the limitation of SSID hiding?" is that it provides security through obscurity only, and the SSID can be discovered by a determined attacker using packet capture tools. Strong encryption (WPA3 or WPA2) is the actual security mechanism, not SSID hiding.</p>
+</div>
+
+<h3 class="section">Encryption Settings</h3>
+
+<p>Wireless encryption is the most important wireless security setting. Without encryption, every frame transmitted over the wireless network — web traffic, credentials, email, file transfers — is readable by anyone within radio range using freely available tools. The wireless encryption standard determines how difficult it is for an attacker who intercepts wireless traffic to decrypt and read it.</p>
+
+<div class="enc-strip">
+  <div class="enc-item wep">
+    <div class="enc-name">WEP</div>
+    <div class="enc-note">Wired Equivalent Privacy · 64/128-bit RC4 · Broken in minutes · Never use</div>
+  </div>
+  <div class="enc-item wpa1">
+    <div class="enc-name">WPA (TKIP)</div>
+    <div class="enc-note">Wi-Fi Protected Access · TKIP cipher · Deprecated 2012 · Avoid</div>
+  </div>
+  <div class="enc-item wpa2">
+    <div class="enc-name">WPA2 (AES)</div>
+    <div class="enc-note">Wi-Fi Protected Access 2 · AES-CCMP · Current standard · Acceptable</div>
+  </div>
+  <div class="enc-item wpa3">
+    <div class="enc-name">WPA3 (SAE)</div>
+    <div class="enc-note">Wi-Fi Protected Access 3 · SAE handshake · Forward secrecy · Preferred</div>
+  </div>
+</div>
+
+<div class="method-card">
+  <div class="method-header wireless">
+    <div>
+      <div class="method-name">Encryption Settings</div>
+      <div class="method-sub">WEP → WPA → WPA2 → WPA3: evolution of wireless security protocols</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-critical">Most Important Setting</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">WEP — Wired Equivalent Privacy</div>
+      <div class="method-desc"><span class="key-term">WEP</span> was the original 802.11 encryption standard, introduced in 1997. It uses the RC4 stream cipher with a static, shared 64-bit or 128-bit key. WEP has multiple fundamental cryptographic flaws — the initialization vectors (IVs) are short, repeated, and transmitted in plaintext, allowing an attacker to collect enough IVs (tens of thousands of packets, collectable in minutes on an active network) to statistically reconstruct the key using tools like Aircrack-ng. <strong>WEP is completely broken and must never be used.</strong> If any device on the network requires WEP, that device should be replaced — not the security standard downgraded to accommodate it.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">WPA / TKIP</div>
+      <div class="method-desc"><span class="key-term">WPA (Wi-Fi Protected Access)</span> was introduced in 2003 as an interim fix for WEP while 802.11i was finalized. It uses the <span class="key-term">Temporal Key Integrity Protocol (TKIP)</span>, which addressed WEP's IV reuse problem by using a per-packet key mixing function. TKIP was designed to run on existing hardware that was originally built for WEP. WPA/TKIP was deprecated by the Wi-Fi Alliance in 2012 because TKIP itself has vulnerabilities (TKIP MIC attacks, WPA/TKIP TKIP attacks). <strong>WPA/TKIP should not be used.</strong> It appears in router options as "WPA-TKIP" or sometimes just "WPA."</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">WPA2 / AES-CCMP</div>
+      <div class="method-desc"><span class="key-term">WPA2</span> (IEEE 802.11i), introduced in 2004, replaced TKIP with <span class="key-term">AES-CCMP</span> (Advanced Encryption Standard in Counter mode with Cipher Block Chaining Message Authentication Code Protocol). AES is a symmetric block cipher approved for use in classified US government communications — it is computationally secure. WPA2 is the current baseline standard and is widely supported by all modern devices. <strong>WPA2-AES (also labeled WPA2-CCMP) is the minimum acceptable wireless encryption for any SOHO network today.</strong> Some routers offer "WPA2-TKIP/AES mixed mode" for backward compatibility — this degrades security for all clients because it enables TKIP. Use WPA2-AES exclusively unless legacy devices require TKIP.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">WPA3 / SAE</div>
+      <div class="method-desc"><span class="key-term">WPA3</span> (introduced 2018, mandatory for Wi-Fi CERTIFIED devices since 2020) replaces WPA2's PSK (Pre-Shared Key) authentication with <span class="key-term">SAE (Simultaneous Authentication of Equals)</span>, also called Dragonfly. Key improvements: <strong>(1) Forward secrecy</strong> — even if an attacker captures all WPA3 traffic and later obtains the passphrase, they cannot decrypt previously captured sessions (each session uses a unique key); <strong>(2) Offline dictionary attack resistance</strong> — WPA2's 4-way handshake can be captured and subjected to offline brute-force/dictionary attacks; WPA3's SAE handshake cannot be attacked offline; <strong>(3) Protection for open networks</strong> — WPA3's OWE (Opportunistic Wireless Encryption) encrypts open networks without a password. <strong>Configure WPA3 if all your devices support it; use WPA2/WPA3 transition mode for mixed-device environments.</strong></div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Passphrase strength</div>
+      <div class="method-desc">The security of WPA2-PSK and WPA3-SAE is partially dependent on the strength of the passphrase. For WPA2-PSK, a captured 4-way handshake can be subjected to offline dictionary and brute-force attacks — the only thing standing between the attacker and your network is passphrase strength. Use a <strong>long, random passphrase</strong>: 15+ characters, ideally a random sequence generated by a password manager. A passphrase like "correct-horse-battery-staple-7" is far stronger than "password123" or even "P@ssw0rd!". WPA3 eliminates offline attacks entirely, but a strong passphrase is still good practice.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Configuring Guest Access</h3>
+
+<div class="method-card">
+  <div class="method-header wireless">
+    <div>
+      <div class="method-name">Guest Network Configuration</div>
+      <div class="method-sub">Providing internet access to visitors without exposing the main LAN</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">Best Practice</span><span class="tag tag-wireless">Wireless</span></div>
+  </div>
+  <div class="method-spec-row">
+    <div class="method-spec"><div class="method-spec-label">Primary purpose</div><div class="method-spec-value">Network segmentation</div></div>
+    <div class="method-spec"><div class="method-spec-label">Guest can reach</div><div class="method-spec-value spec-good">Internet only</div></div>
+    <div class="method-spec"><div class="method-spec-label">Guest can reach LAN?</div><div class="method-spec-value spec-final">No — isolated by design</div></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">What guest access does</div>
+      <div class="method-desc">A <span class="key-term">guest network</span> is a separate SSID and network segment that provides internet access to visitors while keeping them <strong>completely isolated from the main LAN</strong>. Devices on the guest network can reach the internet but cannot reach printers, NAS devices, workstations, servers, or any other device on the primary network. This prevents a guest's potentially compromised device from attacking or sniffing traffic on the main network, and prevents a malicious guest from deliberately accessing internal resources.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Implementation on SOHO routers</div>
+      <div class="method-desc">Most modern SOHO routers implement guest networks using <strong>VLAN tagging</strong> internally — the guest SSID is mapped to a separate VLAN, which is routed only to the WAN and blocked from routing to the main LAN VLAN. From the admin interface, enabling the guest network is typically a single checkbox, with options to set a separate SSID name, a separate password, and enable/disable AP client isolation (prevents guest devices from communicating with each other). Apply the same encryption standards (WPA2/WPA3) to the guest network as the main network — a guest network with no encryption or WEP is worse than a properly secured guest network.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">AP client isolation</div>
+      <div class="method-desc"><span class="key-term">AP client isolation</span> (also called wireless isolation or client isolation) prevents wireless clients on the same SSID from communicating with each other — each client can only reach the router/internet, not other wireless clients. This is the correct setting for guest networks in environments like coffee shops, hotels, and waiting rooms where clients are strangers. Enable client isolation on any guest network. On the main network, disable it only if you need device-to-device communication (AirPlay, Chromecast, file sharing) — many smart home features break with client isolation enabled.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Guest network bandwidth control</div>
+      <div class="method-desc">Many SOHO routers allow setting a <strong>bandwidth limit</strong> on the guest network — for example, capping guest traffic at 10 Mbps. This prevents a guest from consuming all available bandwidth and degrading the main network's performance. In a small business context, this is a quality-of-service (QoS) concern as much as a security one.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">IoT device isolation</div>
+      <div class="method-desc">The guest network architecture is also the correct solution for <strong>IoT device isolation</strong>. Smart home devices (thermostats, cameras, door locks, light bulbs) often have poor security practices — infrequent firmware updates, weak default credentials, insecure communication protocols. Placing IoT devices on the guest network isolates them from your workstations and NAS. Even if a smart light bulb is compromised, it cannot reach other devices on the network.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FIREWALL SETTINGS
+     ═══════════════════════════════════════════════════ -->
+
+<h2 class="chapter"><span class="ch-num">Section D</span>Firewall Settings</h2>
+
+<p>The SOHO router includes a built-in <span class="key-term">stateful packet inspection (SPI) firewall</span> that monitors the state of network connections and allows or blocks traffic based on rules. By default, SOHO firewalls block all inbound connections from the internet (unless explicitly opened via port forwarding) and allow all outbound connections from the LAN. While this default posture provides meaningful protection, the firewall requires active management to remain secure — ports opened over time must be audited, and default settings like UPnP can silently undermine the firewall's protection.</p>
+
+<h3 class="section">Disabling Unused Ports</h3>
+
+<div class="method-card">
+  <div class="method-header firewall">
+    <div>
+      <div class="method-name">Disabling Unused Ports</div>
+      <div class="method-sub">Closing inbound port forwarding rules and service ports that are no longer needed</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-high">Attack Surface Reduction</span></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">Port forwarding accumulation</div>
+      <div class="method-desc">SOHO routers often accumulate port forwarding rules over time: someone set up a rule to allow remote RDP access for a home project, a game server was hosted briefly, a security camera system added ports during setup. Once opened, these rules persist indefinitely — including after the original need disappears. Each open inbound port is an attack surface: an attacker can connect to that port and attempt to exploit the service listening behind it. <strong>Audit port forwarding rules regularly and remove any that are no longer needed.</strong></div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Common dangerous open ports</div>
+      <div class="method-desc">Several ports are particularly high-value targets for attackers. <strong>Port 3389 (RDP)</strong> — Remote Desktop Protocol; the internet is continuously scanned for open port 3389, and automated brute-force attacks against RDP are constant. <strong>Port 22 (SSH)</strong> — similarly scanned and brute-forced. <strong>Port 21 (FTP)</strong> — cleartext credentials. <strong>Port 23 (Telnet)</strong> — completely unencrypted, never expose this. Any of these opened in port forwarding rules and not actively needed should be removed. If remote access is needed, use a <strong>VPN</strong> instead of exposing RDP or SSH directly to the internet.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Services ports on the router itself</div>
+      <div class="method-desc">Beyond port forwarding, the router runs its own services — admin web interface, DNS, DHCP. These should be locked down: the admin interface should not be reachable from the WAN, DNS and DHCP should not respond to WAN-side queries (most routers handle this by default), and any other service ports the router exposes on the WAN interface (SNMP port 161, TR-069 for ISP management) should be disabled unless specifically required. Check the router's status page for a list of services running on the WAN interface.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Port Forwarding and Mapping</h3>
+
+<div class="method-card">
+  <div class="method-header firewall">
+    <div>
+      <div class="method-name">Port Forwarding / Port Mapping</div>
+      <div class="method-sub">Directing inbound traffic on a specific port to an internal host — necessary but risky</div>
+    </div>
+    <div class="method-tags"><span class="tag tag-medium">Use with Caution</span></div>
+  </div>
+  <div class="method-spec-row">
+    <div class="method-spec"><div class="method-spec-label">Also called</div><div class="method-spec-value">Port mapping, virtual server, NAT forwarding</div></div>
+    <div class="method-spec"><div class="method-spec-label">Direction</div><div class="method-spec-value">Inbound WAN → Internal LAN host</div></div>
+    <div class="method-spec"><div class="method-spec-label">Risk level</div><div class="method-spec-value spec-med">Medium to High depending on service</div></div>
+  </div>
+  <div class="method-body">
+    <div class="method-row">
+      <div class="method-label">How it works</div>
+      <div class="method-desc"><span class="key-term">Port forwarding</span> (also called port mapping) instructs the router to pass inbound traffic destined for a specific port on the router's WAN IP address through to a specific internal (LAN) IP address and port. For example: a rule forwarding TCP port 80 to internal IP <code>192.168.1.50</code> means that anyone on the internet connecting to your public IP on port 80 is connected to the web server running on the internal machine. Without the forwarding rule, NAT would drop the inbound connection because the router doesn't know which internal device should handle it.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Port triggering</div>
+      <div class="method-desc"><span class="key-term">Port triggering</span> is a dynamic variant of port forwarding. When an internal device sends traffic out on a specified "trigger port," the router temporarily opens a corresponding inbound port for responses. The inbound port automatically closes when it is no longer needed. Port triggering is more secure than static port forwarding because the inbound port is only open while actively in use, but it only works for one LAN device at a time per trigger.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Security best practices</div>
+      <div class="method-desc"><strong>(1) Use non-standard external ports.</strong> Forward an obscure external port (e.g., TCP 41392) to your internal service's standard port (e.g., 22 for SSH). Automated scanners probe standard ports; an SSH server on port 41392 receives significantly less unwanted traffic. <strong>(2) Forward to a static internal IP.</strong> DHCP assignments can change; if the forwarding target IP changes, either the rule stops working or points to the wrong device. Assign a static IP to any device with port forwarding rules. <strong>(3) Restrict to specific source IPs</strong> where possible — some routers allow you to specify that a forwarding rule only accepts connections from a specific external IP address. <strong>(4) Use VPN instead.</strong> For any legitimate remote access use case, a VPN that terminates at the router is more secure than exposing a service port directly — VPN traffic is encrypted, authenticated, and hides internal topology.</div>
+    </div>
+    <div class="method-row">
+      <div class="method-label">Documentation</div>
+      <div class="method-desc">Every port forwarding rule should be <strong>documented</strong>: what port, what internal IP, what service it's for, who requested it, and when it expires or should be reviewed. In a SOHO small business environment, this documentation can be as simple as a spreadsheet or a note in the router's description field. Without documentation, rules accumulate silently, and no one remembers why a rule exists — making it impossible to safely remove it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     COMPARISON TABLE
+     ═══════════════════════════════════════════════════ -->
+
+<div class="ch-divider"></div>
+
+<h2 class="chapter"><span class="ch-num">Section E</span>Comparison Tables and Decision Guides</h2>
+
+<h3 class="section">Wireless Encryption Protocol Comparison</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Protocol</th>
+      <th>Cipher / Standard</th>
+      <th>Year Introduced</th>
+      <th>Key Exchange</th>
+      <th>Forward Secrecy</th>
+      <th>Offline Attack Possible?</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>WEP</td>
+      <td>RC4 (broken)</td>
+      <td>1997</td>
+      <td>Static shared key</td>
+      <td><span class="cell-no">No</span></td>
+      <td><span class="cell-no">Yes — broken in minutes</span></td>
+      <td><span class="cell-no">Completely broken — never use</span></td>
+    </tr>
+    <tr>
+      <td>WPA-TKIP</td>
+      <td>TKIP (RC4-based)</td>
+      <td>2003</td>
+      <td>PSK / 802.1X</td>
+      <td><span class="cell-no">No</span></td>
+      <td><span class="cell-no">Yes — vulnerable to TKIP attacks</span></td>
+      <td><span class="cell-no">Deprecated 2012 — avoid</span></td>
+    </tr>
+    <tr>
+      <td>WPA2-AES</td>
+      <td>AES-CCMP (128-bit)</td>
+      <td>2004</td>
+      <td>PSK / 802.1X</td>
+      <td><span class="cell-no">No</span></td>
+      <td><span class="cell-part">Yes — 4-way handshake capture + dictionary attack</span></td>
+      <td><span class="cell-part">Current minimum standard — acceptable</span></td>
+    </tr>
+    <tr>
+      <td>WPA3-SAE</td>
+      <td>AES-GCMP (128/256-bit)</td>
+      <td>2018</td>
+      <td>SAE / 802.1X</td>
+      <td><span class="cell-yes">Yes — per-session keys</span></td>
+      <td><span class="cell-yes">No — SAE prevents offline attacks</span></td>
+      <td><span class="cell-yes">Preferred — use when supported</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="section">SOHO Security Setting Priority Reference</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Category</th>
+      <th>Default State</th>
+      <th>Correct State</th>
+      <th>Risk if Misconfigured</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Admin password</td>
+      <td>Router</td>
+      <td>Well-known default (e.g., admin/admin)</td>
+      <td>Strong unique password</td>
+      <td><span class="cell-no">Critical — full router takeover</span></td>
+    </tr>
+    <tr>
+      <td>Remote management</td>
+      <td>Router</td>
+      <td>Often disabled by default; varies</td>
+      <td>Disabled unless needed; restrict to known IP</td>
+      <td><span class="cell-no">High — admin interface exposed to internet</span></td>
+    </tr>
+    <tr>
+      <td>UPnP</td>
+      <td>Router</td>
+      <td>Enabled</td>
+      <td>Disabled</td>
+      <td><span class="cell-no">High — malware can open inbound ports silently</span></td>
+    </tr>
+    <tr>
+      <td>Firmware version</td>
+      <td>Router</td>
+      <td>Shipped version — may be outdated</td>
+      <td>Current; auto-update enabled</td>
+      <td><span class="cell-no">High — known unpatched vulnerabilities</span></td>
+    </tr>
+    <tr>
+      <td>Wireless encryption</td>
+      <td>Wireless</td>
+      <td>WPA2 (often WPA2/WPA mixed)</td>
+      <td>WPA3 or WPA2-AES only</td>
+      <td><span class="cell-no">Critical — traffic readable by attacker in range</span></td>
+    </tr>
+    <tr>
+      <td>Wi-Fi passphrase</td>
+      <td>Wireless</td>
+      <td>Printed on label or model-derived</td>
+      <td>Long random passphrase (15+ chars)</td>
+      <td><span class="cell-no">High — WPA2 handshake vulnerable to dictionary attack</span></td>
+    </tr>
+    <tr>
+      <td>Default SSID</td>
+      <td>Wireless</td>
+      <td>Brand/model reveals router type</td>
+      <td>Non-identifying name</td>
+      <td><span class="cell-part">Low — information leakage about hardware</span></td>
+    </tr>
+    <tr>
+      <td>SSID broadcast</td>
+      <td>Wireless</td>
+      <td>Enabled</td>
+      <td>Enabled (hiding provides false security)</td>
+      <td><span class="cell-part">Low — hiding is trivially bypassed</span></td>
+    </tr>
+    <tr>
+      <td>Guest network</td>
+      <td>Wireless</td>
+      <td>Disabled</td>
+      <td>Enabled for visitors and IoT devices</td>
+      <td><span class="cell-part">Medium — visitor/IoT devices can reach LAN without segmentation</span></td>
+    </tr>
+    <tr>
+      <td>Port forwarding rules</td>
+      <td>Firewall</td>
+      <td>None (good default)</td>
+      <td>Only documented, necessary rules</td>
+      <td><span class="cell-part">Medium to High — each open port is attack surface</span></td>
+    </tr>
+    <tr>
+      <td>Content filtering</td>
+      <td>Router</td>
+      <td>Disabled</td>
+      <td>Enable malware/C2 domain blocking at minimum</td>
+      <td><span class="cell-part">Medium — reduces protection against malware C2 communication</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="section">Scenario-Based Decision Guide</h3>
+
+<div class="decision-flow">
+  <div class="df-title">SOHO Network Security — Troubleshooting and Configuration Scenarios</div>
+
+  <div class="df-row">
+    <div class="df-condition">Router was compromised; attacker changed settings</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Factory reset the router (restores defaults + original password), then immediately <strong class="good">change admin password</strong>, disable remote management, update firmware, reconfigure all security settings from scratch. Document all port forwarding before reset.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Wireless traffic is being intercepted by an attacker nearby</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><strong class="good">Encryption is either disabled or using WEP/WPA-TKIP.</strong> Configure WPA3 or WPA2-AES. Ensure a strong passphrase. SSID hiding does not help here — encryption is the fix.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Visitor's laptop infected with malware — concerned it could spread to internal systems</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Move visitor devices to an isolated <strong class="good">guest network with client isolation enabled.</strong> Guest network devices cannot reach the LAN. Even if the visitor's device is compromised, it is network-isolated from internal resources.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Smart home IoT devices need network access but shouldn't touch the main LAN</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Connect IoT devices to the <strong class="good">guest network (or a dedicated IoT VLAN)</strong>. Provides internet access for cloud-dependent IoT functions while preventing any compromised device from reaching workstations or file shares.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Suspected unauthorized inbound connections — investigating potential breach</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Review <strong class="good">port forwarding rules</strong> for unrecognized entries (UPnP may have opened them automatically). Check router logs for unusual inbound connections. Disable UPnP. Remove unrecognized forwarding rules. Change all admin credentials.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">User wants to run a home web server accessible from the internet</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Create a <strong class="good">port forwarding rule</strong> for port 80/443 to the server's static internal IP. Consider placing the server in the <strong class="good">DMZ/screened subnet</strong> so it is isolated from the rest of the LAN. Ensure the server software is patched. Use a non-standard external port if possible. Limit access to known IPs if feasible.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">Child frequently accessing inappropriate websites — how to block at the network level</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result">Enable <strong class="good">content filtering</strong> on the router, selecting appropriate category blocks. Configure DNS-based filtering (e.g., <code>1.1.1.3</code> Cloudflare Family) on the router as the upstream DNS. Note that devices using a VPN or alternate DNS bypass network-level filtering — endpoint controls may also be needed.</div>
+  </div>
+
+  <div class="df-row">
+    <div class="df-condition">SOHO network performance is degraded; investigation shows unknown ports are open on the router</div>
+    <div class="df-arrow">→</div>
+    <div class="df-result"><strong class="good">Disable UPnP</strong>. UPnP allows devices (including malware) to open ports without authorization. Review and remove all port forwarding rules. Scan the LAN for malware. After remediation, manually configure only the port forwarding rules that are legitimately needed.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SUMMARY
+     ═══════════════════════════════════════════════════ -->
+
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.10 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Default passwords</span>First action on any new SOHO router — change admin and Wi-Fi passwords. Defaults are publicly documented and trivially exploited.</div>
+    <div class="summary-item"><span class="s-sym">Remote management</span>Disable unless specifically needed. If enabled, restrict to a known source IP. Exposes admin interface to internet brute-force attacks when left enabled.</div>
+    <div class="summary-item"><span class="s-sym">Firmware updates</span>Enable automatic updates. EOL routers with no available firmware updates should be replaced — no configuration can patch a firmware vulnerability.</div>
+    <div class="summary-item"><span class="s-sym">IP filtering (MAC ACL)</span>Minor access control layer; MAC addresses are visible in wireless frames and easily spoofed. Defense-in-depth only, not a primary control.</div>
+    <div class="summary-item"><span class="s-sym">Content filtering</span>Blocks malware C2 domains and phishing sites at the network level. DNS-based filtering applies to all LAN devices using the router's DNS.</div>
+    <div class="summary-item"><span class="s-sym">Physical placement</span>Physical access = full control via factory reset. Place router in locked location. Center placement minimizes signal leakage beyond premises.</div>
+    <div class="summary-item"><span class="s-sym">UPnP</span>Disable. Allows any LAN device (including malware) to silently open inbound ports on the firewall. Replace with manual, documented port forwarding.</div>
+    <div class="summary-item"><span class="s-sym">Screened subnet / DMZ</span>Isolates internet-facing servers from the LAN. SOHO "DMZ host" feature is a simplified version — forwards all unmatched inbound traffic to one device.</div>
+    <div class="summary-item"><span class="s-sym">SSID</span>Change from brand-revealing default. Avoid including personal info, name, or business name. Change name on both 2.4 GHz and 5 GHz bands.</div>
+    <div class="summary-item"><span class="s-sym">SSID broadcast</span>Hiding provides obscurity only — SSID is visible in other 802.11 frame types via packet capture tools. Visible SSID + strong encryption is better than hidden SSID + weak settings.</div>
+    <div class="summary-item"><span class="s-sym">WEP</span>Completely broken — cracked in minutes using freely available tools. Never use. If a device requires WEP, replace the device, not the security standard.</div>
+    <div class="summary-item"><span class="s-sym">WPA / TKIP</span>Deprecated 2012. Has known vulnerabilities. Avoid. Never use "WPA2-TKIP/AES mixed mode" if all clients support AES.</div>
+    <div class="summary-item"><span class="s-sym">WPA2-AES</span>Current minimum acceptable standard. 4-way handshake can be captured and subjected to offline dictionary attack — strong passphrase required.</div>
+    <div class="summary-item"><span class="s-sym">WPA3 / SAE</span>SAE prevents offline dictionary attacks. Provides forward secrecy (captured sessions cannot be decrypted even with later passphrase disclosure). Preferred when supported.</div>
+    <div class="summary-item"><span class="s-sym">Guest network</span>Provides internet access with complete LAN isolation. Enable client isolation so guest devices cannot communicate with each other. Use for visitors AND IoT devices.</div>
+    <div class="summary-item"><span class="s-sym">Client / AP isolation</span>Prevents wireless clients on the same SSID from communicating directly. Essential on guest/public networks. May break Chromecast, AirPlay, and similar features on main network.</div>
+    <div class="summary-item"><span class="s-sym">Disabling unused ports</span>Audit port forwarding rules regularly. Each open inbound port is attack surface. Remove all rules no longer actively needed. RDP (3389) directly exposed to internet is particularly dangerous.</div>
+    <div class="summary-item"><span class="s-sym">Port forwarding</span>Documents each rule: port, internal IP, purpose, review date. Use static internal IPs for forwarding targets. Prefer VPN over exposing service ports for legitimate remote access.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> A technician is setting up a new SOHO router. What is the single most important first step? → Change the default admin password. This must be done before connecting the router to the internet or configuring any other settings.<br><br>
+  <strong>Scenario 2:</strong> An attacker intercepted wireless traffic on a company's SOHO network and decrypted it. The network was using WPA2. What should be done to prevent this in the future? → Ensure WPA2-AES (not TKIP) is used, use a strong random passphrase of 15+ characters, and migrate to WPA3 if hardware supports it. The WPA2-TKIP 4-way handshake can be brute-forced offline; WPA3-SAE cannot.<br><br>
+  <strong>Scenario 3:</strong> A user reports that after a visiting contractor used the company Wi-Fi, unknown devices appeared on the internal network and began scanning it. What policy would have prevented this? → Placing visitors on an isolated guest network with client isolation enabled. A guest network provides internet access without access to the LAN.<br><br>
+  <strong>Scenario 4:</strong> A company's SOHO router was found with dozens of unexpected inbound port forwarding rules that nobody created. What feature is responsible? → UPnP (Universal Plug and Play) automatically created port forwarding rules when applications or devices requested them. Solution: disable UPnP and manually audit and configure only necessary port forwarding rules.<br><br>
+  <strong>Scenario 5:</strong> A technician suggests hiding the SSID as a security measure. A colleague says this is insufficient. Who is right? → The colleague. SSID hiding provides only security through obscurity — the SSID is still visible in probe responses and can be revealed in seconds by any wireless packet capture tool. Strong encryption (WPA2/WPA3) is the actual control.<br><br>
+  <strong>Scenario 6:</strong> A home user wants to allow their game server to be reached from the internet while keeping the rest of their network secure. What is the best approach? → Place the game server in the router's DMZ (screened subnet / DMZ host), or create a specific port forwarding rule for only the required ports. The DMZ host setting forwards all unmatched inbound traffic to a single device, isolating internet-facing risk to that machine.<br><br>
+  <strong>Scenario 7:</strong> A small business runs a SOHO router with remote management enabled on port 8080. The admin says the non-standard port makes it secure. What is the vulnerability? → Security through obscurity — port scanners routinely scan all 65,535 ports, not just standard ones. Port 8080 will be discovered. The correct fix is to disable remote management entirely or restrict it to a specific trusted source IP address.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

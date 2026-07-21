@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.3 — Compare and Contrast Microsoft Windows Editions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EDITION PANEL — custom for this page */
+  .edition-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .edition-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
+  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
+  .edition-panel-body { padding: 0; }
+  .edition-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .edition-row:last-child { border-bottom: none; }
+  .edition-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .edition-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .edition-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* UPGRADE PATH DIAGRAM */
+  .upgrade-path {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 24px;
+    font-family: var(--sans);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .up-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .up-node .up-label {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .up-node .up-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .up-arrow {
+    font-size: 18px;
+    color: var(--border2);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
+  .up-node.target .up-label { color: var(--accent3); }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .edition-row { grid-template-columns: 1fr; }
+    .upgrade-path { flex-direction: column; align-items: flex-start; }
+    .up-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.3</strong> Compare and Contrast Basic Features
+of Microsoft Windows Editions</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_2-OS-Installations-Upgrades.html">1.2</a>
+    <a class="nav-next" href="./1_4-Windows-Features-Tools.html">1.4</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.3</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Compare and Contrast Basic Features<br>of Microsoft Windows Editions</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.3</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Compare/Contrast</span>
+    <span>Windows 10 &amp; 11</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- OVERVIEW                                -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>Microsoft markets Windows in multiple distinct <span class="key-term">editions</span> — versions of the same underlying operating system differentiated by their feature sets, licensing terms, and intended use cases. For an IT support technician, understanding which edition is installed on a given machine is not merely an academic exercise: it directly determines what tools you can use, what management capabilities are available, and what upgrade paths are open.</p>
+
+<p>The exam tests two generations of Windows: <strong>Windows 10</strong> and <strong>Windows 11</strong>. While the two share a common architectural foundation and many features, they differ in hardware requirements, edition lineup, and some interface elements. You need to know not only what features exist in each edition, but specifically <em>which</em> editions include features like BitLocker, Remote Desktop, Group Policy, and domain joining — and which do not.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">How This Objective Is Tested</p>
+  <p>Expect scenario-based questions such as: <em>"A user needs to join their Windows 10 computer to a corporate domain. They are currently running Windows 10 Home. What is the minimum edition they need?"</em> You need to know the feature matrix — not just that features exist, but exactly which editions include them. The compare/contrast verb tells you that edition-to-edition differences are the core of this objective.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- WINDOWS 10 EDITIONS                     -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Windows 10 Editions</h2>
+
+<p>Windows 10, released in July 2015, is organized into four primary editions relevant to the A+ exam. Each edition is a superset of the one below it — meaning Pro includes everything Home offers, Pro for Workstations includes everything Pro offers, and so on. Mainstream support for Windows 10 ends October 14, 2025.</p>
+
+<div class="edition-panel">
+  <div class="edition-panel-header win10">Windows 10 — Edition Overview</div>
+  <div class="edition-panel-body">
+    <div class="edition-row">
+      <div class="edition-label">Home</div>
+      <div class="edition-desc"><strong>Consumer edition.</strong> Pre-installed on most retail laptops and desktops sold to individuals. Supports Microsoft accounts and local accounts. No Group Policy editor, no BitLocker (only Device Encryption on compatible hardware), no domain join, no Remote Desktop host. Maximum RAM: 128 GB. Mandatory automatic updates with no deferral controls.</div>
+    </div>
+    <div class="edition-row">
+      <div class="edition-label">Pro</div>
+      <div class="edition-desc"><strong>Professional/SMB edition.</strong> Everything in Home plus: domain join, Group Policy editor (<code>gpedit.msc</code>), BitLocker drive encryption, Remote Desktop Protocol (RDP) host, Windows Sandbox, Hyper-V, and update deferral controls (Windows Update for Business). Maximum RAM: 2 TB. The minimum edition for a business workstation joining a corporate Active Directory domain.</div>
+    </div>
+    <div class="edition-row">
+      <div class="edition-label">Pro for Workstations</div>
+      <div class="edition-desc"><strong>High-performance hardware edition.</strong> Everything in Pro plus: support for Resilient File System (ReFS), Non-Volatile Dual Inline Memory Module (NVDIMM), persistent memory, and high-core-count processors like Intel Xeon and AMD EPYC/Threadripper. Supports up to <strong>4 physical CPUs</strong> and up to <strong>6 TB of RAM</strong>. Designed for content creation, scientific computing, and video production workstations — not typical office deployments.</div>
+    </div>
+    <div class="edition-row">
+      <div class="edition-label">Enterprise</div>
+      <div class="edition-desc"><strong>Large organization edition.</strong> Everything in Pro plus: AppLocker (application whitelisting), DirectAccess, Credential Guard, Device Guard, Windows Defender Application Control, Long-Term Servicing Channel (LTSC) option, and Microsoft's advanced security features for managed deployments. <strong>Not available through retail</strong> — only through Microsoft Volume Licensing agreements (EA, EAS) or Microsoft 365. Maximum RAM: 2 TB (same as Pro). Used by enterprise IT environments that need the full suite of management and security features.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — What Sets Each Edition Apart</p>
+  <p>The key exam differentiators for Windows 10 editions are: <strong>Home</strong> lacks BitLocker, gpedit.msc, domain join, and RDP host. <strong>Pro</strong> adds all four. <strong>Pro for Workstations</strong> adds ReFS and extreme hardware support (4 CPUs, 6 TB RAM). <strong>Enterprise</strong> adds AppLocker and advanced security/management features and requires volume licensing. Know these four distinctions cold.</p>
+</div>
+
+<h3 class="section">Windows 10 RAM Support by Edition</h3>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Edition</th>
+      <th>Max RAM (64-bit)</th>
+      <th>Max Physical CPUs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Home</td><td>128 GB</td><td>1</td></tr>
+    <tr><td>Pro</td><td>2 TB</td><td>2</td></tr>
+    <tr><td>Pro for Workstations</td><td>6 TB</td><td>4</td></tr>
+    <tr><td>Enterprise</td><td>2 TB</td><td>2</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-warn">
+  <p class="callout-title">32-bit vs. 64-bit RAM Limits</p>
+  <p>32-bit (x86) versions of Windows are limited to 4 GB of RAM regardless of edition — a hardware addressing constraint, not a Microsoft licensing decision. The RAM figures in the table above apply to the 64-bit versions. Microsoft no longer offers 32-bit installations of Windows 11 at all.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- WINDOWS 11 EDITIONS                     -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Windows 11 Editions</h2>
+
+<p>Windows 11, released October 2021, consolidates the edition lineup to three primary editions for the A+ exam — dropping Pro for Workstations as a separate exam topic. The feature logic remains the same: Pro adds enterprise management features over Home; Enterprise builds further on Pro for large organizations.</p>
+
+<p>Critically, Windows 11 raised the hardware bar significantly compared to Windows 10. All editions of Windows 11 share the same minimum hardware requirements, which are stricter than Windows 10 in meaningful ways — especially the mandatory requirement for TPM 2.0 and UEFI Secure Boot.</p>
+
+<div class="edition-panel">
+  <div class="edition-panel-header win11">Windows 11 — Edition Overview</div>
+  <div class="edition-panel-body">
+    <div class="edition-row">
+      <div class="edition-label">Home</div>
+      <div class="edition-desc"><strong>Consumer edition.</strong> Pre-installed on most new consumer PCs. Requires a Microsoft account during setup (offline account setup has been progressively restricted in newer builds). Includes the redesigned Start menu (centered by default), Snap Layouts, Teams integration, and Android app support via Amazon Appstore. No BitLocker, no gpedit.msc, no domain join, no RDP host. Mandatory updates with limited deferral.</div>
+    </div>
+    <div class="edition-row">
+      <div class="edition-label">Pro</div>
+      <div class="edition-desc"><strong>Professional edition.</strong> Everything in Home plus: domain join, Group Policy editor (<code>gpedit.msc</code>), BitLocker, Remote Desktop host, Hyper-V, Windows Sandbox, and update deferral controls. Local account setup is available during installation. The standard choice for business workstations. Maximum RAM: 2 TB. Supports 2 physical CPUs.</div>
+    </div>
+    <div class="edition-row">
+      <div class="edition-label">Enterprise</div>
+      <div class="edition-desc"><strong>Large organization edition.</strong> Everything in Pro plus the full suite of enterprise security features: Credential Guard, Application Control for Business (formerly Device Guard), AppLocker, DirectAccess, and Windows Defender Application Guard. Available only through Volume Licensing. Also available in an LTSC variant for systems requiring long-term stability (medical devices, ATMs, industrial systems) that should not receive feature updates.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- N VERSIONS                              -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>N Versions</h2>
+
+<p>Microsoft sells <span class="key-term">N versions</span> of Windows editions specifically for the European market. These versions exist as a result of a 2004 European Commission antitrust ruling that found Microsoft illegally bundled Windows Media Player with its operating system. N versions are identical to their standard counterparts in every functional respect <em>except</em> that certain multimedia components are not included by default.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">What "N" Stands For</span>
+    <span>The "N" designation is sometimes said to stand for "Not with Windows Media Player," though Microsoft has never officially confirmed this etymology. The naming convention was simply assigned by the European Commission remedy.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">What Is Removed</span>
+    <span>N versions ship without Windows Media Player, the Movies &amp; TV app, the Music app, Groove Music, and the related multimedia playback infrastructure. Since Windows 10, this has also affected some communications apps and voice features that depend on the media infrastructure.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Available N Editions</span>
+    <span>N versions exist for Home, Pro, and Enterprise (both Windows 10 and 11). Example: <strong>Windows 10 Pro N</strong>, <strong>Windows 11 Home N</strong>.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Adding Media Features Back</span>
+    <span>Users can install the free <strong>Media Feature Pack</strong> from Microsoft to restore the removed functionality. This restores Windows Media Player and the related playback components to an N version, making it functionally identical to the non-N edition.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Relevance for the Exam</span>
+    <span>If you encounter an N version in a support scenario, know that missing multimedia functionality is by design, not a corruption or driver issue. The fix is to install the Media Feature Pack, not to reinstall Windows.</span>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">KN Editions</p>
+  <p>A parallel "KN" designation exists for Windows sold in South Korea, also resulting from an antitrust ruling. KN editions similarly exclude Windows Media Player and certain messaging apps. The A+ exam focuses on N versions, but KN versions function identically in terms of the multimedia exclusion.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- FEATURE DIFFERENCES                     -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Feature Differences</h2>
+
+<p>The exam focuses specifically on six key features that differ across Windows editions. Understanding these differences determines which edition a given scenario calls for, and what is or isn't available to you as a technician.</p>
+
+<h3 class="section">Domain vs. Workgroup</h3>
+
+<p>Every Windows computer participates in one of two network organization models: a <span class="key-term">workgroup</span> or a <span class="key-term">domain</span>. The distinction is fundamental to enterprise IT management and is one of the most exam-relevant feature differences between editions.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Workgroup</span>
+    <span>A <strong>peer-to-peer</strong> network model where each computer manages its own local user accounts, security policies, and resources independently. There is no central authority. Each machine stores its own Security Account Manager (SAM) database. Suitable for small environments (up to ~10–20 computers). <strong>All Windows editions can join a workgroup.</strong> No server infrastructure required.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Domain</span>
+    <span>A <strong>client-server</strong> network model where a central server running Active Directory Domain Services (AD DS) — a <span class="key-term">Domain Controller (DC)</span> — manages authentication, user accounts, and security policy for all joined computers. Users log in with domain credentials and receive centrally-managed Group Policy settings. <strong>Domain join is available only in Pro, Pro for Workstations, and Enterprise</strong> — not Home. Requires Windows Server infrastructure.</span>
+  </div>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Characteristic</th>
+      <th>Workgroup</th>
+      <th>Domain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Authentication authority</td><td>Local SAM database</td><td>Active Directory (Domain Controller)</td></tr>
+    <tr><td>User accounts</td><td>Stored on each individual PC</td><td>Centrally stored in AD; applies to all domain PCs</td></tr>
+    <tr><td>Security policy</td><td>Configured per machine</td><td>Pushed centrally via Group Policy</td></tr>
+    <tr><td>Scale</td><td>Small (≤ ~20 PCs)</td><td>Unlimited — enterprises with thousands of PCs</td></tr>
+    <tr><td>Server required</td><td>No</td><td>Yes (Windows Server with AD DS role)</td></tr>
+    <tr><td>Editions supporting it</td><td>All editions</td><td>Pro, Pro for Workstations, Enterprise only</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Domain Join Edition Requirement</p>
+  <p>A technician is deploying 50 workstations for a company using Active Directory. The machines came pre-installed with Windows 10 Home. The technician cannot join them to the domain. The correct solution is to upgrade to at least <strong>Windows 10 Pro</strong>. Home editions — Windows 10 and Windows 11 — do not support domain join. This is one of the most commonly tested scenarios on the exam.</p>
+</div>
+
+<h3 class="section">Desktop Styles / User Interface</h3>
+
+<p>While all editions of a given Windows version share the same underlying interface, there are meaningful UI differences between Windows 10 and Windows 11 that you should recognize in exam scenarios or when supporting users.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Windows 10 Start Menu</span>
+    <span>The Start menu expands from the lower-left corner. It presents a two-panel layout: a narrow left rail with user icon, power, Settings, and pinned app icons; and a right section with Live Tiles — resizable dynamic tiles that can display app content (news, weather, calendar). Users can resize and rearrange tiles.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Windows 11 Start Menu</span>
+    <span>Redesigned with the taskbar and Start button <strong>centered</strong> by default (though it can be moved to the left in Settings). Live Tiles are gone, replaced by a cleaner grid of pinned app icons and a "Recommended" section showing recent files and apps. More focused and visually simplified.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Windows 11 Snap Layouts</span>
+    <span>Hovering over a window's maximize button reveals a <strong>Snap Layout</strong> overlay with multiple arrangement options (side-by-side, quadrant, etc.). This is a Windows 11 feature not present in Windows 10 (though Windows 10 has snap-to-corner via dragging).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Taskbar Behavior</span>
+    <span>In Windows 11, the taskbar cannot be moved to the top or sides of the screen (a change from Windows 10 where repositioning was supported). The system tray and notification behavior also changed — the date/time area, volume, and network icons behave differently in Win11.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Right-Click Context Menu</span>
+    <span>Windows 11 introduced a simplified right-click context menu that shows a compact set of icons for common actions (cut, copy, rename, delete, share) and hides less-used options under "Show more options." Windows 10 uses the traditional, longer context menu by default.</span>
+  </div>
+</div>
+
+<p>From the exam perspective, interface differences are less heavily tested than feature availability, but you should be able to recognize screenshots of Windows 10 versus Windows 11 based on the Start menu placement, taskbar appearance, and overall design language.</p>
+
+<h3 class="section">Availability of Remote Desktop Protocol (RDP)</h3>
+
+<p><span class="key-term">Remote Desktop Protocol (RDP)</span> is Microsoft's proprietary protocol that allows a user to remotely control a Windows desktop graphically over a network. It operates on port 3389 by default. The exam distinguishes between two RDP roles: <em>host</em> (the computer being controlled) and <em>client</em> (the computer doing the controlling).</p>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Critical Distinction: RDP Client vs. RDP Host</p>
+  <p><strong>Every edition of Windows</strong> can <em>connect to</em> (act as a client for) a Remote Desktop session using the built-in Remote Desktop Connection app (<code>mstsc.exe</code>). The edition restriction only applies to <strong>hosting</strong> an RDP session — allowing others to connect <em>to</em> that machine. Windows Home cannot host RDP connections. This is one of the most mis-remembered exam facts — read questions carefully to distinguish "connect to" vs. "be connected to."</p>
+  </div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Home (Win 10 &amp; 11)</span>
+    <span><strong>Client only.</strong> Can connect outbound to remote desktops. Cannot host inbound RDP connections. The "Remote Desktop" toggle in Settings → System → Remote Desktop is either absent or greyed out.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Pro, Pro for Workstations, Enterprise</span>
+    <span><strong>Client and host.</strong> Can both connect to and host Remote Desktop sessions. Enabled via: Settings → System → Remote Desktop → toggle "Enable Remote Desktop" to On. Requires a password on the account being connected to.</span>
+  </div>
+</div>
+
+<p>When Remote Desktop hosting is enabled on Pro or Enterprise, the system accepts connections via RDP on TCP port 3389. For remote support scenarios, a technician connecting to a user's computer requires that the user's machine be running at least Windows Pro. Alternatively, third-party tools (TeamViewer, AnyDesk, Quick Assist) work across all editions.</p>
+
+<h3 class="section">RAM Support Limitations</h3>
+
+<p>As established in the editions sections above, Windows imposes per-edition RAM ceilings that interact with processor architecture limits. The exam expects you to know the key numbers:</p>
+
+<div class="card-grid">
+  <div class="card card-accent2">
+    <h4>Windows 10</h4>
+    <ul>
+      <li><strong>Home:</strong> 128 GB max</li>
+      <li><strong>Pro:</strong> 2 TB max</li>
+      <li><strong>Pro for Workstations:</strong> 6 TB max</li>
+      <li><strong>Enterprise:</strong> 2 TB max</li>
+    </ul>
+  </div>
+  <div class="card card-accent">
+    <h4>Windows 11</h4>
+    <ul>
+      <li><strong>Home:</strong> 128 GB max</li>
+      <li><strong>Pro:</strong> 2 TB max</li>
+      <li><strong>Enterprise:</strong> 2 TB max</li>
+    </ul>
+  </div>
+</div>
+
+<p>In practical terms, the 128 GB Home limit is not a real-world constraint for consumer hardware — current consumer platforms typically max out well below that. The distinction matters most when determining which edition is appropriate for a high-memory workstation (a video editor or engineer building a system with 256 GB+ of RAM would need Pro or Enterprise, not Home).</p>
+
+<h3 class="section">BitLocker</h3>
+
+<p><span class="key-term">BitLocker</span> is Microsoft's full-volume encryption technology that encrypts entire drive volumes using AES encryption. It is designed to protect data at rest — if a laptop is stolen or a drive is removed, the encrypted data is inaccessible without the recovery key or the original system's TPM.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Edition Availability</span>
+    <span><strong>Pro, Pro for Workstations, and Enterprise only.</strong> Home editions do not include BitLocker. This is a firm, exam-tested fact. Windows 10 and 11 Home offer a limited alternative called <strong>Device Encryption</strong> (a simplified form of BitLocker that automatically encrypts the system drive on qualifying hardware), but this is not the same as the full BitLocker management interface.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">BitLocker vs. Device Encryption</span>
+    <span>Device Encryption (Home) automatically enables silently and is managed through Settings. It requires a Microsoft account to back up the recovery key to OneDrive, a Modern Standby-capable device, and a TPM. <strong>BitLocker</strong> (Pro+) provides the full feature set: encrypt any drive (not just the system drive), manage via Group Policy or the BitLocker Drive Encryption control panel, pre-boot authentication, network unlock, and recovery key management in Active Directory.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">BitLocker-To-Go</span>
+    <span>A BitLocker variant that encrypts <strong>removable drives</strong> (USB flash drives, external HDDs). Available in Pro and Enterprise. The encrypted drive can be read on any Windows system with the correct password or recovery key. Home users can <em>read</em> a BitLocker-To-Go encrypted drive (they are prompted for the password), but cannot <em>encrypt</em> removable media using BitLocker-To-Go.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">TPM Requirement</span>
+    <span>BitLocker's default configuration stores the encryption key in the computer's <strong>Trusted Platform Module (TPM)</strong>. The TPM seals the key to the system's hardware state — if the drive is moved to a different PC (without the recovery key), the TPM won't release the key and the drive stays encrypted. BitLocker can be configured to run without a TPM using a USB startup key, but this is a non-default configuration requiring a Group Policy change.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — BitLocker Edition Requirement</p>
+  <p>BitLocker is <strong>Pro and Enterprise only</strong>. If a Home user asks you to set up full-drive encryption using BitLocker, the answer is that they must first upgrade to at least Windows Pro. On the exam, scenarios about encrypting a lost or stolen laptop almost always involve BitLocker, and the "gotcha" is whether the machine is running Home (can't use it) or Pro (can).</p>
+</div>
+
+<h3 class="section">gpedit.msc — Group Policy Editor</h3>
+
+<p>The <span class="key-term">Local Group Policy Editor</span> (<code>gpedit.msc</code>) is a Microsoft Management Console snap-in that provides a graphical interface for modifying thousands of Windows configuration settings that are not exposed through the standard Settings app or Control Panel.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Edition Availability</span>
+    <span><strong>Pro, Pro for Workstations, and Enterprise only.</strong> Attempting to run <code>gpedit.msc</code> on a Home edition produces an error: "Windows cannot find 'gpedit.msc'." The Local Group Policy Editor is simply not installed on Home editions.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">What It Controls</span>
+    <span>Local Group Policy manages settings for Computer Configuration (system-wide) and User Configuration (per-user). Categories include: security settings, software restrictions, Windows Update behavior, startup/shutdown scripts, network settings, user rights, and thousands of individual application and OS behavior settings.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Local vs. Domain Group Policy</span>
+    <span>When a machine is joined to a domain, Group Policy settings from the Domain Controller override local Group Policy settings. The domain administrator can push policy to all domain-joined computers centrally. Local Group Policy (gpedit.msc) applies only to settings on the local machine and is used in standalone Pro/Enterprise scenarios or in conjunction with domain policy.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Common Technician Uses</span>
+    <span>Disabling removable storage, enforcing password complexity, configuring Windows Update behavior, enabling or disabling features not accessible via Settings, restricting access to Control Panel, and configuring User Account Control (UAC) behavior.</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Registry as an Alternative on Home</p>
+  <p>Many Group Policy settings correspond to specific Registry keys. On Home editions where gpedit.msc is unavailable, an administrator can sometimes achieve the same result by directly editing the Registry using <code>regedit.exe</code>. However, this is riskier (no error checking), less discoverable, and not appropriate in exam scenarios — the correct answer to "how do I configure Group Policy" on Home is "you can't — upgrade to Pro."</p>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- FEATURE COMPARISON TABLE               -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Complete Feature Comparison</h2>
+
+<p>The following table consolidates all exam-relevant feature differences across all editions for quick reference and review.</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Win 10 Home</th>
+      <th>Win 10 Pro</th>
+      <th>Win 10 ProWS</th>
+      <th>Win 10 Ent.</th>
+      <th>Win 11 Home</th>
+      <th>Win 11 Pro</th>
+      <th>Win 11 Ent.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Domain Join</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>BitLocker</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>gpedit.msc</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>RDP Host</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>RDP Client</td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>Hyper-V</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>AppLocker</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>Max RAM</td>
+      <td>128 GB</td>
+      <td>2 TB</td>
+      <td>6 TB</td>
+      <td>2 TB</td>
+      <td>128 GB</td>
+      <td>2 TB</td>
+      <td>2 TB</td>
+    </tr>
+    <tr>
+      <td>Volume License</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+    </tr>
+    <tr>
+      <td>ReFS Support</td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-yes">✓</span></td>
+      <td><span class="feat-ltd">Ltd</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-no">✗</span></td>
+      <td><span class="feat-ltd">Ltd</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout callout-info">
+  <p class="callout-title">The "Home vs. Pro" Line</p>
+  <p>For the exam, the single most useful mental model is the <strong>Home vs. Pro dividing line</strong>. Four features are available in Pro and above but not in Home: <strong>domain join, BitLocker, gpedit.msc, and RDP hosting</strong>. If you memorize nothing else from this objective, memorize that these four features require at minimum Windows Pro.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- UPGRADE PATHS                           -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 6</span>Upgrade Paths</h2>
+
+<p>When a user or organization needs to move to a newer or higher-tier edition of Windows, there are two fundamentally different approaches: an <span class="key-term">in-place upgrade</span> and a <span class="key-term">clean install</span>. Understanding when each is appropriate and what is preserved or lost in each approach is essential for exam scenarios.</p>
+
+<h3 class="section">In-Place Upgrade</h3>
+
+<p>An <span class="key-term">in-place upgrade</span> installs a new version of Windows over the existing installation while preserving user data, applications, and settings. The user's documents, installed programs, and personal settings are migrated to the new OS automatically. The machine is bootable and operational before the upgrade and remains so after — with the new OS in place.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Preserved during in-place upgrade</span>
+    <span>Personal files and documents, installed applications (if compatible), user account settings, browser history and favorites, desktop background and personalization settings, and most installed drivers.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">What may be affected</span>
+    <span>Some applications may not work after the upgrade if they are incompatible with the new OS version. Windows Defender settings may reset. Some settings are migrated imperfectly. The old Windows installation is stored in <code>C:\Windows.old</code> for 10 days as a rollback option.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Edition-to-edition upgrades</span>
+    <span>An in-place upgrade can also be used to upgrade <em>editions</em> (Home → Pro) within the same Windows version. In Windows 10/11, this is done via Settings → System → About → "Upgrade your edition of Windows" and entering a new product key. No media is needed for edition upgrades.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Supported in-place upgrade paths (version)</span>
+    <span>Windows 10 → Windows 11 (in-place, using Windows Update or the Installation Assistant, if hardware meets requirements). Windows 7 or 8.1 → Windows 10 (via setup.exe from installation media). Direct in-place upgrades skipping versions (e.g., Windows 7 → Windows 11) are not officially supported.</span>
+  </div>
+</div>
+
+<p>The table below shows supported in-place upgrade edition paths within Windows. An upgrade is only valid from the same or a lower edition to a higher edition — you cannot downgrade editions via in-place upgrade.</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Existing Edition</th>
+      <th>Can In-Place Upgrade To</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Home (Win 10/11)</td><td>Pro (Win 10/11), Enterprise (with volume license)</td></tr>
+    <tr><td>Pro (Win 10/11)</td><td>Pro for Workstations (Win 10), Enterprise (with volume license)</td></tr>
+    <tr><td>Windows 10 Home/Pro</td><td>Windows 11 Home/Pro (if hardware qualifies)</td></tr>
+    <tr><td>Enterprise (Win 10)</td><td>Enterprise (Win 11) via Windows Update / in-place</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Backup Before Any Upgrade</p>
+  <p>Despite the in-place upgrade's promise of preserving data, <strong>always back up user data before any upgrade</strong>. Upgrade failures — though uncommon — can leave the system in an unbootable state, and partial failures can cause data loss. The backup is insurance against the unexpected.</p>
+</div>
+
+<h3 class="section">Clean Install</h3>
+
+<p>A <span class="key-term">clean install</span> (also called a fresh install) wipes the target drive and installs Windows from scratch. No previous OS components, applications, or user data are carried over unless the technician explicitly migrates them. The result is the cleanest possible system — no leftover files, no registry cruft from previous applications, no compatibility baggage.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">When to choose a clean install</span>
+    <span>Deploying a new machine. Recovering from severe malware infection. Resolving persistent OS corruption that repair tools cannot fix. Changing editions in a way that in-place upgrade doesn't support (e.g., downgrading, or moving to a significantly different configuration). Decommissioning and redeploying hardware for a different user or department.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">What is lost</span>
+    <span><strong>Everything on the target partition.</strong> All installed applications must be reinstalled. All user data must be restored from backup. All drivers must be reinstalled (Windows will attempt to install many automatically from Windows Update). All application settings are reset to defaults.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Installation media</span>
+    <span>A clean install requires bootable installation media: typically a USB flash drive created with the <strong>Windows Media Creation Tool</strong> (available free from Microsoft), or a bootable ISO file mounted or burned to optical media. The system must be configured to boot from this external media (via BIOS/UEFI boot menu or boot order settings).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Product key / activation</span>
+    <span>A clean install requires a valid product key. For systems with an OEM license (pre-installed Windows), the digital license is tied to the hardware's UEFI firmware — Windows 10 and 11 can activate automatically after a clean install on the same hardware without manually entering a key. For retail licenses, the key must be entered during or after installation.</span>
+  </div>
+</div>
+
+<div class="process-flow">
+  <div class="flow-title">Clean Install Procedure Overview</div>
+  <div class="flow-step"><span class="flow-num">01</span><div class="flow-text"><strong>Back up all user data</strong> to an external drive, network share, or cloud storage. Verify the backup is complete and readable before proceeding.</div></div>
+  <div class="flow-step"><span class="flow-num">02</span><div class="flow-text"><strong>Create bootable installation media.</strong> Download the Windows ISO from Microsoft and use the Media Creation Tool or Rufus to write it to a USB drive (8 GB minimum).</div></div>
+  <div class="flow-step"><span class="flow-num">03</span><div class="flow-text"><strong>Boot from the installation media.</strong> Enter the BIOS/UEFI boot menu (typically F12, F2, DEL, or ESC at POST) and select the USB drive as the boot device, or adjust the boot order.</div></div>
+  <div class="flow-step"><span class="flow-num">04</span><div class="flow-text"><strong>At the partition selection screen, delete existing partitions and create new ones.</strong> For a true clean install on the system drive, delete the old partition(s) and let the installer create fresh partitions, or select unallocated space.</div></div>
+  <div class="flow-step"><span class="flow-num">05</span><div class="flow-text"><strong>Complete installation and initial setup (OOBE).</strong> Enter the product key when prompted (or skip for hardware-linked OEM licenses). Create a user account. Let Windows download updates.</div></div>
+  <div class="flow-step"><span class="flow-num">06</span><div class="flow-text"><strong>Install drivers.</strong> Windows Update handles most drivers automatically, but GPU, chipset, and specialized peripheral drivers may need manual installation from manufacturer websites.</div></div>
+  <div class="flow-step"><span class="flow-num">07</span><div class="flow-text"><strong>Reinstall applications and restore user data</strong> from the backup taken in step 1.</div></div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">In-Place Upgrade vs. Clean Install: Exam Decision Point</p>
+  <p>On the exam, if a scenario says "keep all applications and files" → in-place upgrade. If the scenario says "malware-infected and unrecoverable" or "deploy fresh for a new user" → clean install. These are the two clearest use-case signals.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- HARDWARE REQUIREMENTS                   -->
+<!-- ════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 7</span>Hardware Requirements</h2>
+
+<p>Windows 11 introduced significantly stricter minimum hardware requirements compared to Windows 10. Two components in particular — the <span class="key-term">Trusted Platform Module (TPM)</span> and <span class="key-term">Unified Extensible Firmware Interface (UEFI)</span> — were elevated from optional or recommended to <strong>mandatory</strong>. Understanding why these components matter, and what happens when they are absent, is essential for the exam.</p>
+
+<h3 class="section">Windows 10 vs. Windows 11 Minimum Requirements</h3>
+
+<div class="req-grid">
+  <div class="req-card">
+    <div class="req-card-head">Windows 10 Minimum</div>
+    <div class="req-card-body">
+      <div class="req-row"><span class="req-spec">Processor</span><span class="req-val">1 GHz, 2+ cores</span></div>
+      <div class="req-row"><span class="req-spec">RAM</span><span class="req-val">1 GB (32-bit) / 2 GB (64-bit)</span></div>
+      <div class="req-row"><span class="req-spec">Storage</span><span class="req-val">16 GB (32-bit) / 32 GB (64-bit)</span></div>
+      <div class="req-row"><span class="req-spec">GPU</span><span class="req-val">DirectX 9 + WDDM 1.0</span></div>
+      <div class="req-row"><span class="req-spec">Display</span><span class="req-val">800×600 px</span></div>
+      <div class="req-row"><span class="req-spec">TPM</span><span class="req-val">Not required</span></div>
+      <div class="req-row"><span class="req-spec">UEFI / Secure Boot</span><span class="req-val">Not required</span></div>
+      <div class="req-row"><span class="req-spec">Internet</span><span class="req-val">Not required</span></div>
+    </div>
+  </div>
+  <div class="req-card">
+    <div class="req-card-head">Windows 11 Minimum</div>
+    <div class="req-card-body">
+      <div class="req-row"><span class="req-spec">Processor</span><span class="req-val">1 GHz, 2+ cores, 64-bit only</span></div>
+      <div class="req-row"><span class="req-spec">RAM</span><span class="req-val">4 GB</span></div>
+      <div class="req-row"><span class="req-spec">Storage</span><span class="req-val">64 GB</span></div>
+      <div class="req-row"><span class="req-spec">GPU</span><span class="req-val">DirectX 12 + WDDM 2.0</span></div>
+      <div class="req-row"><span class="req-spec">Display</span><span class="req-val">720p HD, 9" or larger</span></div>
+      <div class="req-row"><span class="req-spec">TPM</span><span class="req-val" style="color: var(--accent);">TPM 2.0 REQUIRED</span></div>
+      <div class="req-row"><span class="req-spec">UEFI / Secure Boot</span><span class="req-val" style="color: var(--accent);">UEFI + Secure Boot REQUIRED</span></div>
+      <div class="req-row"><span class="req-spec">Internet</span><span class="req-val">Required for Home setup</span></div>
+    </div>
+  </div>
+</div>
+
+<p>The processor requirement for Windows 11 also includes a supported CPU list — Microsoft specifies which Intel Core, AMD Ryzen, and Qualcomm Snapdragon processors are officially supported. Generally, Intel 8th generation (and newer) and AMD Ryzen 2000-series (and newer) are supported. Many older but still functional CPUs are on the unsupported list, which caused significant friction during the Windows 11 rollout.</p>
+
+<h3 class="section">Trusted Platform Module (TPM)</h3>
+
+<p>The <span class="key-term">Trusted Platform Module (TPM)</span> is a dedicated security microcontroller — either a discrete physical chip on the motherboard or a firmware-based implementation in the processor — that performs cryptographic operations in hardware and provides a secure, isolated storage area for cryptographic keys, certificates, passwords, and measurements.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Physical vs. Firmware TPM</span>
+    <span>A <strong>discrete TPM</strong> (dTPM) is a dedicated chip soldered onto the motherboard. A <strong>firmware TPM</strong> (fTPM) runs as software within the secure enclave of a modern processor (Intel PTT — Platform Trust Technology, or AMD fTPM). Both satisfy the TPM requirement and provide equivalent security for Windows purposes. Most modern CPUs include firmware TPM support.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">TPM Versions</span>
+    <span>TPM 1.2 and TPM 2.0 are the two versions. Windows 11 requires <strong>TPM 2.0</strong>. TPM 1.2 is insufficient. TPM 2.0 supports more modern cryptographic algorithms (SHA-256, ECC) and is more flexible in its key hierarchy. Windows 10 works with TPM 1.2 and 2.0.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">What the TPM Does for Windows</span>
+    <span>Stores the <strong>BitLocker encryption key</strong> — the TPM measures the boot configuration; if the hardware or early boot files change unexpectedly, the TPM refuses to release the key, protecting against offline attacks. Also used for Windows Hello biometric authentication credential storage, virtual smart card support, and attestation services (verifying the integrity of the system).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Enabling the TPM</span>
+    <span>TPM is enabled in BIOS/UEFI settings. The option may be labeled "TPM," "PTT" (Intel), "fTPM" (AMD), or "Security Device." If a Windows 11 installation fails the hardware check and cites TPM as the issue, the first step is to verify the TPM is enabled in UEFI — it may be present but disabled. Check with the <strong>TPM Management console</strong>: run <code>tpm.msc</code> in Windows to see current TPM status.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — TPM and Windows 11</p>
+  <p>Windows 11 requires <strong>TPM 2.0</strong>. If a user cannot install or upgrade to Windows 11 and you see "this PC doesn't meet requirements," TPM 2.0 is the most likely culprit, especially on machines from 2015–2018. Check UEFI settings to see if the TPM is disabled (and enable it) before concluding the hardware is incompatible. TPM 1.2 does not satisfy the Windows 11 requirement — the user would need newer hardware.</p>
+</div>
+
+<h3 class="section">Unified Extensible Firmware Interface (UEFI)</h3>
+
+<p>The <span class="key-term">Unified Extensible Firmware Interface (UEFI)</span> is the modern replacement for the legacy BIOS (Basic Input/Output System) that initializes hardware and launches the operating system boot loader when a computer powers on. Understanding the differences between UEFI and BIOS is essential for both this objective (hardware requirements) and broader OS installation scenarios.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Legacy BIOS</span>
+    <span>The original firmware standard, dating to the 1970s IBM PC. Uses a 16-bit real-mode interface, relies on the Master Boot Record (MBR) disk partition scheme, is limited to booting from drives up to 2.2 TB, and supports a maximum of 4 primary partitions. Text-based interface with keyboard-only navigation.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">UEFI</span>
+    <span>Modern firmware standard. 32-bit or 64-bit interface. Uses the <strong>GUID Partition Table (GPT)</strong> disk scheme, which supports drives larger than 2.2 TB and up to 128 primary partitions. GUI interface with mouse support. Faster boot times (no legacy BIOS initialization overhead). Platform for Secure Boot. Required by Windows 11.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Secure Boot</span>
+    <span>A UEFI feature that cryptographically verifies the digital signatures of boot loaders and drivers before executing them. If the boot loader is not signed by a trusted key in the UEFI firmware's key database, Secure Boot refuses to execute it. This prevents <strong>boot sector malware and rootkits</strong> from loading before the OS. Windows 11 requires Secure Boot to be enabled. Windows 10 does not require it, but benefits from it.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">UEFI Compatibility Support Module (CSM)</span>
+    <span>The <span class="key-term">CSM</span> is a UEFI feature that provides backward compatibility with legacy BIOS boot mechanisms, allowing older operating systems and bootable media to work. When CSM is enabled, the system can boot from MBR disks. Windows 11 requires Secure Boot, which is incompatible with CSM being enabled — installing Windows 11 typically requires disabling CSM and enabling Secure Boot in UEFI settings.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">MBR vs. GPT</span>
+    <span>Legacy BIOS boots from <strong>MBR (Master Boot Record)</strong> disks. UEFI boots from <strong>GPT (GUID Partition Table)</strong> disks. Windows 11 requires a GPT system disk when using UEFI mode. Attempting to install Windows 11 on an MBR-formatted disk in UEFI mode will fail. The disk can be converted (with data loss, using tools like <code>diskpart</code> or MBR2GPT) or reformatted.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">UEFI Settings for Windows 11 Installation</p>
+  <p>Before installing Windows 11, verify three UEFI settings: (1) <strong>UEFI mode is enabled</strong> (CSM/legacy mode disabled), (2) <strong>Secure Boot is enabled</strong>, (3) <strong>TPM 2.0 is enabled</strong>. All three must be true for a successful Windows 11 installation. On many systems where the upgrade check fails, disabling CSM and enabling Secure Boot is the fix — the hardware actually meets the requirements but the firmware settings are wrong.</p>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Characteristic</th>
+      <th>Legacy BIOS</th>
+      <th>UEFI</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Partition scheme</td><td>MBR (max 4 primary partitions, max 2.2 TB drive)</td><td>GPT (up to 128 primary partitions, drives &gt; 2.2 TB)</td></tr>
+    <tr><td>Interface</td><td>Text-based, keyboard only</td><td>GUI, mouse support</td></tr>
+    <tr><td>Boot speed</td><td>Slower (full hardware init)</td><td>Faster (modern init process)</td></tr>
+    <tr><td>Secure Boot</td><td>Not supported</td><td>Supported (required for Win11)</td></tr>
+    <tr><td>Processor mode</td><td>16-bit real mode</td><td>32-bit or 64-bit protected mode</td></tr>
+    <tr><td>Windows 10 support</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Windows 11 support</td><td>No</td><td>Yes (required)</td></tr>
+    <tr><td>TPM support</td><td>Limited</td><td>Full TPM 2.0 integration</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- SUMMARY                                 -->
+<!-- ════════════════════════════════════════ -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 1.3 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Domain join requires</span>Windows Pro, Pro for Workstations, or Enterprise — NOT Home</div>
+    <div class="summary-item"><span class="s-sym">BitLocker requires</span>Windows Pro, Pro for Workstations, or Enterprise — NOT Home</div>
+    <div class="summary-item"><span class="s-sym">gpedit.msc requires</span>Windows Pro, Pro for Workstations, or Enterprise — NOT Home</div>
+    <div class="summary-item"><span class="s-sym">RDP hosting requires</span>Windows Pro or higher — Home can only be an RDP client</div>
+    <div class="summary-item"><span class="s-sym">Enterprise only</span>Requires Volume Licensing; adds AppLocker, Credential Guard, LTSC</div>
+    <div class="summary-item"><span class="s-sym">Pro for Workstations</span>Win10 only in exam scope; adds ReFS, 4 CPUs, 6 TB RAM</div>
+    <div class="summary-item"><span class="s-sym">N versions</span>European market; identical except no Windows Media Player; fix = Media Feature Pack</div>
+    <div class="summary-item"><span class="s-sym">Home RAM limit</span>128 GB (Win 10 &amp; 11 Home)</div>
+    <div class="summary-item"><span class="s-sym">Pro/Enterprise RAM limit</span>2 TB (Win 10 &amp; 11 Pro and Enterprise)</div>
+    <div class="summary-item"><span class="s-sym">In-place upgrade</span>Preserves apps, files, settings; best for upgrading edition or version</div>
+    <div class="summary-item"><span class="s-sym">Clean install</span>Wipes everything; required for severe malware, new deployments</div>
+    <div class="summary-item"><span class="s-sym">Windows 11 requires</span>TPM 2.0, UEFI with Secure Boot, 64-bit CPU, 4 GB RAM, 64 GB storage</div>
+    <div class="summary-item"><span class="s-sym">TPM 2.0 purpose</span>Secure key storage; required for BitLocker (default mode) and Windows Hello</div>
+    <div class="summary-item"><span class="s-sym">Secure Boot purpose</span>Cryptographically verifies boot loader signatures; prevents rootkits</div>
+    <div class="summary-item"><span class="s-sym">UEFI vs. BIOS</span>UEFI uses GPT, supports Secure Boot, required for Win11; BIOS uses MBR, legacy only</div>
+    <div class="summary-item"><span class="s-sym">Workgroup vs. Domain</span>Workgroup = peer-to-peer, all editions; Domain = AD-based, Pro+ editions only</div>
+  </div>
+</div>
+
+<!-- EXAM PRACTICE CALLOUT -->
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> User has Windows 10 Home and needs to join a domain → Upgrade to Pro minimum.<br>
+  <strong>Scenario 2:</strong> Stolen laptop needs drive encryption → User needs Pro for BitLocker; Home only has limited Device Encryption.<br>
+  <strong>Scenario 3:</strong> Admin cannot run gpedit.msc on a machine → Machine is running Home edition.<br>
+  <strong>Scenario 4:</strong> User cannot enable Remote Desktop on their PC → Running Home; needs Pro to host RDP.<br>
+  <strong>Scenario 5:</strong> Windows 11 upgrade check fails → Check for TPM 2.0, Secure Boot, and UEFI mode in BIOS settings.<br>
+  <strong>Scenario 6:</strong> Windows Pro machine losing apps and files after upgrade → Should have used in-place upgrade, not clean install.<br>
+  <strong>Scenario 7:</strong> N version machine has no sound in media player → Missing Media Feature Pack; not a hardware/driver issue.</p>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Quick Identification Tips</p>
+  <p>To check which Windows edition is installed: press <strong>Win + Pause/Break</strong> → "About your PC" in Settings, or run <code>winver</code> in the Run dialog (Win + R). The edition is listed as "Windows 10 Home," "Windows 11 Pro," etc. You can also check via: <code>Settings → System → About → Windows specifications</code>. The "Edition" field is definitive.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

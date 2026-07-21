@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.10 (Core 2) — Install Applications According to Requirements</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EDITION PANEL — custom for this page */
+  .edition-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .edition-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
+  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
+  .edition-panel-body { padding: 0; }
+  .edition-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .edition-row:last-child { border-bottom: none; }
+  .edition-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .edition-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .edition-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* UPGRADE PATH DIAGRAM */
+  .upgrade-path {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 24px;
+    font-family: var(--sans);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .up-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .up-node .up-label {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .up-node .up-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .up-arrow {
+    font-size: 18px;
+    color: var(--border2);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
+  .up-node.target .up-label { color: var(--accent3); }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .edition-row { grid-template-columns: 1fr; }
+    .upgrade-path { flex-direction: column; align-items: flex-start; }
+    .up-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.10</strong> Given a scenario, install applications according to requirements</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_9-Linux-Features-Tools.html">1.9</a>
+    <a class="nav-next" href="./1_11-Cloud-Productivity-Tools.html">1.11</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.10</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Given a scenario, install applications <br> according to requirements</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.10</span>
+    <span>Domain weight: 28%</span>
+    <span>Requirements · Distribution · Impact</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>Objective 1.10 steps back from any single operating system (covered individually in 1.7–1.9) to address a universal pre-installation discipline: before installing any application, on any platform, a technician needs to verify the target system actually meets that application's requirements, choose an appropriate distribution method, and think through the broader impact that installing new software might have — on the device itself, the network, business operations, and ongoing operational workflow.</p>
+
+<p>This objective rewards a methodical, "look before you leap" mindset. A scenario describing a failed or problematic installation is very often really testing whether you'd have caught the issue beforehand by checking the right requirement, or whether you considered a consequence of the installation that wasn't obvious at first glance.</p>
+
+<!-- ═══ PART 1: SYSTEM REQUIREMENTS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 1</span>System Requirements for Applications</h2>
+
+<p>Every application publishes (or implies) a set of minimum and/or recommended system requirements. Verifying these against the target system <strong>before</strong> attempting installation is the most basic, most frequently skipped step in real-world application deployment — and a frequent source of exam scenarios describing installation failures or poor post-install performance.</p>
+
+<div class="req-checklist">
+  <h4>System Requirements Checklist</h4>
+  <div class="req-item"><span class="req-mark">01</span><span class="req-name">32-bit vs. 64-bit</span><span class="req-desc">Some applications require a 64-bit operating system specifically (objective 3.5's x86/x64 concepts) and will not install — or will install but fail to run correctly — on a 32-bit OS. A 64-bit OS can generally run most 32-bit applications, but the reverse is not true.</span></div>
+  <div class="req-item"><span class="req-mark">02</span><span class="req-name">Dedicated vs. integrated graphics</span><span class="req-desc">Graphics-intensive applications (CAD software, video editing, 3D rendering, many modern games) often require or strongly recommend a <strong>dedicated</strong> GPU (objective 3.5's expansion card concepts) rather than relying on a CPU's built-in <strong>integrated</strong> graphics, which share system resources and generally offer far less graphics performance.</span></div>
+  <div class="req-item"><span class="req-mark">03</span><span class="req-name">VRAM requirements</span><span class="req-desc"><strong>Video RAM</strong> — dedicated memory built into a graphics card, used to store textures, frame buffers, and other graphics data. Graphics-intensive applications often specify a minimum VRAM amount, distinct from a system's regular system RAM (objective 3.3); insufficient VRAM can cause poor performance, visual artifacts, or an application's failure to launch at all.</span></div>
+  <div class="req-item"><span class="req-mark">04</span><span class="req-name">RAM requirements</span><span class="req-desc">The minimum (and often separately listed recommended) system memory needed for acceptable performance, directly tied to objective 3.3's RAM concepts — insufficient RAM commonly causes sluggish performance, excessive use of slower disk-based virtual memory/paging, or outright failure to run memory-intensive applications.</span></div>
+  <div class="req-item"><span class="req-mark">05</span><span class="req-name">CPU requirements</span><span class="req-desc">Minimum processor speed, core count, architecture, or even specific supported CPU instruction sets (objective 3.5's CPU architecture/core configuration concepts) that an application needs to run acceptably, or at all.</span></div>
+  <div class="req-item"><span class="req-mark">06</span><span class="req-name">External hardware tokens</span><span class="req-desc">Some specialized or licensed software (particularly certain professional, scientific, or security-sensitive applications) requires a physical <strong>hardware token</strong> — sometimes called a dongle — plugged into the system (commonly via USB) to unlock, license, or authenticate use of the software; without the token physically present, the application won't run regardless of how correctly everything else is configured.</span></div>
+  <div class="req-item"><span class="req-mark">07</span><span class="req-name">Storage requirements</span><span class="req-desc">The disk space needed for installation itself, plus often additional working/temporary space needed during actual use (objective 3.4's storage concepts) — insufficient free storage is one of the most common, easily-overlooked causes of installation failure.</span></div>
+  <div class="req-item"><span class="req-mark">08</span><span class="req-name">Application-to-OS compatibility</span><span class="req-desc">Whether the application is actually built/certified to run on the target operating system and version at all (Windows vs. macOS vs. Linux, and often specific version ranges within each) — an application built exclusively for one OS family generally cannot simply be installed on another without compatibility layers, emulation, or a separate OS-specific version.</span></div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>A scenario describing a graphics-intensive application running poorly or refusing to launch despite "meeting the RAM and CPU requirements" should prompt checking <strong>VRAM and dedicated vs. integrated graphics</strong> specifically — these are easy to overlook since they're distinct from regular system RAM and general CPU specs, but are frequently the actual limiting factor for graphics-heavy software. Similarly, a scenario describing licensed software that "won't run" despite a clean install should prompt checking for a required <strong>hardware token</strong>.</p>
+</div>
+
+<!-- ═══ PART 2: DISTRIBUTION METHODS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 2</span>Distribution Methods</h2>
+
+<p>Once requirements are confirmed, an application can be delivered to the target system through several different distribution methods, each suited to different scales and scenarios.</p>
+
+<h3 class="section">Physical Media vs. Mountable ISO File</h3>
+
+<table class="data-table">
+  <thead><tr><th>Method</th><th>Description</th><th>Typical Use Today</th></tr></thead>
+  <tbody>
+    <tr><td>Physical media</td><td>A physical disc (CD, DVD, Blu-ray, objective 3.4) containing the installer, inserted into an optical drive</td><td>Largely legacy; certain older software, specific business/institutional distribution requirements, or systems lacking other installation options</td></tr>
+    <tr><td>Mountable ISO file</td><td>A single file (.iso) that's an exact digital image of an optical disc's contents, "mounted" by the OS to behave as if a physical disc were inserted, without requiring any physical media or optical drive at all</td><td>Common today for OS installation media and software still distributed in a disc-image format, especially useful on modern laptops that often lack a built-in optical drive entirely</td></tr>
+  </tbody>
+</table>
+
+<h3 class="section">Downloadable Package</h3>
+
+<p>Software downloaded directly over the internet — an installer executable (Windows), a .dmg/.pkg (macOS, objective 1.8), a package installed via a package manager (Linux, objective 1.9), or an app obtained through a platform's app store. This is by far the most common modern distribution method for individual installations, requiring only an internet connection and no physical media at all.</p>
+
+<h3 class="section">Image Deployment</h3>
+
+<p><span class="key-term">Image deployment</span> installs a pre-configured, complete system image — potentially including the OS, standard applications, and baseline settings all bundled together — onto multiple machines at once, rather than installing applications individually one at a time on each system. This is the standard approach for organizations needing to provision many identical or near-identical machines efficiently (a school computer lab, a corporate fleet of standardized workstations), dramatically reducing the time and manual effort compared to performing individual installations on every single device.</p>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Choosing a Distribution Method By Scale</p>
+  <p>Think of these methods along a spectrum of scale: a <strong>downloadable package</strong> suits installing software on one (or a handful of) individual machines; <strong>physical media/ISO</strong> suits situations without reliable internet access or specific legacy/compliance requirements; <strong>image deployment</strong> suits provisioning many machines at once with a consistent, standardized configuration. A scenario describing setting up dozens or hundreds of identical new computers for an organization points toward image deployment as the efficient answer, not individually downloading and installing software on each one.</p>
+</div>
+
+<!-- ═══ PART 3: IMPACT CONSIDERATIONS FOR NEW APPLICATIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 3</span>Impact Considerations for New Applications</h2>
+
+<p>Beyond simply confirming an application <em>can</em> be installed, a thoughtful technician considers the broader consequences of actually installing it — across four distinct dimensions of potential impact.</p>
+
+<div class="impact-grid">
+  <div class="impact-card">
+    <div class="impact-card-head">DEVICE</div>
+    <p>How the new application affects the specific device it's installed on — consuming storage space and system resources (RAM, CPU, battery life on a laptop), potentially conflicting with existing installed software, or affecting overall system stability and performance.</p>
+  </div>
+  <div class="impact-card">
+    <div class="impact-card-head">NETWORK</div>
+    <p>How the application affects network resources — bandwidth consumption (especially for large initial downloads, ongoing sync, or cloud-connected features), the need to open specific firewall ports or exceptions (objective 1.7's firewall concepts) for the application to function, or additional network traffic load if deployed across many machines simultaneously.</p>
+  </div>
+  <div class="impact-card">
+    <div class="impact-card-head">OPERATION</div>
+    <p>How installing the application affects ongoing day-to-day workflows and operations — whether installation requires a system restart that interrupts active work, whether existing processes/workflows need to be retrained or adjusted around the new software, and whether installation should be scheduled during a maintenance window to minimize disruption.</p>
+  </div>
+  <div class="impact-card">
+    <div class="impact-card-head">BUSINESS</div>
+    <p>Broader organizational considerations — licensing costs and compliance, whether the application fits existing IT governance/security policy, support and maintenance burden going forward, and whether the software introduces any new compliance, data-handling, or vendor-risk considerations for the organization as a whole.</p>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>A scenario asking "what should be considered before deploying this application across the organization" is testing whether you think beyond the single machine in front of you — does it need new firewall rules (<strong>network</strong>)? Will it require retraining staff or interrupt current work (<strong>operation</strong>)? Does it introduce new licensing costs or policy concerns (<strong>business</strong>)? Will it strain the hardware it's running on (<strong>device</strong>)? Strong answers to these scenarios typically touch more than one of these four categories rather than focusing narrowly on just the installation mechanics.</p>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Tying It All Together</p>
+  <p>These three parts of the objective form a natural sequence a technician would actually follow in practice: first confirm the application's <strong>system requirements</strong> are met (Part 1), then choose the appropriate <strong>distribution method</strong> for the situation and scale (Part 2), and finally think through the broader <strong>impact</strong> the installation will have beyond just "does it install successfully" (Part 3). Treating this as a deliberate, ordered process — rather than three disconnected bullet lists — reflects the real-world workflow the exam is ultimately testing.</p>
+</div>
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Installing Applications According to Requirements</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">32-bit vs. 64-bit</span><span>64-bit OS can run most 32-bit apps; not vice versa</span></div>
+    <div class="summary-item"><span class="s-sym">Dedicated vs. integrated GPU</span><span>Graphics-intensive apps often require dedicated graphics</span></div>
+    <div class="summary-item"><span class="s-sym">VRAM</span><span>Dedicated graphics memory, distinct from system RAM</span></div>
+    <div class="summary-item"><span class="s-sym">Hardware token</span><span>Physical device required to license/authenticate some software</span></div>
+    <div class="summary-item"><span class="s-sym">Storage requirements</span><span>Installation space plus often additional working space</span></div>
+    <div class="summary-item"><span class="s-sym">App-to-OS compatibility</span><span>Must be built/certified for the specific target OS and version</span></div>
+    <div class="summary-item"><span class="s-sym">Physical media / ISO</span><span>Disc-based; ISO is the modern, driveless equivalent</span></div>
+    <div class="summary-item"><span class="s-sym">Downloadable package</span><span>Most common method for individual installs</span></div>
+    <div class="summary-item"><span class="s-sym">Image deployment</span><span>Pre-configured image installed across many machines at once</span></div>
+    <div class="summary-item"><span class="s-sym">Device impact</span><span>Resources, storage, stability, conflicts on that machine</span></div>
+    <div class="summary-item"><span class="s-sym">Network impact</span><span>Bandwidth, firewall exceptions, traffic load</span></div>
+    <div class="summary-item"><span class="s-sym">Operation impact</span><span>Restarts, workflow disruption, training needs</span></div>
+    <div class="summary-item"><span class="s-sym">Business impact</span><span>Licensing, compliance, support burden, governance fit</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE TOOLS -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>1.10 Quick Reference</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Easy-to-Miss Requirements</h4>
+    <ul>
+      <li><strong>Graphics app runs poorly despite "enough RAM"</strong> → Check VRAM/dedicated GPU</li>
+      <li><strong>Licensed software won't launch</strong> → Check for required hardware token</li>
+      <li><strong>Install fails partway through</strong> → Check storage space</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Distribution Method By Scenario</h4>
+    <ul>
+      <li><strong>One machine, internet available</strong> → Downloadable package</li>
+      <li><strong>No internet, legacy/compliance need</strong> → Physical media/ISO</li>
+      <li><strong>Many identical machines at once</strong> → Image deployment</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Impact Considerations — Four Angles</h4>
+    <ul>
+      <li><strong>Device</strong> → Resources, storage, stability</li>
+      <li><strong>Network</strong> → Bandwidth, firewall rules</li>
+      <li><strong>Operation</strong> → Downtime, workflow, training</li>
+      <li><strong>Business</strong> → Licensing, compliance, support cost</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>The Three-Step Process</h4>
+    <ul>
+      <li><strong>1.</strong> Verify system requirements</li>
+      <li><strong>2.</strong> Choose the right distribution method</li>
+      <li><strong>3.</strong> Consider broader impact before deploying</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top: 28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>64-bit OS</strong> generally runs 32-bit apps; a 32-bit OS cannot run apps requiring 64-bit.</p>
+  <p><strong>VRAM</strong> is dedicated graphics memory, separate from regular system RAM — don't conflate the two when troubleshooting graphics-heavy software.</p>
+  <p><strong>Hardware tokens</strong> = some licensed software simply won't run without the physical token present, regardless of correct software configuration.</p>
+  <p><strong>ISO files</strong> = the modern, driveless equivalent of physical installation media.</p>
+  <p><strong>Image deployment</strong> = the efficient choice for provisioning many machines identically at once, instead of individual installs.</p>
+  <p><strong>Four impact categories</strong> = Device, Network, Operation, Business — a thorough pre-deployment answer typically considers more than one.</p>
+</div>
+
+</div>
+</body>
+</html>

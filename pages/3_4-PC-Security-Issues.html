@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 3.4 — Troubleshoot Common PC Security Issues</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* SYMPTOM PANEL — mirrors os-panel/edition-panel pattern for symptom breakdowns */
+  .symptom-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .symptom-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .symptom-panel-header.sev-high   { background: var(--accent); }
+  .symptom-panel-header.sev-med    { background: var(--accent4); }
+  .symptom-panel-header.sev-info   { background: var(--accent2); }
+  .symptom-panel-body { padding: 0; }
+  .symptom-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .symptom-row:last-child { border-bottom: none; }
+  .symptom-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .symptom-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .symptom-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .symptom-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>3.4</strong> Troubleshoot Common Personal Computer (PC) Security Issues</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./3_3-Mobile-OS-Security-Issues.html">3.3</a>
+    <a class="nav-next" href="./4_1-Documentation-Support-Systems.html">4.1</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>3.4</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 3 — Software Troubleshooting
+  </div>
+  <h1 class="book-title">Troubleshoot Common Personal<br>Computer (PC) Security Issues</h1>
+  <div class="book-subtitle">
+    <span>Objective 3.4</span>
+    <span>Domain weight: 23%</span>
+    <span>System Symptoms · Browser Symptoms · Root-Cause Analysis · Remediation</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to PC Security Symptoms</h2>
+
+<p>Malware infections and other security compromises rarely announce themselves cleanly. Instead, they surface as a collection of symptoms — a slow browser, a strange pop-up, a file that's suddenly missing, a network connection that stops working — that overlap heavily with ordinary hardware or software problems. Objective 3.4 is about pattern recognition: learning to read a cluster of symptoms and recognize when the underlying cause is a security issue rather than a routine glitch, so the correct response (isolate, investigate, remediate) happens instead of a wasted hour chasing the wrong fix.</p>
+
+<p>This objective splits into two symptom groups. The first is <span class="key-term">system-level symptoms</span> — the signs a compromised or misconfigured system shows at the OS layer: network access problems, desktop alerts, fake antivirus warnings, altered or missing files, unwanted notifications, and failed OS updates. The second is <span class="key-term">browser-related symptoms</span> — the signs that show up specifically inside a web browser: pop-ups, certificate warnings, redirection, and degraded performance. Many real infections produce symptoms from both groups simultaneously, and the exam expects you to connect the dots across both.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Symptom Clusters, Not Single Symptoms</p>
+  <p>A single odd symptom — one pop-up, one slow page load — is rarely enough to diagnose a security issue on its own; each individual symptom in this objective has a plausible non-malicious explanation too. What separates a security incident from routine flakiness is the <strong>cluster</strong>: several of these symptoms appearing together, appearing suddenly, or appearing right after a risky action (clicking a link, installing something, plugging in an unknown drive). Objective 3.4 tests your ability to recognize that pattern and to know, symptom by symptom, what it typically indicates and what the next diagnostic step should be.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — COMMON SYMPTOMS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Common System-Level Symptoms</h2>
+
+<p>These symptoms appear at the operating system level rather than inside any one application. They are frequently the first visible sign a user notices and reports to the help desk, well before any deeper investigation confirms a security cause.</p>
+
+<h3 class="section">Unable to Access the Network</h3>
+
+<p>A machine that suddenly can't reach the network — while other devices on the same network function normally — is a classic sign of malware interfering with network connectivity. Malware frequently blocks network access deliberately, either to prevent the user from downloading removal tools and updated antivirus definitions, or as a side effect of the malware hijacking network settings for its own command-and-control traffic.</p>
+
+<div class="symptom-panel">
+  <div class="symptom-panel-header sev-high"><span>Unable to Access the Network</span><span>Investigate first</span></div>
+  <div class="symptom-panel-body">
+    <div class="symptom-row">
+      <span class="symptom-label">Typical malicious cause</span>
+      <span class="symptom-desc">Malware modifying the hosts file, DNS settings, or proxy configuration to block legitimate traffic (especially to antivirus/update sites) while still allowing its own malicious traffic through</span>
+    </div>
+    <div class="symptom-row">
+      <span class="symptom-label">Non-malicious alternatives</span>
+      <span class="symptom-desc">Failed NIC driver, disabled adapter, incorrect IP configuration, DHCP failure, unplugged/failed cable, or a legitimate firewall/VPN client misconfiguration — always rule these out first before assuming malware</span>
+    </div>
+    <div class="symptom-row">
+      <span class="symptom-label">Where to check</span>
+      <span class="symptom-desc">Inspect the <code>hosts</code> file for unauthorized entries, review proxy settings in browser/OS network settings, and check DNS server addresses for unexpected values pointing to unfamiliar servers</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Desktop Alerts</h3>
+
+<p><span class="key-term">Desktop alerts</span> are unexpected pop-up windows or notification balloons that appear directly on the desktop, outside of any browser, often claiming urgent problems ("Your computer is infected," "Your license has expired," "Click here to renew protection"). Legitimate security software does generate real alerts, but malware and adware are also extremely effective at mimicking that exact visual style to manipulate a user into clicking, calling a fake support number, or installing additional malicious software.</p>
+
+<h3 class="section">False Alerts Regarding Antivirus Protection</h3>
+
+<p>A <span class="key-term">false antivirus alert</span> (sometimes called "scareware" or "rogueware") is a fraudulent warning designed to look like a legitimate antivirus product, claiming the system is infected with a long list of alarming threats and pressuring the user to pay for a "full version" or call a phone number to "fix" the problem. This is one of the most common and effective social engineering tactics in circulation, because it exploits the user's fear and unfamiliarity with what their real antivirus software actually looks like.</p>
+
+<div class="card-grid">
+  <div class="card card-accent">
+    <h4>Signs of a Fake AV Alert</h4>
+    <ul>
+      <li><strong>Wrong branding</strong> — doesn't match the antivirus product actually installed on the machine</li>
+      <li><strong>Urgency and fear tactics</strong> — countdown timers, alarming red graphics, exaggerated threat counts</li>
+      <li><strong>Demands payment or a phone call</strong> — legitimate AV renewal flows rarely require calling a number</li>
+      <li><strong>Appears in the browser as a full-screen takeover</strong> — often impossible to close normally, sometimes locking the keyboard/mouse</li>
+      <li><strong>Can't be dismissed with the normal close button</strong> — may require Task Manager or a forced browser close</li>
+    </ul>
+  </div>
+  <div class="card card-accent3">
+    <h4>Correct Response</h4>
+    <ul>
+      <li><strong>Never call the number or click anything inside the alert</strong> — treat it as hostile content</li>
+      <li><strong>Close via Task Manager</strong> rather than clicking any button inside the alert window</li>
+      <li><strong>Run a scan with the legitimate, already-installed antivirus</strong> to check for an actual infection that triggered the popup</li>
+      <li><strong>Check installed programs and browser extensions</strong> for anything unfamiliar that may have caused it</li>
+      <li><strong>Educate the end user</strong> on what their real AV alerts look like, per the 2.6 malware removal procedure</li>
+    </ul>
+  </div>
+</div>
+
+<h3 class="section">Altered System or Personal Files</h3>
+
+<p>Malware — particularly ransomware, but also more subtle data-theft tools — frequently modifies, renames, encrypts, hides, or deletes files as part of its operation. This objective calls out two specific symptoms under this heading.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Missing/renamed files</span>
+    <span>Files that a user expects to find are simply gone, or appear under unfamiliar names/extensions. Ransomware is the classic cause — it encrypts files and appends a new extension (e.g., <code>.locked</code>, <code>.encrypted</code>) while the original files effectively "disappear." Some malware also deletes or moves files to hide its own presence or to disrupt backups and shadow copies.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Inability to access files</span>
+    <span>Files still exist but can no longer be opened — commonly because ransomware has encrypted them and only a decryption key (held by the attacker) can restore access, or because malware has altered file/folder permissions to block the user's own account from reading its own data.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Ransomware Note — Preserve Evidence, Don't Panic-Delete</p>
+  <p>If altered/inaccessible files point to ransomware, the immediate priority is to disconnect the machine from the network to stop further spread (Objective 2.6's quarantine step) without powering it off, since powering off can complicate recovery in some cases and forensic review. Do not pay a ransom, and do not assume renaming files back or deleting the ransom note fixes anything — the underlying encryption remains. Recovery depends on clean backups (Objective 4.3) or, in rare cases, a published decryption tool for that specific ransomware family.</p>
+</div>
+
+<h3 class="section">Unwanted Notifications Within the OS</h3>
+
+<p>Beyond desktop alerts and fake AV pop-ups, malware and adware frequently register themselves as legitimate-looking notification sources within the OS's own notification system (e.g., Windows Action Center), generating a steady stream of ads, "system optimization" prompts, or requests to install additional software. Because these come through the OS's own notification channel, users often trust them more than an obvious browser pop-up, making this a particularly effective vector for further compromise.</p>
+
+<h3 class="section">OS Updates Failures</h3>
+
+<p>Legitimate Windows/OS updates repeatedly failing to install — especially if this starts suddenly on a previously healthy machine — can indicate malware is deliberately blocking the update service to keep the system vulnerable to a specific unpatched exploit, or has disabled/corrupted the update service itself. It can also point to disk corruption, insufficient disk space, or a genuinely corrupted update component, so this symptom always needs to be correlated with others before concluding malware is the cause.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Malicious cause</span>
+    <span>Malware disabling the Windows Update service, blocking access to Microsoft's update servers via hosts file/firewall rule changes, or corrupting update-related system files to intentionally keep the system unpatched and exploitable.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Non-malicious causes</span>
+    <span>Corrupted Windows Update components, insufficient free disk space, a stuck update in the queue, third-party software conflicts, or a genuinely buggy update — resolved with the built-in Windows Update Troubleshooter, <code>DISM</code>, or <code>sfc /scannow</code> (see Objective 1.4/1.5 tools).</span>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 2 — BROWSER SYMPTOMS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Browser-Related Symptoms</h2>
+
+<p>Because the browser is the most common point of contact between a user and the internet, it is also the most common place security symptoms first appear. These four browser-specific symptoms are heavily tested because they map directly to distinct underlying causes — and distinct fixes.</p>
+
+<h3 class="section">Random/Frequent Pop-Ups</h3>
+
+<p>Persistent pop-up windows or new tabs opening on their own — especially ones that appear even when not actively browsing, or that appear across many different, unrelated websites — almost always point to <span class="key-term">adware</span> or a malicious/rogue browser extension rather than any single website being at fault. Legitimate websites occasionally use pop-ups for genuine functionality, but a pattern across every site visited is the tell.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Likely Causes</h4>
+    <ul>
+      <li><strong>Adware</strong> — a Potentially Unwanted Program (PUP) bundled with other software installs, generating ad pop-ups for revenue</li>
+      <li><strong>Malicious browser extension</strong> — installed deliberately or bundled silently with other software</li>
+      <li><strong>Browser hijacker</strong> — modifies browser settings/homepage and injects ads/pop-ups system-wide</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Remediation Steps</h4>
+    <ul>
+      <li><strong>Review installed extensions/plug-ins</strong> and remove anything unfamiliar or unused (Objective 2.11)</li>
+      <li><strong>Check installed programs list</strong> for bundled adware installed alongside legitimate software</li>
+      <li><strong>Enable the browser's built-in pop-up blocker</strong> if it was disabled</li>
+      <li><strong>Run a full anti-malware scan</strong> if the pattern persists after cleaning extensions</li>
+    </ul>
+  </div>
+</div>
+
+<h3 class="section">Certificate Warnings</h3>
+
+<p>A <span class="key-term">certificate warning</span> appears when the browser cannot validate that the site's HTTPS/TLS certificate is legitimate — the certificate may be expired, self-signed, issued for a different domain name, or not trusted by a recognized Certificate Authority. While many certificate warnings are simply the result of an expired cert on an otherwise legitimate site (a routine, non-malicious problem), a certificate warning can also indicate a genuine security threat.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Routine/non-malicious cause</span>
+    <span>The website's own TLS certificate has expired or was misconfigured by its administrator; this is extremely common and usually resolves once the site owner renews the certificate.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">On-path (man-in-the-middle) attack</span>
+    <span>An attacker intercepting traffic between the user and a legitimate site, presenting their own certificate in place of the real one in order to decrypt or manipulate the traffic in transit. The browser flags the mismatch because the certificate doesn't match what it expects for that domain.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">DNS/host manipulation</span>
+    <span>Malware-altered DNS settings or a poisoned hosts file redirecting the user to a fraudulent look-alike site that cannot present a valid certificate for the domain the user actually typed, since it doesn't control that real domain.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Never "Click Through" a Certificate Warning to Sensitive Sites</p>
+  <p>The correct technician guidance is never to instruct a user to simply bypass or "click through" a certificate warning on a banking, email, or other sensitive login site — doing so may hand credentials directly to an attacker positioned in the middle of the connection. Investigate the cause (check the date/time on the system, check DNS settings, check for other symptoms of compromise) before assuming it's just an expired cert.</p>
+</div>
+
+<h3 class="section">Redirection</h3>
+
+<p><span class="key-term">Redirection</span> occurs when typing in one URL, or clicking a legitimate search result, lands the user on a completely different, often unrelated or malicious site. This is one of the clearest browser-level signs of a compromise, because it means something between the user's input and the destination is actively intercepting and rewriting the request.</p>
+
+<table class="data-table">
+  <thead><tr><th>Cause</th><th>Mechanism</th><th>Fix Location</th></tr></thead>
+  <tbody>
+    <tr><td>Hosts file hijack</td><td>Malware adds entries to the local hosts file, mapping legitimate domain names to malicious IP addresses</td><td>Edit/reset <code>%SystemRoot%\System32\drivers\etc\hosts</code></td></tr>
+    <tr><td>Malicious browser extension</td><td>Extension intercepts navigation and rewrites the destination URL before the request leaves the browser</td><td>Browser extensions/plug-ins settings (2.11)</td></tr>
+    <tr><td>Changed proxy settings</td><td>Malware configures a proxy server it controls, routing and altering all traffic through it</td><td>OS/browser proxy settings</td></tr>
+    <tr><td>DNS settings changed</td><td>Router or OS DNS server addresses changed to a malicious DNS resolver that returns fraudulent IPs</td><td>Router settings / OS network adapter DNS settings (2.10)</td></tr>
+    <tr><td>Browser hijacker malware</td><td>Dedicated malware family that modifies homepage, default search engine, and new-tab behavior directly</td><td>Anti-malware removal + browser reset</td></tr>
+  </tbody>
+</table>
+
+<h3 class="section">Degraded Browser Performance</h3>
+
+<p>A browser that has become noticeably slow — long page load times, unresponsive tabs, high CPU/memory usage attributed to the browser process — can result from ordinary causes like too many open tabs or an outdated browser version, but it is also a common symptom of malicious background activity riding along with normal browsing: a cryptominer running in a background tab or extension, adware injecting content into every page, or spyware quietly exfiltrating browsing data in the background.</p>
+
+<div class="card-grid">
+  <div class="card card-accent4">
+    <h4>Non-Malicious Causes</h4>
+    <ul>
+      <li><strong>Too many open tabs</strong> consuming available RAM</li>
+      <li><strong>Outdated browser version</strong> missing performance improvements</li>
+      <li><strong>Excess legitimate extensions</strong> each adding overhead</li>
+      <li><strong>Full/corrupted cache</strong> slowing page rendering</li>
+      <li><strong>Insufficient system RAM</strong> for the workload generally</li>
+    </ul>
+  </div>
+  <div class="card card-accent">
+    <h4>Malicious Causes</h4>
+    <ul>
+      <li><strong>Cryptominer</strong> — browser-based or system-level, consuming CPU in the background</li>
+      <li><strong>Adware injecting content</strong> into every page load, adding rendering overhead</li>
+      <li><strong>Spyware/keylogger</strong> running alongside the browser, consuming resources while monitoring activity</li>
+      <li><strong>Malicious extension</strong> performing unwanted background network activity</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Quick Diagnostic — Task Manager Before Anti-Malware</p>
+  <p>Before running a full anti-malware scan for degraded browser performance, open Task Manager and check the browser process's CPU and network usage while no tabs are actively loading anything. Persistent high CPU with no user activity — especially spiking together across multiple browser subprocesses — is a strong indicator of a cryptominer or other background malicious process riding inside the browser, and narrows the investigation before a full scan is even run.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — GENERAL DIAGNOSTIC APPROACH ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>General Diagnostic Approach</h2>
+
+<p>Objective 3.4 is a symptom-recognition objective, but the exam also expects you to connect these symptoms back to the broader malware removal process from Objective 2.6. Once a security cause is suspected, the same overall workflow applies regardless of which specific symptom triggered the investigation.</p>
+
+<div class="process-flow">
+  <div class="flow-title">Applying the 2.6 Malware Removal Workflow to a 3.4 Symptom</div>
+  <div class="flow-step">
+    <div class="flow-num">01</div>
+    <div class="flow-text"><strong>Investigate and verify.</strong> Confirm the symptom is real and reproducible, and look for additional symptoms from this objective that might be occurring alongside it — a single symptom in isolation is weaker evidence than a cluster.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">02</div>
+    <div class="flow-text"><strong>Quarantine.</strong> Disconnect the affected machine from the network if malware is suspected, to prevent further spread or continued data exfiltration/command-and-control communication.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">03</div>
+    <div class="flow-text"><strong>Disable System Restore (Windows Home)</strong> so a compromised restore point isn't used later and so restore points don't preserve the infection.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">04</div>
+    <div class="flow-text"><strong>Remediate.</strong> Update anti-malware definitions, then scan and remove using safe mode or a preinstallation environment if the malware interferes with normal scanning.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">05</div>
+    <div class="flow-text"><strong>Reimage/reinstall if necessary,</strong> schedule ongoing scans, re-enable System Restore with a fresh clean restore point, and educate the end user on what triggered the incident so it isn't repeated.</div>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Why Symptom Recognition Matters Before Remediation</p>
+  <p>Jumping straight to a full malware scan every time a user reports a slow browser or a certificate warning wastes time when the actual cause is a non-malicious one — an expired certificate, too many open tabs, a failed Windows Update component. Objective 3.4 exists precisely so a technician can quickly triage which explanation is more likely based on the specific symptom and its context, and escalate to the full 2.6 workflow only once a security cause is genuinely indicated.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 3.4 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Unable to Access Network</span><span>Check hosts file, DNS, and proxy settings before assuming hardware; malware often blocks AV/update traffic</span></div>
+    <div class="summary-item"><span class="s-sym">Desktop Alerts</span><span>Unexpected pop-ups outside the browser; can mimic legitimate AV software convincingly</span></div>
+    <div class="summary-item"><span class="s-sym">False AV Alerts</span><span>Scareware/rogueware; wrong branding, urgency, demands payment/call; close via Task Manager only</span></div>
+    <div class="summary-item"><span class="s-sym">Missing/Renamed Files</span><span>Classic ransomware sign; files encrypted and given new extensions or deleted/hidden</span></div>
+    <div class="summary-item"><span class="s-sym">Inability to Access Files</span><span>Ransomware encryption or altered permissions blocking the user's own account</span></div>
+    <div class="summary-item"><span class="s-sym">Unwanted OS Notifications</span><span>Malware/adware registers as a trusted OS notification source; higher trust, effective vector</span></div>
+    <div class="summary-item"><span class="s-sym">OS Update Failures</span><span>Could be malware blocking patches to preserve an exploit, or a genuine corrupted update component</span></div>
+    <div class="summary-item"><span class="s-sym">Random/Frequent Pop-Ups</span><span>Adware or malicious extension; pattern across many unrelated sites is the tell</span></div>
+    <div class="summary-item"><span class="s-sym">Certificate Warnings</span><span>Expired cert (routine) vs. on-path attack or DNS manipulation (serious) — never click through on sensitive sites</span></div>
+    <div class="summary-item"><span class="s-sym">Redirection</span><span>Hosts file, proxy, DNS, or extension hijack rewriting destinations before the page loads</span></div>
+    <div class="summary-item"><span class="s-sym">Degraded Browser Performance</span><span>Too many tabs (routine) vs. cryptominer/spyware/adware (malicious) — check Task Manager CPU first</span></div>
+    <div class="summary-item"><span class="s-sym">Symptom Clusters</span><span>Multiple symptoms appearing together, or right after a risky action, is stronger evidence than any one alone</span></div>
+    <div class="summary-item"><span class="s-sym">Ransomware Response</span><span>Disconnect from network; don't pay; recovery depends on clean backups or a known decryption tool</span></div>
+    <div class="summary-item"><span class="s-sym">Diagnostic Discipline</span><span>Rule out non-malicious causes for each symptom before escalating straight to a full malware workflow</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Symptom → Likely Malicious Cause</h4>
+    <ul>
+      <li><strong>No network access, others fine</strong> — hosts file/DNS/proxy hijack</li>
+      <li><strong>Files renamed/missing</strong> — ransomware encryption</li>
+      <li><strong>Fake AV pop-up demanding payment</strong> — scareware/rogueware</li>
+      <li><strong>Redirected to wrong site</strong> — hosts file, proxy, or DNS hijack</li>
+      <li><strong>Browser slow, high CPU idle</strong> — cryptominer or spyware</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Symptom → Likely Non-Malicious Cause</h4>
+    <ul>
+      <li><strong>Certificate warning on one known site</strong> — expired cert, admin oversight</li>
+      <li><strong>OS update fails repeatedly</strong> — corrupted update component, low disk space</li>
+      <li><strong>Browser sluggish with 40 tabs open</strong> — insufficient RAM, not malware</li>
+      <li><strong>Occasional single pop-up on one site</strong> — that site's own ad behavior</li>
+      <li><strong>No network access, other devices also down</strong> — router/ISP outage</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>First Diagnostic Move by Symptom</h4>
+    <ul>
+      <li><strong>Network access issue</strong> — check hosts file, DNS settings, proxy config</li>
+      <li><strong>Fake AV alert</strong> — close via Task Manager, scan with real installed AV</li>
+      <li><strong>Redirection/pop-ups</strong> — review installed extensions and programs list</li>
+      <li><strong>Certificate warning</strong> — check system date/time, then DNS settings</li>
+      <li><strong>Degraded browser performance</strong> — check Task Manager CPU/network usage</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Escalation Trigger — Move to Full 2.6 Workflow</h4>
+    <ul>
+      <li><strong>Two or more symptoms present together</strong>, especially across both system and browser categories</li>
+      <li><strong>Files encrypted/renamed with unfamiliar extensions</strong> — treat as ransomware immediately</li>
+      <li><strong>Symptom appeared right after a risky action</strong> (unknown download, link, attachment)</li>
+      <li><strong>Confirmed unauthorized hosts file, DNS, or proxy changes</strong> found during investigation</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>A false antivirus alert should be closed via Task Manager</strong>, never by clicking any button inside the alert itself — clicking "Cancel," "Close," or the X can still trigger the malicious action the popup is designed to perform.</p>
+  <p><strong>Missing/renamed files with new extensions is the signature symptom of ransomware.</strong> The correct first response is disconnecting from the network, not attempting to pay or rename files back.</p>
+  <p><strong>Certificate warnings are not automatically malicious</strong> — an expired cert on a legitimate site is common and routine — but a certificate warning combined with other symptoms (redirection, DNS changes) should be treated as a potential on-path attack, and users should never be told to click through on sensitive login sites.</p>
+  <p><strong>Redirection almost always traces back to the hosts file, DNS settings, proxy configuration, or a malicious extension</strong> — check these four locations in that order when troubleshooting.</p>
+  <p><strong>Random pop-ups across many different, unrelated websites point to adware or a malicious extension on the machine itself</strong>, not to any single website being compromised.</p>
+  <p><strong>Degraded browser performance with no active tabs loading anything, but sustained high CPU usage, points toward a cryptominer</strong> riding in a background tab, extension, or separate malicious process.</p>
+  <p><strong>OS update failures and network access problems both deserve a non-malicious explanation check first</strong> (corrupted update components, disk space, cabling, DHCP) before malware is assumed, since both have very common innocent causes.</p>
+  <p><strong>Symptom clusters are stronger evidence than any single symptom</strong> — the exam favors scenario questions describing two or three symptoms together specifically so you weigh the pattern, not just one isolated data point.</p>
+</div>
+
+</div>
+</body>
+</html>

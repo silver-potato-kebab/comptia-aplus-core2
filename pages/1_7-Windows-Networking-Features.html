@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.7 (Core 2) — Configure Microsoft Windows Networking Features</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EDITION PANEL — custom for this page */
+  .edition-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .edition-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
+  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
+  .edition-panel-body { padding: 0; }
+  .edition-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .edition-row:last-child { border-bottom: none; }
+  .edition-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .edition-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .edition-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* UPGRADE PATH DIAGRAM */
+  .upgrade-path {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 24px;
+    font-family: var(--sans);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .up-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .up-node .up-label {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .up-node .up-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .up-arrow {
+    font-size: 18px;
+    color: var(--border2);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
+  .up-node.target .up-label { color: var(--accent3); }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .edition-row { grid-template-columns: 1fr; }
+    .upgrade-path { flex-direction: column; align-items: flex-start; }
+    .up-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.7</strong> Given a scenario, configure Microsoft Windows networking features on a client/desktop</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_6-Windows-Settings.html">1.6</a>
+    <a class="nav-next" href="./1_8-macOS-Features-Tools.html">1.8</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.7</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Given a scenario, configure Microsoft Windows<br>networking features on a client/desktop</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.7</span>
+    <span>Domain weight: 28%</span>
+    <span>Domain/workgroup · Firewall · IP config · Connections</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>Objective 1.7 covers the client-side Windows configuration tasks that get a desktop or laptop properly connected to and functioning on a network — building directly on the networking fundamentals from the Core 1 exam's Domain 2 (IP addressing, subnet masks, gateways, connection types) but applying them specifically within the Windows operating system's settings, dialogs, and conventions.</p>
+
+<p>This objective covers seven related areas: how a Windows machine identifies itself and shares resources on a network (domain vs. workgroup), the built-in firewall protecting that machine, the actual IP configuration values that make networking work, the different ways a Windows client can establish a network connection, proxy configuration, the public/private network distinction, navigating network resources through File Explorer, and managing data usage on metered connections.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Building on Core 1 Domain 2</p>
+  <p>Several concepts here — IP addressing, subnet masks, default gateways, static vs. dynamic addressing, VPN, wireless vs. wired — were already covered conceptually in Core 1 (objectives 2.6 and 2.7). Objective 1.7 asks you to apply that same knowledge specifically within Windows: where do you go to configure these settings, what do the relevant dialogs look like, and what Windows-specific terminology and behaviors apply on top of the underlying networking concepts you already know.</p>
+</div>
+
+<!-- ═══ PART 1: DOMAIN JOINED VS WORKGROUP ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 1</span>Domain Joined vs. Workgroup</h2>
+
+<p>Every Windows computer on a network belongs to one of two membership models, which fundamentally determines how user accounts, security policy, and resource sharing are managed.</p>
+
+<div class="card-grid">
+  <div class="compare-card">
+    <div class="compare-card-head cc-domain">DOMAIN JOINED</div>
+    <ul>
+      <li><strong>Authentication</strong> — Centralized via Active Directory on a domain controller</li>
+      <li><strong>Account management</strong> — User accounts created/managed centrally by IT</li>
+      <li><strong>Policy</strong> — Group Policy pushes consistent settings to all domain machines</li>
+      <li><strong>Scale</strong> — Designed for many computers (business/enterprise networks)</li>
+      <li><strong>Sign-in</strong> — Same domain credentials work on any domain-joined machine</li>
+    </ul>
+  </div>
+  <div class="compare-card">
+    <div class="compare-card-head cc-workgroup">WORKGROUP</div>
+    <ul>
+      <li><strong>Authentication</strong> — Decentralized; each computer manages its own local accounts</li>
+      <li><strong>Account management</strong> — No central administration; configured machine by machine</li>
+      <li><strong>Policy</strong> — No centralized policy enforcement; local settings only</li>
+      <li><strong>Scale</strong> — Designed for small numbers of computers (home/small office)</li>
+      <li><strong>Sign-in</strong> — Each machine requires its own separately-created local account</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>A scenario describing a large business environment, centralized password policy, or IT being able to push the same settings to hundreds of machines at once points to a <strong>domain</strong>. A scenario describing a home network or very small office where each computer is configured individually, with no central server managing accounts, points to a <strong>workgroup</strong>. This distinction underpins how shared resources (below) are typically accessed and authenticated.</p>
+</div>
+
+<h3 class="section">Shared Resources</h3>
+
+<p>Whether domain-joined or in a workgroup, Windows clients commonly access several categories of network-shared resources.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Printers</span>
+    <span>A printer shared from another computer or made available directly on the network (objective 2.5/3.7 concepts) appears as an installable network printer in Windows, allowing multiple users to print to the same physical device.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">File servers</span>
+    <span>A dedicated server (or a shared folder on another computer) hosting files accessible to network users, typically via the SMB protocol (objective 2.1/2.3) — the underlying mechanism behind virtually all Windows file sharing.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Mapped drives</span>
+    <span>A network share assigned a drive letter (e.g., <code>Z:</code>) in Windows, making it appear and behave like a local drive in File Explorer and within applications, rather than requiring the full network path to be typed out every time.</span>
+  </div>
+</div>
+
+<!-- ═══ PART 2: LOCAL OS FIREWALL SETTINGS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 2</span>Local OS Firewall Settings</h2>
+
+<p>Windows includes a built-in host-based firewall (Windows Defender Firewall), conceptually the same type of "software/host-based firewall" introduced in objective 2.3, filtering traffic to and from the local machine specifically — distinct from a network-level hardware firewall sitting at the network perimeter.</p>
+
+<h3 class="section">Application Restrictions and Exceptions</h3>
+
+<p>The Windows firewall can allow or block specific applications from communicating over the network, either entirely or only on specific network profile types (private vs. public, discussed in Part 6). An <span class="key-term">exception</span> (or "allowed app") is a rule permitting a specific application through the firewall that would otherwise be blocked by default — commonly needed when installing software that requires inbound network connections, such as a file-sharing application, a remote access tool, or certain games/collaboration software.</p>
+
+<h3 class="section">Configuration</h3>
+
+<p>Windows Firewall configuration is accessible through both a simplified Control Panel interface (basic on/off toggles per network profile, and a list of allowed apps) and the more advanced <span class="key-term">Windows Defender Firewall with Advanced Security</span> console, which allows granular inbound/outbound rules based on specific ports, protocols, IP address ranges, and programs — mirroring the general firewall rule concepts from objective 2.5, but applied at the individual host level.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>A scenario describing a newly installed application that "can't be reached by other computers on the network" or "won't accept incoming connections" often points to the Windows Firewall blocking that application by default — the fix is adding an appropriate exception/allowed-app rule, rather than assuming a deeper network or hardware fault.</p>
+</div>
+
+<!-- ═══ PART 3: CLIENT NETWORK CONFIGURATION ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 3</span>Client Network Configuration</h2>
+
+<p>This section applies the IP addressing concepts from Core 1 objective 2.6 directly within Windows' network adapter settings (accessible via Network and Sharing Center, or the modern Settings app's Network &amp; Internet section).</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">IP addressing scheme</span>
+    <span>The actual IPv4 (and/or IPv6) address assigned to the network adapter — either entered manually (static) or received automatically via DHCP (dynamic), as covered conceptually in objective 2.6.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">DNS settings</span>
+    <span>The DNS server address(es) the client uses to resolve domain names to IP addresses (objective 2.1/2.3). Windows can use DNS servers automatically provided by DHCP, or a technician can manually specify preferred/alternate DNS servers — common troubleshooting steps include switching to a known-reliable public DNS server when name resolution problems are suspected.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Subnet mask</span>
+    <span>Defines the network/host boundary for the assigned IP address, exactly as covered in objective 2.6 — almost always <code>255.255.255.0</code> in typical small networks, configured automatically via DHCP or manually alongside a static IP.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Gateway</span>
+    <span>The default gateway address (objective 2.6) — the router's address that the Windows client sends to for any traffic destined outside the local subnet, including all internet-bound traffic.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Static vs. dynamic</span>
+    <span>Whether the IP configuration is manually entered (static) or automatically obtained via DHCP (dynamic) — in Windows, this is the literal toggle between "Obtain an IP address automatically" and "Use the following IP address" in the adapter's IPv4 properties dialog.</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Where This Lives in Windows</p>
+  <p>The classic path to manually configure these settings: Control Panel → Network and Sharing Center → Change adapter settings → right-click the adapter → Properties → Internet Protocol Version 4 (TCP/IPv4) → Properties. This single dialog is where static/dynamic, IP address, subnet mask, default gateway, and DNS servers are all configured together — recognizing this dialog and its fields is directly testable.</p>
+</div>
+
+<!-- ═══ PART 4: ESTABLISH NETWORK CONNECTIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 4</span>Establish Network Connections</h2>
+
+<p>Windows supports establishing network connectivity through several distinct methods, each configured through its own settings area.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">VPN</span>
+    <span>A <span class="key-term">Virtual Private Network</span> connection creates an encrypted tunnel over an existing internet connection, allowing a remote client to securely access a private network (such as a corporate network) as if directly connected to it. Configured in Windows via Settings → Network &amp; Internet → VPN, requiring a server address, VPN protocol/type, and authentication credentials.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Wireless</span>
+    <span>Standard Wi-Fi connectivity (objective 2.5/2.7 concepts), configured by selecting an available SSID and entering the appropriate security credentials through Windows' network/Wi-Fi settings.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Wired</span>
+    <span>A direct Ethernet connection, which Windows typically detects and configures automatically (often via DHCP) the moment a cable is connected, requiring no manual network selection the way Wi-Fi does.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">WWAN/cellular</span>
+    <span>Wireless Wide Area Network connectivity, used by laptops with a built-in cellular modem (or a connected cellular hotspot device/dongle) to access the internet via the cellular network directly, conceptually similar to the cellular data concepts covered in objective 1.3 but applied to a Windows laptop rather than a phone.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>Recognize that <strong>VPN</strong> is fundamentally different from the other three — wireless, wired, and WWAN are all ways of getting <em>any</em> internet/network connectivity in the first place, while VPN is layered <em>on top of</em> an already-existing connection to securely reach a separate private network. A laptop could be connected via Wi-Fi (the underlying connection) and then additionally connect a VPN (the secure tunnel running over that Wi-Fi connection) to reach corporate resources.</p>
+</div>
+
+<!-- ═══ PART 5: PROXY SETTINGS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 5</span>Proxy Settings</h2>
+
+<p>As introduced conceptually in objective 2.3, a <span class="key-term">proxy server</span> acts as an intermediary between a client and the internet. In Windows, proxy settings (Settings → Network &amp; Internet → Proxy) tell the operating system to route web/application traffic through a specified proxy server rather than connecting directly to destinations.</p>
+
+<ul class="body-list">
+  <li><strong>Manual proxy setup</strong> — a technician enters a specific proxy server address and port directly, often required in business environments enforcing content filtering or traffic monitoring through a forward proxy.</li>
+  <li><strong>Automatic proxy setup</strong> — Windows can be configured to automatically detect proxy settings, or to use a proxy auto-configuration (PAC) script/URL that defines proxy rules programmatically, common in larger managed environments.</li>
+  <li><strong>Bypass for local addresses</strong> — proxy configurations typically allow specifying that local/internal network addresses should bypass the proxy entirely, since proxying is generally only relevant/necessary for external internet-bound traffic.</li>
+</ul>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Common Pitfall</p>
+  <p>A misconfigured or stale proxy setting is a classic, often-overlooked cause of "internet doesn't work, but the network connection itself appears fine" — particularly after a laptop moves from a work environment requiring a specific proxy to a home network where that proxy server is unreachable. Checking proxy settings should be part of standard internet-connectivity troubleshooting, especially for laptops that move between different networks.</p>
+</div>
+
+<!-- ═══ PART 6: PUBLIC NETWORK VS. PRIVATE NETWORK ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 6</span>Public Network vs. Private Network</h2>
+
+<p>When Windows connects to a new network for the first time, it prompts the user to classify that network — a setting that directly controls firewall behavior and network discoverability, independent of the actual technical connection type (Wi-Fi vs. Ethernet).</p>
+
+<table class="data-table">
+  <thead><tr><th>Network Profile</th><th>Typical Use</th><th>Behavior</th></tr></thead>
+  <tbody>
+    <tr><td>Private network</td><td>Home or trusted work network</td><td>Network discovery enabled; the PC is visible to and can discover other devices on the network (for file/printer sharing); firewall rules are more permissive</td></tr>
+    <tr><td>Public network</td><td>Coffee shops, airports, hotels, any untrusted/shared network</td><td>Network discovery disabled; the PC is hidden from other devices on the network; firewall rules are more restrictive by default, reducing exposure to other (potentially hostile) devices sharing the same network</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>A scenario describing a user unable to see or share files with other computers on what should be a trusted home/office network often points to that network being incorrectly classified as <strong>public</strong> in Windows, suppressing network discovery and applying stricter firewall rules. The fix is reclassifying the network connection as <strong>private</strong> through Windows network settings. Conversely, a laptop connecting to public Wi-Fi at a coffee shop should remain classified as public to minimize exposure to other untrusted devices on that same network.</p>
+</div>
+
+<!-- ═══ PART 7: FILE EXPLORER NAVIGATION — NETWORK PATHS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 7</span>File Explorer Navigation — Network Paths</h2>
+
+<p>Beyond mapped drives (Part 1), Windows allows direct navigation to network resources using a <span class="key-term">UNC (Universal Naming Convention)</span> path, typed directly into File Explorer's address bar.</p>
+
+<div class="path-bar">\\SERVERNAME\ShareName</div>
+<div class="path-bar">\\192.168.1.50\Documents</div>
+
+<p>A UNC path always follows the same format: two backslashes, then the server's name (or its IP address), then a single backslash, then the specific share name being accessed. This is the standard way of referencing a network resource directly without first mapping it to a drive letter — useful for one-off access to a share, or in scripts/shortcuts referencing a network location precisely.</p>
+
+<div class="callout callout-tip">
+  <p class="callout-title">UNC Path vs. Mapped Drive</p>
+  <p>A <strong>mapped drive</strong> is essentially a saved shortcut to a specific UNC path, displayed with its own drive letter for convenience and persistence across sessions. A <strong>UNC path</strong> typed directly works immediately for one-time or occasional access without creating any persistent drive mapping at all. Both ultimately reach the exact same underlying network share — the difference is purely about convenience and persistence, not the underlying technology.</p>
+</div>
+
+<!-- ═══ PART 8: METERED CONNECTIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">PART 8</span>Metered Connections and Limitations</h2>
+
+<p>Windows allows a network connection (most commonly Wi-Fi, but also applicable to WWAN/cellular connections) to be marked as a <span class="key-term">metered connection</span>, signaling to the operating system and installed applications that data usage on this connection is limited or costly, directly paralleling the data cap awareness concepts introduced for mobile devices in objective 1.3.</p>
+
+<ul class="body-list">
+  <li><strong>Reduced background data usage</strong> — Windows and many applications automatically reduce or pause background data-consuming activity (automatic updates, background app syncing, cloud storage syncing) on a connection marked as metered.</li>
+  <li><strong>Windows Update behavior</strong> — large OS updates may be deferred or require manual confirmation on a metered connection, rather than downloading automatically as they typically would otherwise.</li>
+  <li><strong>Manual configuration</strong> — a technician or user can manually mark any Wi-Fi network as metered through Windows network settings, useful when connected to a mobile hotspot or a connection with a known limited data allowance.</li>
+</ul>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle</p>
+  <p>A scenario describing a user tethered to a phone's hotspot (objective 1.2/1.3) who wants to prevent Windows from consuming large amounts of cellular data through automatic updates and background syncing should mark that Wi-Fi connection as <strong>metered</strong> in Windows settings — directly mirroring the mobile-device "restrict large syncs to Wi-Fi only" logic from objective 1.3, just from the opposite direction (limiting a Windows PC's usage of a cellular-backed connection).</p>
+</div>
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Windows Networking Features</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Domain joined</span><span>Centralized AD authentication/policy; enterprise scale</span></div>
+    <div class="summary-item"><span class="s-sym">Workgroup</span><span>Decentralized, per-machine local accounts; home/small office</span></div>
+    <div class="summary-item"><span class="s-sym">Mapped drive</span><span>Persistent drive-letter shortcut to a network share</span></div>
+    <div class="summary-item"><span class="s-sym">Firewall exceptions</span><span>Allow specific apps through the host-based firewall</span></div>
+    <div class="summary-item"><span class="s-sym">IPv4 properties dialog</span><span>Where static/dynamic, IP, mask, gateway, DNS are configured</span></div>
+    <div class="summary-item"><span class="s-sym">VPN</span><span>Encrypted tunnel layered on top of an existing connection</span></div>
+    <div class="summary-item"><span class="s-sym">Wired/wireless/WWAN</span><span>The underlying connections VPN can run over</span></div>
+    <div class="summary-item"><span class="s-sym">Proxy settings</span><span>Routes traffic through an intermediary server</span></div>
+    <div class="summary-item"><span class="s-sym">Private network</span><span>Discoverable; permissive firewall; trusted networks</span></div>
+    <div class="summary-item"><span class="s-sym">Public network</span><span>Hidden; restrictive firewall; untrusted networks</span></div>
+    <div class="summary-item"><span class="s-sym">UNC path</span><span>\\server\share — direct network path, no mapping required</span></div>
+    <div class="summary-item"><span class="s-sym">Metered connection</span><span>Reduces background data use; defers large updates</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE TOOLS -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>1.7 Quick Reference</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Domain vs. Workgroup By Scenario</h4>
+    <ul>
+      <li><strong>Large business, centralized IT control</strong> → Domain</li>
+      <li><strong>Home/small office, independent machines</strong> → Workgroup</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Common Symptom → Likely Setting</h4>
+    <ul>
+      <li><strong>App can't accept inbound connections</strong> → Firewall exception needed</li>
+      <li><strong>Can't see other PCs on a trusted network</strong> → Network set to Public, should be Private</li>
+      <li><strong>Internet broken after leaving the office</strong> → Stale proxy settings</li>
+      <li><strong>Burning cellular hotspot data fast</strong> → Mark connection as metered</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Accessing a Network Share</h4>
+    <ul>
+      <li><strong>One-time access</strong> → Type a UNC path directly</li>
+      <li><strong>Frequent/ongoing access</strong> → Create a mapped drive</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Connection Types</h4>
+    <ul>
+      <li><strong>Underlying connectivity</strong> → Wired, wireless, or WWAN</li>
+      <li><strong>Secure tunnel on top of any of those</strong> → VPN</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top: 28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Domain</strong> = centralized AD authentication/policy, enterprise scale. <strong>Workgroup</strong> = decentralized, per-machine accounts, home/small office scale.</p>
+  <p><strong>IPv4 Properties dialog</strong> = the single place static/dynamic addressing, IP, subnet mask, gateway, and DNS are all configured together in classic Windows networking.</p>
+  <p><strong>VPN</strong> = a secure tunnel layered on top of an existing wired/wireless/WWAN connection, not a connection type on its own.</p>
+  <p><strong>Public network</strong> = hidden, restrictive firewall, for untrusted networks. <strong>Private network</strong> = discoverable, permissive firewall, for trusted networks.</p>
+  <p><strong>UNC path</strong> (<code>\\server\share</code>) = direct network access without mapping. <strong>Mapped drive</strong> = a persistent, convenient shortcut to the same kind of path.</p>
+  <p><strong>Metered connection</strong> = reduces background data use and defers large updates, directly relevant when tethered to a cellular hotspot.</p>
+</div>
+
+</div>
+</body>
+</html>

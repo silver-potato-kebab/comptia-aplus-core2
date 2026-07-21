@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 2.3 — Compare and Contrast Wireless Security Protocols and Authentication Methods</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 40px; height: 44px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .top-nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nav-home { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.15s; }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '← '; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current { font-family: var(--sans); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-current strong { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-right: 6px; }
+  .top-nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-prev, .nav-next { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; padding: 4px 9px; border: 1px solid var(--border); border-radius: 3px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after { content: ' →'; }
+  @media (max-width: 600px) { .top-nav { padding: 0 16px; } .nav-current, .nav-sep { display: none; } }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .book-header { border-bottom: 3px double var(--border2); padding: 56px 0 32px; margin-bottom: 48px; }
+  .book-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .book-eyebrow span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 2px; margin-right: 10px; font-size: 10px; }
+  .book-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .book-subtitle { font-family: var(--sans); font-size: 14px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); margin-right: 20px; }
+  .book-subtitle span:first-child::before { display: none; }
+
+  h2.chapter { font-family: var(--serif); font-size: 26px; font-weight: 600; margin: 52px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; }
+  h2.chapter .ch-num { font-family: var(--mono); font-size: 12px; color: var(--accent); display: block; margin-bottom: 4px; letter-spacing: 0.1em; font-weight: 400; }
+  h3.section { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 36px 0 12px; }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+  p { margin-bottom: 16px; }
+
+  .callout { border-left: 3px solid; padding: 14px 20px; margin: 24px 0; border-radius: 0 4px 4px 0; font-size: 15.5px; }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px !important; }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam  .callout-title { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info  .callout-title { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip   .callout-title { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn  .callout-title { color: var(--accent4); }
+
+  /* ── PROTOCOL CARD — main display component ── */
+  .proto-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0 28px;
+  }
+  .proto-card-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .proto-card-header.broken  { background: var(--accent-light); border-bottom-color: #c0392b44; }
+  .proto-card-header.current { background: var(--accent3-light); border-bottom-color: #1a6b3a44; }
+  .proto-card-header.neutral { background: var(--surface2); border-bottom-color: var(--border2); }
+  .proto-card-header.strong  { background: var(--accent2-light); border-bottom-color: #2c3e6b44; }
+  .proto-name {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+  .proto-full {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .proto-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+  .status-broken   { background: #fdf2f1; color: var(--accent); border: 1px solid #c0392b44; }
+  .status-current  { background: var(--accent3-light); color: var(--accent3); border: 1px solid #1a6b3a44; }
+  .status-latest   { background: var(--accent2-light); color: var(--accent2); border: 1px solid #2c3e6b44; }
+  .status-legacy   { background: var(--accent4-light); color: var(--accent4); border: 1px solid #b5590a44; }
+  .status-standard { background: var(--surface2); color: var(--muted); border: 1px solid var(--border2); }
+
+  .proto-spec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--border);
+  }
+  .proto-spec {
+    padding: 10px 16px;
+    border-right: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 13px;
+  }
+  .proto-spec:last-child { border-right: none; }
+  .proto-spec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .proto-spec-value { font-weight: 600; color: var(--text); line-height: 1.4; }
+  .proto-spec-value.bad  { color: var(--accent); }
+  .proto-spec-value.good { color: var(--accent3); }
+  .proto-spec-value.ok   { color: var(--accent4); }
+
+  .proto-body { padding: 0; }
+  .proto-row {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .proto-row:last-child { border-bottom: none; }
+  .proto-label { font-weight: 600; color: var(--accent2); padding: 11px 18px; background: var(--surface2); border-right: 1px solid var(--border); line-height: 1.4; font-size: 13px; }
+  .proto-desc { padding: 11px 18px; color: var(--muted); line-height: 1.6; }
+  .proto-desc strong { color: var(--text); }
+
+  /* ── COMPARISON TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-family: var(--sans); margin: 16px 0 24px; }
+  .data-table thead th { background: var(--text); color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 13px; text-align: left; white-space: nowrap; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child { font-weight: 600; color: var(--accent2); font-size: 13px; background: var(--surface2); white-space: nowrap; }
+  .data-table tr:nth-child(even) td { background: #fdfcfb; }
+  .data-table tr:nth-child(even) td:first-child { background: var(--surface2); }
+  .cell-bad  { color: var(--accent);  font-weight: 600; }
+  .cell-good { color: var(--accent3); font-weight: 600; }
+  .cell-ok   { color: var(--accent4); font-weight: 600; }
+
+  /* ── AUTH FLOW DIAGRAM ── */
+  .auth-flow {
+    background: var(--text);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+  .auth-flow-title {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+  }
+  .auth-step {
+    display: grid;
+    grid-template-columns: 120px 24px 1fr;
+    gap: 0 10px;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .auth-step:last-child { border-bottom: none; }
+  .auth-actor { color: #7ec8e3; font-weight: 600; text-align: right; font-size: 11.5px; }
+  .auth-arrow { color: rgba(255,255,255,0.25); text-align: center; font-size: 14px; }
+  .auth-msg { color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.5; }
+  .auth-msg .highlight { color: #f5d67b; }
+  .auth-msg .note { color: rgba(255,255,255,0.35); font-style: italic; }
+
+  /* ── WPA MODES ── */
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .mode-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .mode-card-head {
+    padding: 10px 16px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+  }
+  .mode-card-head.personal  { background: var(--accent3-light); color: var(--accent3); }
+  .mode-card-head.enterprise { background: var(--accent2-light); color: var(--accent2); }
+  .mode-card-body { padding: 12px 16px; font-family: var(--sans); font-size: 13.5px; }
+  .mode-item { padding: 4px 0; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.45; font-size: 13px; display: flex; gap: 8px; align-items: flex-start; }
+  .mode-item:last-child { border-bottom: none; }
+  .mode-item .sym { min-width: 14px; flex-shrink: 0; font-weight: 700; }
+  .sym-y { color: var(--accent3); }
+  .sym-n { color: var(--border2); }
+  .mode-item strong { color: var(--text); }
+
+  /* ── DEF LIST ── */
+  .def-list { margin: 16px 0 24px; }
+  .def-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 200px 1fr; gap: 20px; font-size: 15px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-family: var(--sans); font-weight: 600; color: var(--accent2); font-size: 14px; padding-top: 1px; line-height: 1.4; }
+
+  /* ── RADIUS vs TACACS+ comparison ── */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .vs-header {
+    padding: 11px 18px;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+  }
+  .vs-header.radius { background: var(--accent3-light); color: var(--accent3); border-right: 1px solid var(--border); }
+  .vs-header.tacacs { background: var(--accent2-light); color: var(--accent2); }
+  .vs-row-left, .vs-row-right { padding: 9px 16px; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.5; }
+  .vs-row-left  { border-right: 1px solid var(--border2); background: var(--surface); }
+  .vs-row-right { background: var(--surface); }
+  .vs-row-left:last-child, .vs-row-right:last-child { border-bottom: none; }
+  .vs-row-left strong, .vs-row-right strong { color: var(--text); }
+
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  .summary-box { background: var(--text); color: #f0ede6; border-radius: 6px; padding: 28px 32px; margin: 40px 0; }
+  .summary-box h3 { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+  .summary-item { font-family: var(--sans); font-size: 13.5px; color: #c4bfb4; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; align-items: flex-start; }
+  .summary-item .s-sym { color: #e8b47a; font-family: var(--mono); font-size: 12px; min-width: 150px; line-height: 1.4; padding-top: 1px; flex-shrink: 0; }
+
+  .ch-divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 48px 0; }
+
+  /* evolution bar */
+  .evolution-bar {
+    display: flex;
+    align-items: stretch;
+    margin: 20px 0 28px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    font-family: var(--sans);
+    font-size: 13px;
+  }
+  .evo-item {
+    flex: 1;
+    padding: 12px 14px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .evo-item:last-child { border-right: none; }
+  .evo-name { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+  .evo-year { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+  .evo-cipher { font-family: var(--mono); font-size: 11px; }
+  .evo-status { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 5px; }
+  .evo-item.wep   { background: #fff0ef; }
+  .evo-item.wep   .evo-name   { color: #c0392b; }
+  .evo-item.wep   .evo-cipher { color: #c0392b; }
+  .evo-item.wep   .evo-status { color: #c0392b; }
+  .evo-item.wpa1  { background: #fdf5ed; }
+  .evo-item.wpa1  .evo-name   { color: #b5590a; }
+  .evo-item.wpa1  .evo-cipher { color: #b5590a; }
+  .evo-item.wpa1  .evo-status { color: #b5590a; }
+  .evo-item.wpa2  { background: #f0f8f3; }
+  .evo-item.wpa2  .evo-name   { color: #1a6b3a; }
+  .evo-item.wpa2  .evo-cipher { color: #1a6b3a; }
+  .evo-item.wpa2  .evo-status { color: #1a6b3a; }
+  .evo-item.wpa3  { background: var(--accent2-light); }
+  .evo-item.wpa3  .evo-name   { color: var(--accent2); }
+  .evo-item.wpa3  .evo-cipher { color: var(--accent2); }
+  .evo-item.wpa3  .evo-status { color: var(--accent2); }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .mode-grid, .vs-grid { grid-template-columns: 1fr; }
+    .def-item, .proto-row, .auth-step { grid-template-columns: 1fr; }
+    .proto-spec-grid { grid-template-columns: 1fr 1fr; }
+    .evolution-bar { flex-direction: column; }
+    .evo-item { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>2.3</strong> Compare and Contrast Wireless Security Protocols and Authentication Methods</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./2_2-Windows-Security-Settings.html">2.2</a>
+    <a class="nav-next" href="./2_4-Malware-Detection-Removal.html">2.4</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>2.3</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 2 — Security
+  </div>
+  <h1 class="book-title">Compare and Contrast Wireless Security<br>Protocols and Authentication Methods</h1>
+  <div class="book-subtitle">
+    <span>Objective 2.3</span>
+    <span>Domain weight: 28%</span>
+    <span>Verb: Compare/Contrast</span>
+    <span>2 categories · 8 technologies</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW                                  -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+
+<p>Wireless networks present a unique security challenge: unlike wired networks where an attacker must physically connect a cable, wireless signals propagate through walls and into public spaces, making them inherently accessible to anyone within range. The security mechanisms that protect wireless networks — and the authentication systems that control who can access both wireless and wired network resources — are the subject of this objective.</p>
+
+<p>Objective 2.3 tests two distinct but related topics: <strong>wireless encryption protocols</strong> (the mechanisms that protect data in transit over Wi-Fi), and <strong>centralized authentication systems</strong> (the server-based systems that verify user identity for network access). Understanding how they evolved, why older protocols are broken, and which components belong to each system is what the "compare and contrast" verb demands.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">How This Objective Is Tested</p>
+  <p>Expect scenario questions identifying which protocol is most secure, which authentication system is appropriate for a given environment, and the key technical differentiators between RADIUS and TACACS+. The evolution from WEP to WPA to WPA2 to WPA3 — and specifically <em>why</em> each step was necessary — is the most important narrative to understand. Know: TKIP = broken/legacy, AES = current standard, WPA3 = latest, RADIUS = network access control, TACACS+ = device administration control, Kerberos = domain ticket-based auth.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1: WIRELESS PROTOCOL EVOLUTION   -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>The Evolution of Wireless Security Protocols</h2>
+
+<p>Wi-Fi security protocols have gone through four generations, each introduced to address fundamental cryptographic flaws discovered in the previous generation. Understanding this evolutionary history — not just the protocols themselves but the specific weaknesses that forced each transition — is essential for answering exam questions about why certain protocols are insecure.</p>
+
+<div class="evolution-bar">
+  <div class="evo-item wep">
+    <div class="evo-name">WEP</div>
+    <div class="evo-year">1997</div>
+    <div class="evo-cipher">RC4 + CRC-32</div>
+    <div class="evo-status">⚠ Broken</div>
+  </div>
+  <div class="evo-item wpa1">
+    <div class="evo-name">WPA</div>
+    <div class="evo-year">2003</div>
+    <div class="evo-cipher">TKIP + RC4</div>
+    <div class="evo-status">↯ Deprecated</div>
+  </div>
+  <div class="evo-item wpa2">
+    <div class="evo-name">WPA2</div>
+    <div class="evo-year">2004</div>
+    <div class="evo-cipher">CCMP + AES</div>
+    <div class="evo-status">✓ Current</div>
+  </div>
+  <div class="evo-item wpa3">
+    <div class="evo-name">WPA3</div>
+    <div class="evo-year">2018</div>
+    <div class="evo-cipher">SAE + AES-256</div>
+    <div class="evo-status">★ Latest</div>
+  </div>
+</div>
+
+<h3 class="section">WEP — The Broken Foundation</h3>
+
+<p><span class="key-term">Wired Equivalent Privacy (WEP)</span> was the first Wi-Fi security standard, ratified in 1997 as part of the original IEEE 802.11 specification. Its name expressed its design goal — to provide wireless networks with security equivalent to that of a wired network. It failed catastrophically at this goal.</p>
+
+<p>WEP used the <strong>RC4 stream cipher</strong> with a static 40-bit (later 104-bit) encryption key shared among all clients. The fatal flaw was in how it generated its initialization vectors (IVs) — the random values used to vary each packet's encryption. WEP's 24-bit IVs were too short, meaning they repeated frequently on busy networks. By collecting enough packets with repeated IVs, an attacker could perform statistical analysis to recover the shared encryption key. Tools like <strong>Aircrack-ng</strong> can crack WEP in minutes using captured traffic from a moderately busy network.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">WEP on the Exam</p>
+  <p>WEP is mentioned here as context for understanding why the subsequent protocols exist. The exam does not test WEP configuration. What you must know: WEP is <strong>broken and must never be used</strong>. Any scenario mentioning WEP as a security option requires choosing a different protocol. WEP cannot be "fixed" by using a longer key or rotating passwords — the cryptographic flaw is fundamental to its design.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2: WPA2                          -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>WPA2 — Wi-Fi Protected Access 2</h2>
+
+<p><span class="key-term">Wi-Fi Protected Access 2 (WPA2)</span>, standardized as IEEE 802.11i in 2004, replaced both WEP and the interim WPA standard. WPA2 was the dominant enterprise and consumer wireless security standard for over a decade and remains widely deployed. Its most significant advancement was replacing the broken RC4/TKIP encryption used by WEP and WPA with the substantially stronger AES-based CCMP encryption.</p>
+
+<div class="proto-card">
+  <div class="proto-card-header current">
+    <div>
+      <div class="proto-name">WPA2</div>
+      <div class="proto-full">Wi-Fi Protected Access 2 · IEEE 802.11i · Ratified 2004</div>
+    </div>
+    <span class="proto-status status-current">Current Standard</span>
+  </div>
+  <div class="proto-spec-grid">
+    <div class="proto-spec">
+      <div class="proto-spec-label">Encryption</div>
+      <div class="proto-spec-value good">AES / CCMP</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Key Length</div>
+      <div class="proto-spec-value good">128-bit AES</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Status</div>
+      <div class="proto-spec-value ok">Secure (with caveats)</div>
+    </div>
+  </div>
+  <div class="proto-body">
+    <div class="proto-row">
+      <div class="proto-label">Core encryption</div>
+      <div class="proto-desc"><strong>CCMP (Counter Mode with Cipher Block Chaining Message Authentication Code Protocol)</strong> — the encryption and integrity protection mechanism used by WPA2. Built on <strong>AES (Advanced Encryption Standard)</strong> with 128-bit keys in Counter Mode (CTR) for confidentiality, plus CBC-MAC for message integrity. CCMP addresses every weakness of TKIP and WEP — proper IV management, strong message integrity, and a cryptographically sound cipher.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Personal mode (WPA2-PSK)</div>
+      <div class="proto-desc"><strong>Pre-Shared Key (PSK)</strong> mode — a single shared passphrase (8–63 ASCII characters) is configured on the access point and all clients. The passphrase is used to derive the <strong>Pairwise Master Key (PMK)</strong>, which seeds the 4-way handshake to establish session keys. No authentication server required. Used in homes and small offices. Weaknesses: all clients share the same key (if it's exposed, the entire network is compromised); vulnerable to offline dictionary attacks against captured 4-way handshake packets.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Enterprise mode (WPA2-802.1X)</div>
+      <div class="proto-desc"><strong>802.1X authentication</strong> — each user authenticates individually with unique credentials (username/password or certificate) via a RADIUS server. No shared key — compromise of one user's credentials does not expose other users' traffic. Uses EAP (Extensible Authentication Protocol) as the framework. Standard for corporate wireless networks. Requires RADIUS server infrastructure. Also called <strong>WPA2-Enterprise</strong>.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Known weaknesses</div>
+      <div class="proto-desc"><strong>KRACK (Key Reinstallation Attack, 2017)</strong> — a vulnerability in the WPA2 4-way handshake that allows an attacker to decrypt traffic under certain conditions. Mitigated by OS and firmware patches. <strong>PMKID attack</strong> — allows offline cracking of WPA2-PSK without needing a captured 4-way handshake. The weakness of WPA2-Personal against dictionary attacks on weak passphrases remains the primary practical concern.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Backward compatibility</div>
+      <div class="proto-desc">WPA2 access points can optionally support <strong>WPA/WPA2 mixed mode</strong> — allowing older WPA-only devices to connect using TKIP while newer devices use AES/CCMP. Mixed mode is a security downgrade; disable WPA if the network does not have legacy clients that require it.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mode-grid">
+  <div class="mode-card">
+    <div class="mode-card-head personal">WPA2 Personal (PSK)</div>
+    <div class="mode-card-body">
+      <div class="mode-item"><span class="sym sym-y">✓</span><span>Single shared passphrase for all clients</span></div>
+      <div class="mode-item"><span class="sym sym-y">✓</span><span>No server infrastructure required</span></div>
+      <div class="mode-item"><span class="sym sym-y">✓</span><span>Easy to configure — consumer grade</span></div>
+      <div class="mode-item"><span class="sym sym-n">✗</span><span>Exposed key compromises all clients</span></div>
+      <div class="mode-item"><span class="sym sym-n">✗</span><span>Vulnerable to offline dictionary attack</span></div>
+      <div class="mode-item"><span class="sym sym-n">✗</span><span>No per-user identity or accountability</span></div>
+      <div class="mode-item"><span class="sym sym-n">✗</span><span>No individual user revocation</span></div>
+    </div>
+  </div>
+  <div class="mode-card">
+    <div class="mode-card-head enterprise">WPA2 Enterprise (802.1X)</div>
+    <div class="mode-card-body">
+      <div class="mode-item"><span class="sym sym-y">✓</span><span>Per-user unique credentials</span></div>
+      <div class="mode-item"><span class="sym sym-y">✓</span><span>Individual user revocation (disable AD account)</span></div>
+      <div class="mode-item"><span class="sym sym-y">✓</span><span>Full audit trail — who connected, when</span></div>
+      <div class="mode-item"><span class="sym sym-y">✓</span><span>Compromise of one credential doesn't expose others</span></div>
+      <div class="mode-item"><span class="sym sym-n">✗</span><span>Requires RADIUS server infrastructure</span></div>
+      <div class="mode-item"><span class="sym sym-n">✗</span><span>More complex to configure and maintain</span></div>
+      <div class="mode-item"><span class="sym sym-n">✗</span><span>Client certificate management overhead</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3: WPA3                          -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>WPA3 — Wi-Fi Protected Access 3</h2>
+
+<p><span class="key-term">Wi-Fi Protected Access 3 (WPA3)</span> was introduced by the Wi-Fi Alliance in 2018 and has been mandatory for Wi-Fi Certified devices since 2020. WPA3 addresses the remaining weaknesses of WPA2 — particularly the offline dictionary attack vulnerability in Personal mode and the absence of forward secrecy — while introducing new features for open networks and simplifying device onboarding.</p>
+
+<div class="proto-card">
+  <div class="proto-card-header strong">
+    <div>
+      <div class="proto-name">WPA3</div>
+      <div class="proto-full">Wi-Fi Protected Access 3 · Wi-Fi Alliance 2018 · Mandatory for Wi-Fi Certified devices 2020</div>
+    </div>
+    <span class="proto-status status-latest">Latest Standard</span>
+  </div>
+  <div class="proto-spec-grid">
+    <div class="proto-spec">
+      <div class="proto-spec-label">Personal Encryption</div>
+      <div class="proto-spec-value good">SAE (Dragonfly)</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Enterprise Encryption</div>
+      <div class="proto-spec-value good">AES-256 / GCMP-256</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Status</div>
+      <div class="proto-spec-value good">Latest / Recommended</div>
+    </div>
+  </div>
+  <div class="proto-body">
+    <div class="proto-row">
+      <div class="proto-label">SAE — Personal mode</div>
+      <div class="proto-desc"><strong>Simultaneous Authentication of Equals (SAE)</strong> — replaces the WPA2-PSK pre-shared key handshake with a more secure key exchange based on the <strong>Dragonfly handshake</strong> (an implementation of the PAKE — Password Authenticated Key Exchange protocol). The key improvement: even if an attacker captures the authentication exchange, they cannot perform an offline dictionary attack. Each authentication attempt requires active interaction with the access point — limiting brute-force attacks to real-time attempts, not offline cracking.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Forward secrecy</div>
+      <div class="proto-desc">WPA3 provides <span class="key-term">forward secrecy</span> (also called perfect forward secrecy) — each session uses unique encryption keys derived freshly for that session. Even if the network password is later compromised, previously captured traffic <strong>cannot be retroactively decrypted</strong>. WPA2-PSK lacked this property — if you captured traffic and later obtained the password, you could decrypt all previously captured sessions.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">WPA3-Enterprise</div>
+      <div class="proto-desc">Uses <strong>192-bit security mode</strong> with AES-256/GCMP-256 encryption and SHA-384 for integrity. Designed to meet requirements of government, defense, and financial sector environments requiring CNSA (Commercial National Security Algorithm) suite compliance. Optional in standard enterprise deployments — WPA3-Enterprise can also operate with the standard 128-bit security level.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">OWE — Open networks</div>
+      <div class="proto-desc"><strong>Opportunistic Wireless Encryption (OWE)</strong> — a WPA3 feature for open (no-password) networks like guest Wi-Fi and public hotspots. OWE establishes an encrypted connection for each client without requiring any password, protecting traffic from passive eavesdropping by other clients on the same network. In WPA2, open networks transmitted all data in plaintext — anyone nearby with a packet capture tool could read all traffic. OWE eliminates this.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Wi-Fi Easy Connect (DPP)</div>
+      <div class="proto-desc"><strong>Device Provisioning Protocol (DPP)</strong> — simplifies connecting IoT devices that lack screens or keyboards (smart light bulbs, thermostats, cameras) to WPA3 networks. A QR code or NFC tap on the device's packaging or housing is scanned or tapped with a smartphone acting as a configurator to securely provision the device's network credentials.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Transition mode</div>
+      <div class="proto-desc">WPA3-capable access points can operate in <strong>WPA2/WPA3 transition mode</strong>, allowing WPA2-only devices to still connect while WPA3 clients use the stronger protocol. This backward compatibility is important during the transition period as older devices are replaced.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — WPA2 vs. WPA3 Key Differences</p>
+  <p>The exam tests specific technical differences, not just "WPA3 is newer." Know these three: <strong>(1) SAE vs. PSK</strong> — WPA3-Personal uses SAE (immune to offline dictionary attacks); WPA2-Personal uses PSK (vulnerable). <strong>(2) Forward secrecy</strong> — WPA3 has it, WPA2 does not. <strong>(3) Open network encryption</strong> — WPA3 supports OWE for encrypted open networks; WPA2 open networks are plaintext. In a scenario asking which to choose, WPA3 is always preferred when hardware supports it.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4: TKIP                          -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>TKIP — Temporal Key Integrity Protocol</h2>
+
+<p><span class="key-term">Temporal Key Integrity Protocol (TKIP)</span> was an interim security measure introduced with the original WPA standard in 2003 as a software-based fix for WEP's cryptographic failures. Because WEP was so fundamentally broken, the industry needed an immediate fix that could be deployed as a firmware update to existing hardware — without waiting for the complete redesign that became WPA2/AES.</p>
+
+<div class="proto-card">
+  <div class="proto-card-header broken">
+    <div>
+      <div class="proto-name">TKIP</div>
+      <div class="proto-full">Temporal Key Integrity Protocol · Introduced with WPA (2003) · Deprecated 2012</div>
+    </div>
+    <span class="proto-status status-broken">Deprecated / Broken</span>
+  </div>
+  <div class="proto-spec-grid">
+    <div class="proto-spec">
+      <div class="proto-spec-label">Underlying Cipher</div>
+      <div class="proto-spec-value bad">RC4 (same as WEP)</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Key Length</div>
+      <div class="proto-spec-value ok">128-bit (per-packet)</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Status</div>
+      <div class="proto-spec-value bad">Deprecated — Do Not Use</div>
+    </div>
+  </div>
+  <div class="proto-body">
+    <div class="proto-row">
+      <div class="proto-label">How TKIP improved on WEP</div>
+      <div class="proto-desc">TKIP addressed WEP's specific weaknesses through three mechanisms: <strong>(1) Per-packet key mixing</strong> — instead of using the same key for every packet (WEP's fatal flaw), TKIP derives a unique 128-bit key for each packet by mixing the base key with the transmitter's MAC address and a sequence number. <strong>(2) Message Integrity Check (MIC)</strong> — called "Michael," a 64-bit message integrity code that detects packet tampering (WEP's CRC-32 could be easily manipulated). <strong>(3) Extended IV</strong> — 48-bit IVs instead of WEP's 24-bit IVs, dramatically reducing IV collision frequency.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Why TKIP is deprecated</div>
+      <div class="proto-desc">TKIP retained RC4 as its underlying cipher — the same stream cipher used by the broken WEP protocol. While the per-packet key mixing addressed WEP's specific IV reuse attack, RC4 itself has deeper cryptographic weaknesses. In 2008 and 2009, researchers demonstrated practical attacks against TKIP. In 2012, the IEEE 802.11 standard formally deprecated TKIP, and in 2013 the Wi-Fi Alliance began requiring WPA2/AES certification. TKIP support was removed from the 802.11 standard in 2020.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Current recommendation</div>
+      <div class="proto-desc"><strong>Disable TKIP entirely.</strong> If a network is running in WPA/TKIP or WPA2/TKIP (mixed mode), it should be configured to use WPA2/AES (CCMP) only. TKIP should only be enabled if there are legacy devices that absolutely require it and cannot be replaced — and even then, the risk should be formally accepted and the timeline for replacement documented.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5: AES                           -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>AES — Advanced Encryption Standard</h2>
+
+<p><span class="key-term">Advanced Encryption Standard (AES)</span> is the symmetric block cipher that replaced DES (Data Encryption Standard) as the U.S. government's official encryption standard in 2001, following a public competition organized by NIST. AES is not a wireless protocol — it is a <em>cipher</em> that underlies multiple protocols and encryption systems, including WPA2's CCMP and WPA3's GCMP.</p>
+
+<div class="proto-card">
+  <div class="proto-card-header current">
+    <div>
+      <div class="proto-name">AES</div>
+      <div class="proto-full">Advanced Encryption Standard · NIST FIPS 197 · Adopted November 2001 · AKA Rijndael</div>
+    </div>
+    <span class="proto-status status-current">Industry Standard Cipher</span>
+  </div>
+  <div class="proto-spec-grid">
+    <div class="proto-spec">
+      <div class="proto-spec-label">Type</div>
+      <div class="proto-spec-value good">Symmetric Block Cipher</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Block Size</div>
+      <div class="proto-spec-value good">128 bits</div>
+    </div>
+    <div class="proto-spec">
+      <div class="proto-spec-label">Key Sizes</div>
+      <div class="proto-spec-value good">128, 192, or 256 bits</div>
+    </div>
+  </div>
+  <div class="proto-body">
+    <div class="proto-row">
+      <div class="proto-label">AES-128</div>
+      <div class="proto-desc">Used in WPA2/CCMP. <strong>128-bit key</strong> — 10 rounds of transformations. Provides approximately 2<sup>128</sup> possible keys. Considered computationally infeasible to brute-force with any foreseeable technology. Approved for SECRET-level classified U.S. government information.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">AES-192</div>
+      <div class="proto-desc"><strong>192-bit key</strong> — 12 rounds. Used in some higher-security configurations. Approved for TOP SECRET-level when combined with appropriate key management.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">AES-256</div>
+      <div class="proto-desc"><strong>256-bit key</strong> — 14 rounds. Used in WPA3-Enterprise (192-bit security suite). Maximum security level. The preferred choice when the additional computation cost is acceptable. Used in TLS 1.3, BitLocker, and many modern security protocols. Approved for TOP SECRET-level U.S. classified information.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">AES in CCMP (WPA2)</div>
+      <div class="proto-desc">WPA2 uses AES in <strong>Counter Mode (CTR)</strong> for encryption combined with <strong>CBC-MAC</strong> for integrity verification — together forming CCMP. CTR mode converts the block cipher into a stream cipher by encrypting a counter value and XORing the result with the plaintext — allowing parallelization and efficient encryption of variable-length data.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">AES in GCMP (WPA3)</div>
+      <div class="proto-desc">WPA3-Enterprise uses AES in <strong>Galois/Counter Mode (GCM)</strong>, forming GCMP. GCM provides both encryption and authentication in a single pass and is more efficient than CCMP. WPA3-Enterprise's 192-bit mode uses GCMP-256 (AES-256 in GCM mode).</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">AES vs. RC4 (TKIP)</div>
+      <div class="proto-desc"><strong>RC4</strong> is a stream cipher — it generates a pseudorandom keystream that is XORed with the plaintext. It is fast in software but has been shown to have statistical biases and is vulnerable to key recovery attacks. <strong>AES</strong> is a block cipher with a far more complex and mathematically sound structure. For Wi-Fi, the transition from RC4/TKIP to AES/CCMP was the most significant security improvement in WPA2.</div>
+    </div>
+  </div>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Protocol</th>
+      <th>Year</th>
+      <th>Cipher</th>
+      <th>Key Mgmt</th>
+      <th>Integrity</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>WEP</td>
+      <td>1997</td>
+      <td><span class="cell-bad">RC4 (static)</span></td>
+      <td><span class="cell-bad">Static shared key</span></td>
+      <td><span class="cell-bad">CRC-32 (weak)</span></td>
+      <td><span class="cell-bad">Broken</span></td>
+    </tr>
+    <tr>
+      <td>WPA / TKIP</td>
+      <td>2003</td>
+      <td><span class="cell-ok">RC4 (per-packet)</span></td>
+      <td><span class="cell-ok">TKIP key mixing</span></td>
+      <td><span class="cell-ok">MIC (Michael)</span></td>
+      <td><span class="cell-ok">Deprecated</span></td>
+    </tr>
+    <tr>
+      <td>WPA2 / CCMP</td>
+      <td>2004</td>
+      <td><span class="cell-good">AES-128</span></td>
+      <td><span class="cell-good">4-way handshake</span></td>
+      <td><span class="cell-good">CBC-MAC</span></td>
+      <td><span class="cell-good">Current</span></td>
+    </tr>
+    <tr>
+      <td>WPA3-Personal / SAE</td>
+      <td>2018</td>
+      <td><span class="cell-good">AES-128/256</span></td>
+      <td><span class="cell-good">SAE (Dragonfly)</span></td>
+      <td><span class="cell-good">CCMP/GCMP</span></td>
+      <td><span class="cell-good">Latest</span></td>
+    </tr>
+    <tr>
+      <td>WPA3-Enterprise</td>
+      <td>2018</td>
+      <td><span class="cell-good">AES-256</span></td>
+      <td><span class="cell-good">802.1X / EAP</span></td>
+      <td><span class="cell-good">GCMP-256</span></td>
+      <td><span class="cell-good">Latest (High-Security)</span></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 6: RADIUS                        -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 6</span>Authentication — RADIUS</h2>
+
+<p><span class="key-term">Remote Authentication Dial-in User Service (RADIUS)</span> is a client-server networking protocol that provides centralized <strong>Authentication, Authorization, and Accounting (AAA)</strong> services for network access. Originally designed for dial-in modem access, RADIUS has become the industry-standard protocol for authenticating users connecting to networks via Wi-Fi (WPA2/WPA3 Enterprise), VPN, 802.1X wired network access, and other network access scenarios.</p>
+
+<div class="proto-card">
+  <div class="proto-card-header current">
+    <div>
+      <div class="proto-name">RADIUS</div>
+      <div class="proto-full">Remote Authentication Dial-in User Service · RFC 2865/2866 · UDP 1812 (auth) / 1813 (accounting)</div>
+    </div>
+    <span class="proto-status status-current">Network Access AAA</span>
+  </div>
+  <div class="proto-body">
+    <div class="proto-row">
+      <div class="proto-label">Role in the network</div>
+      <div class="proto-desc">RADIUS sits between the <strong>Network Access Server (NAS)</strong> — the device users connect to (a wireless access point, VPN concentrator, or switch) — and the <strong>identity backend</strong> (Active Directory, LDAP directory, or a local user database). When a user attempts to connect, the NAS forwards their credentials to the RADIUS server, which authenticates them and returns an allow/deny decision along with authorization attributes (VLAN assignment, IP address pool, session time limit).</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Three A's of AAA</div>
+      <div class="proto-desc"><strong>Authentication</strong> — verifies the user's identity (who are you?). <strong>Authorization</strong> — determines what the authenticated user is permitted to do or access (what are you allowed to do?). For example, assigning a user to a specific VLAN based on their department. <strong>Accounting</strong> — records what the user did — connection time, bytes transferred, which resources were accessed (what did you do?). Accounting is critical for billing (ISPs) and security auditing.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Transport protocol</div>
+      <div class="proto-desc"><strong>UDP</strong> — RADIUS uses UDP ports 1812 (authentication) and 1813 (accounting). The legacy ports 1645 and 1646 are also used by some older implementations. UDP is connectionless — RADIUS handles its own retransmission logic. The use of UDP rather than TCP means RADIUS does not have the TCP connection overhead, which is valuable when handling many simultaneous authentication requests.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Encryption scope</div>
+      <div class="proto-desc">RADIUS encrypts <strong>only the password</strong> in the authentication request using MD5 (a weak hash, but the password is obscured). All other RADIUS attributes — username, NAS IP, session attributes — are transmitted in <strong>cleartext</strong>. This is a known weakness. <strong>RadSec (RADIUS over TLS)</strong> addresses this by encapsulating all RADIUS traffic in TLS. In high-security environments, RADIUS communications should traverse a dedicated management network or be protected with IPsec.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">RADIUS in WPA2/WPA3 Enterprise</div>
+      <div class="proto-desc">In enterprise wireless: the wireless access point is the RADIUS <em>client</em> (also called the NAS). When a user connects, the AP forwards the user's EAP credentials to the RADIUS server. The RADIUS server validates the credentials against Active Directory (or another directory) and returns Access-Accept (with attributes like VLAN assignment) or Access-Reject. The AP then either completes the connection or denies it. The user never communicates directly with the RADIUS server.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Common RADIUS servers</div>
+      <div class="proto-desc"><strong>Microsoft NPS (Network Policy Server)</strong> — the built-in RADIUS server in Windows Server, integrates with Active Directory, free with Windows Server licensing. <strong>FreeRADIUS</strong> — open-source, widely deployed in Linux environments. <strong>Cisco ISE (Identity Services Engine)</strong> — enterprise-grade with advanced features (posture assessment, device profiling, guest access). <strong>Aruba ClearPass</strong> — another enterprise AAA platform.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">RADIUS Authentication Flow</h3>
+
+<div class="auth-flow">
+  <div class="auth-flow-title">WPA2-Enterprise — 802.1X / RADIUS Authentication Sequence</div>
+  <div class="auth-step">
+    <span class="auth-actor">Client (Supplicant)</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">EAPOL-Start</span> <span class="note">— client announces presence to the AP</span></span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">AP (Authenticator)</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">EAP-Request/Identity</span> <span class="note">— AP requests client's identity</span></span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">Client</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">EAP-Response/Identity</span> <span class="note">— client sends username to AP</span></span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">AP → RADIUS Server</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">RADIUS Access-Request</span> <span class="note">— AP forwards credentials to RADIUS server</span></span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">RADIUS → AD/LDAP</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">Credential validation</span> <span class="note">— RADIUS verifies against directory backend</span></span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">RADIUS → AP</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">RADIUS Access-Accept</span> <span class="note">— includes VLAN, session timeout, other attributes</span></span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">AP → Client</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">EAP-Success</span> <span class="note">— AP notifies client of successful auth</span></span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">AP ↔ Client</span>
+    <span class="auth-arrow">↔</span>
+    <span class="auth-msg"><span class="highlight">WPA2 4-way handshake</span> <span class="note">— session encryption keys established; client now has network access</span></span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 7: TACACS+                       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 7</span>Authentication — TACACS+</h2>
+
+<p><span class="key-term">Terminal Access Controller Access-Control System Plus (TACACS+)</span> is a Cisco-developed AAA protocol designed primarily for <strong>device administration authentication</strong> — controlling who can log into and administer network devices such as routers, switches, firewalls, and other infrastructure equipment. Despite sharing AAA functions with RADIUS, TACACS+ differs significantly in its design, transport, and scope of use.</p>
+
+<div class="proto-card">
+  <div class="proto-card-header strong">
+    <div>
+      <div class="proto-name">TACACS+</div>
+      <div class="proto-full">Terminal Access Controller Access-Control System Plus · Cisco proprietary · TCP port 49</div>
+    </div>
+    <span class="proto-status status-latest">Device Administration AAA</span>
+  </div>
+  <div class="proto-body">
+    <div class="proto-row">
+      <div class="proto-label">Primary use case</div>
+      <div class="proto-desc"><strong>Network device administration</strong> — controlling who can SSH or console into a Cisco router, switch, or firewall and what commands they can execute. When a network engineer logs into a router CLI, TACACS+ authenticates the login, authorizes each command they attempt to run (command authorization), and logs every command for audit purposes (command accounting). This granular command-level control is TACACS+'s defining differentiator from RADIUS.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Transport protocol</div>
+      <div class="proto-desc"><strong>TCP port 49</strong> — unlike RADIUS's UDP, TACACS+ uses TCP for all communications. TCP provides reliable, connection-oriented delivery with built-in error detection and retransmission. This makes TACACS+ more reliable for interactive device administration sessions where a lost packet cannot simply be retried by the application layer.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Encryption scope</div>
+      <div class="proto-desc">TACACS+ encrypts <strong>the entire payload</strong> of every packet — not just the password as RADIUS does. The encryption uses a shared secret key (a pre-shared key configured between the network device and the TACACS+ server) and MD5 hashing to generate the encryption key. Full payload encryption means that usernames, authorization attributes, and command logs are all protected in transit.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Separated AAA</div>
+      <div class="proto-desc">TACACS+ implements <strong>fully separated Authentication, Authorization, and Accounting</strong> services — each function can use a different database, a different policy, or a different server. This modularity enables flexible configurations: authenticate against Active Directory, authorize commands against a local policy file, and log accounting to a separate syslog server. RADIUS combines authentication and authorization in a single request/response, making this separation impossible.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Command authorization</div>
+      <div class="proto-desc">TACACS+ can be configured to <strong>permit or deny specific CLI commands</strong> per user or per group. A junior network technician might be authorized to run <code>show</code> commands (read-only) but not <code>configure terminal</code> (configuration changes). A senior engineer has full command access. This granularity allows strict separation of duties in network operations. RADIUS has no equivalent command-level authorization capability.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Cisco proprietary</div>
+      <div class="proto-desc">TACACS+ was developed by Cisco and, while the protocol has been published, it is not an open standard. Primary implementations are Cisco ISE (Identity Services Engine) and the open-source <strong>tac_plus</strong> daemon. RADIUS is an IETF open standard (RFC 2865) with broad multi-vendor support. In non-Cisco environments, RADIUS is more commonly used even for device administration.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">RADIUS vs. TACACS+ — Side-by-Side Comparison</h3>
+
+<div class="vs-grid">
+  <div class="vs-header radius">RADIUS</div>
+  <div class="vs-header tacacs">TACACS+</div>
+
+  <div class="vs-row-left"><strong>Transport:</strong> UDP ports 1812/1813</div>
+  <div class="vs-row-right"><strong>Transport:</strong> TCP port 49</div>
+
+  <div class="vs-row-left"><strong>Encryption:</strong> Password only (MD5)</div>
+  <div class="vs-row-right"><strong>Encryption:</strong> Entire payload</div>
+
+  <div class="vs-row-left"><strong>AAA separation:</strong> Combined auth+authz</div>
+  <div class="vs-row-right"><strong>AAA separation:</strong> Fully separated A, A, A</div>
+
+  <div class="vs-row-left"><strong>Primary use:</strong> Network access (Wi-Fi, VPN, 802.1X)</div>
+  <div class="vs-row-right"><strong>Primary use:</strong> Device administration (router/switch CLI)</div>
+
+  <div class="vs-row-left"><strong>Command authz:</strong> No per-command control</div>
+  <div class="vs-row-right"><strong>Command authz:</strong> Granular per-command authorization</div>
+
+  <div class="vs-row-left"><strong>Standard:</strong> Open IETF standard (RFC 2865)</div>
+  <div class="vs-row-right"><strong>Standard:</strong> Cisco proprietary</div>
+
+  <div class="vs-row-left"><strong>Typical server:</strong> Microsoft NPS, FreeRADIUS, Cisco ISE</div>
+  <div class="vs-row-right"><strong>Typical server:</strong> Cisco ISE, tac_plus</div>
+
+  <div class="vs-row-left"><strong>Accounting:</strong> Session-level (connection time, bytes)</div>
+  <div class="vs-row-right"><strong>Accounting:</strong> Command-level (every command logged)</div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — RADIUS vs. TACACS+ Decision</p>
+  <p>The exam tests this distinction repeatedly. The key decision rule: <strong>RADIUS = network access authentication</strong> (who can connect to the Wi-Fi, VPN, or 802.1X wired port). <strong>TACACS+ = device administration authentication</strong> (who can log into and configure a router or switch). The three technical differentiators: <strong>(1)</strong> TACACS+ uses TCP, RADIUS uses UDP. <strong>(2)</strong> TACACS+ encrypts the entire payload, RADIUS encrypts only the password. <strong>(3)</strong> TACACS+ supports per-command authorization, RADIUS does not.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 8: KERBEROS                      -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 8</span>Authentication — Kerberos</h2>
+
+<p><span class="key-term">Kerberos</span> is a network authentication protocol developed at MIT that uses <strong>ticket-based authentication</strong> to allow nodes to prove their identity to one another over a non-secure network without transmitting passwords. It is the default authentication protocol for Windows Active Directory domains and is used by Linux and macOS in domain environments as well. Named after the three-headed dog guarding the underworld in Greek mythology — reflecting its three main components.</p>
+
+<div class="proto-card">
+  <div class="proto-card-header strong">
+    <div>
+      <div class="proto-name">Kerberos</div>
+      <div class="proto-full">Kerberos v5 · RFC 4120 · Default Windows Active Directory authentication · UDP/TCP port 88</div>
+    </div>
+    <span class="proto-status status-current">Domain Authentication</span>
+  </div>
+  <div class="proto-body">
+    <div class="proto-row">
+      <div class="proto-label">Core concept: tickets</div>
+      <div class="proto-desc">Kerberos uses <strong>tickets</strong> — encrypted tokens issued by a trusted authority (the <span class="key-term">Key Distribution Center, KDC</span>) that prove a user's identity to services without the user repeatedly transmitting their password. Once a user authenticates and obtains tickets, they can access multiple services during the day by presenting their ticket — the password is never sent again after the initial authentication. This is the mechanism enabling Single Sign-On in Active Directory environments.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Key Distribution Center (KDC)</div>
+      <div class="proto-desc">The KDC is the trusted third party that issues tickets. In a Windows domain, the <strong>Domain Controller</strong> runs the KDC. The KDC has two components: the <strong>Authentication Service (AS)</strong> — handles initial user authentication and issues the TGT; and the <strong>Ticket Granting Service (TGS)</strong> — issues Service Tickets upon presentation of a valid TGT.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Ticket Granting Ticket (TGT)</div>
+      <div class="proto-desc">The <span class="key-term">TGT</span> is the "master ticket" obtained after the initial authentication against the KDC/AS. It proves to the TGS that the user has already been authenticated. The TGT is encrypted with the KDC's secret key — only the KDC can decrypt it. The user cannot read or modify their TGT. TGTs have a limited lifetime (default 10 hours in Windows AD, renewable for up to 7 days).</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Service Ticket (ST)</div>
+      <div class="proto-desc">A <span class="key-term">Service Ticket (ST)</span> (also called a Service Granting Ticket, SGT) grants access to a specific service. When the user wants to access a file server, they present their TGT to the TGS and request a Service Ticket for that file server. The TGS issues a Service Ticket encrypted with the file server's secret key. The user presents this Service Ticket to the file server — the file server decrypts it (proving it came from the KDC) and grants access. The file server's password is never involved in the user interaction.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Mutual authentication</div>
+      <div class="proto-desc">Kerberos provides <strong>mutual authentication</strong> — not only does the server verify the client's identity, but the client also verifies the server's identity. This prevents impersonation attacks where a rogue server tricks a client into authenticating to it. The service ticket mechanism ensures that only a server with the correct private key (shared with the KDC) can be authenticated.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Time sensitivity</div>
+      <div class="proto-desc">Kerberos requires that all participating systems have <strong>synchronized clocks</strong> within a maximum skew (default 5 minutes in Windows AD). If a client's clock is more than 5 minutes off the KDC's clock, Kerberos authentication fails with a "clock skew too great" error. This is a replay attack defense — expired tickets are rejected based on timestamps. NTP (Network Time Protocol) is used to synchronize clocks across the domain.</div>
+    </div>
+    <div class="proto-row">
+      <div class="proto-label">Transport and port</div>
+      <div class="proto-desc">Kerberos uses <strong>UDP port 88</strong> by default for KDC requests. TCP port 88 is used when the response is too large for UDP (typically when certificates or large PAC data is included in the TGT). Kerberos traffic should be restricted to the internal network and not exposed externally.</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Kerberos Authentication Flow</h3>
+
+<div class="auth-flow">
+  <div class="auth-flow-title">Kerberos Authentication — Accessing a File Server</div>
+  <div class="auth-step">
+    <span class="auth-actor">Client → KDC/AS</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">AS-REQ</span> — client requests authentication, sends username + pre-authentication data (timestamp encrypted with password-derived key)</span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">KDC/AS → Client</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">AS-REP</span> — KDC issues <span class="highlight">TGT</span> (encrypted with KDC key) + session key (encrypted with client's key)</span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">Client → KDC/TGS</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">TGS-REQ</span> — client presents TGT + authenticator + name of target service (file server)</span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">KDC/TGS → Client</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">TGS-REP</span> — TGS issues <span class="highlight">Service Ticket</span> (encrypted with file server's key) + new session key</span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">Client → File Server</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">AP-REQ</span> — client presents Service Ticket to file server + authenticator encrypted with session key</span>
+  </div>
+  <div class="auth-step">
+    <span class="auth-actor">File Server → Client</span>
+    <span class="auth-arrow">→</span>
+    <span class="auth-msg"><span class="highlight">AP-REP</span> — file server confirms identity to client (mutual authentication); access granted</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Kerberos in the Real World</p>
+  <p>Every time a user logs into a Windows domain computer and accesses a file share, printer, or application server without being prompted for a password — that seamless access is Kerberos working invisibly. The user authenticated once at login (obtained their TGT), and Kerberos handles all subsequent resource access transparently using Service Tickets. This ticket-based SSO is why domain users rarely need to re-enter their password during the workday, even as they access dozens of different servers and services.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 9: MFA IN WIRELESS CONTEXT       -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">SECTION 9</span>Multifactor Authentication in Network Access</h2>
+
+<p>The <span class="key-term">multifactor authentication (MFA)</span> listed in this objective specifically addresses MFA as it applies to network authentication — how the AAA systems (RADIUS, TACACS+, Kerberos) can be configured to require more than one authentication factor before granting access.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">MFA with RADIUS</span>
+    <span>RADIUS can enforce MFA for network access by integrating with an MFA provider. For example, Microsoft NPS with the Azure MFA extension requires both a password and an Authenticator app approval before allowing Wi-Fi or VPN connections. The RADIUS server forwards the authentication challenge to the MFA provider; the user approves on their phone; the RADIUS server then issues the Access-Accept. EAP methods such as EAP-TLS (certificate-based) inherently provide strong MFA — the user possesses a certificate (something they have) and the private key is protected by the machine's TPM or a PIN.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">MFA with TACACS+</span>
+    <span>TACACS+ can be configured to require a second factor for device administration login. When a network engineer SSHs into a router managed by TACACS+, they may be required to enter their password and then approve an MFA push notification on their phone before receiving CLI access. This prevents unauthorized device changes even if an engineer's credentials are compromised.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">MFA with Kerberos</span>
+    <span>Kerberos pre-authentication can be strengthened with smart cards — the user inserts their smart card and enters a PIN to authenticate to the KDC. The smart card holds a certificate, making this MFA: something you have (smart card) + something you know (PIN). Windows Hello for Business also integrates with Kerberos — the biometric or PIN authenticates to Windows Hello, which then performs Kerberos authentication on the user's behalf using a certificate stored in the TPM.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">EAP methods and factors</span>
+    <span><strong>EAP-TLS</strong> — certificate-based; the client presents a digital certificate (something you have); the certificate's private key is protected by TPM or PIN, making it inherently two-factor. <strong>PEAP-MSCHAPv2</strong> — tunneled password authentication; single factor by itself but can be combined with additional factors. <strong>EAP-TTLS</strong> — similar to PEAP, supports various inner authentication methods. EAP-TLS is the most secure EAP method and the recommended choice for enterprise WPA2/WPA3 deployments.</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 10: COMPLETE COMPARISON          -->
+<!-- ══════════════════════════════════════════ -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Complete Protocol and Authentication Quick Reference</h2>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Technology</th>
+      <th>Category</th>
+      <th>Key Characteristics</th>
+      <th>Use Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>WPA2</td>
+      <td>Wireless encryption</td>
+      <td>AES-128/CCMP; Personal (PSK) or Enterprise (802.1X); current standard; vulnerable to offline dictionary attack on PSK</td>
+      <td>All current wireless networks; minimum standard for secure Wi-Fi</td>
+    </tr>
+    <tr>
+      <td>WPA3</td>
+      <td>Wireless encryption</td>
+      <td>SAE (Dragonfly) for Personal; forward secrecy; OWE for open networks; AES-256 for Enterprise; immune to offline dictionary attack</td>
+      <td>New deployments; preferred when hardware supports it; high-security environments</td>
+    </tr>
+    <tr>
+      <td>TKIP</td>
+      <td>Encryption protocol</td>
+      <td>RC4-based; per-packet key mixing; deprecated 2012; still found on legacy hardware</td>
+      <td>Do not use — legacy compatibility only; disable if possible</td>
+    </tr>
+    <tr>
+      <td>AES</td>
+      <td>Cipher</td>
+      <td>Block cipher; 128/192/256-bit keys; used in CCMP (WPA2) and GCMP (WPA3); also BitLocker, TLS, IPsec</td>
+      <td>The gold standard symmetric cipher for all current security applications</td>
+    </tr>
+    <tr>
+      <td>RADIUS</td>
+      <td>AAA protocol</td>
+      <td>UDP 1812/1813; encrypts password only; combined auth+authz; open standard; integrates with AD</td>
+      <td>Network access: Wi-Fi (WPA2-Enterprise), VPN, 802.1X wired authentication</td>
+    </tr>
+    <tr>
+      <td>TACACS+</td>
+      <td>AAA protocol</td>
+      <td>TCP 49; encrypts entire payload; fully separated AAA; per-command authorization; Cisco proprietary</td>
+      <td>Network device administration: SSH/console to routers, switches, firewalls</td>
+    </tr>
+    <tr>
+      <td>Kerberos</td>
+      <td>Authentication protocol</td>
+      <td>Ticket-based; TGT + Service Tickets; mutual authentication; requires time sync (5 min); UDP/TCP 88; Windows AD default</td>
+      <td>Domain authentication; transparent SSO for users accessing domain resources</td>
+    </tr>
+    <tr>
+      <td>MFA</td>
+      <td>Authentication enhancement</td>
+      <td>Two or more factors from different categories; integrates with RADIUS/TACACS+/Kerberos; EAP-TLS = inherent MFA</td>
+      <td>Strengthening any authentication scenario against credential theft</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Objective 2.3 — Key Facts Summary</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">WEP</span>Broken — RC4, static key, 24-bit IVs; never use; crackable in minutes</div>
+    <div class="summary-item"><span class="s-sym">WPA / TKIP</span>Deprecated — RC4 per-packet key mixing; still weak; disable in favor of AES</div>
+    <div class="summary-item"><span class="s-sym">WPA2 / CCMP</span>Current standard — AES-128; PSK or 802.1X; PSK vulnerable to offline dictionary attack</div>
+    <div class="summary-item"><span class="s-sym">WPA3 / SAE</span>Latest — SAE (Dragonfly) replaces PSK; forward secrecy; immune to offline cracking</div>
+    <div class="summary-item"><span class="s-sym">WPA3 OWE</span>Encrypts open (no-password) networks; eliminates plaintext Wi-Fi at coffee shops</div>
+    <div class="summary-item"><span class="s-sym">TKIP cipher</span>RC4 stream cipher — same as WEP, just with better key management; still deprecated</div>
+    <div class="summary-item"><span class="s-sym">AES key sizes</span>128-bit (WPA2-CCMP), 256-bit (WPA3-Enterprise / GCMP-256); both unbroken</div>
+    <div class="summary-item"><span class="s-sym">Personal vs. Enterprise</span>Personal = shared PSK (home); Enterprise = 802.1X + RADIUS (corporate)</div>
+    <div class="summary-item"><span class="s-sym">RADIUS transport</span>UDP ports 1812 (auth) / 1813 (accounting); encrypts password only</div>
+    <div class="summary-item"><span class="s-sym">RADIUS use case</span>Network access authentication — Wi-Fi, VPN, 802.1X wired</div>
+    <div class="summary-item"><span class="s-sym">TACACS+ transport</span>TCP port 49; encrypts entire payload</div>
+    <div class="summary-item"><span class="s-sym">TACACS+ use case</span>Device administration — SSH/console to routers and switches; per-command authz</div>
+    <div class="summary-item"><span class="s-sym">RADIUS vs. TACACS+</span>UDP vs. TCP; password-only vs. full encryption; combined vs. separated AAA</div>
+    <div class="summary-item"><span class="s-sym">Kerberos port</span>UDP/TCP 88; Windows AD default authentication protocol</div>
+    <div class="summary-item"><span class="s-sym">TGT</span>Ticket Granting Ticket — issued at login; used to get Service Tickets; proves prior auth</div>
+    <div class="summary-item"><span class="s-sym">Service Ticket</span>Grants access to a specific service; encrypted with the target service's key</div>
+    <div class="summary-item"><span class="s-sym">Kerberos time sync</span>Clocks must be within 5 minutes of KDC; NTP required; drift = auth failure</div>
+    <div class="summary-item"><span class="s-sym">KDC</span>Key Distribution Center — runs on Domain Controller; AS + TGS components</div>
+    <div class="summary-item"><span class="s-sym">EAP-TLS</span>Certificate-based EAP — most secure EAP method; inherent MFA (cert + PIN/TPM)</div>
+    <div class="summary-item"><span class="s-sym">Forward secrecy</span>WPA3 only — past traffic cannot be decrypted even if password is later compromised</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">High-Probability Exam Scenarios</p>
+  <p><strong>Scenario 1:</strong> A company is using WEP on their wireless network. What should they upgrade to? → WPA2 (minimum) or WPA3. WEP is broken and must be replaced immediately.<br>
+  <strong>Scenario 2:</strong> Users need to connect to Wi-Fi with their individual domain credentials rather than a shared password → WPA2/WPA3 Enterprise with 802.1X and a RADIUS server (Microsoft NPS).<br>
+  <strong>Scenario 3:</strong> A network admin needs to log into a Cisco router — what authentication protocol controls this? → TACACS+ (device administration).<br>
+  <strong>Scenario 4:</strong> Which AAA protocol uses TCP and encrypts the entire payload? → TACACS+. Which uses UDP and encrypts only the password? → RADIUS.<br>
+  <strong>Scenario 5:</strong> A user cannot access domain resources after their workstation clock drifted → Kerberos time skew error; synchronize clock with NTP/domain controller.<br>
+  <strong>Scenario 6:</strong> Which wireless security mode prevents offline dictionary attacks against the network password? → WPA3-Personal (SAE/Dragonfly).<br>
+  <strong>Scenario 7:</strong> A technician sees a TKIP option in a router's security settings. Should they select it? → No — TKIP is deprecated; select AES (CCMP) only.<br>
+  <strong>Scenario 8:</strong> What allows a domain user to access a file server without re-entering their password after logging in? → Kerberos ticket-based SSO (TGT → Service Ticket).</p>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

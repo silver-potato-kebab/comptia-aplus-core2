@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.2 — OS Installations and Upgrades in a Diverse Environment</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EDITION PANEL — custom for this page */
+  .edition-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .edition-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
+  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
+  .edition-panel-body { padding: 0; }
+  .edition-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .edition-row:last-child { border-bottom: none; }
+  .edition-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .edition-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .edition-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* UPGRADE PATH DIAGRAM */
+  .upgrade-path {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 24px;
+    font-family: var(--sans);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .up-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .up-node .up-label {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .up-node .up-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .up-arrow {
+    font-size: 18px;
+    color: var(--border2);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
+  .up-node.target .up-label { color: var(--accent3); }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .edition-row { grid-template-columns: 1fr; }
+    .upgrade-path { flex-direction: column; align-items: flex-start; }
+    .up-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.2</strong> Perform OS Installations and
+Upgrades in a Diverse Environment</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_1-OS-Fundamentals.html">1.1</a>
+    <a class="nav-next" href="./1_3-Windows-Editions.html">1.3</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.2</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Perform OS Installations and<br>Upgrades in a Diverse Environment</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.2</span>
+    <span>Domain weight: 28%</span>
+    <span>Boot Methods · Install Types · Partitioning · Upgrades · Life Cycle</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to OS Deployment</h2>
+
+<p>Installing and upgrading operating systems is one of the most fundamental and frequently performed tasks in a technician's career. Whether provisioning a brand-new workstation, migrating a user to a newer OS version, recovering a corrupted system, or deploying hundreds of machines across an enterprise, OS installation is at the center of it all. The A+ exam tests not just the mechanics of installation, but your ability to select the right method for the right scenario — and to understand the trade-offs, prerequisites, and risks involved in each approach.</p>
+
+<p>This objective spans the entire OS deployment lifecycle: how a computer is told to start the installation process (boot methods), what kind of installation is appropriate (install type), how the storage device is structured to hold the OS (partitioning and formatting), what must be evaluated before upgrading (upgrade considerations), and how the OS continues to evolve and eventually reaches end-of-life (feature updates and product life cycle).</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — The Four Questions of OS Deployment</p>
+  <p>Every OS deployment scenario on the A+ exam can be approached with four questions: <strong>(1) How does the machine start the installation?</strong> — the boot method. <strong>(2) What kind of installation is this?</strong> — clean install, upgrade, image, repair, etc. <strong>(3) How is the storage device organized?</strong> — partitioning scheme and format. <strong>(4) What needs to be done before and after?</strong> — upgrade considerations, driver acquisition, and life cycle planning. Answering these four questions correctly for every scenario will cover the majority of 1.2 exam content.</p>
+</div>
+
+
+<!-- ═══ BOOT METHODS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Boot Methods</h2>
+
+<p>A <span class="key-term">boot method</span> defines the source from which a computer loads the operating system installer — or an alternative OS environment — when it powers on. The system firmware (BIOS or UEFI) reads the <span class="key-term">boot order</span>, a prioritized list of devices to attempt booting from, and starts with the highest-priority device that contains bootable media. Understanding boot methods is prerequisite knowledge for any OS installation task.</p>
+
+<p>To change the boot order, a technician enters the system firmware setup (typically by pressing a key like <code>F2</code>, <code>Del</code>, <code>F10</code>, or <code>Esc</code> during POST) and modifies the boot sequence. Alternatively, most modern systems offer a <span class="key-term">one-time boot menu</span> (often <code>F12</code> or <code>F11</code> at POST) that allows selecting a boot device for the current startup without permanently changing the boot order.</p>
+
+<div class="boot-grid" style="grid-template-columns:1fr 1fr;">
+  <div class="boot-card">
+    <div class="boot-head bh-usb">💾 USB Drive</div>
+    <div class="boot-body">
+      <div class="boot-row"><strong>What it is</strong>Standard USB flash drive or USB-connected external drive containing a bootable OS installer</div>
+      <div class="boot-row"><strong>How to create</strong>Use Rufus, Ventoy, or the Windows Media Creation Tool to write an ISO image to the USB drive with proper boot sectors</div>
+      <div class="boot-row"><strong>Best for</strong>Single-machine clean installs, field repairs, technician toolkit; most common method for modern deployments</div>
+      <div class="boot-row"><strong>Requirements</strong>USB boot must be enabled in UEFI/BIOS; Secure Boot may need to be temporarily disabled for non-Windows media</div>
+      <div class="boot-row"><strong>Speed</strong>Moderate (USB 3.0 drives are significantly faster than USB 2.0 — always prefer 3.0 for large installs)</div>
+    </div>
+  </div>
+  <div class="boot-card">
+    <div class="boot-head bh-net">🌐 Network (PXE)</div>
+    <div class="boot-body">
+      <div class="boot-row"><strong>What it is</strong>Pre-boot eXecution Environment — the NIC boots the machine and downloads the OS installer from a network server over the LAN</div>
+      <div class="boot-row"><strong>How it works</strong>Machine broadcasts a DHCP request; DHCP server provides an IP + TFTP server address; machine downloads a boot image via TFTP/HTTP</div>
+      <div class="boot-row"><strong>Best for</strong>Enterprise mass deployments; thin clients; zero-touch provisioning; diskless workstations</div>
+      <div class="boot-row"><strong>Requirements</strong>Network boot enabled in UEFI; DHCP server with PXE options; WDS (Windows Deployment Services) or MDT server</div>
+      <div class="boot-row"><strong>Speed</strong>Depends entirely on LAN speed; gigabit LAN is fast; works poorly over Wi-Fi</div>
+    </div>
+  </div>
+  <div class="boot-card">
+    <div class="boot-head bh-flash">⚡ Solid-State / Flash Drive</div>
+    <div class="boot-body">
+      <div class="boot-row"><strong>What it is</strong>NVMe, SATA SSD, or SD card containing a bootable OS environment or installer</div>
+      <div class="boot-row"><strong>Best for</strong>Embedded systems, Raspberry Pi-style devices, industrial computers, kiosk-mode systems</div>
+      <div class="boot-row"><strong>Advantage</strong>Extremely fast boot and load times; durable with no moving parts; can be sealed in the system for protection</div>
+      <div class="boot-row"><strong>Note</strong>Internal SSDs used as secondary drives with bootable partitions also fall in this category (see Internal Hard Drive / Partition below)</div>
+    </div>
+  </div>
+  <div class="boot-card">
+    <div class="boot-head bh-inet">☁️ Internet-Based</div>
+    <div class="boot-body">
+      <div class="boot-row"><strong>What it is</strong>OS installation data streamed or downloaded directly from vendor servers over the internet during setup</div>
+      <div class="boot-row"><strong>Examples</strong>macOS reinstall via Recovery Mode (downloads from Apple servers); Chrome OS recovery; Windows Reset with cloud download option</div>
+      <div class="boot-row"><strong>Best for</strong>Single systems without installation media; when local media is unavailable or outdated</div>
+      <div class="boot-row"><strong>Requirements</strong>Working internet connection during installation; may be slow on slower connections; recovery partition or UEFI recovery needed to initiate</div>
+    </div>
+  </div>
+  <div class="boot-card">
+    <div class="boot-head bh-ext">🔌 External / Hot-Swappable Drive</div>
+    <div class="boot-body">
+      <div class="boot-row"><strong>What it is</strong>USB-attached external hard drive or SSD containing either a full OS installation or a WinPE/Linux live environment</div>
+      <div class="boot-row"><strong>Best for</strong>Technician recovery toolkit; backing up data from a failed system; running diagnostics; carrying a full portable OS</div>
+      <div class="boot-row"><strong>Hot-swappable</strong>Some server and workstation bays support hot-swap — drives can be inserted and removed without powering down, useful in RAID or storage expansion contexts</div>
+      <div class="boot-row"><strong>Advantage over USB flash</strong>Higher storage capacity; can store full deployment images alongside installation tools</div>
+    </div>
+  </div>
+  <div class="boot-card">
+    <div class="boot-head bh-int">🖥️ Internal Hard Drive (Partition)</div>
+    <div class="boot-body">
+      <div class="boot-row"><strong>What it is</strong>A separate partition on the internal drive containing a recovery image, secondary OS, or installation environment</div>
+      <div class="boot-row"><strong>Recovery partition</strong>Manufacturers pre-load a recovery partition (often hidden) that can reinstall the factory OS without external media — accessed via key at boot (e.g., F11)</div>
+      <div class="boot-row"><strong>Multiboot setup</strong>Multiple OS installations on the same physical drive, each on its own partition; boot manager (GRUB, Windows Boot Manager) presents a menu at startup</div>
+      <div class="boot-row"><strong>Risk</strong>Drive failure destroys both the OS and the recovery media — an important limitation vs. external media</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Multiboot</h3>
+
+<p>A <span class="key-term">multiboot</span> (dual-boot or multi-boot) configuration installs two or more operating systems on the same physical computer, each residing on its own partition or drive. A <span class="key-term">boot manager</span> — such as GRUB (GNU Grand Unified Bootloader) on Linux, Windows Boot Manager, or rEFInd on macOS — presents a menu at startup that lets the user select which OS to load.</p>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Multiboot Installation Order</p>
+  <p>When installing Windows alongside Linux in a dual-boot configuration, <strong>always install Windows first</strong>. Windows' boot manager will overwrite any existing bootloader in the MBR or EFI system partition, destroying the ability to boot Linux. Install Windows → then install Linux → Linux's GRUB installer detects Windows and adds it to the boot menu automatically. Reversing this order requires manually repairing the Linux bootloader, which is a complex recovery procedure.</p>
+</div>
+
+<ul class="body-list">
+  <li><strong>Disk space planning:</strong> Each OS requires its own dedicated partition with adequate free space — typically 40–80 GB minimum for a functional Windows installation, 20–30 GB for most Linux distributions; data partitions can be shared between OSes if formatted with a mutually supported filesystem (FAT32 or exFAT for cross-compatibility)</li>
+  <li><strong>Partition requirements:</strong> On GPT/UEFI systems, a single shared EFI System Partition (ESP) can host boot entries for all installed operating systems; each OS installs its bootloader files into a subdirectory of the ESP</li>
+  <li><strong>Time zone conflict:</strong> Windows stores the hardware clock as local time; Linux stores it as UTC. This causes the displayed clock to be wrong in one OS after using the other — resolved by configuring Linux to use local time (not recommended) or configuring Windows to use UTC (a registry edit)</li>
+  <li><strong>Driver conflicts:</strong> Each OS installs its own drivers independently; drivers in one OS do not affect the other. However, fast startup / hibernation in Windows locks the NTFS filesystem — Linux cannot safely read/write a Windows partition that Windows has hibernated to. Always fully shut down Windows before booting Linux if you need to access Windows files from Linux</li>
+  <li><strong>Use case on exam:</strong> A scenario asking how to run two operating systems on a single computer without virtualization → multiboot/dual-boot. A scenario asking about running them simultaneously → virtual machine</li>
+</ul>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Boot Methods</p>
+  <p><strong>USB</strong> = most common for field installs. <strong>PXE/Network</strong> = enterprise mass deployment; requires DHCP + TFTP server. <strong>Internet-based</strong> = OS downloads from vendor servers during setup (macOS Recovery, Windows cloud download). <strong>Internal partition</strong> = manufacturer recovery partition (F11 at boot) or multiboot. Know that PXE uses the NIC's built-in boot ROM to receive an IP from DHCP and then downloads a boot image — no physical media required.</p>
+</div>
+
+
+<!-- ═══ TYPES OF INSTALLATIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Types of Installations</h2>
+
+<p>The type of installation chosen for a given scenario depends on the state of the target system, the business requirements, the available infrastructure, and how much of the user's existing data and applications should be preserved. Selecting the wrong installation type wastes time, causes data loss, or results in a system that doesn't meet requirements. The A+ exam heavily scenarios these distinctions.</p>
+
+<h3 class="section">Clean Install</h3>
+
+<p>A <span class="key-term">clean install</span> wipes the target partition completely and installs the operating system from scratch with no data, applications, or settings carried over from any previous OS. The target partition is reformatted before the OS files are written, destroying all prior content. The result is the freshest possible OS state — factory-default settings, no accumulated software cruft, no legacy driver conflicts.</p>
+
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-head ch-c">When to Choose Clean Install</div>
+    <div class="compare-body">
+      <div class="compare-row"><span class="cr-icon">✅</span><div>New hardware with no existing OS or data to preserve</div></div>
+      <div class="compare-row"><span class="cr-icon">✅</span><div>Severely corrupted, malware-infected, or unbootable system where in-place repair isn't viable</div></div>
+      <div class="compare-row"><span class="cr-icon">✅</span><div>Repurposing a machine for a new user or department — starting with a known-good state</div></div>
+      <div class="compare-row"><span class="cr-icon">✅</span><div>Major version upgrade where a clean slate is preferred over accumulated OS state</div></div>
+      <div class="compare-row"><span class="cr-icon">✅</span><div>Moving to an entirely different OS (Windows → Linux; 32-bit → 64-bit OS)</div></div>
+    </div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-head ch-b">Clean Install Trade-offs</div>
+    <div class="compare-body">
+      <div class="compare-row"><span class="cr-icon">⚠️</span><div><strong>All data is destroyed</strong> — backup must be completed and verified before proceeding; no exceptions</div></div>
+      <div class="compare-row"><span class="cr-icon">⚠️</span><div><strong>All applications must be reinstalled</strong> — requires software media, license keys, and time</div></div>
+      <div class="compare-row"><span class="cr-icon">⚠️</span><div><strong>All settings lost</strong> — browser bookmarks, email profiles, application preferences, desktop customizations</div></div>
+      <div class="compare-row"><span class="cr-icon">⚠️</span><div><strong>Driver installation required</strong> — especially on hardware without inbox drivers (specialized NICs, storage controllers)</div></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Upgrade</h3>
+
+<p>An <span class="key-term">in-place upgrade</span> installs a newer version of the operating system over the existing installation, <strong>preserving the user's files, installed applications, and settings</strong> in place. The upgrade installer migrates compatible data and software to the new OS version. This is the primary path for upgrading from Windows 10 to Windows 11, for example — users retain their desktop, documents, and most applications without reinstallation.</p>
+
+<p>The key distinction: an upgrade requires an existing, functioning OS installation on the target partition. The installer runs from within the running OS (or from bootable media that detects the existing installation) and performs a migration rather than a fresh deployment.</p>
+
+<ul class="body-list">
+  <li><strong>Compatibility check first:</strong> Always run the OS vendor's compatibility checker before committing to an upgrade — Windows 11 requires TPM 2.0, Secure Boot, UEFI firmware, and minimum CPU from a supported list; incompatible hardware cannot be upgraded through standard means</li>
+  <li><strong>Applications may break:</strong> Some applications are not compatible with the new OS version — especially 16-bit applications, old drivers, and software with DRM tied to OS-level APIs. Verify critical software compatibility before upgrading</li>
+  <li><strong>Backup before upgrading:</strong> Even though the upgrade preserves data, upgrade processes can fail mid-way. A backup is non-negotiable before any upgrade — the rollback window (typically 10 days in Windows) may not be sufficient if significant data was created post-upgrade and pre-failure</li>
+  <li><strong>Upgrade paths are version-specific:</strong> Not all upgrade paths are supported — Windows 7 Home cannot directly upgrade to Windows 10 Pro without additional licensing steps; Windows XP cannot directly upgrade to Windows 10 (clean install required)</li>
+</ul>
+
+<h3 class="section">Image Deployment</h3>
+
+<p><span class="key-term">Image deployment</span> copies a pre-configured OS image — a complete snapshot of a reference system's disk content — to multiple target machines simultaneously or in rapid succession. Instead of running through the OS installer and configuration process for each machine individually, a single master image contains the configured OS, drivers, applications, and settings and is deployed ("imaged") to each target.</p>
+
+<div class="arch-diagram">
+  <div class="arch-diagram-header">Image Deployment Workflow</div>
+  <div class="arch-body">
+    <div class="process-flow" style="margin:0;background:transparent;border:none;padding:0;">
+      <div class="flow-step">
+        <div class="flow-num">01</div>
+        <div class="flow-text"><strong>Build the reference machine.</strong> Install the OS cleanly on a reference (golden) machine. Install all required applications, drivers, Windows updates, and company-standard configurations and settings. This machine becomes the template for all deployed systems.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">02</div>
+        <div class="flow-text"><strong>Generalize with Sysprep.</strong> Run <code>sysprep /generalize /oobe /shutdown</code> on the reference machine. Sysprep removes machine-specific information — the unique SID (Security Identifier), hardware-specific drivers, computer name, and activation state — making the image suitable for deployment on different hardware.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">03</div>
+        <div class="flow-text"><strong>Capture the image.</strong> Boot the reference machine to WinPE (Windows Preinstallation Environment) and use DISM (Deployment Image Servicing and Management) or MDT (Microsoft Deployment Toolkit) to capture the disk content into a <code>.wim</code> file. Store the image on a deployment server.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">04</div>
+        <div class="flow-text"><strong>Deploy to target machines.</strong> Boot target machines via PXE, USB, or network to the deployment server. The imaging tool applies the <code>.wim</code> image to each target's disk, replacing its contents. Each machine receives an identical copy of the reference image.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">05</div>
+        <div class="flow-text"><strong>Specialize each machine.</strong> On first boot after imaging, Windows runs the OOBE (Out-of-Box Experience), assigns a new unique SID, accepts the license, and applies any machine-specific configuration from an answer file (unattend.xml). The machine joins the domain and pulls group policies automatically.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Sysprep and SID — Why It Matters</p>
+  <p>Every Windows installation has a <strong>Security Identifier (SID)</strong> — a unique value used to identify the machine and its local accounts in security contexts. If the same SID exists on multiple machines in the same domain (which would happen if you simply copied a disk image without Sysprep), authentication, group policy, and domain join operations break in unpredictable ways. Sysprep's <code>/generalize</code> flag deletes the SID so Windows generates a new unique one on each machine's first boot after imaging. Sysprep is mandatory before deploying an image to multiple machines.</p>
+</div>
+
+<h3 class="section">Remote Network Installation</h3>
+
+<p>A <span class="key-term">remote network installation</span> installs the OS on a target machine by booting via PXE and pulling the installation files from a server on the local network — without any physical media touching the target machine. The technician configures the deployment server once; all subsequent installs happen entirely over the network.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">WDS (Windows Deployment Services)</span>
+    <span>Microsoft's server role for network-based Windows deployment. WDS hosts boot images (WinPE) and install images (.wim files). Target machines PXE boot, receive a WinPE environment from WDS, then select and install a Windows image from the server. WDS is included with Windows Server.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">MDT (Microsoft Deployment Toolkit)</span>
+    <span>A free Microsoft toolkit that extends WDS with a full deployment workflow — task sequences, driver injection, application installation, domain join, and automated configuration. MDT creates a deployment share that WDS serves to PXE-booting clients. The industry standard for medium-to-large Windows deployments.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">SCCM / MECM</span>
+    <span>Microsoft Endpoint Configuration Manager (formerly SCCM — System Center Configuration Manager). Enterprise-grade deployment and management platform. Supports OS deployment, software distribution, patch management, compliance, and inventory — all from a central management console. Used in large enterprise environments managing thousands of machines.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">TFTP</span>
+    <span>Trivial File Transfer Protocol — the simple, lightweight protocol used to transfer the initial boot image from the PXE/DHCP server to the booting client NIC. TFTP uses UDP port 69 and has no authentication — it is used only within trusted LAN environments for PXE booting. HTTP/HTTPS is increasingly used for larger image transfers after initial PXE handshake.</span>
+  </div>
+</div>
+
+<h3 class="section">Zero-Touch Deployment</h3>
+
+<p><span class="key-term">Zero-touch deployment (ZTD)</span> is a deployment model where new hardware is shipped directly from the vendor to the end user, and the device automatically configures itself to corporate standards without any IT technician handling the machine. The user unboxes the device, connects to the internet, and the device self-provisions — joining the organization's management platform, downloading applications, and applying policies — entirely automatically.</p>
+
+<div class="arch-body" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px 24px;margin:20px 0;">
+  <div class="benefit-row">
+    <div class="benefit-icon">🏢</div>
+    <div class="benefit-body">
+      <strong>Windows Autopilot</strong>
+      <span>Microsoft's zero-touch deployment platform for Windows 10/11. The device manufacturer registers the hardware ID in Azure AD. When the user signs in with their corporate Azure AD credentials during OOBE, Autopilot automatically enrolls the device in Intune (MDM), downloads the corporate configuration profile, installs assigned apps, and joins the domain — no IT imaging required. The device arrives at the user's desk and the user sets it up themselves.</span>
+    </div>
+  </div>
+  <div class="benefit-row">
+    <div class="benefit-icon">🍎</div>
+    <div class="benefit-body">
+      <strong>Apple DEP / ABM</strong>
+      <span>Apple Device Enrollment Program (now Apple Business Manager / ABM). Apple devices purchased through Apple or authorized resellers are registered in ABM. When activated, they automatically enroll in the organization's MDM (e.g., Jamf, Kandji, Mosyle) and receive their configuration profile. iPhones, iPads, and Macs are all supported.</span>
+    </div>
+  </div>
+  <div class="benefit-row">
+    <div class="benefit-icon">📱</div>
+    <div class="benefit-body">
+      <strong>Android Zero-Touch</strong>
+      <span>Google's equivalent for Android enterprise devices. Devices are pre-registered with a zero-touch portal and automatically enroll in the organization's Android EMM (Enterprise Mobility Management) solution on first boot. Commonly used for corporate smartphone and tablet fleets.</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Zero-Touch vs. Remote Network Installation</p>
+  <p>These are often confused. <strong>Remote network installation</strong> still requires IT to configure the machine on the network (PXE boot, select image) — a technician is involved. <strong>Zero-touch deployment</strong> requires zero IT physical interaction — the device self-configures completely from the internet with no imaging server or technician presence. Zero-touch is the evolution of network deployment enabled by cloud-based MDM platforms.</p>
+</div>
+
+<h3 class="section">Recovery Partition</h3>
+
+<p>A <span class="key-term">recovery partition</span> is a special, typically hidden partition on the system's internal storage that contains either a full factory OS image or recovery tools to reinstall the OS without external media. Recovery partitions are created by manufacturers (OEM recovery) or by Windows itself (Windows Recovery Environment — WinRE).</p>
+
+<ul class="body-list">
+  <li><strong>OEM Recovery Partition:</strong> Contains the complete factory image including all OEM applications, drivers, and branding. Accessed via a key press at boot (e.g., <code>F11</code> on HP/Dell, or the Novo button on Lenovo). Restores the system to the exact state it was in when shipped. All user data and applications installed afterward are destroyed</li>
+  <li><strong>Windows Recovery Environment (WinRE):</strong> Microsoft's built-in recovery environment, stored on a small hidden partition (~500 MB). WinRE provides Startup Repair, System Restore, command prompt access, and other repair tools. Accessed via Advanced Startup Options (Shift + Restart, or <code>F8</code> during boot on older systems)</li>
+  <li><strong>Critical limitation:</strong> A recovery partition on the same drive as the OS is destroyed if the drive fails — it provides no protection against hardware failure. External backup media (USB recovery drive, network backup) is necessary for true disaster recovery</li>
+  <li><strong>Creating a Windows recovery drive:</strong> Windows includes a "Create a recovery drive" tool that copies the recovery partition to a USB drive, providing external bootable recovery media. Recommended for all systems before any major change</li>
+</ul>
+
+<h3 class="section">Repair Installation</h3>
+
+<p>A <span class="key-term">repair installation</span> (also called an in-place repair or startup repair) reinstalls the OS system files over the existing installation without removing user data, applications, or most settings. It targets only the corrupted or missing OS components while leaving the rest of the system intact.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>When Repair Installation Is Used</h4>
+    <ul>
+      <li><strong>Corrupted system files</strong> — BSOD caused by corrupted Windows files that <code>sfc /scannow</code> and DISM couldn't repair</li>
+      <li><strong>Failed update</strong> — Windows update partially applied and left the OS in a broken state</li>
+      <li><strong>Missing boot files</strong> — BCD (Boot Configuration Data) or MBR corruption causing inability to boot</li>
+      <li><strong>Startup Repair failure</strong> — automated startup repair ran and could not resolve the issue automatically</li>
+      <li><strong>Preserves data</strong> — unlike clean install; user files and most apps remain intact</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Repair Methods in Windows</h4>
+    <ul>
+      <li><strong>sfc /scannow</strong> — System File Checker; scans and replaces corrupted protected OS files from cached copies; run first</li>
+      <li><strong>DISM /Online /Cleanup-Image /RestoreHealth</strong> — repairs the Windows Component Store using Windows Update as source; run if SFC fails</li>
+      <li><strong>Startup Repair</strong> — automated WinRE tool; fixes BCD, MBR, and boot file issues automatically</li>
+      <li><strong>In-place upgrade repair</strong> — boot from Windows installation media, choose "Upgrade" on the existing OS; replaces system files without data loss</li>
+      <li><strong>bootrec /fixmbr, /fixboot, /rebuildbcd</strong> — manual boot record repair from WinRE command prompt</li>
+    </ul>
+  </div>
+</div>
+
+<h3 class="section">Third-Party Drivers</h3>
+
+<p>The standard Windows installer includes a large library of inbox drivers for common hardware — USB controllers, network adapters, storage controllers, display adapters. However, specialized hardware (RAID controllers, specific NIC models, custom input devices) may require <span class="key-term">third-party drivers</span> that must be obtained separately and injected into the installation process.</p>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Missing Storage Controller Driver — The Critical Scenario</p>
+  <p>The most exam-critical third-party driver scenario: the Windows installer cannot detect the target storage drive because the storage controller driver is not included in the inbox driver set. This commonly occurs with enterprise RAID controllers (LSI, Adaptec, HPE SmartArray) and some NVMe controllers. Symptom: the Windows installer shows "No drives were found" on the drive selection screen. Fix: press <strong>"Load driver"</strong> on that screen and provide the driver from a USB drive. Always download storage controller drivers from the vendor's support site before beginning installation.</p>
+</div>
+
+<ul class="body-list">
+  <li><strong>Driver injection during install:</strong> Windows installer's "Load driver" button (on the disk selection screen) allows loading a driver from external media during the installation process — the driver is added to the install environment so the storage device becomes visible</li>
+  <li><strong>Driver injection into an image (offline):</strong> DISM can inject drivers into a .wim image before deployment — <code>DISM /Add-Driver</code> — so that deployed machines automatically have the necessary drivers without requiring post-deployment driver installation</li>
+  <li><strong>Post-installation driver installation:</strong> For display, audio, NIC, and peripheral drivers that aren't needed for the install itself, drivers are installed after the OS is running — typically by running the vendor's installer package or via Device Manager → Update Driver → Browse for driver files</li>
+  <li><strong>Driver signing:</strong> Windows requires drivers to be digitally signed for 64-bit installs. Unsigned drivers will trigger a warning or be blocked. Disable driver signature enforcement only temporarily in controlled environments — unsigned drivers may be malicious or unstable</li>
+  <li><strong>Source of drivers:</strong> Always obtain drivers from the hardware manufacturer's official support site, not third-party driver aggregator sites. Third-party driver sites frequently bundle malware or provide incorrect drivers</li>
+</ul>
+
+
+<!-- ═══ PARTITIONING ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Partitioning</h2>
+
+<p>Before an OS can be installed, the storage device must be divided into <span class="key-term">partitions</span> — logical sections that the OS treats as separate, isolated storage areas. Each partition can be formatted independently with a specific filesystem. The structure of how partitions are organized and described on disk is defined by the <span class="key-term">partition table</span> — and there are two competing standards: the legacy MBR and the modern GPT.</p>
+
+<p>The choice of partition table is directly linked to the system firmware: <strong>BIOS systems use MBR</strong>; <strong>UEFI systems use GPT</strong> (though UEFI can boot MBR disks in Legacy/CSM mode for backward compatibility). Understanding both schemes, their limitations, and when to use each is essential A+ knowledge.</p>
+
+<h3 class="section">MBR — Master Boot Record</h3>
+
+<p>The <span class="key-term">Master Boot Record (MBR)</span> is the legacy partitioning scheme that has been in use since 1983. The MBR is located in the very first 512-byte sector of the disk (sector 0) and contains two critical elements: the <span class="key-term">bootstrap code</span> (a small program that initiates the boot process by locating the active partition's boot sector) and the <span class="key-term">partition table</span> (a 64-byte structure describing up to 4 partition entries).</p>
+
+<div class="disk-layout">
+  <div class="disk-header">MBR Disk Layout — Example</div>
+  <div class="disk-track">
+    <div class="disk-seg ds-mbr">MBR<br>Sector 0</div>
+    <div class="disk-seg ds-part1">Primary Partition 1<br>(e.g., Windows C:)</div>
+    <div class="disk-seg ds-part2">Extended Partition<br>(contains logical drives)</div>
+    <div class="disk-seg ds-free">Unallocated<br>Space</div>
+  </div>
+  <div class="disk-legend">
+    <div class="dl-item"><div class="dl-swatch" style="background:#fdf2f1;"></div>MBR bootstrap + partition table (512 bytes, sector 0)</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:#e3f2fd;"></div>Primary partition — directly described in MBR table</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:#f3e5f5;"></div>Extended partition — container for logical drives (bypasses 4-partition limit)</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:var(--surface2);"></div>Unallocated space</div>
+  </div>
+</div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Primary Partitions</span>
+    <span>MBR supports a maximum of <strong>4 primary partitions</strong> per disk. Each primary partition can be independently bootable and formatted with its own filesystem. The 4-partition limit is a hard constraint of the 64-byte MBR partition table structure — each entry is exactly 16 bytes, and there are exactly 4 slots.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Extended + Logical Partitions</span>
+    <span>To exceed the 4-partition limit, one primary partition slot can be designated as an <strong>extended partition</strong> — a container that holds multiple <strong>logical drives</strong> (also called logical partitions). The extended partition itself is not formatted or used directly; only the logical drives within it are. This allows effectively unlimited partitions on an MBR disk (though in practice more than 12–15 becomes unwieldy).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Active Partition</span>
+    <span>One primary partition is marked as <strong>active</strong> — the flag in the MBR partition table entry that tells the BIOS bootstrap code which partition to read the Volume Boot Record from to continue the boot process. Only one primary partition can be active at a time on an MBR disk. In Windows, the System Reserved partition (containing BCD and boot files) is typically the active partition.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">2 TB Disk Size Limit</span>
+    <span>The MBR partition table uses 32-bit Logical Block Address (LBA) values to describe partition locations and sizes. With standard 512-byte sectors, 2³² sectors × 512 bytes = <strong>2 TiB maximum disk size</strong>. Storage beyond 2 TiB on an MBR disk is inaccessible and invisible to the partition table. This is the primary limitation that drove adoption of GPT.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Single Point of Failure</span>
+    <span>The entire MBR is stored in one 512-byte sector. If sector 0 becomes corrupted (physical damage, malware, failed write), the disk is unbootable and the partition table is lost. There is no backup copy of the MBR on the disk (unlike GPT, which maintains a backup). MBR corruption is repaired with <code>bootrec /fixmbr</code> from WinRE.</span>
+  </div>
+</div>
+
+<h3 class="section">GPT — GUID Partition Table</h3>
+
+<p>The <span class="key-term">GUID Partition Table (GPT)</span> is the modern partitioning scheme defined as part of the UEFI specification. GPT overcomes every significant limitation of MBR: it supports disks larger than 2 TiB, allows up to 128 partitions (in Windows; the spec allows far more), uses globally unique identifiers (GUIDs) to identify partitions and their types, and stores redundant copies of the partition table for data safety.</p>
+
+<div class="disk-layout">
+  <div class="disk-header">GPT Disk Layout — Example (UEFI Boot)</div>
+  <div class="disk-track">
+    <div class="disk-seg ds-mbr" style="flex:0 0 55px;font-size:10px;">Protective<br>MBR</div>
+    <div class="disk-seg ds-efi">EFI System<br>Partition (ESP)</div>
+    <div class="disk-seg ds-msr" style="font-size:10px;">MSR<br>Partition</div>
+    <div class="disk-seg ds-win">Windows OS Partition (C:)</div>
+    <div class="disk-seg ds-rec">Recovery<br>Partition</div>
+    <div class="disk-seg ds-mbr" style="flex:0 0 70px;font-size:10px;background:#f5f0f8;color:#6a1b9a;">Backup GPT<br>Header</div>
+  </div>
+  <div class="disk-legend">
+    <div class="dl-item"><div class="dl-swatch" style="background:#fdf2f1;"></div>Protective MBR — legacy compatibility; prevents old tools from seeing GPT as "blank"</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:#fff3e0;"></div>EFI System Partition (ESP) — FAT32; stores bootloaders for all OSes; required for UEFI boot</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:#f3e5f5;"></div>Microsoft Reserved (MSR) — used by Windows for disk management; not user-accessible</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:#e3f2fd;"></div>OS Partition — NTFS; Windows installation; can be any size up to disk capacity</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:#e8f5e9;"></div>Recovery Partition — WinRE; used for startup repair and recovery tools</div>
+    <div class="dl-item"><div class="dl-swatch" style="background:#f5f0f8;"></div>Backup GPT Header — at end of disk; allows recovery if primary GPT header is damaged</div>
+  </div>
+</div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">128 Partitions (Windows)</span>
+    <span>GPT supports up to 128 partitions on a single disk in Windows (the partition table is 16,384 bytes with 128-byte entries). Unlike MBR, there is no distinction between primary, extended, and logical partitions — all GPT partitions are equivalent. No extended partition workaround is required.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">9.4 ZB Disk Size Limit</span>
+    <span>GPT uses 64-bit LBA addressing, supporting up to 2⁶⁴ sectors. With 512-byte sectors: 2⁶⁴ × 512 bytes = approximately <strong>9.4 zettabytes</strong> — a limit that will not be reached with any foreseeable storage technology. GPT is effectively unlimited for practical purposes.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">EFI System Partition (ESP)</span>
+    <span>A mandatory GPT partition formatted with <strong>FAT32</strong>. The ESP stores the bootloader files for every OS installed on the system (Windows Boot Manager in <code>\EFI\Microsoft\Boot\</code>, GRUB in <code>\EFI\ubuntu\</code>, etc.). UEFI firmware reads the ESP at boot to find available bootloaders. The ESP must be present on every GPT disk that will boot a UEFI system — typically 100–550 MB in size.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">GUID — Globally Unique Identifier</span>
+    <span>Each GPT partition is assigned a 128-bit GUID that uniquely identifies it globally. Additionally, each partition has a <strong>partition type GUID</strong> that indicates its purpose (EFI System Partition, Microsoft Basic Data, Linux Data, Linux Swap, etc.). These GUIDs allow the OS and tools to identify partitions by their type and identity rather than just their position on disk.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Redundant Headers</span>
+    <span>GPT stores the partition table header at the beginning of the disk (after the protective MBR) AND at the very end of the disk as a backup. If the primary header is corrupted, the backup at the end of the disk can be used for recovery. This redundancy is a major reliability improvement over MBR's single-point-of-failure design.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Protective MBR</span>
+    <span>The first sector of a GPT disk contains a <strong>protective MBR</strong> that declares the entire disk as a single "GPT protective" partition. This prevents old MBR-only tools from seeing the GPT disk as blank and "helpfully" initializing it with an MBR partition table — which would destroy the GPT partition data. The protective MBR is not bootable from BIOS (it just contains error text) but allows old partitioning tools to at least recognize the disk is in use.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — MBR vs. GPT</p>
+  <p><strong>MBR:</strong> 4 primary partitions max; 2 TiB max disk size; BIOS boot; no redundancy; sector 0 only. <strong>GPT:</strong> 128 partitions (Windows); 9.4 ZB max; UEFI boot; backup header at end of disk; requires EFI System Partition. A scenario with a 3 TB drive that Windows can't fully see → convert to GPT. A scenario asking about installing Windows 11 (requires UEFI + Secure Boot) → must use GPT. Converting between MBR and GPT on a disk with data requires third-party tools (MBR2GPT for Windows, <code>gdisk</code> for Linux) or a wipe.</p>
+</div>
+
+<table class="data-table">
+  <thead><tr><th>Feature</th><th>MBR</th><th>GPT</th></tr></thead>
+  <tbody>
+    <tr><td>Max Partitions</td><td>4 primary (+ logical via extended)</td><td>128 (Windows); theoretically unlimited</td></tr>
+    <tr><td>Max Disk Size</td><td>2 TiB (with 512-byte sectors)</td><td>~9.4 ZB (64-bit LBA)</td></tr>
+    <tr><td>Boot Firmware</td><td>BIOS (MBR is required)</td><td>UEFI (GPT is required for full UEFI boot)</td></tr>
+    <tr><td>Redundancy</td><td>None — single copy at sector 0</td><td>Primary + backup header at end of disk</td></tr>
+    <tr><td>Required Partition</td><td>Active partition with boot sector</td><td>EFI System Partition (FAT32)</td></tr>
+    <tr><td>Partition IDs</td><td>Partition type byte (1 byte, ~256 types)</td><td>GUID (128 bits, globally unique)</td></tr>
+    <tr><td>Windows 11 Compatible</td><td>No (Win 11 requires UEFI + GPT)</td><td>Yes</td></tr>
+    <tr><td>Introduced</td><td>1983 (IBM PC DOS 2.0)</td><td>2005 (part of UEFI specification)</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══ DRIVE FORMAT ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Drive Format</h2>
+
+<p>After partitioning, each partition must be <span class="key-term">formatted</span> with a filesystem before it can store data. Formatting creates the filesystem's data structures — the directory hierarchy, allocation tables, and metadata — that the OS uses to organize and locate files. Choosing the wrong filesystem for a partition's purpose causes compatibility issues, performance problems, or inability to install the OS entirely.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">NTFS</span>
+    <span><strong>New Technology File System</strong> — the standard filesystem for Windows OS partitions, system drives, and internal data volumes. Supports file and folder permissions (ACLs), encryption (EFS), compression, journaling (crash recovery), file sizes up to 16 TiB, and volumes up to 256 TiB. Required for Windows installations — the Windows installer will not install to a non-NTFS partition. NTFS is not natively writable by macOS (macOS can read NTFS, but write support requires third-party drivers).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">FAT32</span>
+    <span><strong>File Allocation Table 32</strong> — the filesystem required for the EFI System Partition (ESP) on GPT/UEFI systems. FAT32 is understood by UEFI firmware and all major operating systems, making it the universal choice for the ESP. <strong>Critical limitation:</strong> individual files cannot exceed <strong>4 GiB</strong> in size. This makes FAT32 unsuitable for OS partitions (Windows install files can exceed 4 GB) and for general data storage with large media files. FAT32 is also used for USB drives intended for cross-platform compatibility.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">exFAT</span>
+    <span><strong>Extended FAT</strong> — Microsoft's replacement for FAT32 for external drives and flash storage. Removes FAT32's 4 GiB file size limit (supports files up to 128 PiB theoretically) while maintaining broad cross-platform compatibility (supported natively on Windows, macOS, and modern Linux). The preferred format for large USB drives and SD cards used across different OSes. Not suitable for OS partitions.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">ext4</span>
+    <span><strong>Fourth Extended Filesystem</strong> — the standard Linux filesystem. Supports journaling, large files (up to 16 TiB per file), large volumes (up to 1 EiB), and Linux-native permissions and ownership. Linux OS partitions are formatted ext4 by default in most distributions. Not natively readable by Windows (requires third-party software like Ext2Fsd or WSL2).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">APFS</span>
+    <span><strong>Apple File System</strong> — Apple's modern filesystem for macOS (10.13+), iOS, iPadOS, tvOS, and watchOS. Features copy-on-write semantics, native encryption, space sharing between volumes, fast directory sizing, and snapshots. All Mac internal drives use APFS. Not readable by Windows without third-party software.</span>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Quick Format vs. Full Format</p>
+  <p>When formatting a partition, Windows offers two options. <strong>Quick format</strong> creates a new, empty filesystem structure and marks all clusters as available — it does not write zeros to the disk surface. Quick format is fast (seconds to minutes) but the old data remains on disk until overwritten — a forensic tool can recover it. <strong>Full format</strong> also writes zeros to every sector of the partition, verifying each sector is readable and permanently overwriting old data. Full format is much slower (hours on large drives) but ensures data is unrecoverable and bad sectors are detected. For security-sensitive data, use full format or dedicated disk wiping tools (DBAN, Windows Cipher).</p>
+</div>
+
+<table class="data-table">
+  <thead><tr><th>Filesystem</th><th>OS</th><th>Max File Size</th><th>Max Volume</th><th>Key Use</th></tr></thead>
+  <tbody>
+    <tr><td>NTFS</td><td>Windows</td><td>16 TiB</td><td>256 TiB</td><td>Windows OS + data partitions; journaling; ACLs; encryption</td></tr>
+    <tr><td>FAT32</td><td>Universal (all OSes + UEFI)</td><td>4 GiB</td><td>2 TiB</td><td>EFI System Partition; cross-platform USB drives; embedded systems</td></tr>
+    <tr><td>exFAT</td><td>Win, macOS, Linux</td><td>128 PiB</td><td>128 PiB</td><td>Large external drives; SD cards; cross-platform without 4 GiB limit</td></tr>
+    <tr><td>ext4</td><td>Linux</td><td>16 TiB</td><td>1 EiB</td><td>Linux OS + data partitions; journaling; Linux permissions</td></tr>
+    <tr><td>APFS</td><td>macOS / iOS</td><td>8 EiB</td><td>8 EiB</td><td>Apple internal drives; encryption; snapshots; copy-on-write</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══ UPGRADE CONSIDERATIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Upgrade Considerations</h2>
+
+<p>OS upgrades carry inherent risk. A failed or poorly planned upgrade can result in data loss, broken applications, incompatible hardware, or a non-bootable system. Every upgrade scenario requires pre-upgrade evaluation across three dimensions: the data and settings that must be preserved, the software and driver compatibility with the target OS, and the hardware's ability to run the new OS.</p>
+
+<h3 class="section">Backup Files and User Preferences</h3>
+
+<p>The first and most critical upgrade consideration is <span class="key-term">data backup</span>. Even in an in-place upgrade that is designed to preserve data, hardware failures, power interruptions, or unexpected compatibility issues can corrupt the filesystem or leave the system unbootable with data inaccessible. A verified backup before any upgrade is non-negotiable.</p>
+
+<div class="process-flow">
+  <div class="flow-title">Pre-Upgrade Backup Checklist</div>
+  <div class="flow-step">
+    <div class="flow-num">01</div>
+    <div class="flow-text"><strong>User files and documents.</strong> Back up the user's Documents, Desktop, Downloads, Pictures, Videos, and Music folders. On corporate systems, verify that Documents and Desktop are redirected to a network share (folder redirection) — if so, files are already on the server and don't require manual backup. If not, copy all user profile folders to an external drive or network location.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">02</div>
+    <div class="flow-text"><strong>Application data and settings.</strong> Many applications store settings outside the standard profile in AppData (hidden folder), ProgramData, or registry keys. Export browser bookmarks and passwords; export email client data (PST files for Outlook); note license keys for purchased applications (use tools like Belarc Advisor or NirSoft's ProduKey to harvest installed application keys). Export VPN profiles, network drive mappings, and printer configurations.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">03</div>
+    <div class="flow-text"><strong>System state and configuration.</strong> Document or export: network adapter settings (IP, subnet, gateway, DNS — even if DHCP, note the current DHCP reservation); domain join information; local user accounts and groups; mapped network drives; printer installations; startup programs. These are typically rebuilt post-upgrade but documenting them speeds reconstruction if needed.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">04</div>
+    <div class="flow-text"><strong>Verify the backup before upgrading.</strong> A backup that was not verified is not a backup. Spot-check critical files on the backup destination — open a few documents, confirm photos are readable, verify the backup destination has the expected amount of data. A backup that failed silently leaves you with no recovery path.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">05</div>
+    <div class="flow-text"><strong>Consider a full system image.</strong> For complex systems with many applications or unique configurations, use Windows Backup, Macrium Reflect, or Clonezilla to create a full disk image before upgrading. A full image can restore the exact pre-upgrade state if the upgrade fails catastrophically, including all applications and settings — much faster than a full reinstall from the application list.</div>
+  </div>
+</div>
+
+<h3 class="section">Application and Driver Support / Backward Compatibility</h3>
+
+<p>One of the most common post-upgrade complaints is that software that worked on the old OS no longer works on the new one. This is <span class="key-term">backward compatibility</span> failure — the new OS does not provide the APIs, system calls, or environment that old software expects. Before upgrading, every critical application must be verified for compatibility with the target OS version.</p>
+
+<ul class="body-list">
+  <li><strong>Check the vendor's compatibility matrix:</strong> For business software (accounting systems, industry-specific applications, medical software), the vendor publishes a compatibility matrix specifying which OS versions are supported. Running unsupported software on a new OS may produce errors, data corruption, or silent failures — do not assume compatibility</li>
+  <li><strong>16-bit applications:</strong> 64-bit versions of Windows cannot run 16-bit (Win3.x) applications at all — there is no 16-bit subsystem in 64-bit Windows. Organizations with legacy 16-bit software must use virtualization (run a 32-bit Windows VM) or find a replacement application</li>
+  <li><strong>32-bit applications on 64-bit Windows:</strong> Most 32-bit applications run on 64-bit Windows via the WoW64 (Windows 32-bit on Windows 64-bit) compatibility layer with no issues. Some exceptions exist for applications that install kernel-mode components (security software, DRM systems)</li>
+  <li><strong>Drivers:</strong> Device drivers are the most common compatibility failure point. A driver written for Windows 10 may or may not work on Windows 11. Drivers written for 32-bit Windows will not work on 64-bit Windows. Always confirm that current driver versions exist for all hardware — especially specialized peripherals, printers, scanners, and USB devices — before upgrading</li>
+  <li><strong>Antivirus and security software:</strong> Security software frequently requires updates to support new OS versions. Upgrading the OS with old antivirus installed can break both — uninstall antivirus before the OS upgrade, upgrade the OS, then install the OS-compatible version of the antivirus</li>
+</ul>
+
+<h3 class="section">Hardware Compatibility</h3>
+
+<p>Not all hardware can run all OS versions. Each OS version defines minimum hardware requirements — processor architecture and generation, RAM, storage, and features like TPM and Secure Boot. Before upgrading, verify the hardware meets every requirement.</p>
+
+<div class="arch-diagram">
+  <div class="arch-diagram-header">Windows 11 Hardware Requirements — Key Exam Points</div>
+  <div class="arch-body">
+    <div class="def-list" style="margin:0;">
+      <div class="def-item">
+        <span class="def-term">CPU</span>
+        <span>64-bit processor from a <strong>supported CPU list</strong> — Intel 8th generation (Coffee Lake) or later, AMD Ryzen 2000 series or later. Older but fully functional processors (e.g., Intel Core i7-7700) are not on the supported list and cannot officially run Windows 11. This is the most controversial requirement — many capable machines were excluded.</span>
+      </div>
+      <div class="def-item">
+        <span class="def-term">TPM 2.0</span>
+        <span><strong>Trusted Platform Module 2.0</strong> is required. TPM is a cryptographic chip (either discrete hardware chip or firmware-based — fTPM) that stores encryption keys securely. Many enterprise systems have TPM but it may be disabled in UEFI settings. Enable it in UEFI before attempting Windows 11 upgrade. TPM 1.2 is not sufficient — must be 2.0.</span>
+      </div>
+      <div class="def-item">
+        <span class="def-term">Secure Boot</span>
+        <span>UEFI Secure Boot must be enabled. Secure Boot verifies that boot software (bootloader, OS kernel, drivers) is signed by trusted keys, preventing malicious bootloaders (bootkits) from loading before the OS. Legacy BIOS systems cannot meet this requirement — they must use a UEFI-capable motherboard.</span>
+      </div>
+      <div class="def-item">
+        <span class="def-term">RAM and Storage</span>
+        <span>Windows 11 requires a minimum of <strong>4 GB RAM</strong> and <strong>64 GB storage</strong>. While these are low bars, they represent a formal requirement that can disqualify aging thin clients and budget devices. The practical recommendation for a usable Windows 11 system is 8 GB RAM and 128 GB SSD.</span>
+      </div>
+      <div class="def-item">
+        <span class="def-term">PC Health Check Tool</span>
+        <span>Microsoft provides the <strong>PC Health Check</strong> application (downloadable from Microsoft) that evaluates a machine's hardware against all Windows 11 requirements and reports specifically which requirements fail. This is the correct first step before any Windows 11 upgrade — run it on every candidate machine.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Focus — Upgrade Considerations</p>
+  <p>Upgrade consideration scenarios always test three things: <strong>(1) Back up data first</strong> — always, before anything else, verify the backup. <strong>(2) Check application compatibility</strong> — especially 16-bit apps (won't run on 64-bit Windows at all) and specialty software with vendor-specific OS support. <strong>(3) Check hardware compatibility</strong> — Windows 11 specifically requires TPM 2.0, Secure Boot, UEFI, and a supported CPU. A question describing an upgrade failure because "the installer said the PC doesn't meet requirements" → check TPM, Secure Boot, and CPU generation.</p>
+</div>
+
+
+<!-- ═══ FEATURE UPDATES / PRODUCT LIFE CYCLE ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 6</span>Feature Updates and Product Life Cycle</h2>
+
+<p>Operating systems do not remain static after their initial release. They receive continuous updates — from security patches to entirely new features. Understanding how Windows (and other OSes) deliver updates, and how Microsoft's <span class="key-term">product life cycle</span> policy determines how long a version receives support, is essential for planning, compliance, and risk management in any IT environment.</p>
+
+<h3 class="section">Windows Update Types</h3>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Security Updates (Patches)</span>
+    <span>Targeted fixes for specific security vulnerabilities. Released on <strong>Patch Tuesday</strong> — the second Tuesday of every month. These are the highest-priority updates and must be deployed promptly in any environment. Unpatched security vulnerabilities are the primary attack vector for ransomware and other malware. May also be released as out-of-band emergency patches between Patch Tuesdays for critical zero-day vulnerabilities.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Quality Updates (Cumulative)</span>
+    <span>Bug fixes, reliability improvements, and driver updates bundled as cumulative monthly packages. Windows 10/11 quality updates are <strong>cumulative</strong> — each monthly update contains all previous quality updates, so you only need to install the latest to be fully current. Released on Patch Tuesday. Installing a cumulative update effectively brings the system to the current quality baseline without needing to install months of individual patches.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Feature Updates</span>
+    <span><strong>Feature updates</strong> add significant new functionality and changes to Windows — new UI elements, added capabilities, changed behaviors, and sometimes removed features. In Windows 10, feature updates were released approximately twice yearly (e.g., 21H1, 21H2) and essentially represented a new minor version of Windows. In Windows 11, major feature updates are released annually. Feature updates are larger and take longer to install than quality updates. They also have their own support lifecycle.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Driver Updates</span>
+    <span>Hardware driver updates distributed through Windows Update for common devices. While convenient, enterprise environments often disable automatic driver updates from Windows Update to prevent untested driver versions from being silently deployed — preferring to qualify and distribute drivers through WSUS or SCCM where they can be tested first.</span>
+  </div>
+</div>
+
+<h3 class="section">Product Life Cycle</h3>
+
+<p>Microsoft defines a formal <span class="key-term">product life cycle</span> for each Windows version and feature update, specifying exactly how long that version will receive security and quality updates. Running an OS beyond its end-of-support date is a significant security risk — vulnerabilities discovered after the end date will never be patched, leaving the system permanently exploitable by any attacker who knows the vulnerability.</p>
+
+<div class="lifecycle-row">
+  <div class="lc-phase lc-ga" style="border-radius:6px 0 0 6px;">
+    <span class="lc-label">General Availability</span>
+    <span class="lc-desc">OS version released to the public; Mainstream Support begins; all updates available</span>
+  </div>
+  <div class="lc-phase lc-ms">
+    <span class="lc-label">Mainstream Support</span>
+    <span class="lc-desc">Security + quality updates; feature requests accepted; typically 5 years from GA date</span>
+  </div>
+  <div class="lc-phase lc-es">
+    <span class="lc-label">Extended Support</span>
+    <span class="lc-desc">Security updates only; no new features; bug fixes by exception; typically 5 more years</span>
+  </div>
+  <div class="lc-phase lc-eol" style="border-radius:0 6px 6px 0;">
+    <span class="lc-label">End of Life (EOL)</span>
+    <span class="lc-desc">No more updates of any kind; system permanently vulnerable; must migrate to supported OS</span>
+  </div>
+</div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Mainstream Support</span>
+    <span>The full-featured support phase. Microsoft provides security updates, quality updates, new feature additions, design change requests, and free warranty support during mainstream support. For most Windows client versions, mainstream support lasts 5 years from the general availability (GA) date. This is when the product is actively developed and improved.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Extended Support</span>
+    <span>After mainstream support ends, the OS enters extended support for typically 5 additional years. During extended support, only security updates and critical reliability fixes are provided — no new features, no warranty support, and no free design change requests. For business-critical systems that cannot easily be migrated, extended support provides continued security patching. Organizations must pay for ESU (Extended Security Updates) in some cases.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">End of Life (EOL)</span>
+    <span>When both mainstream and extended support have concluded, the OS reaches <strong>End of Life</strong>. Microsoft publishes no more security patches, quality updates, or support for that version. Any vulnerability discovered after EOL will never be fixed. Systems running EOL operating systems are permanently exposed to all unpatched vulnerabilities. Windows XP reached EOL in April 2014; Windows 7 in January 2020; Windows 8.1 in January 2023.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Windows 10 Feature Update Lifecycle</span>
+    <span>Each Windows 10 semi-annual feature update (e.g., 22H2) has its own end-of-support date — typically 18 months after release for Home/Pro, 30 months for Enterprise/Education. A machine running Windows 10 version 21H1 (released May 2021) stopped receiving updates in December 2022 even though Windows 10 itself continues to be supported. Keeping the OS on a supported feature update version is a separate maintenance task from keeping the OS itself supported.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Long-Term Servicing Channel (LTSC)</span>
+    <span>Windows 10/11 LTSC (formerly LTSB) is a special enterprise variant that receives only security updates — no feature updates — for 5 or 10 years. LTSC versions are used in environments where stability is critical and frequent feature changes are disruptive: medical equipment, manufacturing systems, ATMs, point-of-sale terminals, and industrial control systems. LTSC is not available for Home or standard Pro licenses.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Running an EOL Operating System — Real Risk</p>
+  <p>The WannaCry ransomware outbreak in May 2017 exploited a Windows SMB vulnerability (EternalBlue/MS17-010). Microsoft had patched the vulnerability for supported Windows versions in March 2017. Organizations running Windows XP (which was EOL since 2014) received no patch and were devastated — hospitals went offline, manufacturers halted production, and over 230,000 systems in 150 countries were encrypted. The patch existed; the systems running EOL software couldn't receive it. This is not a theoretical risk.</p>
+</div>
+
+<h3 class="section">Windows Version Quick Reference</h3>
+
+<table class="data-table">
+  <thead><tr><th>Windows Version</th><th>Release</th><th>End of Mainstream</th><th>End of Extended / EOL</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Windows 7</td><td>Oct 2009</td><td>Jan 2015</td><td>Jan 2020 ⛔ EOL</td><td>ESU available through Jan 2023 (paid); WannaCry vulnerability patched for supported only</td></tr>
+    <tr><td>Windows 8.1</td><td>Nov 2013</td><td>Jan 2018</td><td>Jan 2023 ⛔ EOL</td><td>Skipped by many organizations due to poor reception of Windows 8</td></tr>
+    <tr><td>Windows 10</td><td>Jul 2015</td><td>Oct 2025</td><td>Oct 2025 ⛔ EOL</td><td>No extended support phase for consumer; each feature update has its own lifecycle</td></tr>
+    <tr><td>Windows 11</td><td>Oct 2021</td><td>Oct 2026</td><td>Oct 2031</td><td>Requires TPM 2.0, Secure Boot, UEFI, supported CPU; annual feature updates</td></tr>
+    <tr><td>Windows Server 2019</td><td>Nov 2018</td><td>Jan 2024</td><td>Jan 2029</td><td>Standard 5+5 year lifecycle; server OS often supported longer than client</td></tr>
+  </tbody>
+</table>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 1.2 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">USB Boot</span><span>Most common field install method; use Rufus/Media Creation Tool; USB 3.0 for speed</span></div>
+    <div class="summary-item"><span class="s-sym">PXE / Network Boot</span><span>Enterprise mass deploy; NIC boots via DHCP + TFTP; requires WDS/MDT server</span></div>
+    <div class="summary-item"><span class="s-sym">Internet-Based Boot</span><span>macOS Recovery, Windows cloud download; downloads OS from vendor servers during setup</span></div>
+    <div class="summary-item"><span class="s-sym">Multiboot Install Order</span><span>Windows first, then Linux; Linux GRUB detects Windows; Windows bootloader overwrites GRUB</span></div>
+    <div class="summary-item"><span class="s-sym">Clean Install</span><span>Wipes partition completely; fresh OS; requires data backup; reinstall all apps; driver install</span></div>
+    <div class="summary-item"><span class="s-sym">In-Place Upgrade</span><span>Preserves files, apps, settings; runs over existing OS; check hardware + app compatibility first</span></div>
+    <div class="summary-item"><span class="s-sym">Image Deployment</span><span>Sysprep reference machine → capture .wim → deploy via WDS/MDT to multiple targets</span></div>
+    <div class="summary-item"><span class="s-sym">Sysprep</span><span>Removes SID and machine-specific data before imaging; /generalize /oobe required</span></div>
+    <div class="summary-item"><span class="s-sym">Zero-Touch Deployment</span><span>Device self-configures from internet; no IT physical contact; Windows Autopilot / Apple ABM</span></div>
+    <div class="summary-item"><span class="s-sym">Recovery Partition</span><span>Hidden partition with factory image or WinRE; F11 at boot (OEM); destroyed if drive fails</span></div>
+    <div class="summary-item"><span class="s-sym">Repair Installation</span><span>Replaces OS files without data loss; sfc /scannow → DISM → Startup Repair → in-place upgrade</span></div>
+    <div class="summary-item"><span class="s-sym">Third-Party Drivers</span><span>"No drives found" in installer → Load Driver button; inject storage controller driver from USB</span></div>
+    <div class="summary-item"><span class="s-sym">MBR</span><span>4 primary partitions; 2 TiB max; BIOS; no redundancy; active partition flags boot sector</span></div>
+    <div class="summary-item"><span class="s-sym">GPT</span><span>128 partitions; 9.4 ZB; UEFI; backup header; EFI System Partition (FAT32) required</span></div>
+    <div class="summary-item"><span class="s-sym">EFI System Partition</span><span>FAT32; stores bootloaders for all OSes; required for UEFI/GPT boot; 100–550 MB</span></div>
+    <div class="summary-item"><span class="s-sym">NTFS</span><span>Windows OS + data; journaling; ACLs; encryption; 16 TiB max file; required for Windows install</span></div>
+    <div class="summary-item"><span class="s-sym">FAT32</span><span>Universal; required for ESP; 4 GiB max file size; cross-platform USB drives</span></div>
+    <div class="summary-item"><span class="s-sym">exFAT</span><span>FAT32 replacement for large external drives; no 4 GiB limit; Win + macOS + Linux</span></div>
+    <div class="summary-item"><span class="s-sym">Windows 11 Requirements</span><span>TPM 2.0, Secure Boot, UEFI, supported CPU (8th gen Intel / Ryzen 2000+), 4 GB RAM, 64 GB</span></div>
+    <div class="summary-item"><span class="s-sym">Upgrade: Backup First</span><span>Always verify backup before upgrading; full disk image preferred for complex systems</span></div>
+    <div class="summary-item"><span class="s-sym">16-bit Apps on 64-bit</span><span>Cannot run at all on 64-bit Windows; must use 32-bit VM or find replacement application</span></div>
+    <div class="summary-item"><span class="s-sym">Feature Updates</span><span>Major new Windows functionality; semi-annual (Win10) or annual (Win11); own support lifecycle</span></div>
+    <div class="summary-item"><span class="s-sym">End of Life (EOL)</span><span>No patches ever again; permanently vulnerable; Win7 EOL Jan 2020; Win10 EOL Oct 2025</span></div>
+    <div class="summary-item"><span class="s-sym">LTSC</span><span>Enterprise only; security patches only for 5–10 years; no feature updates; kiosks, medical, industrial</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Boot Method Selection Guide</h4>
+    <ul>
+      <li><strong>Single machine, field repair</strong> — USB flash drive (most common)</li>
+      <li><strong>Mass enterprise deployment</strong> — PXE / Network (WDS + MDT)</li>
+      <li><strong>No media available, internet present</strong> — Internet-based (cloud download / Recovery)</li>
+      <li><strong>Running two OSes on one machine</strong> — Multiboot (dual-boot)</li>
+      <li><strong>Factory restore, no external media</strong> — Recovery partition (F11)</li>
+      <li><strong>New devices, no IT touch</strong> — Zero-touch (Autopilot / ABM)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Installation Type Selection Guide</h4>
+    <ul>
+      <li><strong>New hardware or malware-infected</strong> — Clean install</li>
+      <li><strong>Keep apps + files, newer version</strong> — In-place upgrade</li>
+      <li><strong>100 machines same config</strong> — Image deployment (Sysprep + WDS)</li>
+      <li><strong>Remote deploy, no media</strong> — Remote network installation (PXE)</li>
+      <li><strong>Device ships to user, self-setups</strong> — Zero-touch deployment</li>
+      <li><strong>Corrupted OS, keep data</strong> — Repair installation (sfc / DISM / upgrade)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>MBR vs. GPT Decision</h4>
+    <ul>
+      <li><strong>Drive &gt; 2 TB</strong> → must use GPT</li>
+      <li><strong>Windows 11</strong> → must use GPT (UEFI required)</li>
+      <li><strong>Legacy BIOS system</strong> → MBR only (no UEFI)</li>
+      <li><strong>UEFI system</strong> → GPT (preferred) or MBR (via CSM)</li>
+      <li><strong>Max partitions needed &gt; 4</strong> → GPT</li>
+      <li><strong>Convert without data loss</strong> → MBR2GPT.exe (Windows in-place)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Filesystem Selection Guide</h4>
+    <ul>
+      <li><strong>Windows OS partition</strong> → NTFS (required)</li>
+      <li><strong>EFI System Partition</strong> → FAT32 (required by UEFI spec)</li>
+      <li><strong>Cross-platform USB &lt;4 GB files</strong> → FAT32</li>
+      <li><strong>Cross-platform USB, large files</strong> → exFAT</li>
+      <li><strong>Linux OS partition</strong> → ext4</li>
+      <li><strong>macOS internal drive</strong> → APFS</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>PXE boot</strong> requires the NIC to have a boot ROM, and the network must have a DHCP server configured with PXE options pointing to a TFTP server. No physical media touches the machine. This is the network/remote installation method.</p>
+  <p><strong>Always install Windows before Linux</strong> in a dual-boot setup. Windows overwrites the bootloader — Linux installs GRUB after and adds Windows as a menu entry.</p>
+  <p><strong>Sysprep /generalize</strong> is mandatory before deploying an image to multiple machines. Without it, all machines share the same SID and domain operations break.</p>
+  <p><strong>"No drives found" during Windows install</strong> → press Load Driver and supply the storage controller driver from a USB drive (most commonly a RAID or NVMe controller driver).</p>
+  <p><strong>MBR limits:</strong> 4 primary partitions, 2 TiB max disk size. <strong>GPT:</strong> 128 partitions, effectively unlimited disk size, requires EFI System Partition (FAT32).</p>
+  <p><strong>FAT32 maximum individual file size is 4 GiB</strong> — this is why it cannot be used for OS partitions (Windows install files exceed 4 GB) and why exFAT was created for large external drives.</p>
+  <p><strong>Windows 11 requires:</strong> TPM 2.0 + Secure Boot + UEFI + supported CPU (8th gen Intel / Ryzen 2000+) + 4 GB RAM + 64 GB storage. A system missing any one of these cannot officially upgrade.</p>
+  <p><strong>16-bit applications cannot run on 64-bit Windows</strong> — period. The WoW64 subsystem handles 32-bit apps but there is no 16-bit subsystem in 64-bit Windows. Answer: virtualize a 32-bit OS.</p>
+  <p><strong>End of Life = no more security patches ever.</strong> Windows 7 EOL: January 2020. Windows 10 EOL: October 2025. Running EOL = permanently vulnerable to all subsequently discovered exploits.</p>
+  <p><strong>LTSC</strong> = enterprise-only Windows variant; security patches only for 5–10 years; no feature updates; used for kiosks, ATMs, medical devices, and industrial systems.</p>
+</div>
+
+</div>
+</body>
+</html>
