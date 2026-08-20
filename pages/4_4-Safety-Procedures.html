@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.4 — Common Safety Procedures</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* EQUIPMENT PANEL — mirrors os-panel pattern for ESD/safety gear breakdowns */
+  .eq-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .eq-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .eq-panel-header.strap  { background: var(--accent2); }
+  .eq-panel-header.mat    { background: var(--accent3); }
+  .eq-panel-header.bag    { background: var(--accent4); }
+  .eq-panel-header.ground { background: #4a4a52; }
+  .eq-panel-body { padding: 0; }
+  .eq-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .eq-row:last-child { border-bottom: none; }
+  .eq-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .eq-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .eq-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* PPE STRIP */
+  .ppe-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .ppe-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 14px;
+    text-align: center;
+  }
+  .ppe-item .ppe-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--accent4);
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .ppe-item h5 {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .ppe-item p {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 0;
+  }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .ppe-strip { grid-template-columns: 1fr 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .eq-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.4</strong> Use Common Safety Procedures</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_3-Workstation-Backup-Recovery.html">4.3</a>
+    <a class="nav-next" href="./4_5-Environmental-Impacts.html">4.5</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.4</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Use Common Safety Procedures</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.4</span>
+    <span>Domain weight: 21%</span>
+    <span>ESD Protection · Electrical Safety · Component Handling · Personal Safety</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Workplace Safety in IT Support</h2>
+
+<p>Working on computer hardware carries real, physical risks — not just to the equipment, but to the technician handling it. A static discharge invisible to the human eye can silently destroy a component worth hundreds of dollars. Improper handling of a power supply, a heavy piece of equipment, or a fire in a server room can cause genuine injury. Objective 4.4 covers the practical safety knowledge every technician is expected to apply automatically, every time, regardless of how routine the task feels.</p>
+
+<p>This objective splits into two related concerns. The first is protecting <span class="key-term">equipment</span> from electrostatic discharge (ESD) and electrical hazards — the invisible threats that can destroy hardware without the technician even realizing it happened. The second is protecting the <span class="key-term">technician</span> — the physical safety practices around lifting, fire, eye protection, and respiratory protection that prevent personal injury on the job.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Two Directions of Protection</p>
+  <p>Every item in this objective protects something in one of two directions: it protects the <strong>equipment</strong> from the technician (ESD straps, mats, antistatic bags, proper handling), or it protects the <strong>technician</strong> from the equipment or environment (disconnecting power, lifting technique, fire safety, goggles, respirators). Sorting a given safety procedure into one of these two buckets is a quick way to reason through unfamiliar exam phrasing.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — ESD PROTECTION ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Electrostatic Discharge (ESD) Protection</h2>
+
+<p><span class="key-term">Electrostatic discharge (ESD)</span> is the sudden flow of static electricity between two objects at different electrical potentials — the same phenomenon behind the small shock felt after touching a doorknob on a dry day. A shock large enough for a human to feel is roughly 3,000 volts, but sensitive computer components can be permanently damaged by static discharges as small as 10 to 30 volts — far below what a person can even perceive. This means a technician can damage a component with ESD and have no idea it happened until the part mysteriously fails later.</p>
+
+<h3 class="section">ESD Straps</h3>
+
+<div class="eq-panel">
+  <div class="eq-panel-header strap"><span>ESD Wrist Strap</span><span>Worn by the technician</span></div>
+  <div class="eq-panel-body">
+    <div class="eq-row">
+      <span class="eq-label">Function</span>
+      <span class="eq-desc">A wearable strap connected via a coiled cord to a grounding point (often the metal computer case or a dedicated ground), continuously equalizing the electrical potential between the technician's body and the equipment being handled, so no static charge can build up and discharge into a sensitive component</span>
+    </div>
+    <div class="eq-row">
+      <span class="eq-label">When to use</span>
+      <span class="eq-desc">Any time handling bare circuit boards, RAM, CPUs, or expansion cards outside of their protective packaging</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">ESD Mats</h3>
+
+<div class="eq-panel">
+  <div class="eq-panel-header mat"><span>ESD Mat</span><span>Underneath the work surface and/or components</span></div>
+  <div class="eq-panel-body">
+    <div class="eq-row">
+      <span class="eq-label">Function</span>
+      <span class="eq-desc">A grounded conductive mat placed on a workbench, providing a static-safe surface to set down components during repair, and often connected to the same ground point as an ESD strap to keep the technician, the mat, and the equipment all at the same electrical potential</span>
+    </div>
+    <div class="eq-row">
+      <span class="eq-label">When to use</span>
+      <span class="eq-desc">Any workbench repair involving open hardware, especially when multiple components will be set down and picked back up repeatedly during the repair</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Antistatic Bags</h3>
+
+<div class="eq-panel">
+  <div class="eq-panel-header bag"><span>Antistatic Bag</span><span>Storage and transport</span></div>
+  <div class="eq-panel-body">
+    <div class="eq-row">
+      <span class="eq-label">Function</span>
+      <span class="eq-desc">Special bags with a conductive or shielding layer that components ship and are stored in, preventing static buildup from reaching the component inside even when it's not actively being handled at a grounded workstation</span>
+    </div>
+    <div class="eq-row">
+      <span class="eq-label">When to use</span>
+      <span class="eq-desc">Storing or transporting any bare component (RAM, expansion cards, drives) that isn't currently installed in a system — a component removed from a machine should go straight into an antistatic bag rather than being set down loose</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Proper Component Handling and Storage</h3>
+
+<p>Beyond the dedicated ESD equipment above, several handling habits reduce ESD risk directly: touching the metal case of a computer (once it's unplugged, to discharge any static from your own body) before touching internal components, handling boards and cards by their edges rather than their circuitry or connector pins, and avoiding carpeted areas or synthetic clothing that generate static more readily when performing repairs.</p>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Why "Invisible" Damage Is the Real Danger</p>
+  <p>A shock strong enough to feel (roughly 3,000V+) will usually destroy a component outright and the failure is obvious immediately. Far more insidious is a discharge in the 10–30V range — enough to degrade a component's internal structure without destroying it instantly. The component may keep working for weeks or months before failing unpredictably, making it nearly impossible to trace the failure back to a specific handling mistake. This is exactly why ESD precautions are followed as a strict habit every time, not just "when it seems risky."</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — ELECTRICAL SAFETY ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Electrical Safety</h2>
+
+<p>Beyond static electricity, working around powered equipment carries genuine electrical hazards to both the technician and the hardware.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Equipment grounding</span>
+    <span>Ensuring equipment chassis and enclosures are properly connected to an electrical ground, so that any fault current has a safe path to travel rather than energizing the case itself — which would create a shock hazard for anyone touching it. Grounding also plays a role in ESD mitigation, since the same ground point often serves both purposes (see Section 1's ESD strap/mat grounding).</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Grounding Is Not Optional Around Power Supplies</p>
+  <p>A power supply unit (PSU) that's been damaged or improperly grounded can put a live chassis at risk of shocking anyone who touches it — this is precisely why PSUs are treated as a component technicians typically don't open or attempt to repair internally, and why proper grounding of the overall system (via a correctly wired, grounded outlet and an intact ground pin on the power cable) matters well beyond just protecting sensitive components from ESD.</span>
+  </p>
+</div>
+
+
+<!-- ═══ SECTION 3 — CABLE MANAGEMENT & COMPLIANCE ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Cable Management and Regulatory Compliance</h2>
+
+<h3 class="section">Cable Management</h3>
+
+<p><span class="key-term">Cable management</span> — routing, bundling, and securing cables neatly rather than leaving them loose — serves both a safety and a practical purpose. Loose cables across a walkway are a trip hazard, a genuine personal-injury risk that's easy to overlook in a busy office or server room. Beyond the safety angle, well-managed cabling also improves airflow around equipment, makes future troubleshooting and component swaps faster, and reduces the chance of a cable being accidentally pulled loose or damaged.</p>
+
+<h3 class="section">Compliance with Government Regulations</h3>
+
+<p>Certain safety practices aren't just best practice — they're a matter of following applicable local, state, and federal regulations governing workplace safety, equipment disposal, electrical work, and hazardous materials handling. A technician is expected to know and follow these regulations as part of routine work, not treat them as optional guidance. This overlaps with the environmental and disposal regulations covered in Objective 4.5, and underscores that safety procedures in an IT context are frequently legal obligations, not just good habits.</p>
+
+
+<!-- ═══ SECTION 4 — PERSONAL SAFETY ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Personal Safety</h2>
+
+<p>Where Sections 1 through 3 largely protect equipment (and, through grounding, protect people from equipment), this section covers the practices that protect the technician's own body directly.</p>
+
+<h3 class="section">Disconnect Power Before Repairing PC</h3>
+
+<p>Before opening a case or working on internal components, the system must be fully powered off and unplugged from its power source — not just shut down through the OS. This eliminates both the electrical shock risk from live circuitry and the risk of a spinning fan or drive causing injury during hands-on work. Many technicians also press the power button briefly after unplugging to discharge any residual capacitor charge in the power supply before opening the case.</p>
+
+<h3 class="section">Lifting Techniques</h3>
+
+<p>Server equipment, monitors, and full desktop towers can be surprisingly heavy, and improper lifting is a common source of workplace back injury. Proper technique means lifting with the legs rather than the back — bending at the knees, keeping the object close to the body, and keeping the back straight rather than bent — and asking for help or using a cart/dolly for anything beyond a comfortable single-person lift.</p>
+
+<h3 class="section">Fire Safety</h3>
+
+<p>Electrical equipment fires require different handling than an ordinary fire — water conducts electricity and can make an electrical fire worse or create a new shock hazard, so a technician needs to know the location and proper use of a Class C (electrical) fire extinguisher, and understand basic evacuation and fire reporting procedures for their workplace.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Fire Extinguisher Classes</p>
+  <p>While the exam objective itself doesn't require memorizing every extinguisher classification, know that an electrical fire calls for an extinguisher rated for electrical equipment (commonly Class C in the U.S. system), and that water should never be used on a fire involving live electrical equipment. If a scenario describes a fire near powered equipment, the correct answer will avoid water-based suppression.</p>
+</div>
+
+<h3 class="section">Safety Goggles and Air Filter Mask</h3>
+
+<p>The remaining two personal safety items are protective equipment for specific hazards encountered during hardware work.</p>
+
+<div class="ppe-strip">
+  <div class="ppe-item">
+    <span class="ppe-label">Eyes</span>
+    <h5>Safety Goggles</h5>
+    <p>Protect eyes from dust, debris, or small particles dislodged while cleaning, drilling, or working inside dusty equipment</p>
+  </div>
+  <div class="ppe-item">
+    <span class="ppe-label">Lungs</span>
+    <h5>Air Filter Mask</h5>
+    <p>Protects the respiratory system from inhaling dust, toner particles, or other fine particulates stirred up during cleaning or repair work</p>
+  </div>
+  <div class="ppe-item">
+    <span class="ppe-label">Skin/Static</span>
+    <h5>ESD Strap</h5>
+    <p>Covered in Section 1 — grounds the technician to prevent static discharge into sensitive components</p>
+  </div>
+  <div class="ppe-item">
+    <span class="ppe-label">Body</span>
+    <h5>Proper Lifting</h5>
+    <p>Covered above — protects the back and body from strain injury when moving heavy equipment</p>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Common Scenario — Cleaning a Dusty Tower or Server</p>
+  <p>Cleaning years of accumulated dust out of a case with compressed air is one of the most common tasks where both safety goggles and an air filter mask genuinely matter — dislodged dust can easily become airborne and land in the eyes or be inhaled, especially in an enclosed space like a server closet with poor ventilation. This is a favorite exam scenario for testing whether a technician recognizes when PPE is actually warranted.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.4 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">ESD Strap</span><span>Worn by the technician; grounds the body to prevent static discharge into components</span></div>
+    <div class="summary-item"><span class="s-sym">ESD Mat</span><span>Grounded work surface for safely setting down open components</span></div>
+    <div class="summary-item"><span class="s-sym">Antistatic Bags</span><span>Shielded storage/transport for bare components not currently installed</span></div>
+    <div class="summary-item"><span class="s-sym">ESD Damage Threshold</span><span>As low as 10–30V — far below what a person can feel (~3,000V+)</span></div>
+    <div class="summary-item"><span class="s-sym">Equipment Grounding</span><span>Gives fault current a safe path; prevents an energized chassis shock hazard</span></div>
+    <div class="summary-item"><span class="s-sym">Proper Component Handling</span><span>Handle boards/cards by the edges; discharge yourself before touching internals</span></div>
+    <div class="summary-item"><span class="s-sym">Cable Management</span><span>Prevents trip hazards; also improves airflow and troubleshooting speed</span></div>
+    <div class="summary-item"><span class="s-sym">Government Regulation Compliance</span><span>Many safety practices are legal obligations, not just best practice</span></div>
+    <div class="summary-item"><span class="s-sym">Disconnect Power First</span><span>Fully unplug (not just OS shutdown) before opening a case</span></div>
+    <div class="summary-item"><span class="s-sym">Lifting Technique</span><span>Lift with the legs, not the back; get help for heavy equipment</span></div>
+    <div class="summary-item"><span class="s-sym">Fire Safety</span><span>Never use water on an electrical fire; use an appropriately rated extinguisher</span></div>
+    <div class="summary-item"><span class="s-sym">Safety Goggles</span><span>Protect eyes from dust/debris during cleaning or repair</span></div>
+    <div class="summary-item"><span class="s-sym">Air Filter Mask</span><span>Protects lungs from dust/toner particulates during cleaning or repair</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Protecting Equipment (ESD Focus)</h4>
+    <ul>
+      <li><strong>Actively working on a component</strong> — wear an ESD strap</li>
+      <li><strong>Setting components down at the bench</strong> — use an ESD mat</li>
+      <li><strong>Storing/transporting a removed component</strong> — antistatic bag</li>
+      <li><strong>Before touching internals</strong> — discharge yourself on the case first</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Protecting the Technician (Personal Safety)</h4>
+    <ul>
+      <li><strong>Before opening any case</strong> — disconnect power fully</li>
+      <li><strong>Moving heavy equipment</strong> — lift with legs, get help if needed</li>
+      <li><strong>Fire near powered equipment</strong> — never use water; use rated extinguisher</li>
+      <li><strong>Cleaning dusty equipment</strong> — goggles + air filter mask</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Environment-Level Safety</h4>
+    <ul>
+      <li><strong>Loose cables across a walkway</strong> — trip hazard; manage/secure cables</li>
+      <li><strong>Chassis/enclosure safety</strong> — proper equipment grounding</li>
+      <li><strong>Disposal/handling regulations</strong> — follow applicable government compliance rules</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Quick Scenario Matching</h4>
+    <ul>
+      <li><strong>Component fails mysteriously weeks after a repair</strong> — possible undetected ESD damage</li>
+      <li><strong>Technician shocked by a case that feels "live"</strong> — grounding failure</li>
+      <li><strong>Technician strains their back moving a server</strong> — improper lifting technique</li>
+      <li><strong>Fire extinguisher used with water on live equipment</strong> — incorrect, unsafe response</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>ESD can damage a component at voltages far too low for a human to feel</strong> — the absence of a noticeable shock does not mean no damage occurred, which is the core justification for always using ESD precautions rather than judging risk "by feel."</p>
+  <p><strong>ESD straps ground the technician; ESD mats ground the work surface; antistatic bags shield components in storage/transport</strong> — three distinct tools for three distinct moments in a repair (while wearing it, while working at the bench, and while the part isn't installed anywhere).</p>
+  <p><strong>Always fully disconnect power — not just shut down the OS — before opening a case</strong>, and remember that a power supply can retain a residual charge even after being unplugged.</p>
+  <p><strong>Never use water on an electrical fire</strong> — this is one of the most reliably tested single facts in this objective, since water conducts electricity and can worsen the hazard rather than extinguish it safely.</p>
+  <p><strong>Proper lifting means using the legs, not the back</strong> — a simple concept, but frequently tested as the "correct behavior" answer choice in scenario questions about moving heavy equipment.</p>
+  <p><strong>Cable management is a safety topic, not just a tidiness topic</strong> — loose cables across a walking path are a genuine trip hazard, which is the framing the exam uses for this sub-topic.</p>
+  <p><strong>Safety compliance overlaps with legal/regulatory obligation, not just internal best practice</strong> — this objective and Objective 4.5's environmental/disposal rules both reflect that some "safety procedures" are actually compliance requirements.</p>
+</div>
+
+</div>
+</body>
+</html>

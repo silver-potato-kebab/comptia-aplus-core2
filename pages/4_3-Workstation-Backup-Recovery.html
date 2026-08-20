@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.3 — Workstation Backup and Recovery Methods</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* BACKUP TYPE PANEL — mirrors os-panel pattern */
+  .bk-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .bk-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .bk-panel-header.full        { background: var(--accent2); }
+  .bk-panel-header.incremental { background: var(--accent3); }
+  .bk-panel-header.differential{ background: var(--accent4); }
+  .bk-panel-header.synthetic   { background: #4a4a52; }
+  .bk-panel-body { padding: 0; }
+  .bk-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .bk-row:last-child { border-bottom: none; }
+  .bk-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .bk-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .bk-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* GFS VISUAL */
+  .gfs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .gfs-tier {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    text-align: center;
+  }
+  .gfs-tier .gfs-icon {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .gfs-tier.grandfather .gfs-icon { background: var(--accent2); }
+  .gfs-tier.father .gfs-icon      { background: var(--accent3); }
+  .gfs-tier.son .gfs-icon         { background: var(--accent4); }
+  .gfs-tier h5 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .gfs-tier p {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  /* 3-2-1 VISUAL */
+  .rule321 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .rule321-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .rule321-num {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .rule321-label {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .rule321-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .gfs-grid, .rule321 { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .bk-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.3</strong> Implement Workstation Backup and Recovery Methods</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_2-Change-Management.html">4.2</a>
+    <a class="nav-next" href="./4_4-Safety-Procedures.html">4.4</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.3</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Implement Workstation Backup<br>and Recovery Methods</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.3</span>
+    <span>Domain weight: 21%</span>
+    <span>Backup Types · Recovery · Backup Testing · Rotation Schemes</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Backup and Recovery</h2>
+
+<p>A <span class="key-term">backup</span> is a copy of data kept separately from the original, so that if the original is lost, corrupted, encrypted by ransomware, or destroyed, the data can still be recovered. Every other security control covered elsewhere in the A+ objectives — antivirus, firewalls, hardening, user education — is about preventing bad things from happening. Backup and recovery is the control that assumes prevention will eventually fail anyway, and makes sure that failure doesn't mean permanent data loss.</p>
+
+<p>Objective 4.3 covers four connected pieces of this discipline. <span class="key-term">Backup types</span> defines the different methods of capturing data (full, incremental, differential, synthetic full), each trading off backup speed, storage space, and restore complexity differently. <span class="key-term">Recovery</span> covers where restored data actually gets written back to. <span class="key-term">Backup testing</span> addresses the uncomfortable truth that a backup nobody has verified is not a backup — it's a hope. And <span class="key-term">backup rotation schemes</span> covers how organizations manage many backups over time without either running out of storage or accidentally deleting the one backup they needed.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — A Backup Strategy Is a Set of Trade-Offs</p>
+  <p>There is no single "best" backup type or schedule — every choice in this objective trades something against something else. Full backups are simple to restore but slow and storage-heavy to create. Incremental backups are fast to create but slower and more complex to restore. Objective 4.3 tests whether you understand these trade-offs well enough to pick the right approach for a described scenario, not just whether you can recite definitions.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — BACKUP TYPES ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Backup Types</h2>
+
+<p>Each backup type differs in exactly which data gets copied during a given backup run, which in turn determines how long the backup takes, how much storage it consumes, and how complicated recovery is afterward.</p>
+
+<h3 class="section">Full Backup</h3>
+
+<div class="bk-panel">
+  <div class="bk-panel-header full"><span>Full Backup</span><span>Copies everything, every time</span></div>
+  <div class="bk-panel-body">
+    <div class="bk-row">
+      <span class="bk-label">What it captures</span>
+      <span class="bk-desc">A complete copy of all selected data, every single time the backup runs — regardless of what has or hasn't changed since the last backup</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Backup time/storage</span>
+      <span class="bk-desc">Slowest to create and consumes the most storage of any backup type, since every run duplicates the entire data set again</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Restore complexity</span>
+      <span class="bk-desc"><strong>Simplest possible restore</strong> — only the single most recent full backup is needed to fully recover the data</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Incremental Backup</h3>
+
+<div class="bk-panel">
+  <div class="bk-panel-header incremental"><span>Incremental Backup</span><span>Copies only what changed since the last backup (of any type)</span></div>
+  <div class="bk-panel-body">
+    <div class="bk-row">
+      <span class="bk-label">What it captures</span>
+      <span class="bk-desc">Only the data that has changed since the <strong>most recent backup of any type</strong> — full or incremental — meaning each incremental backup only ever needs to look back to the one immediately before it</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Backup time/storage</span>
+      <span class="bk-desc">Fastest to create and smallest in storage footprint of the traditional types, since each run only captures recent changes</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Restore complexity</span>
+      <span class="bk-desc"><strong>Most complex restore</strong> — requires the last full backup plus <em>every single incremental backup made since</em>, applied in the correct order, since each one only contains changes relative to the last</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Differential Backup</h3>
+
+<div class="bk-panel">
+  <div class="bk-panel-header differential"><span>Differential Backup</span><span>Copies everything changed since the last FULL backup only</span></div>
+  <div class="bk-panel-body">
+    <div class="bk-row">
+      <span class="bk-label">What it captures</span>
+      <span class="bk-desc">All data that has changed since the <strong>last full backup</strong> — not since the last differential — so each differential backup grows larger the further it sits from the most recent full backup</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Backup time/storage</span>
+      <span class="bk-desc">A middle ground: larger and slower than incremental (since it re-captures all changes since the full, not just since the last backup), but smaller and faster than another full backup</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Restore complexity</span>
+      <span class="bk-desc"><strong>Middle ground</strong> — requires only the last full backup plus the single most recent differential backup, regardless of how many differentials have run since the last full</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Synthetic Full Backup</h3>
+
+<div class="bk-panel">
+  <div class="bk-panel-header synthetic"><span>Synthetic Full Backup</span><span>Assembled from existing backups without touching the source</span></div>
+  <div class="bk-panel-body">
+    <div class="bk-row">
+      <span class="bk-label">What it captures</span>
+      <span class="bk-desc">Effectively nothing new from the source system — a synthetic full is <strong>constructed by combining</strong> a previous full backup with subsequent incremental backups at the backup storage level, producing a backup that looks and restores exactly like a true full backup</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Backup time/storage</span>
+      <span class="bk-desc">Avoids the production-system load and network transfer time of running a real full backup again, since the assembly happens on the backup storage itself rather than by re-reading the live source data</span>
+    </div>
+    <div class="bk-row">
+      <span class="bk-label">Restore complexity</span>
+      <span class="bk-desc">Same simplicity as a true full backup restore — a single, complete backup file to restore from — while gaining the speed/efficiency benefits of incremental backups on the front end</span>
+    </div>
+  </div>
+</div>
+
+<table class="data-table">
+  <thead><tr><th>Backup Type</th><th>Captures</th><th>Speed to Create</th><th>Storage Used</th><th>Restore Steps Needed</th></tr></thead>
+  <tbody>
+    <tr><td>Full</td><td>Everything, every run</td><td class="no">Slowest</td><td class="no">Most</td><td class="yes">1 backup (the full)</td></tr>
+    <tr><td>Incremental</td><td>Changes since last backup (any type)</td><td class="yes">Fastest</td><td class="yes">Least</td><td class="no">Full + every incremental since</td></tr>
+    <tr><td>Differential</td><td>Changes since last full backup</td><td class="ltd">Moderate</td><td class="ltd">Moderate</td><td class="ltd">Full + latest differential only</td></tr>
+    <tr><td>Synthetic full</td><td>Assembled from full + incrementals (no new source read)</td><td class="yes">Fast (no source load)</td><td class="ltd">Same as a full</td><td class="yes">1 backup (the synthetic full)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — The Restore-Complexity Trade-Off</p>
+  <p>This is the single most commonly tested distinction in Section 1: <strong>incremental backups are the fastest to create but the slowest/most complex to restore</strong>, because recovery means replaying the full backup plus every incremental since, in order. <strong>Differential backups split the difference</strong> — slower to create than incremental since they re-capture all changes since the full each time, but faster to restore since only the full plus the single latest differential are needed. If a scenario emphasizes fast nightly backups with a tolerance for a longer restore process, that's incremental; if it emphasizes fast, simple restores with some tolerance for larger backup windows, that's differential or full.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — RECOVERY ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Recovery</h2>
+
+<p>Once a backup exists, <span class="key-term">recovery</span> is the act of actually restoring that data. The exam distinguishes two destinations a restore can target.</p>
+
+<div class="card-grid">
+  <div class="card card-accent2">
+    <h4>In-Place/Overwrite Recovery</h4>
+    <ul>
+      <li><strong>What happens</strong> — restored data is written directly back to its original location, overwriting whatever currently exists there</li>
+      <li><strong>Common use case</strong> — recovering after data corruption or accidental deletion, where the goal is simply to return the original location to its last-known-good state</li>
+      <li><strong>Risk</strong> — destroys whatever is currently in that location, so it should only be used once you're confident the current data is not worth keeping</li>
+    </ul>
+  </div>
+  <div class="card card-accent4">
+    <h4>Alternative Location Recovery</h4>
+    <ul>
+      <li><strong>What happens</strong> — restored data is written to a different location than the original (a different folder, drive, or even a separate machine), leaving the original location untouched</li>
+      <li><strong>Common use case</strong> — verifying a backup's integrity, recovering a single file without disturbing the current state of everything else, or investigating an incident where the original location itself may be compromised</li>
+      <li><strong>Benefit</strong> — allows side-by-side comparison between the restored data and whatever currently exists, and avoids destroying evidence during an active investigation</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Choosing Between the Two — A Ransomware Example</p>
+  <p>If a workstation has been hit by ransomware, restoring in-place immediately would overwrite the encrypted files — which might still be useful for a forensic investigation or in case a future decryption tool becomes available. Restoring to an alternative location first (or to a separate clean machine) lets a technician recover the user's data without destroying that evidence, and only move the restored copy into place once the original system has been fully wiped and rebuilt.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — BACKUP TESTING ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Backup Testing</h2>
+
+<p>A backup that has never been tested is only a theoretical backup. <span class="key-term">Backup testing</span> means periodically attempting an actual restore from a backup — not just confirming the backup job completed without errors — to verify that the data is genuinely recoverable and usable when it's actually needed.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Frequency</span>
+    <span>How often backup testing is performed is itself a deliberate decision, balancing the assurance a fresh test provides against the time and resources testing consumes. Critical systems typically warrant more frequent test restores than low-priority ones, and testing frequency is often documented as part of an organization's broader backup policy alongside the backup schedule itself.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">The Failure Mode Backup Testing Exists to Prevent</p>
+  <p>It is entirely possible for a backup job to report "success" every night for months while actually producing corrupted, incomplete, or unusable backup files — a bad drive, misconfigured software, or a silently failing agent can all cause this. The organization only discovers the problem the moment it actually needs to restore something, which is the worst possible time to learn a backup doesn't work. Regularly scheduled test restores are the only way to catch this before a real emergency does.</p>
+</div>
+
+
+<!-- ═══ SECTION 4 — BACKUP ROTATION SCHEMES ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Backup Rotation Schemes</h2>
+
+<p>Keeping every backup ever made forever is neither practical nor necessary — storage costs money, and most organizations only need a defined window of recovery points. <span class="key-term">Backup rotation schemes</span> are the strategies for managing which backups get kept, for how long, and where, so that storage stays manageable while still preserving enough recovery points to be useful.</p>
+
+<h3 class="section">Onsite vs. Offsite</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Onsite Backup</h4>
+    <ul>
+      <li><strong>Location</strong> — stored at the same physical location as the original data (e.g., a local NAS or backup server in the same building)</li>
+      <li><strong>Advantage</strong> — fastest to access and restore from, since there's no transfer time over a WAN link</li>
+      <li><strong>Weakness</strong> — vulnerable to any event that affects the entire site — fire, flood, theft, a building-wide power event — which could destroy the original data and the onsite backup simultaneously</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Offsite Backup</h4>
+    <ul>
+      <li><strong>Location</strong> — stored at a different physical location, or in the cloud, away from the original data</li>
+      <li><strong>Advantage</strong> — survives a site-wide disaster that destroys the original location entirely</li>
+      <li><strong>Weakness</strong> — typically slower to restore from due to data transfer time, and may involve ongoing storage/transfer costs</li>
+    </ul>
+  </div>
+</div>
+
+<h3 class="section">Grandfather-Father-Son (GFS)</h3>
+
+<p>The <span class="key-term">Grandfather-Father-Son (GFS)</span> rotation scheme organizes backups into three tiers based on age and retention length, giving an organization a mix of recent short-term recovery points and older long-term archives without keeping every single backup ever made.</p>
+
+<div class="gfs-grid">
+  <div class="gfs-tier son">
+    <span class="gfs-icon">Son</span>
+    <h5>Daily</h5>
+    <p>The most frequent tier — typically a daily backup, kept for a short retention period (e.g., one to two weeks) before being overwritten or discarded</p>
+  </div>
+  <div class="gfs-tier father">
+    <span class="gfs-icon">Father</span>
+    <h5>Weekly</h5>
+    <p>One backup retained per week, kept for a longer period than the daily "son" backups (e.g., a month), representing a slightly longer-term recovery point</p>
+  </div>
+  <div class="gfs-tier grandfather">
+    <span class="gfs-icon">Grandfather</span>
+    <h5>Monthly</h5>
+    <p>One backup retained per month (often the full backup), kept for the longest period of the three tiers — sometimes a year or more — serving as the long-term archive</p>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Why GFS Matters — Balancing Recency and Depth</p>
+  <p>GFS solves a real tension: recent daily backups matter most for everyday accidental-deletion recovery, but a serious data-corruption or ransomware event might not be discovered for weeks — by which point every recent daily backup could already be compromised too. Retaining older weekly and monthly tiers gives an organization a fallback recovery point from further in the past, precisely for the scenario where the problem isn't caught right away.</p>
+</div>
+
+<h3 class="section">3-2-1 Backup Rule</h3>
+
+<p>The <span class="key-term">3-2-1 backup rule</span> is a widely used guideline for how many copies of data to keep, on what kind of media, and in how many locations, to minimize the chance that any single event wipes out every copy at once.</p>
+
+<div class="rule321">
+  <div class="rule321-card">
+    <div class="rule321-num">3</div>
+    <div class="rule321-label">Copies</div>
+    <div class="rule321-desc">Keep at least three total copies of the data — the original plus two backups</div>
+  </div>
+  <div class="rule321-card">
+    <div class="rule321-num">2</div>
+    <div class="rule321-label">Media Types</div>
+    <div class="rule321-desc">Store those copies on at least two different types of storage media, so a flaw affecting one media type doesn't destroy every copy</div>
+  </div>
+  <div class="rule321-card">
+    <div class="rule321-num">1</div>
+    <div class="rule321-label">Offsite Copy</div>
+    <div class="rule321-desc">Keep at least one copy offsite, away from the original, to survive a site-wide disaster</div>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">3-2-1 in Practice</p>
+  <p>A typical real-world 3-2-1 setup: the original data on a workstation's internal drive (copy one), a nightly backup to a local external drive or NAS using different media (copy two), and a cloud backup or a rotated drive stored at a different physical location (copy three, satisfying both the second media type and the offsite requirement). The rule is deliberately simple to remember precisely so it gets followed consistently rather than skipped for being too complicated.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.3 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Full Backup</span><span>Copies everything every run; slowest/largest, but simplest single-backup restore</span></div>
+    <div class="summary-item"><span class="s-sym">Incremental Backup</span><span>Changes since the last backup of any type; fastest to create, most complex to restore</span></div>
+    <div class="summary-item"><span class="s-sym">Differential Backup</span><span>Changes since the last full backup; middle ground on both creation and restore</span></div>
+    <div class="summary-item"><span class="s-sym">Synthetic Full</span><span>Assembled from full + incrementals at the backup storage; restores like a true full</span></div>
+    <div class="summary-item"><span class="s-sym">In-Place/Overwrite Recovery</span><span>Restores directly to the original location, overwriting current data</span></div>
+    <div class="summary-item"><span class="s-sym">Alternative Location Recovery</span><span>Restores elsewhere, preserving the original location/evidence untouched</span></div>
+    <div class="summary-item"><span class="s-sym">Backup Testing</span><span>Actually performing test restores, not just confirming the backup job "succeeded"</span></div>
+    <div class="summary-item"><span class="s-sym">Testing Frequency</span><span>Deliberate schedule balancing assurance against time/resource cost, tied to system criticality</span></div>
+    <div class="summary-item"><span class="s-sym">Onsite Backup</span><span>Fast to restore; vulnerable to a site-wide disaster affecting the original too</span></div>
+    <div class="summary-item"><span class="s-sym">Offsite Backup</span><span>Survives a site-wide disaster; slower to restore, possible ongoing cost</span></div>
+    <div class="summary-item"><span class="s-sym">GFS — Son</span><span>Daily backups, short retention (e.g., 1–2 weeks)</span></div>
+    <div class="summary-item"><span class="s-sym">GFS — Father</span><span>Weekly backups, medium retention (e.g., a month)</span></div>
+    <div class="summary-item"><span class="s-sym">GFS — Grandfather</span><span>Monthly backups, longest retention (e.g., a year+)</span></div>
+    <div class="summary-item"><span class="s-sym">3-2-1 Rule</span><span>3 copies, on 2 different media types, with 1 copy offsite</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Backup Type Decision Guide</h4>
+    <ul>
+      <li><strong>Simplicity of restore matters most</strong> — full backup</li>
+      <li><strong>Backup window/storage is tight, restore speed is secondary</strong> — incremental</li>
+      <li><strong>Want a balance of both</strong> — differential</li>
+      <li><strong>Want full-backup simplicity without re-reading the whole source</strong> — synthetic full</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Recovery Destination Decision Guide</h4>
+    <ul>
+      <li><strong>Confident current data is worthless/corrupted</strong> — in-place/overwrite</li>
+      <li><strong>Need to preserve evidence or compare before committing</strong> — alternative location</li>
+      <li><strong>Investigating a possible security incident</strong> — always alternative location first</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Backup Testing Reminders</h4>
+    <ul>
+      <li><strong>"Backup job succeeded" ≠ "backup is restorable"</strong> — test actual restores</li>
+      <li><strong>Test frequency should match system criticality</strong> — more critical, more frequent</li>
+      <li><strong>The worst time to discover a bad backup</strong> — during a real emergency</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Rotation Scheme Cheat Sheet</h4>
+    <ul>
+      <li><strong>GFS tiers, shortest to longest retention</strong> — Son (daily) → Father (weekly) → Grandfather (monthly)</li>
+      <li><strong>3-2-1 rule</strong> — 3 copies, 2 media types, 1 offsite</li>
+      <li><strong>Fastest restore location</strong> — onsite</li>
+      <li><strong>Disaster-survival location</strong> — offsite</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Incremental backups reference the last backup of any type; differential backups always reference the last full backup</strong> — this single distinction is the most frequently tested detail in Section 1, and it's also exactly why incremental restores need every incremental in sequence while differential restores only need the latest one.</p>
+  <p><strong>A synthetic full backup is built from existing backup data, not by re-reading the live source system</strong> — it gives you full-backup-style restore simplicity while keeping the lighter backup-window footprint of incrementals.</p>
+  <p><strong>Alternative location recovery is the safer default whenever evidence preservation or verification matters</strong> — ransomware, suspected compromise, or simply double-checking a backup's integrity before committing to overwrite production data.</p>
+  <p><strong>A backup that has never been test-restored should not be trusted</strong> — "the backup job completed successfully" is not the same claim as "the data is recoverable," and the exam expects you to recognize backup testing as a distinct, necessary step.</p>
+  <p><strong>Onsite backups are fast but share fate with the original in a site-wide disaster; offsite backups survive that disaster but restore more slowly</strong> — most real strategies use both for exactly this reason, which is also why the 3-2-1 rule explicitly requires at least one offsite copy.</p>
+  <p><strong>GFS gives you daily, weekly, and monthly recovery points simultaneously</strong> — remember the retention order (son = shortest/daily, father = medium/weekly, grandfather = longest/monthly) rather than just the names.</p>
+  <p><strong>The 3-2-1 rule is about copies, media types, and location — not about backup type (full/incremental/etc.)</strong> — don't conflate 3-2-1 with the Section 1 backup types; they answer different questions and can be combined freely.</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.1 — Documentation and Support Systems Information Management</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* DOC PANEL — mirrors os-panel pattern for document-type breakdowns */
+  .doc-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .doc-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .doc-panel-header.type-a { background: var(--accent2); }
+  .doc-panel-header.type-b { background: var(--accent3); }
+  .doc-panel-header.type-c { background: var(--accent4); }
+  .doc-panel-header.type-d { background: #4a4a52; }
+  .doc-panel-body { padding: 0; }
+  .doc-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .doc-row:last-child { border-bottom: none; }
+  .doc-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .doc-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .doc-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .doc-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.1</strong> Implement Best Practices Associated with Documentation and Support Systems Information Management</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./3_4-PC-Security-Issues.html">3.4</a>
+    <a class="nav-next" href="./4_2-Change-Management.html">4.2</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.1</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Implement Best Practices Associated<br>with Documentation and Support<br>Systems Information Management</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.1</span>
+    <span>Domain weight: 21%</span>
+    <span>Ticketing Systems · Asset Management · Document Types</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to IT Documentation Practices</h2>
+
+<p>Every organization that provides IT support, no matter how small, depends on a layer of documentation that runs in parallel to the actual technical work. A technician who fixes a problem but never records what happened, what hardware was involved, or why the fix worked has created a gap in institutional knowledge — the next technician who touches that machine, or that user, starts from zero. Objective 4.1 is about closing that gap: the structured systems and documents that turn one-off support interactions into a searchable, accountable, auditable record.</p>
+
+<p>This objective covers three connected pillars. <span class="key-term">Ticketing systems</span> capture the day-to-day record of individual support requests — who reported what, how serious it is, and what was done about it. <span class="key-term">Asset management</span> tracks the organization's hardware and software inventory over its entire lifespan, from purchase to retirement. <span class="key-term">Types of documents</span> covers the standing reference material — procedures, agreements, checklists, and knowledge articles — that exists independently of any single incident but shapes how every incident gets handled.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Documentation Is a Force Multiplier</p>
+  <p>Good documentation lets a support organization function larger than its headcount. A well-maintained knowledge base means a junior technician can resolve a problem a senior technician already solved months ago without re-inventing the fix. A well-maintained CMDB means nobody has to physically walk to a server room to find out what's plugged in where. A clear ticket history means the fifth technician to touch a recurring problem doesn't repeat the same four failed attempts as the first four. Every sub-topic in 4.1 exists to make information reusable rather than trapped in one person's memory.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — TICKETING SYSTEMS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Ticketing Systems</h2>
+
+<p>A <span class="key-term">ticketing system</span> is the software platform that logs, tracks, and routes every support request from the moment it's reported to the moment it's resolved. It is the single most frequently used documentation tool in a technician's daily work, and the exam expects familiarity with exactly which fields a well-formed ticket should capture.</p>
+
+<h3 class="section">Core Ticket Fields</h3>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">User information</span>
+    <span>Who reported the issue — name, department, contact information, and location — needed both to follow up and to identify patterns (e.g., multiple tickets from the same department pointing to a shared root cause).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Device information</span>
+    <span>Which specific asset is affected — make, model, asset tag/ID, serial number, and OS version — linking the ticket directly to that device's record in asset management and giving the technician the hardware context before ever touching the machine.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Description of issues</span>
+    <span>What the user is actually experiencing, ideally in the user's own words plus any technician clarification — the raw symptom report that everything else in the ticket builds on.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Categories</span>
+    <span>A classification tag (hardware, software, network, account access, etc.) that lets the ticketing system route the ticket to the right team and lets management pull reports on which types of issues occur most often.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Severity</span>
+    <span>How much business impact the issue has — commonly ranked from critical (a whole system or many users down) to low (a minor cosmetic annoyance). Severity drives how quickly a ticket must be worked and often ties directly into SLA commitments.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Escalation levels</span>
+    <span>The defined path a ticket follows when the assigned technician or tier cannot resolve it — for example, Tier 1 (help desk, common issues) escalating to Tier 2 (senior technician) escalating to Tier 3 (specialist/vendor). Escalation levels ensure a stuck ticket doesn't simply sit unresolved with someone who has run out of options.</span>
+  </div>
+</div>
+
+<h3 class="section">Clear, Concise Written Communication</h3>
+
+<p>Beyond the structured fields, the exam calls out written communication quality as its own sub-topic, because a ticket's long-term value depends entirely on how well it's written — a ticket resolved with vague notes like "fixed it" is nearly useless to whoever reads it later.</p>
+
+<div class="doc-panel">
+  <div class="doc-panel-header type-a"><span>Ticket Communication Components</span><span>Written throughout the ticket's life</span></div>
+  <div class="doc-panel-body">
+    <div class="doc-row">
+      <span class="doc-label">Issue description</span>
+      <span class="doc-desc">A precise, factual account of the reported problem — what was observed, when it started, and under what conditions it occurs — written so someone unfamiliar with the situation can understand it without asking follow-up questions</span>
+    </div>
+    <div class="doc-row">
+      <span class="doc-label">Progress notes</span>
+      <span class="doc-desc">A running log of what's been tried, what the result was, and what's planned next, added as the ticket is worked — critical for handoffs between shifts or technicians, and for justifying escalation when needed</span>
+    </div>
+    <div class="doc-row">
+      <span class="doc-label">Issue resolution</span>
+      <span class="doc-desc">The specific fix that resolved the problem, written clearly enough that it could be reused as a reference the next time the same or a similar issue occurs — effectively a candidate entry for the knowledge base</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Why Ticket Quality Matters</p>
+  <p>Scenario questions often describe a technician who wrote a vague or incomplete ticket and ask what should have been included, or describe a recurring problem and ask what documentation practice would have prevented the repeated troubleshooting. The expected answer usually centers on clear, specific progress notes and a resolution written well enough to be searchable and reusable — not just "the technician should have fixed it faster."</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — ASSET MANAGEMENT ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Asset Management</h2>
+
+<p><span class="key-term">Asset management</span> is the practice of tracking every piece of hardware and software an organization owns from the moment it's acquired to the moment it's retired. Where a ticketing system captures individual incidents, asset management captures the standing inventory those incidents happen against.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Inventory lists</span>
+    <span>The master record of every asset an organization owns — typically including device type, specifications, location, and current status — forming the baseline that everything else in asset management is built on.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Configuration management database (CMDB)</span>
+    <span>A centralized database that tracks not just what assets exist, but how they relate to each other and to the services they support — which server hosts which application, which switch a given workstation connects through, and so on. A CMDB turns a flat inventory list into a map of dependencies, which is essential for understanding the blast radius of a planned change (tying directly into Objective 4.2's change management process).</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Asset tags and IDs</span>
+    <span>Unique physical labels and corresponding database identifiers affixed to hardware, allowing any device to be instantly matched to its full record — purchase date, warranty status, assigned user, and ticket history — just by scanning or reading the tag.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Procurement life cycle</span>
+    <span>The full sequence an asset moves through from request and purchase, through deployment and active use, to eventual retirement and disposal — the timeline that asset management is ultimately organized around.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Warranty and licensing</span>
+    <span>Tracking which assets are still under manufacturer warranty (affecting whether a repair is free or billable) and which software licenses are assigned to which devices or users (affecting compliance and renewal planning) — both directly impact cost decisions during troubleshooting and renewal cycles.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Assigned users</span>
+    <span>The record linking a specific asset to the specific person currently responsible for it, which streamlines both support (knowing immediately who to contact about a device) and offboarding (knowing immediately what needs to be recovered when someone leaves).</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">CMDB vs. a Simple Inventory List — What the Exam Wants You to Distinguish</p>
+  <p>An inventory list answers "what do we own?" A CMDB answers "what do we own, and how does it all connect?" If a scenario question describes needing to understand the downstream impact of taking a specific server offline — which other systems and users would be affected — that's a CMDB question, not a simple inventory list question. The relationship data is the differentiator.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — TYPES OF DOCUMENTS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Types of Documents</h2>
+
+<p>Beyond the ticket itself and the asset database, IT support organizations maintain a set of standing reference documents that exist independently of any single incident. Objective 4.1 names six specific document types, each serving a distinct operational purpose.</p>
+
+<h3 class="section">Incident Reports</h3>
+
+<p>An <span class="key-term">incident report</span> is a formal record created after a significant event — a security breach, a major outage, a data loss event — documenting what happened, when it was detected, what the impact was, what actions were taken, and what will be done to prevent recurrence. Incident reports are often required for compliance purposes and directly overlap with the chain-of-custody and incident-documentation concepts covered under Objective 4.6.</p>
+
+<h3 class="section">Standard Operating Procedures (SOPs)</h3>
+
+<p>A <span class="key-term">standard operating procedure (SOP)</span> is a detailed, step-by-step document describing exactly how to perform a specific recurring task, written so that any qualified technician can follow it and reach the same consistent result — regardless of who performs it or when.</p>
+
+<div class="doc-panel">
+  <div class="doc-panel-header type-b"><span>Software Package Custom Installation Procedure</span><span>Example SOP</span></div>
+  <div class="doc-panel-body">
+    <div class="doc-row">
+      <span class="doc-label">Purpose</span>
+      <span class="doc-desc">A named example of an SOP called out specifically on the exam — a written, repeatable procedure for installing a particular software package with an organization's specific configuration, licensing, and settings baked in, so every install is consistent across every machine it's deployed to</span>
+    </div>
+    <div class="doc-row">
+      <span class="doc-label">Why it matters</span>
+      <span class="doc-desc">Prevents configuration drift between machines, ensures licensing is applied correctly every time, and lets any technician — not just the one who originally set up the software — perform the install correctly without guesswork</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">New User/Onboarding Setup Checklist</h3>
+
+<p>An <span class="key-term">onboarding checklist</span> is a standardized list of every step required to get a new employee fully set up — account creation, hardware assignment, software installs, access permissions, and orientation to support resources — ensuring nothing is missed and every new hire has a consistent starting experience regardless of who processes their setup.</p>
+
+<h3 class="section">User Off-Boarding Checklist</h3>
+
+<p>An <span class="key-term">off-boarding checklist</span> is the mirror image of onboarding, applied when an employee leaves the organization: disabling accounts, revoking access permissions, recovering assigned hardware, transferring or archiving files, and reassigning licenses. Off-boarding checklists carry direct security weight — a missed step, like a forgotten active account, is a common and preventable source of unauthorized access after someone has left.</p>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Off-Boarding Failure — A Direct Security Risk</p>
+  <p>An incomplete off-boarding process is one of the most common real-world causes of insider-threat-style incidents (see Objective 2.5) — not because the departed employee necessarily intends harm, but because a still-active account or unreturned device is simply an open door nobody is watching. The exam treats a thorough, checklist-driven off-boarding process as a core security control, not merely an HR formality.</p>
+</div>
+
+<h3 class="section">Service-Level Agreements (SLAs)</h3>
+
+<p>A <span class="key-term">service-level agreement (SLA)</span> is a formal, documented commitment defining the level of service to be provided — typically specifying response times, resolution times, and availability targets tied to ticket severity. The exam distinguishes two flavors of SLA.</p>
+
+<div class="card-grid">
+  <div class="card card-accent2">
+    <h4>Internal SLA</h4>
+    <ul>
+      <li><strong>Between whom</strong> — the IT department and other departments within the same organization</li>
+      <li><strong>Typical use</strong> — sets expectations like "critical tickets acknowledged within 15 minutes, resolved within 4 hours"</li>
+      <li><strong>Enforcement</strong> — generally managed through internal reporting and management oversight rather than a contract</li>
+    </ul>
+  </div>
+  <div class="card card-accent4">
+    <h4>External/Third-Party SLA</h4>
+    <ul>
+      <li><strong>Between whom</strong> — the organization and an outside vendor or managed service provider</li>
+      <li><strong>Typical use</strong> — a contractual commitment, often with financial penalties for the vendor if targets are missed</li>
+      <li><strong>Enforcement</strong> — legally binding, since it's part of a formal vendor contract</li>
+    </ul>
+  </div>
+</div>
+
+<h3 class="section">Knowledge Base/Articles</h3>
+
+<p>A <span class="key-term">knowledge base</span> is a searchable repository of articles documenting known issues, their resolutions, how-to guides, and FAQs — built up over time from resolved tickets, SOPs, and technician expertise. A mature knowledge base is often the single highest-leverage piece of documentation an IT organization maintains, since it directly reduces resolution time for recurring issues and allows lower-tier technicians to resolve problems that would otherwise require escalation.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Closing the Loop — Where Knowledge Base Articles Come From</p>
+  <p>The best knowledge base articles originate directly from well-written ticket resolutions (Section 1). A technician who writes a clear, specific issue-resolution note on a ticket has already done most of the work needed to turn that note into a reusable knowledge base article — which is exactly why the exam ties written communication quality on tickets back to the broader documentation ecosystem rather than treating it as an isolated skill.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.1 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">User Information</span><span>Who reported the ticket — name, department, contact info, location</span></div>
+    <div class="summary-item"><span class="s-sym">Device Information</span><span>Which asset is affected — make, model, asset tag, serial, OS version</span></div>
+    <div class="summary-item"><span class="s-sym">Categories</span><span>Classification tag used for routing and reporting on ticket types</span></div>
+    <div class="summary-item"><span class="s-sym">Severity</span><span>Business impact ranking; drives how fast a ticket must be worked and ties to SLAs</span></div>
+    <div class="summary-item"><span class="s-sym">Escalation Levels</span><span>Defined path a ticket follows when the current tier can't resolve it (Tier 1 → 2 → 3)</span></div>
+    <div class="summary-item"><span class="s-sym">Progress Notes</span><span>Running log of attempted fixes and results — critical for handoffs between technicians</span></div>
+    <div class="summary-item"><span class="s-sym">Issue Resolution</span><span>The specific fix, written clearly enough to reuse as future reference/KB material</span></div>
+    <div class="summary-item"><span class="s-sym">Inventory Lists</span><span>Baseline record of what assets the organization owns</span></div>
+    <div class="summary-item"><span class="s-sym">CMDB</span><span>Tracks assets AND their relationships/dependencies — more than a flat inventory</span></div>
+    <div class="summary-item"><span class="s-sym">Asset Tags/IDs</span><span>Physical labels linking hardware to its full digital record</span></div>
+    <div class="summary-item"><span class="s-sym">Procurement Life Cycle</span><span>Full asset timeline — request/purchase → deployment → retirement/disposal</span></div>
+    <div class="summary-item"><span class="s-sym">Incident Reports</span><span>Formal record of a significant event — breach, outage, data loss</span></div>
+    <div class="summary-item"><span class="s-sym">SOPs</span><span>Step-by-step procedure for a recurring task, ensuring consistent results across technicians</span></div>
+    <div class="summary-item"><span class="s-sym">Onboarding Checklist</span><span>Standardized new-hire setup steps — accounts, hardware, software, access, orientation</span></div>
+    <div class="summary-item"><span class="s-sym">Off-Boarding Checklist</span><span>Access revocation and asset recovery when an employee leaves — direct security control</span></div>
+    <div class="summary-item"><span class="s-sym">Internal SLA</span><span>Service commitment between IT and other internal departments</span></div>
+    <div class="summary-item"><span class="s-sym">External/Third-Party SLA</span><span>Contractual, often penalty-bound service commitment with an outside vendor</span></div>
+    <div class="summary-item"><span class="s-sym">Knowledge Base</span><span>Searchable repository of known issues/resolutions built from resolved tickets and SOPs</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Ticketing System Fields, At a Glance</h4>
+    <ul>
+      <li><strong>Who</strong> — user information</li>
+      <li><strong>What</strong> — device information + description of issues</li>
+      <li><strong>How urgent</strong> — categories + severity</li>
+      <li><strong>What next if stuck</strong> — escalation levels</li>
+      <li><strong>The written record</strong> — issue description, progress notes, resolution</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Asset Management, At a Glance</h4>
+    <ul>
+      <li><strong>What exists</strong> — inventory lists</li>
+      <li><strong>How it connects</strong> — CMDB</li>
+      <li><strong>How it's identified</strong> — asset tags/IDs</li>
+      <li><strong>Its full timeline</strong> — procurement life cycle</li>
+      <li><strong>What it costs/covers</strong> — warranty and licensing</li>
+      <li><strong>Who's responsible</strong> — assigned users</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Document Type → Trigger Scenario</h4>
+    <ul>
+      <li><strong>A major breach or outage occurred</strong> — incident report</li>
+      <li><strong>A task must be done the same way every time</strong> — SOP</li>
+      <li><strong>A new employee starts</strong> — onboarding checklist</li>
+      <li><strong>An employee leaves</strong> — off-boarding checklist</li>
+      <li><strong>A response-time commitment is needed</strong> — SLA (internal or external)</li>
+      <li><strong>A recurring question/issue keeps coming up</strong> — knowledge base article</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Internal vs. External SLA — Quick Test</h4>
+    <ul>
+      <li><strong>Involves a vendor contract with financial penalties</strong> — external/third-party</li>
+      <li><strong>Set between IT and another internal department</strong> — internal</li>
+      <li><strong>Legally binding by contract</strong> — external/third-party</li>
+      <li><strong>Managed through internal oversight, not a contract</strong> — internal</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>A CMDB is not the same thing as a simple inventory list</strong> — the defining feature of a CMDB is that it tracks relationships and dependencies between assets, not just their existence. If a question is about understanding downstream impact, it's asking about a CMDB.</p>
+  <p><strong>The three written-communication components of a ticket — issue description, progress notes, issue resolution — are frequently tested individually</strong>, so know which one applies at which stage: description at intake, progress notes during work, resolution at close.</p>
+  <p><strong>Escalation levels exist so a stuck ticket has a defined next step</strong>, typically moving from a general help desk tier to increasingly specialized tiers rather than remaining indefinitely with someone who has exhausted their options.</p>
+  <p><strong>Off-boarding checklists are a security control, not just an administrative formality</strong> — a missed step directly creates unauthorized access risk, which is why the exam ties this document type to real security consequences.</p>
+  <p><strong>Internal SLAs govern IT's relationship with other departments in the same organization; external/third-party SLAs are contractual commitments with outside vendors</strong>, often carrying financial penalties for missed targets — know which direction each one points.</p>
+  <p><strong>The "software package custom installation procedure" is the exam's specifically named example of an SOP</strong> — expect it to appear as a concrete example distinguishing an SOP from a more general policy document.</p>
+  <p><strong>Knowledge base articles typically originate from well-documented, resolved tickets</strong> — this is the practical link between Section 1 (ticketing) and Section 3 (document types) that the exam expects you to recognize as one connected workflow rather than separate silos.</p>
+</div>
+
+</div>
+</body>
+</html>

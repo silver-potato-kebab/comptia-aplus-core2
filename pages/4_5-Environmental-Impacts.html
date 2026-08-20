@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.5 — Environmental Impacts and Local Environment Controls</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* DISPOSAL PANEL — mirrors os-panel pattern for MSDS/disposal breakdowns */
+  .disp-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .disp-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .disp-panel-header.battery { background: var(--accent4); }
+  .disp-panel-header.toner   { background: #4a4a52; }
+  .disp-panel-header.other   { background: var(--accent2); }
+  .disp-panel-body { padding: 0; }
+  .disp-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .disp-row:last-child { border-bottom: none; }
+  .disp-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .disp-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .disp-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* POWER EVENT STRIP */
+  .power-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .power-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+  }
+  .power-card .power-icon {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .power-card.surge .power-icon    { background: var(--accent); }
+  .power-card.brownout .power-icon { background: var(--accent4); }
+  .power-card.blackout .power-icon { background: #4a4a52; }
+  .power-card h5 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .power-card p {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .power-strip { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .disp-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.5</strong> Summarize Environmental Impacts and Local Environment Controls</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_4-Safety-Procedures.html">4.4</a>
+    <a class="nav-next" href="./4_6-Prohibited-Content-Privacy-Licensing.html">4.6</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.5</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Summarize Environmental Impacts<br>and Local Environment Controls</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.5</span>
+    <span>Domain weight: 21%</span>
+    <span>MSDS &amp; Disposal · Climate Controls · Power Protection</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Environmental Awareness in IT</h2>
+
+<p>IT equipment doesn't exist in a vacuum — it sits inside a physical environment, is built from materials that can be hazardous if mishandled, and depends on stable power and stable climate conditions to function reliably. Objective 4.5 covers the environmental knowledge a technician needs beyond the hardware and software itself: how to safely dispose of the materials computer equipment is made of, how to keep the physical space around equipment within safe operating conditions, and how to protect equipment from the electrical environment it's plugged into.</p>
+
+<p>This objective covers three areas. <span class="key-term">MSDS documentation</span> governs the safe handling and disposal of hazardous materials found in common IT equipment — batteries, toner, and other devices. <span class="key-term">Temperature, humidity, and ventilation awareness</span> covers keeping the physical environment around equipment within safe operating limits. And <span class="key-term">power event protection</span> covers guarding against the electrical disturbances — surges, brownouts, and blackouts — that can damage equipment or interrupt work without warning.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Environment as a Silent Failure Cause</p>
+  <p>Unlike a misconfigured setting or a failed software update, environmental problems — overheating, humidity damage, a corroded battery, a power surge — often cause damage gradually and invisibly, then produce a failure that looks unrelated to its actual cause. A technician who only ever looks at software and hardware configuration, without considering the physical environment a device operates in, will misdiagnose a meaningful share of real-world problems. Objective 4.5 exists to build that environmental awareness into standard troubleshooting habits.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — MSDS AND DISPOSAL ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Material Safety Data Sheet (MSDS) Documentation for Handling and Disposal</h2>
+
+<p>A <span class="key-term">Material Safety Data Sheet (MSDS)</span>, also increasingly called a Safety Data Sheet (SDS), is a standardized document provided by a product's manufacturer detailing its chemical composition, physical and health hazards, safe handling procedures, storage requirements, and proper disposal methods. Many everyday IT components — batteries, toner cartridges, and other electronic devices — contain materials that are hazardous to human health or the environment if disposed of incorrectly, and an MSDS is the authoritative reference a technician consults to handle and dispose of them properly.</p>
+
+<h3 class="section">Proper Battery Disposal</h3>
+
+<div class="disp-panel">
+  <div class="disp-panel-header battery"><span>Batteries</span><span>Never in regular trash</span></div>
+  <div class="disp-panel-body">
+    <div class="disp-row">
+      <span class="disp-label">Hazard</span>
+      <span class="disp-desc">Batteries — particularly lithium-ion types common in laptops and mobile devices — contain chemicals that are environmentally hazardous and can pose a fire risk if damaged, punctured, or improperly discarded with regular trash, where compaction in a waste truck or landfill can cause them to short or rupture</span>
+    </div>
+    <div class="disp-row">
+      <span class="disp-label">Proper disposal</span>
+      <span class="disp-desc">Take to a designated battery recycling location or hazardous waste collection point rather than the regular trash or recycling stream; many retailers and municipalities offer dedicated battery drop-off programs specifically because of this risk</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Proper Toner Disposal</h3>
+
+<div class="disp-panel">
+  <div class="disp-panel-header toner"><span>Toner Cartridges</span><span>Fine particulate hazard</span></div>
+  <div class="disp-panel-body">
+    <div class="disp-row">
+      <span class="disp-label">Hazard</span>
+      <span class="disp-desc">Toner is an extremely fine powder that can be a respiratory irritant if inhaled in quantity, and the cartridges themselves are made of plastics and materials not meant for general landfill disposal</span>
+    </div>
+    <div class="disp-row">
+      <span class="disp-label">Proper disposal</span>
+      <span class="disp-desc">Most manufacturers offer take-back or recycling programs for used toner cartridges (often via prepaid shipping included with a new cartridge purchase); the MSDS for a given toner product specifies any additional handling precautions for a spill or cleanup</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Proper Disposal of Other Devices and Assets</h3>
+
+<div class="disp-panel">
+  <div class="disp-panel-header other"><span>Other Devices/Assets</span><span>E-waste regulations apply</span></div>
+  <div class="disp-panel-body">
+    <div class="disp-row">
+      <span class="disp-label">Hazard</span>
+      <span class="disp-desc">Computers, monitors, and other electronic devices contain a mix of materials — heavy metals, flame retardants, and other substances — that make them unsuitable for standard landfill disposal in most jurisdictions</span>
+    </div>
+    <div class="disp-row">
+      <span class="disp-label">Proper disposal</span>
+      <span class="disp-desc">Route retired equipment through a certified electronics recycler or a formal disposal/recycling vendor (tying directly into Objective 2.9's data destruction and disposal concepts and Objective 4.1's asset management procurement life cycle), rather than regular trash pickup</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — When in Doubt, Check the MSDS</p>
+  <p>The consistent theme across battery, toner, and general device disposal is that the correct answer is almost never "put it in the regular trash." When a scenario describes disposing of any hazardous or electronic material, the expected response is to consult the applicable MSDS/SDS documentation and follow proper hazardous-material or e-waste disposal channels — reflecting real regulatory requirements, not just environmental courtesy.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — TEMPERATURE, HUMIDITY, AND VENTILATION ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Temperature, Humidity-Level Awareness, and Proper Ventilation</h2>
+
+<p>Computer equipment generates heat and is sensitive to the temperature, humidity, and airflow conditions of the space it operates in. Left unmanaged, environmental conditions can shorten hardware lifespan, cause intermittent failures, or contribute to ESD risk (very low humidity increases static buildup, which ties directly back into Objective 4.4's ESD concerns).</p>
+
+<h3 class="section">Location/Equipment Placement</h3>
+
+<p>Where equipment is physically positioned significantly affects how well it can maintain safe operating temperatures. Equipment needs clearance around intake and exhaust vents to allow proper airflow, should be kept away from direct heat sources (sunlight through a window, a heating vent), and server/networking equipment in particular should be placed in a space with active climate control rather than an unconditioned closet or storage room.</p>
+
+<h3 class="section">Dust Cleanup</h3>
+
+<p>Dust accumulation inside a case or on cooling components acts as an insulating layer, trapping heat and reducing a fan or heat sink's ability to dissipate it effectively. Left unaddressed over months or years, this gradual buildup is a common, easily overlooked cause of degraded performance, thermal throttling, or unexpected shutdowns that would otherwise seem unrelated to anything the user did.</p>
+
+<h3 class="section">Compressed Air/Vacuums</h3>
+
+<p>Cleaning accumulated dust typically involves either canned compressed air (to dislodge and blow dust out of a case, off a heat sink, or out of a keyboard) or a vacuum specifically rated for electronics. This directly connects back to Objective 4.4's personal safety guidance — safety goggles and an air filter mask are appropriate precautions during this kind of cleaning, since dislodged dust readily becomes airborne.</p>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Static Risk with Vacuums — Use ESD-Rated Equipment</p>
+  <p>A standard household vacuum can generate significant static electricity as air and debris move through its hose, creating an ESD risk to sensitive components even though no direct contact occurs. When vacuuming inside a computer case is necessary, an ESD-safe vacuum specifically designed for electronics work should be used instead of a general-purpose household vacuum, tying this cleaning practice directly back into the ESD precautions covered in Objective 4.4.</p>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Humidity — Too Low and Too High Both Cause Problems</p>
+  <p>Humidity that's too low increases the risk of electrostatic discharge, since dry air holds a static charge more readily. Humidity that's too high risks condensation forming on or inside equipment, which can cause corrosion or short circuits. Server rooms and data centers typically maintain humidity within a specific target range for exactly this reason — neither extreme is safe for sensitive electronics.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — POWER SURGES, BROWNOUTS, AND BLACKOUTS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Power Surges, Brownouts, and Blackouts</h2>
+
+<p>Electrical power delivered to a building is not always perfectly stable, and the specific type of disturbance determines both the risk to equipment and the appropriate protective device.</p>
+
+<div class="power-strip">
+  <div class="power-card surge">
+    <span class="power-icon">Overvoltage</span>
+    <h5>Power Surge</h5>
+    <p>A brief spike in voltage above normal levels, which can instantly damage sensitive electronic components if unprotected</p>
+  </div>
+  <div class="power-card brownout">
+    <span class="power-icon">Undervoltage</span>
+    <h5>Brownout</h5>
+    <p>A sustained drop in voltage below normal levels — the lights may visibly dim — which can cause equipment to behave erratically or shut down unexpectedly</p>
+  </div>
+  <div class="power-card blackout">
+    <span class="power-icon">No Power</span>
+    <h5>Blackout</h5>
+    <p>A complete loss of power, causing an immediate, uncontrolled shutdown of any equipment not on backup power</p>
+  </div>
+</div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Uninterruptible power supply (UPS)</span>
+    <span>A device containing a battery that provides continuous backup power the instant utility power fails, keeping connected equipment running (typically for a limited time) so a system can either ride out a brief outage or be shut down gracefully during a longer one. A UPS also typically includes surge suppression and can smooth over brownout conditions by drawing on its battery, making it the more comprehensive of the two protective devices covered here.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Surge suppressor</span>
+    <span>A device that protects connected equipment from voltage spikes by diverting excess voltage away from the equipment, but provides no backup power of its own — if utility power fails entirely, everything plugged into a surge suppressor alone loses power immediately, just as if it were plugged directly into the wall.</span>
+  </div>
+</div>
+
+<table class="data-table">
+  <thead><tr><th>Device</th><th>Protects Against</th><th>Provides Backup Power?</th><th>Best Suited For</th></tr></thead>
+  <tbody>
+    <tr><td>Surge suppressor</td><td>Voltage spikes/surges only</td><td class="no">No</td><td>Equipment where graceful shutdown isn't critical, but surge protection is still wanted</td></tr>
+    <tr><td>UPS</td><td>Surges, brownouts, and blackouts</td><td class="yes">Yes (limited runtime)</td><td>Servers, networking gear, and any system that needs time to shut down safely or ride out short outages</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Matching Device to Power Event</p>
+  <p>If a scenario only mentions protecting against voltage spikes with no concern about a full outage, a surge suppressor may be sufficient and more cost-effective. If the scenario involves a server, critical workstation, or any equipment that needs to survive a brief outage or shut down cleanly rather than losing power instantly, a UPS is the correct answer — remember that a UPS is the only one of the two devices that actually supplies power during a blackout.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.5 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">MSDS/SDS</span><span>Manufacturer-provided document on hazards, handling, and disposal of a material</span></div>
+    <div class="summary-item"><span class="s-sym">Battery Disposal</span><span>Never regular trash — designated recycling/hazardous waste collection due to fire/chemical risk</span></div>
+    <div class="summary-item"><span class="s-sym">Toner Disposal</span><span>Manufacturer take-back/recycling programs; fine powder is a respiratory hazard if mishandled</span></div>
+    <div class="summary-item"><span class="s-sym">Device/Asset Disposal</span><span>Certified e-waste recycler due to heavy metals and other regulated materials</span></div>
+    <div class="summary-item"><span class="s-sym">Location/Equipment Placement</span><span>Clearance for airflow; away from heat sources; climate-controlled space for servers</span></div>
+    <div class="summary-item"><span class="s-sym">Dust Cleanup</span><span>Prevents heat-trapping buildup that causes throttling/instability over time</span></div>
+    <div class="summary-item"><span class="s-sym">Compressed Air/Vacuums</span><span>Use ESD-safe vacuums; pair with goggles/mask (4.4) since dust becomes airborne</span></div>
+    <div class="summary-item"><span class="s-sym">Low Humidity Risk</span><span>Increases ESD risk from dry air holding static more readily</span></div>
+    <div class="summary-item"><span class="s-sym">High Humidity Risk</span><span>Condensation risk leading to corrosion/short circuits</span></div>
+    <div class="summary-item"><span class="s-sym">Power Surge</span><span>Brief overvoltage spike; instant damage risk to unprotected equipment</span></div>
+    <div class="summary-item"><span class="s-sym">Brownout</span><span>Sustained undervoltage; erratic behavior or unexpected shutdowns</span></div>
+    <div class="summary-item"><span class="s-sym">Blackout</span><span>Complete power loss; immediate uncontrolled shutdown without backup power</span></div>
+    <div class="summary-item"><span class="s-sym">UPS</span><span>Battery backup + surge protection; only device that survives a blackout, for a limited time</span></div>
+    <div class="summary-item"><span class="s-sym">Surge Suppressor</span><span>Diverts voltage spikes only; provides zero backup power during an outage</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Disposal Decision Guide</h4>
+    <ul>
+      <li><strong>Any battery, especially lithium-ion</strong> — dedicated recycling/hazmat collection</li>
+      <li><strong>Toner cartridge</strong> — manufacturer take-back/recycling program</li>
+      <li><strong>Retired computer/monitor/device</strong> — certified e-waste recycler</li>
+      <li><strong>Never the default answer</strong> — regular household/office trash</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Environmental Control Checklist</h4>
+    <ul>
+      <li><strong>Airflow</strong> — clearance around vents, away from direct heat sources</li>
+      <li><strong>Dust</strong> — periodic cleaning with ESD-safe tools</li>
+      <li><strong>Humidity too low</strong> — ESD risk increases</li>
+      <li><strong>Humidity too high</strong> — condensation/corrosion risk increases</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Power Event → Correct Device</h4>
+    <ul>
+      <li><strong>Only concerned about voltage spikes</strong> — surge suppressor</li>
+      <li><strong>Need to survive a brief outage or shut down gracefully</strong> — UPS</li>
+      <li><strong>Server or critical workstation</strong> — UPS, not a surge suppressor alone</li>
+      <li><strong>Budget device with no backup power needed</strong> — surge suppressor</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Cross-Objective Connections</h4>
+    <ul>
+      <li><strong>ESD-safe vacuum use</strong> — ties to Objective 4.4's ESD precautions</li>
+      <li><strong>Goggles/mask during dust cleanup</strong> — ties to Objective 4.4's PPE</li>
+      <li><strong>Device/asset disposal</strong> — ties to Objective 2.9's data destruction and 4.1's asset life cycle</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Batteries, toner, and retired devices are never disposed of in regular trash</strong> — this is the single most consistently tested principle across Section 1, reflecting genuine regulatory disposal requirements rather than just good practice.</p>
+  <p><strong>An MSDS/SDS is the authoritative reference for safe handling and disposal</strong> of a specific hazardous material — when in doubt about how to handle a spill or dispose of something, the correct instinct is to consult the applicable MSDS.</p>
+  <p><strong>A UPS provides battery backup power; a surge suppressor does not</strong> — this is the core distinction tested in Section 3. A surge suppressor only protects against voltage spikes and offers zero protection against a brownout or blackout.</p>
+  <p><strong>Dust buildup is a legitimate, common cause of thermal problems</strong> — a system running hotter than expected or shutting down unexpectedly, with no obvious software cause, should prompt a look inside the case for dust accumulation.</p>
+  <p><strong>Use ESD-safe vacuums, not household vacuums, when cleaning inside a computer case</strong> — a detail that connects this objective's environmental controls directly back to Objective 4.4's ESD precautions.</p>
+  <p><strong>Humidity has two failure directions, not one</strong> — too low raises ESD risk, too high raises condensation/corrosion risk — so "control humidity" means keeping it within a target range, not simply keeping it low or high.</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.7 — Proper Communication Techniques and Professionalism</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* DO/DON'T PANEL */
+  .dodont-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .dodont-card {
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .dodont-header {
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .dodont-card.do .dodont-header { background: var(--accent3); }
+  .dodont-card.dont .dodont-header { background: var(--accent); }
+  .dodont-body { background: var(--surface); padding: 4px 0; }
+  .dodont-item {
+    padding: 8px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    line-height: 1.45;
+  }
+  .dodont-item:last-child { border-bottom: none; }
+  .dodont-item strong { color: var(--text); }
+
+  /* ATTIRE STRIP */
+  .attire-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .attire-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .attire-card .attire-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .attire-card.formal .attire-tag { background: var(--accent2); }
+  .attire-card.casual .attire-tag { background: var(--accent4); }
+  .attire-card h5 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .attire-card p {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .dodont-grid, .attire-strip { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.7</strong> Use Proper Communication Techniques and Professionalism</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_6-Prohibited-Content-Privacy-Licensing.html">4.6</a>
+    <a class="nav-next" href="./4_8-Scripting-Basics.html">4.8</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.7</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Use Proper Communication<br>Techniques and Professionalism</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.7</span>
+    <span>Domain weight: 21%</span>
+    <span>Appearance · Communication · Difficult Customers · Confidentiality</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Professional Customer Interaction</h2>
+
+<p>Technical skill alone doesn't make a good technician — how a technician presents themselves, communicates, and handles friction with a frustrated user matters just as much to the overall support experience. A perfectly executed technical fix delivered rudely, or with a dismissive attitude, can still leave a customer unhappy and distrustful of IT. Objective 4.7 covers the "soft skills" side of the A+ exam: the specific, concrete behaviors that define professional conduct in a support role.</p>
+
+<p>This objective is organized loosely around the arc of a support interaction — how a technician should show up (appearance, punctuality), how they should communicate throughout (language, listening, cultural sensitivity, avoiding distractions), how to handle it when things get tense (difficult customers), and how to close the loop properly (expectations, documentation, follow-up, confidentiality).</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Professionalism Is Observable Behavior, Not a Personality Trait</p>
+  <p>Every item in this objective is a specific, describable action — wearing appropriate attire, not interrupting, restating an issue to confirm understanding, following up after the fact — rather than a vague trait like "being nice." This matters for the exam because scenario questions describe a specific behavior and ask whether it was appropriate; recognizing the concrete right answer is much easier when you think of professionalism as a checklist of behaviors rather than an abstract attitude.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — APPEARANCE AND PUNCTUALITY ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Professional Appearance and Punctuality</h2>
+
+<h3 class="section">Present a Professional Appearance and Wear Appropriate Attire</h3>
+
+<p>A technician's appearance is often the customer's very first impression, and it should match the environment being visited rather than a fixed personal standard.</p>
+
+<div class="attire-strip">
+  <div class="attire-card formal">
+    <span class="attire-tag">Formal</span>
+    <h5>Formal Attire</h5>
+    <p>Appropriate for corporate offices, executive environments, government sites, or any client setting where a suit, tie, or equivalent formal dress is the visible norm among staff already present</p>
+  </div>
+  <div class="attire-card casual">
+    <span class="attire-tag">Casual</span>
+    <h5>Business Casual Attire</h5>
+    <p>Appropriate for many everyday office environments, warehouses, schools, or less formal client sites — collared shirts, slacks, and similarly neat but less formal dress that still looks intentional and professional</p>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Match the Environment, Not a Fixed Rule</p>
+  <p>The exam frames this as situational: the "correct" attire is whatever matches the required standard of the specific environment a technician is entering, not a single universal dress code. A technician who shows up to a formal corporate headquarters in casual clothes, or shows up to a casual warehouse environment in an overly formal suit that seems out of place, has both missed the actual point of this guideline — reading and matching the environment appropriately.</p>
+</div>
+
+<h3 class="section">Be on Time (If Late, Contact the Customer)</h3>
+
+<p>Punctuality respects the customer's own schedule and demonstrates reliability. When a delay is unavoidable, the correct action is to proactively contact the customer as soon as the delay is known, rather than simply showing up late without notice or explanation. A brief heads-up call or message preserves trust even when the original appointment time can't be kept.</p>
+
+
+<!-- ═══ SECTION 2 — COMMUNICATION FUNDAMENTALS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Communication Fundamentals</h2>
+
+<h3 class="section">Use Proper Language and Avoid Jargon, Acronyms, and Slang, When Applicable</h3>
+
+<p>Most customers are not IT professionals, and technical shorthand that's second nature to a technician — acronyms, protocol names, internal jargon — can leave a customer confused, feeling talked-down-to, or unable to follow what's actually happening with their own equipment. Explaining an issue and its resolution in plain, accessible language (adjusting for the specific audience — a fellow IT professional may warrant more technical language than an end user) is part of professional communication, not just courtesy.</p>
+
+<h3 class="section">Maintain a Positive Attitude/Project Confidence</h3>
+
+<p>A technician's demeanor directly shapes how a customer experiences the interaction, independent of the technical outcome. Projecting confidence and a positive attitude — even when a problem is difficult or the fix will take time — reassures the customer that the situation is under control, whereas visible frustration, panic, or resignation from the technician tends to make a stressful situation feel worse for the customer, regardless of the technician's actual skill level.</p>
+
+<h3 class="section">Actively Listen and Avoid Interrupting the Customer</h3>
+
+<p><span class="key-term">Active listening</span> means fully concentrating on what the customer is saying, rather than mentally jumping ahead to a diagnosis or a response while they're still talking. Interrupting a customer — even with a relevant technical thought — can cause them to feel unheard and can cause the technician to miss a detail buried later in the customer's explanation that turns out to be important to correctly diagnosing the issue.</p>
+
+<h3 class="section">Be Culturally Sensitive</h3>
+
+<p>Support interactions happen across a wide range of cultural contexts, and a technician is expected to be aware of and respectful toward differences in communication norms, customs, and expectations. This includes using appropriate professional titles and designations when applicable — addressing someone by "Dr.," "Professor," or another earned title correctly, for example — rather than defaulting to informal address in a context where a more formal one is expected or preferred.</p>
+
+<h3 class="section">Avoid Distractions</h3>
+
+<p>A technician's full attention should be on the customer and the task at hand. The exam names three specific distraction categories to avoid during a customer interaction.</p>
+
+<div class="card-grid">
+  <div class="card card-accent">
+    <h4>Distractions to Avoid</h4>
+    <ul>
+      <li><strong>Personal calls</strong> — taking or making personal phone calls while working with a customer</li>
+      <li><strong>Texting/social media sites</strong> — checking a phone or browsing unrelated sites during the interaction</li>
+      <li><strong>Personal interruptions</strong> — allowing unrelated conversations or personal matters to interrupt the customer's time</li>
+    </ul>
+  </div>
+  <div class="card card-accent3">
+    <h4>Why It Matters</h4>
+    <ul>
+      <li><strong>Signals disrespect</strong> — even brief distractions communicate that the customer's time and problem aren't the priority</li>
+      <li><strong>Increases error risk</strong> — divided attention during technical work raises the chance of a mistake</li>
+      <li><strong>Undermines trust</strong> — a distracted technician appears less competent and less trustworthy, regardless of actual skill</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 3 — DIFFICULT CUSTOMERS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Appropriately Dealing with Difficult Customers or Situations</h2>
+
+<p>Not every support interaction goes smoothly — a customer may be frustrated, upset, or difficult to communicate with, often because of the underlying problem itself rather than anything the technician has done. The exam names several specific behaviors for handling this well.</p>
+
+<div class="dodont-grid">
+  <div class="dodont-card dont">
+    <div class="dodont-header">Avoid</div>
+    <div class="dodont-body">
+      <div class="dodont-item"><strong>Arguing with the customer or becoming defensive</strong> — escalates tension rather than resolving it</div>
+      <div class="dodont-item"><strong>Dismissing customer issues</strong> — treating a concern as unimportant, even if it initially seems minor or user-caused</div>
+      <div class="dodont-item"><strong>Being judgmental</strong> — criticizing how the customer caused or handled the problem</div>
+    </div>
+  </div>
+  <div class="dodont-card do">
+    <div class="dodont-header">Do</div>
+    <div class="dodont-body">
+      <div class="dodont-item"><strong>Clarify customer statements</strong> — ask open-ended questions, restate the issue, or ask verifying questions to narrow the scope</div>
+      <div class="dodont-item"><strong>Use discretion and professionalism</strong> when discussing past experiences or encounters, even frustrating ones</div>
+      <div class="dodont-item"><strong>Stay calm and solution-focused</strong>, redirecting energy toward resolving the actual problem</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Clarifying Customer Statements</h3>
+
+<p>The exam specifically names three techniques for clarifying what a customer means, especially useful when a customer's initial description is vague, frustrated, or non-technical.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Open-ended questions</span>
+    <span>Questions that can't be answered with a simple yes/no, encouraging the customer to describe the problem in their own words and often surfacing details a yes/no question would have missed (e.g., "Can you walk me through what happens right before the error appears?").</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Restating the issue</span>
+    <span>Repeating back, in the technician's own words, what the customer has described — confirming shared understanding before proceeding and giving the customer a chance to correct any misunderstanding immediately.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Verifying questions</span>
+    <span>Targeted follow-up questions confirming a specific detail ("So this only happens when you're connected to the office Wi-Fi, not at home?") to narrow down the scope of the issue before attempting a fix.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Recognizing the Wrong Response to a Difficult Customer</p>
+  <p>A frequent scenario format describes a technician responding poorly to a frustrated customer — arguing back, dismissing the complaint, or making a judgmental comment about how the problem was caused — and asks what the technician should have done instead. The correct answer nearly always involves one of the clarifying techniques above, paired with staying calm and non-defensive, rather than any response that argues, blames, or minimizes the customer's concern.</p>
+</div>
+
+
+<!-- ═══ SECTION 4 — EXPECTATIONS, TIMELINE, AND CLOSING THE LOOP ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Setting Expectations, Timelines, and Communicating Status</h2>
+
+<p>Beyond how a technician communicates in the moment, professionalism extends to managing the customer's expectations across the whole lifecycle of the issue — from diagnosis through resolution and beyond.</p>
+
+<div class="process-flow">
+  <div class="flow-title">Closing the Loop with a Customer</div>
+  <div class="flow-step">
+    <div class="flow-num">01</div>
+    <div class="flow-text"><strong>Set realistic expectations and a timeline</strong> for the repair or resolution, and communicate status updates if the situation changes or takes longer than expected.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">02</div>
+    <div class="flow-text"><strong>Offer repair/replacement options, as needed,</strong> giving the customer informed choices rather than deciding unilaterally on their behalf when multiple reasonable paths exist.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">03</div>
+    <div class="flow-text"><strong>Provide proper documentation on the services provided,</strong> giving the customer (and the organization's records — see Objective 4.1) a clear account of what was done.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">04</div>
+    <div class="flow-text"><strong>Follow up with the customer/user at a later date</strong> to verify satisfaction, confirming the fix held and the customer's underlying problem was actually resolved to their satisfaction.</div>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Why Follow-Up Matters Beyond Politeness</p>
+  <p>A fix that appears successful in the moment can still fail to hold, or fail to address the customer's actual underlying concern. Following up later — even with a brief check-in — catches this before the customer has to reopen a new ticket for what should have been resolved, and reinforces that the technician (and the organization) genuinely cares about the outcome, not just about closing the ticket quickly.</p>
+</div>
+
+
+<!-- ═══ SECTION 5 — CONFIDENTIAL AND PRIVATE MATERIALS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Appropriately Handling Confidential and Private Materials</h2>
+
+<p>During the course of support work, a technician frequently has access to a customer's personal or confidential information — not just data intentionally shared as part of describing the issue, but material simply present on the device or in the environment being worked on.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Located on a computer</span>
+    <span>Files, browser history, open documents, saved passwords, or personal photos a technician may incidentally see while diagnosing or repairing a system — professional discretion means not looking through, discussing, or acting on this material beyond what's directly necessary for the repair itself.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Located on a desktop</span>
+    <span>Physical papers, sticky notes, or visible documents on a customer's desk or monitor during an in-person visit — a technician should avoid reading or commenting on visible confidential material that isn't relevant to the task at hand.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Located on a printer</span>
+    <span>Printed documents left in a printer tray or queued print jobs a technician might encounter while servicing a printer — the same discretion applies: don't read, discuss, or act on the content beyond what the repair itself requires.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Discretion Is the Standard, Even Without an Explicit NDA</p>
+  <p>A technician doesn't need to have signed a formal NDA (Objective 4.6) to be expected to exercise discretion around a customer's confidential and private materials — this is a baseline professionalism expectation that applies by default in every support interaction, precisely because a technician's job frequently and unavoidably puts them in proximity to sensitive information that isn't actually relevant to the task they were called in to perform.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.7 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Attire Matching</span><span>Match the environment's standard — formal vs. business casual — not a fixed personal rule</span></div>
+    <div class="summary-item"><span class="s-sym">Punctuality</span><span>Be on time; if late, proactively contact the customer</span></div>
+    <div class="summary-item"><span class="s-sym">Avoiding Jargon</span><span>Use plain language appropriate to the audience, not technical shorthand by default</span></div>
+    <div class="summary-item"><span class="s-sym">Positive Attitude/Confidence</span><span>Demeanor shapes the customer's experience independent of technical outcome</span></div>
+    <div class="summary-item"><span class="s-sym">Active Listening</span><span>Fully concentrate; avoid interrupting; details matter</span></div>
+    <div class="summary-item"><span class="s-sym">Cultural Sensitivity</span><span>Use appropriate professional titles/designations; respect communication norms</span></div>
+    <div class="summary-item"><span class="s-sym">Avoiding Distractions</span><span>No personal calls, texting/social media, or personal interruptions during customer time</span></div>
+    <div class="summary-item"><span class="s-sym">Difficult Customers — Avoid</span><span>Arguing/defensiveness, dismissing issues, being judgmental</span></div>
+    <div class="summary-item"><span class="s-sym">Clarifying Techniques</span><span>Open-ended questions, restating the issue, verifying questions</span></div>
+    <div class="summary-item"><span class="s-sym">Discretion on Past Encounters</span><span>Discuss experiences professionally, even frustrating ones</span></div>
+    <div class="summary-item"><span class="s-sym">Setting Expectations/Timeline</span><span>Communicate status; update if the situation changes</span></div>
+    <div class="summary-item"><span class="s-sym">Repair/Replacement Options</span><span>Offer informed choices rather than deciding unilaterally</span></div>
+    <div class="summary-item"><span class="s-sym">Documentation of Services</span><span>Provide the customer a clear account of what was done</span></div>
+    <div class="summary-item"><span class="s-sym">Follow-Up</span><span>Check back later to verify the fix held and the customer is satisfied</span></div>
+    <div class="summary-item"><span class="s-sym">Confidential Materials</span><span>Discretion by default for anything seen on a computer, desktop, or printer</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Before/During the Visit</h4>
+    <ul>
+      <li><strong>Dress</strong> — match the environment (formal vs. business casual)</li>
+      <li><strong>Running late</strong> — contact the customer proactively</li>
+      <li><strong>Explaining the issue</strong> — plain language, minimal jargon/acronyms</li>
+      <li><strong>Listening</strong> — let the customer finish; don't interrupt</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>If the Customer Is Upset</h4>
+    <ul>
+      <li><strong>Don't</strong> — argue, get defensive, dismiss, or judge</li>
+      <li><strong>Do</strong> — ask open-ended questions, restate the issue, verify understanding</li>
+      <li><strong>Stay</strong> — calm, professional, solution-focused</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Closing Out the Interaction</h4>
+    <ul>
+      <li><strong>Set/communicate</strong> — timeline and status updates</li>
+      <li><strong>Offer</strong> — repair/replacement options where relevant</li>
+      <li><strong>Provide</strong> — documentation of services performed</li>
+      <li><strong>Follow up</strong> — later, to confirm satisfaction</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Confidentiality Reminders</h4>
+    <ul>
+      <li><strong>Files/history on a computer</strong> — don't look beyond what's needed</li>
+      <li><strong>Papers on a desk</strong> — don't read or comment</li>
+      <li><strong>Documents in a printer tray</strong> — same discretion applies</li>
+      <li><strong>No NDA needed</strong> — discretion is the default professional standard</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Attire should match the environment, not follow one fixed standard</strong> — a scenario describing a formal corporate site expects formal attire; a casual site expects business casual, and either can be the "correct" answer depending on the setting described.</p>
+  <p><strong>If running late, the correct action is to proactively contact the customer</strong> — silently showing up late, or not addressing it at all, is the wrong answer in a scenario question.</p>
+  <p><strong>Never argue with, dismiss, or judge a difficult customer</strong> — the correct response always involves a clarifying technique (open-ended questions, restating, verifying) plus staying calm, not an assertive or defensive comeback.</p>
+  <p><strong>The three named distraction categories — personal calls, texting/social media, personal interruptions — are frequently tested individually</strong>, so recognize each one as its own named example rather than a single vague "don't get distracted" concept.</p>
+  <p><strong>Closing the loop means more than fixing the problem</strong> — documentation and a later follow-up to verify satisfaction are both explicitly named steps, not optional extras.</p>
+  <p><strong>Confidentiality applies to anything a technician happens to see — on a computer, a desk, or in a printer tray — regardless of whether it's directly relevant to the repair</strong>, and this expectation holds by default, without requiring a signed NDA.</p>
+</div>
+
+</div>
+</body>
+</html>

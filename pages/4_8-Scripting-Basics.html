@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.8 — Basics of Scripting</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* SCRIPT TYPE PANEL — mirrors os-panel pattern */
+  .script-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .script-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .script-panel-header .ext { font-weight: 700; font-size: 15px; }
+  .script-panel-header .lang { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; }
+  .script-panel-header.bat { background: #0078d4; }
+  .script-panel-header.ps1 { background: #2c3e6b; }
+  .script-panel-header.vbs { background: #b5590a; }
+  .script-panel-header.sh  { background: #2c2c2c; }
+  .script-panel-header.js  { background: #8a6d1f; }
+  .script-panel-header.py  { background: #1a6b3a; }
+  .script-panel-body { padding: 0; }
+  .script-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .script-row:last-child { border-bottom: none; }
+  .script-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .script-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .script-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .script-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.8</strong> Explain the Basics of Scripting</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_7-Communication-Professionalism.html">4.7</a>
+    <a class="nav-next" href="./4_9-Remote-Access-Technologies.html">4.9</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.8</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Explain the Basics of Scripting</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.8</span>
+    <span>Domain weight: 21%</span>
+    <span>Script File Types · Use Cases · Risks and Considerations</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Scripting for IT Support</h2>
+
+<p>A <span class="key-term">script</span> is a text file containing a sequence of commands that a computer executes automatically, without a person manually clicking through each step. For a technician, scripting is the difference between performing the same ten-minute task by hand every single time and writing it once so it runs identically, correctly, and instantly on demand — or on a schedule, without anyone needing to be there at all. Objective 4.8 doesn't expect a technician to be a professional software developer; it expects familiarity with what scripts are, which file types correspond to which scripting environment, when scripting is the right tool, and what can go wrong if a script isn't handled carefully.</p>
+
+<p>This objective covers three areas. <span class="key-term">Script file types</span> identifies the file extensions tied to the major scripting languages/environments a technician will encounter. <span class="key-term">Use cases for scripting</span> covers the kinds of repetitive or systematic IT tasks scripting is well suited for. And <span class="key-term">other considerations</span> covers the real risks scripts introduce if written carelessly or run without understanding what they do.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Scripts Trade Manual Effort for Automated Risk</p>
+  <p>A script does exactly what it's told, exactly the same way, every single time — which is both its greatest strength and its greatest danger. A human repeating a task by hand might notice something looks wrong partway through and stop; a script has no such judgment unless it's specifically written to check for problems. This trade-off — consistency and speed in exchange for the need for careful review — runs through every part of this objective.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — SCRIPT FILE TYPES ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Script File Types</h2>
+
+<p>Each scripting language is associated with a specific file extension, which tells the operating system how to interpret and run the file. Recognizing these extensions on sight — and knowing roughly what platform and purpose each is associated with — is a core piece of exam knowledge.</p>
+
+<div class="script-panel">
+  <div class="script-panel-header bat"><span class="ext">.bat</span><span class="lang">Windows Batch File</span></div>
+  <div class="script-panel-body">
+    <div class="script-row">
+      <span class="script-label">Platform</span>
+      <span class="script-desc">Windows, run through the Command Prompt (<code>cmd.exe</code>)</span>
+    </div>
+    <div class="script-row">
+      <span class="script-label">Typical use</span>
+      <span class="script-desc">Simple sequences of command-line instructions — one of the oldest and most basic Windows scripting formats, still widely used for straightforward automation tasks</span>
+    </div>
+  </div>
+</div>
+
+<div class="script-panel">
+  <div class="script-panel-header ps1"><span class="ext">.ps1</span><span class="lang">PowerShell Script</span></div>
+  <div class="script-panel-body">
+    <div class="script-row">
+      <span class="script-label">Platform</span>
+      <span class="script-desc">Windows (and cross-platform via PowerShell Core), run through PowerShell</span>
+    </div>
+    <div class="script-row">
+      <span class="script-label">Typical use</span>
+      <span class="script-desc">Modern, more powerful Windows administration and automation — far more capable than a <code>.bat</code> file, with deep access to Windows system management, Active Directory, and other administrative functions</span>
+    </div>
+  </div>
+</div>
+
+<div class="script-panel">
+  <div class="script-panel-header vbs"><span class="ext">.vbs</span><span class="lang">VBScript</span></div>
+  <div class="script-panel-body">
+    <div class="script-row">
+      <span class="script-label">Platform</span>
+      <span class="script-desc">Windows, run through the Windows Script Host</span>
+    </div>
+    <div class="script-row">
+      <span class="script-label">Typical use</span>
+      <span class="script-desc">An older Microsoft scripting language, largely superseded by PowerShell for new work but still encountered in legacy scripts and older automation still in use in some environments</span>
+    </div>
+  </div>
+</div>
+
+<div class="script-panel">
+  <div class="script-panel-header sh"><span class="ext">.sh</span><span class="lang">Shell Script</span></div>
+  <div class="script-panel-body">
+    <div class="script-row">
+      <span class="script-label">Platform</span>
+      <span class="script-desc">Linux and macOS, run through a shell such as <code>bash</code></span>
+    </div>
+    <div class="script-row">
+      <span class="script-label">Typical use</span>
+      <span class="script-desc">The standard scripting format on Unix-like systems — the direct counterpart to <code>.bat</code>/<code>.ps1</code> on Windows, used for the same kind of command-line automation on Linux and macOS</span>
+    </div>
+  </div>
+</div>
+
+<div class="script-panel">
+  <div class="script-panel-header js"><span class="ext">.js</span><span class="lang">JavaScript</span></div>
+  <div class="script-panel-body">
+    <div class="script-row">
+      <span class="script-label">Platform</span>
+      <span class="script-desc">Cross-platform — runs in web browsers and, outside the browser, via a runtime such as Node.js</span>
+    </div>
+    <div class="script-row">
+      <span class="script-label">Typical use</span>
+      <span class="script-desc">Primarily associated with web page interactivity, but also used more broadly for automation and application logic outside the browser context via Node.js</span>
+    </div>
+  </div>
+</div>
+
+<div class="script-panel">
+  <div class="script-panel-header py"><span class="ext">.py</span><span class="lang">Python Script</span></div>
+  <div class="script-panel-body">
+    <div class="script-row">
+      <span class="script-label">Platform</span>
+      <span class="script-desc">Cross-platform — Windows, Linux, and macOS, run through the Python interpreter</span>
+    </div>
+    <div class="script-row">
+      <span class="script-label">Typical use</span>
+      <span class="script-desc">A widely used general-purpose scripting and programming language, popular in IT for its readable syntax and broad library support across automation, data processing, and systems tasks</span>
+    </div>
+  </div>
+</div>
+
+<table class="data-table">
+  <thead><tr><th>Extension</th><th>Language</th><th>Native Platform</th><th>Interpreter/Host</th></tr></thead>
+  <tbody>
+    <tr><td>.bat</td><td>Batch</td><td>Windows</td><td>cmd.exe</td></tr>
+    <tr><td>.ps1</td><td>PowerShell</td><td>Windows (cross-platform via Core)</td><td>PowerShell</td></tr>
+    <tr><td>.vbs</td><td>VBScript</td><td>Windows</td><td>Windows Script Host</td></tr>
+    <tr><td>.sh</td><td>Shell script</td><td>Linux / macOS</td><td>bash or another shell</td></tr>
+    <tr><td>.js</td><td>JavaScript</td><td>Cross-platform</td><td>Browser engine or Node.js</td></tr>
+    <tr><td>.py</td><td>Python</td><td>Cross-platform</td><td>Python interpreter</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Matching Extension to Platform</p>
+  <p>A common question format simply describes a task on a specific OS and asks which script file type would be used, or shows a file extension and asks what platform/language it belongs to. Memorize the pairing directly: <strong>.bat and .vbs are Windows-only legacy formats; .ps1 is modern Windows (and cross-platform PowerShell Core); .sh is the Linux/macOS equivalent of a Windows batch file; .js and .py are cross-platform</strong> and can run wherever their respective interpreter is installed.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — USE CASES FOR SCRIPTING ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Use Cases for Scripting</h2>
+
+<p>Scripting is best applied to tasks that are repetitive, well-defined, and need to be performed consistently — exactly the kind of work that's tedious and error-prone when done manually over and over.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Basic automation</span>
+    <span>The broad category covering any repetitive task converted into a script so it can run without manual intervention each time — the umbrella use case that the more specific examples below all fall under.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Restarting machines</span>
+    <span>Scripting a scheduled or on-demand restart across one or many machines, useful for applying updates, clearing memory leaks, or maintaining a regular maintenance schedule across a fleet of systems without manually restarting each one.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Remapping network drives</span>
+    <span>Automatically reconnecting or reassigning network drive letters for users — especially useful at login, or after a network change, so users don't need to manually reconnect shared drives themselves each time.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Installation of applications</span>
+    <span>Automating a consistent, repeatable software install across many machines — directly connecting to Objective 4.1's SOP concept (the "software package custom installation procedure" example) by giving that documented procedure an actual automated implementation.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Automated backups</span>
+    <span>Scheduling and running backup jobs automatically according to a defined policy, rather than relying on someone to remember to run a backup manually — directly supporting Objective 4.3's backup and recovery practices.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Gathering of information/data</span>
+    <span>Automatically collecting system information, inventory data, log contents, or diagnostic details across one or many machines — useful for asset management (Objective 4.1) and for quickly gathering diagnostic data during troubleshooting without manually checking each machine by hand.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Initiating updates</span>
+    <span>Triggering OS or application updates programmatically across systems, ensuring updates are applied consistently and on schedule rather than depending on individual users to initiate them.</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">The Common Thread — Scale and Consistency</p>
+  <p>Every use case above shares the same underlying justification: doing something once by hand is fine, but doing it correctly and identically across ten, a hundred, or a thousand machines by hand is impractical and error-prone. Scripting turns a manual process into something that scales, and that always executes the same documented steps the same way — which is exactly why so many of these use cases connect directly back to the documentation and asset management practices in Objective 4.1.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — OTHER CONSIDERATIONS WHEN USING SCRIPTS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Other Considerations When Using Scripts</h2>
+
+<p>Because a script executes exactly what it's told, exactly the same way every time, careless scripting — or running a script from an untrusted or unreviewed source — carries real risk. The exam names three specific categories of risk a technician needs to keep in mind.</p>
+
+<div class="card-grid">
+  <div class="card card-accent">
+    <h4>Unintentionally Introducing Malware</h4>
+    <ul>
+      <li><strong>Risk</strong> — a script downloaded from an untrusted source, or copied without full review, could contain malicious code disguised as or bundled with legitimate functionality</li>
+      <li><strong>Mitigation</strong> — review script contents before running them, especially anything obtained from outside a trusted, verified source; avoid running scripts from unknown origins with elevated privileges</li>
+    </ul>
+  </div>
+  <div class="card card-accent4">
+    <h4>Inadvertently Changing System Settings</h4>
+    <ul>
+      <li><strong>Risk</strong> — a script written or tested imperfectly can modify configuration, registry settings, permissions, or files in ways beyond what was intended — especially damaging if the script runs across many machines before the mistake is caught</li>
+      <li><strong>Mitigation</strong> — test scripts in a controlled/sandbox environment first (see Objective 4.2's sandbox testing) before deploying broadly, and understand exactly what a script does before executing it</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Browser or System Crashes Due to Mishandling of Resources</h4>
+    <ul>
+      <li><strong>Risk</strong> — a poorly written script (e.g., an infinite loop, unclosed resource handles, excessive memory consumption) can consume system resources unpredictably, leading to instability, a frozen application, or a full system crash</li>
+      <li><strong>Mitigation</strong> — write scripts carefully with proper resource cleanup and error handling, and test under realistic conditions before relying on a script in production</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Why "It's Just a Script" Is a Dangerous Assumption</p>
+  <p>Because a script feels lightweight and easy to write, it's tempting to treat it with less scrutiny than a full software deployment — but a script run with administrative or elevated privileges has exactly the same potential for damage as any other executable code. The three risks named here are precisely why Objective 4.2's change management concepts (sandbox testing, rollback plans, peer review) apply just as much to deploying a new script as they do to any other system change.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.8 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">.bat</span><span>Windows batch file; run via Command Prompt (cmd.exe)</span></div>
+    <div class="summary-item"><span class="s-sym">.ps1</span><span>PowerShell script; modern Windows administration/automation</span></div>
+    <div class="summary-item"><span class="s-sym">.vbs</span><span>VBScript; legacy Windows Script Host format</span></div>
+    <div class="summary-item"><span class="s-sym">.sh</span><span>Shell script; Linux/macOS equivalent of a batch file</span></div>
+    <div class="summary-item"><span class="s-sym">.js</span><span>JavaScript; browser or Node.js runtime, cross-platform</span></div>
+    <div class="summary-item"><span class="s-sym">.py</span><span>Python; cross-platform general-purpose scripting</span></div>
+    <div class="summary-item"><span class="s-sym">Basic Automation</span><span>The umbrella use case — converting repetitive manual tasks into scripts</span></div>
+    <div class="summary-item"><span class="s-sym">Restarting Machines</span><span>Scheduled/on-demand restarts across one or many systems</span></div>
+    <div class="summary-item"><span class="s-sym">Remapping Network Drives</span><span>Automated reconnection of shared drives, often at login</span></div>
+    <div class="summary-item"><span class="s-sym">App Installation</span><span>Consistent, repeatable installs — implements Objective 4.1's SOP concept</span></div>
+    <div class="summary-item"><span class="s-sym">Automated Backups</span><span>Scheduled backup jobs without manual initiation — supports Objective 4.3</span></div>
+    <div class="summary-item"><span class="s-sym">Info/Data Gathering</span><span>Automated inventory/diagnostic collection across many machines</span></div>
+    <div class="summary-item"><span class="s-sym">Initiating Updates</span><span>Programmatically triggering OS/app updates on a schedule</span></div>
+    <div class="summary-item"><span class="s-sym">Malware Risk</span><span>Untrusted/unreviewed scripts can carry malicious code</span></div>
+    <div class="summary-item"><span class="s-sym">Unintended Setting Changes</span><span>Imperfect scripts can alter config/permissions beyond intent, at scale</span></div>
+    <div class="summary-item"><span class="s-sym">Resource Mishandling</span><span>Poor resource handling (loops, leaks) can crash the browser or system</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Extension → Platform, At a Glance</h4>
+    <ul>
+      <li><strong>.bat / .vbs</strong> — Windows-only (legacy)</li>
+      <li><strong>.ps1</strong> — Windows-primary, cross-platform via PowerShell Core</li>
+      <li><strong>.sh</strong> — Linux / macOS</li>
+      <li><strong>.js / .py</strong> — Cross-platform</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Use Case → Business Value</h4>
+    <ul>
+      <li><strong>Consistency at scale</strong> — installs, updates, backups</li>
+      <li><strong>Reduced manual repetition</strong> — restarts, drive remapping</li>
+      <li><strong>Faster diagnostics</strong> — automated info/data gathering</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Risk → Correct Mitigation</h4>
+    <ul>
+      <li><strong>Untrusted script source</strong> — review before running; avoid unknown origins</li>
+      <li><strong>Unintended config changes</strong> — sandbox test before wide deployment</li>
+      <li><strong>Resource mishandling/crashes</strong> — careful coding, proper error handling, realistic testing</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Cross-Objective Connections</h4>
+    <ul>
+      <li><strong>Sandbox testing before deployment</strong> — ties to Objective 4.2</li>
+      <li><strong>Automated backups</strong> — ties to Objective 4.3</li>
+      <li><strong>Automated installs</strong> — implements Objective 4.1's SOP example</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Know the six extensions and their native platforms cold</strong> — .bat and .vbs are Windows legacy; .ps1 is modern Windows/cross-platform PowerShell; .sh is Linux/macOS; .js and .py run cross-platform wherever their interpreter/runtime is installed.</p>
+  <p><strong>Scripting use cases all boil down to consistency and scale</strong> — recognize a scenario describing a repetitive task performed identically across many systems as a scripting opportunity, even if the word "script" isn't used explicitly.</p>
+  <p><strong>A script run with elevated privileges carries the same risk as any other executable</strong> — the "it's just a script" mindset is exactly the wrong instinct, and is the underlying theme tested across all three risk categories in Section 3.</p>
+  <p><strong>The three named risks are distinct and can each appear as their own exam question</strong> — introducing malware (source trust), changing settings unintentionally (testing/review), and resource mishandling causing crashes (coding quality) are three separate failure modes, not one general "scripts can be risky" idea.</p>
+  <p><strong>Sandbox testing a script before wide deployment connects directly to Objective 4.2's change management process</strong> — a script rollout is a change like any other, and deserves the same rollback plan and testing discipline.</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.6 — Prohibited Content/Activity and Privacy, Licensing, and Policy Concepts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* VOLATILITY LADDER */
+  .volatility-ladder {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .vol-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+  }
+  .vol-step:last-child { border-bottom: none; }
+  .vol-rank {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent);
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .vol-step:nth-child(2) .vol-rank { background: #c0392bcc; }
+  .vol-step:nth-child(3) .vol-rank { background: var(--accent4); }
+  .vol-step:nth-child(4) .vol-rank { background: #b5590acc; }
+  .vol-step:nth-child(5) .vol-rank { background: var(--accent2); }
+  .vol-step:nth-child(6) .vol-rank { background: #2c3e6bcc; }
+  .vol-content { flex: 1; }
+  .vol-content strong { display: block; font-size: 14.5px; color: var(--text); margin-bottom: 2px; }
+  .vol-content span { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+  /* DEF PANEL — for licensing/NDA/regulated data breakdowns */
+  .def-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .def-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .def-panel-header.a { background: var(--accent2); }
+  .def-panel-header.b { background: var(--accent3); }
+  .def-panel-body { padding: 0; }
+  .def-panel-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .def-panel-row:last-child { border-bottom: none; }
+  .def-panel-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .def-panel-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .def-panel-desc strong { color: var(--text); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .def-panel-row { grid-template-columns: 1fr; }
+    .vol-step { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.6</strong> Explain Prohibited Content/Activity, Privacy, Licensing, and Policy Concepts</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_5-Environmental-Impacts.html">4.5</a>
+    <a class="nav-next" href="./4_7-Communication-Professionalism.html">4.7</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.6</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Explain the Importance of Prohibited<br>Content/Activity and Privacy,<br>Licensing, and Policy Concepts</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.6</span>
+    <span>Domain weight: 21%</span>
+    <span>Incident Response · Licensing · NDAs · Regulated Data · AUP · Compliance</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Legal and Policy Concepts in IT Support</h2>
+
+<p>Not every problem a technician handles is purely technical. Some situations — discovering illegal content on a machine, a software license dispute, a data breach involving customer records — carry legal, contractual, or regulatory weight that shapes how a technician is expected to respond, document, and communicate. Objective 4.6 covers this legal and policy layer of IT support: the frameworks and obligations that exist around the technical work rather than inside it.</p>
+
+<p>This objective spans five areas. <span class="key-term">Incident response</span> covers the specific, careful process required when something serious is discovered — evidence handling, documentation, and escalation. <span class="key-term">Licensing/DRM/EULA</span> covers the legal terms governing how software may be used. <span class="key-term">NDAs</span> cover confidentiality obligations. <span class="key-term">Regulated data</span> covers categories of information subject to special legal handling requirements. And <span class="key-term">acceptable use policy and compliance</span> cover the organizational rules technicians themselves operate under and help enforce.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — When Technical Work Becomes Legal Work</p>
+  <p>A technician is not a lawyer and isn't expected to render legal judgments, but a technician's actions in the moment — how evidence is handled, what gets documented, who gets notified — can have real legal consequences later. Objective 4.6 is less about memorizing legal definitions and more about recognizing the specific moments in day-to-day IT work where "just fix it and move on" is the wrong instinct, and a more careful, documented process is required instead.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — INCIDENT RESPONSE ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Incident Response</h2>
+
+<p>When a technician discovers something serious — evidence of a crime, a data breach, prohibited content on a device — the normal instinct to simply fix the problem and move on is the wrong one. <span class="key-term">Incident response</span> in this context is a careful, evidence-preserving process, because how the discovery is handled in the first few minutes can determine whether it's later usable in an investigation, an HR action, or a legal proceeding.</p>
+
+<h3 class="section">Chain of Custody</h3>
+
+<p><span class="key-term">Chain of custody</span> is the documented, unbroken record of who has handled a piece of evidence, when, and what was done with it, from the moment it's discovered until it's no longer needed. Every single person who touches the evidence — even briefly — needs to be logged. A gap or inconsistency in the chain of custody can be enough to make evidence inadmissible or unreliable later, regardless of how solid the evidence itself actually is.</p>
+
+<h3 class="section">Informing Management/Law Enforcement as Necessary</h3>
+
+<p>A technician who discovers something serious — illegal content, evidence of a crime, a significant security breach — is generally expected to escalate immediately to management and, when appropriate, to law enforcement, rather than attempting to independently investigate, confront anyone involved, or resolve the situation alone. Acting outside this expectation can compromise an investigation, create legal liability, or in some cases cross a legal line itself.</p>
+
+<h3 class="section">Copy of Drive (Data Integrity and Preservation)</h3>
+
+<p>Rather than working directly on original evidence, standard incident response practice is to create an exact copy (often called a forensic image) of the affected drive and work from that copy, leaving the original untouched and preserved. This protects data integrity — the original remains available exactly as it was found, in case the copy is questioned or additional analysis is needed later — and prevents an investigation from being invalidated by evidence that was altered during handling.</p>
+
+<h3 class="section">Incident Documentation</h3>
+
+<p>Every step of the process needs to be written down — what was found, when, by whom, what actions were taken, and who was notified. This ties directly back into Objective 4.1's incident report document type, and serves as the connective record tying chain of custody, evidence handling, and notification together into one coherent, reviewable account.</p>
+
+<h3 class="section">Order of Volatility</h3>
+
+<p>The <span class="key-term">order of volatility</span> is the principle that different types of digital evidence degrade or disappear at different rates, and evidence collection should proceed from the most volatile (fastest to disappear) to the least volatile (most stable), to avoid losing fragile evidence while collecting more durable evidence first.</p>
+
+<div class="volatility-ladder">
+  <div class="flow-title" style="margin-bottom:16px;">Order of Volatility — Most to Least Volatile</div>
+  <div class="vol-step">
+    <span class="vol-rank">1</span>
+    <div class="vol-content"><strong>CPU registers and cache</strong><span>Exists only while the system is powered on and running; gone instantly on shutdown</span></div>
+  </div>
+  <div class="vol-step">
+    <span class="vol-rank">2</span>
+    <div class="vol-content"><strong>RAM (system memory)</strong><span>Lost within seconds of power loss; may contain running processes, open connections, encryption keys</span></div>
+  </div>
+  <div class="vol-step">
+    <span class="vol-rank">3</span>
+    <div class="vol-content"><strong>Network state / active connections</strong><span>Current network connections and routing tables change continuously and are lost quickly</span></div>
+  </div>
+  <div class="vol-step">
+    <span class="vol-rank">4</span>
+    <div class="vol-content"><strong>Running processes</strong><span>Reflects current system activity; changes constantly as the system continues operating</span></div>
+  </div>
+  <div class="vol-step">
+    <span class="vol-rank">5</span>
+    <div class="vol-content"><strong>Disk/storage data</strong><span>Persists after shutdown, but can still be overwritten by continued use of the system</span></div>
+  </div>
+  <div class="vol-step">
+    <span class="vol-rank">6</span>
+    <div class="vol-content"><strong>Archived logs/backups</strong><span>Most stable and least likely to change or disappear; safe to collect last</span></div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Why Order of Volatility Matters in Practice</p>
+  <p>If a technician's first action after discovering an incident is to shut the computer down, any evidence that only existed in RAM or CPU cache — active malware processes, open network connections, encryption keys — is lost permanently. The correct instinct in an active incident is to assess and, where appropriate, capture volatile evidence <em>before</em> considering shutdown, following the order of volatility rather than defaulting to the usual "power it off first" habit from ordinary troubleshooting.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — LICENSING/DRM/EULA ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Licensing, Digital Rights Management (DRM), and End-User License Agreements (EULA)</h2>
+
+<p>An <span class="key-term">end-user license agreement (EULA)</span> is the legal contract between a software vendor and the end user, defining how the software may and may not be used. <span class="key-term">Digital rights management (DRM)</span> refers to technical mechanisms software or media vendors use to enforce those licensing terms — restricting copying, installation counts, or usage in ways the license doesn't permit.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Valid licenses</span>
+    <span>Using software under a legitimately purchased or otherwise properly obtained license, as opposed to pirated, counterfeit, or improperly duplicated software — a compliance requirement with both legal and audit implications for an organization.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Perpetual license agreement</span>
+    <span>A one-time purchase granting the right to use a specific version of software indefinitely, without an ongoing subscription — contrasted with subscription-based ("SaaS-style") licensing where access ends if payments stop.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Personal-use license vs. corporate-use license</span>
+    <span>Many software products offer separate license terms for individual/home use versus business use, often with different pricing, feature sets, or permitted usage scope — using a personal-use license in a commercial/business context when the vendor requires a corporate license is a common, easily overlooked compliance violation.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Open-source license</span>
+    <span>Software distributed under terms that typically allow free use, modification, and redistribution of the source code, subject to the specific conditions of whichever open-source license applies (which can still impose requirements, such as sharing modifications under the same license).</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Personal-Use Licensing in a Business Context — A Common Audit Finding</p>
+  <p>It's easy for an organization to unintentionally end up running personal-use-licensed software on business machines — an employee installs a familiar free/personal tool on a work laptop without realizing the vendor's license terms exclude commercial use. This is exactly the kind of licensing compliance gap Objective 4.1's asset management (tracking warranty and licensing) and 4.6's licensing awareness are meant to catch before it becomes a legal or audit problem.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — NDA/MNDA ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Non-Disclosure Agreement (NDA) / Mutual Non-Disclosure Agreement (MNDA)</h2>
+
+<p>A <span class="key-term">non-disclosure agreement (NDA)</span> is a legal contract in which one or more parties agree not to disclose confidential information shared between them. A technician may be asked to sign an NDA before working with sensitive client data, proprietary systems, or confidential business information, formalizing a legal obligation to keep that information private.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Standard NDA</span>
+    <span>A one-directional agreement, where typically only one party (e.g., a contractor or vendor) is bound to confidentiality regarding information the other party shares with them.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Mutual NDA (MNDA)</span>
+    <span>A two-directional agreement where both parties are bound to keep each other's confidential information private — common when two organizations are exchanging sensitive information in both directions, such as during a partnership or a joint project.</span>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 4 — REGULATED DATA ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Regulated Data</h2>
+
+<p><span class="key-term">Regulated data</span> refers to categories of information subject to specific legal or industry requirements governing how it must be collected, stored, handled, and disposed of. A technician working around any of these data types needs to recognize that ordinary handling practices may not be sufficient — extra care, and often specific compliance procedures, are legally required.</p>
+
+<div class="card-grid">
+  <div class="card card-accent2">
+    <h4>Credit Card Payment Information</h4>
+    <ul>
+      <li><strong>Governing framework</strong> — Payment Card Industry Data Security Standard (PCI DSS) compliance requirements</li>
+      <li><strong>Handling implication</strong> — cardholder data requires specific storage, encryption, and access-control practices; mishandling can result in significant financial penalties</li>
+    </ul>
+  </div>
+  <div class="card card-accent3">
+    <h4>Personal Government-Issued Information</h4>
+    <ul>
+      <li><strong>Examples</strong> — Social Security numbers, passport numbers, driver's license numbers</li>
+      <li><strong>Handling implication</strong> — high-value target for identity theft; requires restricted access and secure storage/disposal</li>
+    </ul>
+  </div>
+  <div class="card card-accent4">
+    <h4>PII (Personally Identifiable Information)</h4>
+    <ul>
+      <li><strong>Examples</strong> — name, address, date of birth, email — any data that can identify a specific individual, alone or combined with other data</li>
+      <li><strong>Handling implication</strong> — broad category subject to numerous privacy regulations depending on jurisdiction and industry</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Healthcare Data</h4>
+    <ul>
+      <li><strong>Governing framework</strong> — protected health information (PHI) subject to frameworks such as HIPAA in the United States</li>
+      <li><strong>Handling implication</strong> — among the most strictly regulated data categories, with specific access, storage, and breach-notification requirements</li>
+    </ul>
+  </div>
+</div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Data retention requirements</span>
+    <span>Legal or regulatory rules dictating how long certain categories of data must be kept before it can (or must) be deleted. Retention requirements can pull in two directions at once — an organization may be legally required to keep certain records for a set period, while also being required to securely delete data once that period expires rather than retaining it indefinitely.</span>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">The Common Thread — Regulated Data Changes the Default Handling Standard</p>
+  <p>Across all four categories, the practical lesson for a technician is the same: recognizing that a piece of data falls into a regulated category should trigger extra caution — restricted access, secure storage/transmission, and proper disposal — rather than treating it the same as any other file on a drive. Knowing the exact regulatory framework name (PCI DSS, HIPAA, etc.) matters less on this exam than recognizing that regulated data exists and requires elevated handling.</p>
+</div>
+
+
+<!-- ═══ SECTION 5 — AUP AND COMPLIANCE ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Acceptable Use Policy and Regulatory/Business Compliance</h2>
+
+<h3 class="section">Acceptable Use Policy (AUP)</h3>
+
+<p>An <span class="key-term">acceptable use policy (AUP)</span> is an organization's formal document defining what employees are and are not permitted to do with company IT resources — computers, networks, internet access, email, and other systems. An AUP typically covers things like personal use of company equipment, prohibited websites or activities, and consequences for violations, and employees are generally required to acknowledge and agree to it, often as part of onboarding (tying back into Objective 4.1's onboarding checklist).</p>
+
+<h3 class="section">Regulatory and Business Compliance Requirements</h3>
+
+<p>Beyond any single regulated data category, organizations often face broader compliance obligations — industry-specific regulations, government requirements, or contractual obligations with partners and customers — that shape how IT systems must be configured, documented, and operated.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Splash screens</span>
+    <span>The notice screen a user sees before gaining access to a system — commonly used to display legal notices, acceptable use policy acknowledgments, or compliance warnings (e.g., "By logging in, you agree to..."), ensuring the user has been presented with required legal/policy information before proceeding, and creating a documented record that the notice was displayed.</span>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Splash Screens as a Compliance Tool</p>
+  <p>A splash screen isn't just a login banner — it's often a specific compliance mechanism, satisfying a legal or regulatory requirement to notify users of monitoring, acceptable use terms, or other conditions before they access a system. If a scenario describes needing to ensure every user acknowledges a policy before logging in, a splash screen presented at login is the expected answer.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.6 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Chain of Custody</span><span>Documented, unbroken record of everyone who handled a piece of evidence and when</span></div>
+    <div class="summary-item"><span class="s-sym">Informing Management/Law Enforcement</span><span>Escalate serious discoveries rather than investigating or acting alone</span></div>
+    <div class="summary-item"><span class="s-sym">Copy of Drive</span><span>Work from a forensic image; preserve the original untouched for integrity</span></div>
+    <div class="summary-item"><span class="s-sym">Incident Documentation</span><span>Written record tying the whole incident response process together</span></div>
+    <div class="summary-item"><span class="s-sym">Order of Volatility</span><span>Collect evidence most-to-least volatile: CPU/RAM → network/processes → disk → archives/logs</span></div>
+    <div class="summary-item"><span class="s-sym">Valid Licenses</span><span>Legitimately obtained software, not pirated/counterfeit copies</span></div>
+    <div class="summary-item"><span class="s-sym">Perpetual License</span><span>One-time purchase, indefinite use — vs. ongoing subscription licensing</span></div>
+    <div class="summary-item"><span class="s-sym">Personal vs. Corporate License</span><span>Using a personal-use license commercially is a common compliance violation</span></div>
+    <div class="summary-item"><span class="s-sym">Open-Source License</span><span>Free use/modification/redistribution, subject to that license's specific conditions</span></div>
+    <div class="summary-item"><span class="s-sym">NDA</span><span>One-directional confidentiality obligation</span></div>
+    <div class="summary-item"><span class="s-sym">MNDA</span><span>Mutual, two-directional confidentiality obligation between both parties</span></div>
+    <div class="summary-item"><span class="s-sym">Credit Card Data</span><span>PCI DSS-governed; strict storage/encryption/access requirements</span></div>
+    <div class="summary-item"><span class="s-sym">Gov't-Issued Info / PII</span><span>Identity-theft target; requires restricted access and secure disposal</span></div>
+    <div class="summary-item"><span class="s-sym">Healthcare Data (PHI)</span><span>HIPAA-governed; among the most strictly regulated categories</span></div>
+    <div class="summary-item"><span class="s-sym">Data Retention Requirements</span><span>Must keep certain data for a set period, then securely delete it after</span></div>
+    <div class="summary-item"><span class="s-sym">Acceptable Use Policy (AUP)</span><span>Defines permitted/prohibited use of company IT resources</span></div>
+    <div class="summary-item"><span class="s-sym">Splash Screens</span><span>Login-time notice satisfying legal/compliance acknowledgment requirements</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Incident Response First Moves</h4>
+    <ul>
+      <li><strong>Discover something serious</strong> — escalate to management/law enforcement, don't investigate alone</li>
+      <li><strong>Need to analyze a suspect drive</strong> — work from a copy, preserve the original</li>
+      <li><strong>Collecting volatile evidence</strong> — RAM/active state before disk, disk before archived logs</li>
+      <li><strong>Throughout the whole process</strong> — document every step, log every hand-off</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Licensing Red Flags</h4>
+    <ul>
+      <li><strong>Personal-use software running on business machines</strong> — likely license violation</li>
+      <li><strong>Unlicensed/pirated copies in use</strong> — invalid license, legal exposure</li>
+      <li><strong>Open-source component in a commercial product</strong> — check that specific license's conditions</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Regulated Data Quick ID</h4>
+    <ul>
+      <li><strong>Card numbers/payment info</strong> — PCI DSS scope</li>
+      <li><strong>SSN/passport/driver's license</strong> — government-issued PII</li>
+      <li><strong>Medical/patient records</strong> — HIPAA/PHI scope</li>
+      <li><strong>Any identifying personal detail</strong> — PII, broadly</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>NDA vs. MNDA / AUP vs. Splash Screen</h4>
+    <ul>
+      <li><strong>Only one party bound to confidentiality</strong> — standard NDA</li>
+      <li><strong>Both parties bound to confidentiality</strong> — mutual NDA (MNDA)</li>
+      <li><strong>The written rules themselves</strong> — AUP</li>
+      <li><strong>The login-time notice enforcing acknowledgment</strong> — splash screen</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Order of volatility runs from most volatile to least</strong> — CPU registers/cache and RAM first, archived logs/backups last — because shutting a system down or letting it keep running destroys the most fragile evidence first if it isn't captured early.</p>
+  <p><strong>Always work from a copy of a drive, never the original, during an investigation</strong> — this preserves data integrity and keeps the original available if the copy or the analysis is ever challenged.</p>
+  <p><strong>A technician's job when discovering something serious is to escalate, not investigate or confront</strong> — informing management and, when appropriate, law enforcement is the expected response, not attempting to resolve it personally.</p>
+  <p><strong>A personal-use license is not automatically valid for business/commercial use</strong> — this distinction is one of the most practically relevant licensing details for real-world IT support, since it's an easy, common mistake.</p>
+  <p><strong>Mutual NDA (MNDA) means both parties owe confidentiality; a standard NDA is typically one-directional</strong> — know which direction the obligation runs in a described scenario.</p>
+  <p><strong>Regulated data categories (PCI, PII, government-issued info, healthcare/PHI) all demand handling above the ordinary baseline</strong> — recognizing that data falls into one of these categories is the key skill, more than memorizing every regulation's full name.</p>
+  <p><strong>A splash screen is a compliance mechanism, not just a login banner</strong> — it documents that a user was shown and acknowledged required legal/policy information before gaining system access.</p>
+</div>
+
+</div>
+</body>
+</html>

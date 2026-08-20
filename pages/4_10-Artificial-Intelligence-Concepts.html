@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.10 — Basic Concepts Related to Artificial Intelligence (AI)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  .nav-end {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent3);
+    padding: 4px 9px;
+    border: 1px solid var(--accent3);
+    border-radius: 3px;
+    opacity: 0.8;
+}
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* LIMITATION PANEL — mirrors os-panel pattern */
+  .lim-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .lim-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .lim-panel-header.bias { background: var(--accent4); }
+  .lim-panel-header.hallucination { background: var(--accent); }
+  .lim-panel-header.accuracy { background: var(--accent2); }
+  .lim-panel-body { padding: 0; }
+  .lim-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .lim-row:last-child { border-bottom: none; }
+  .lim-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .lim-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .lim-desc strong { color: var(--text); }
+
+  /* PRIVATE VS PUBLIC STRIP */
+  .pvp-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .pvp-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .pvp-card .pvp-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .pvp-card.private .pvp-tag { background: var(--accent2); }
+  .pvp-card.public .pvp-tag { background: var(--accent4); }
+  .pvp-card h5 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .pvp-card p {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .pvp-strip { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .lim-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.10</strong> Explain Basic Concepts Related to Artificial Intelligence (AI)</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_9-Remote-Access-Technologies.html">4.9</a>
+    <span class="nav-end" href="">End of Core 2 ✓</span>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.10</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Explain Basic Concepts Related<br>to Artificial Intelligence (AI)</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.10</span>
+    <span>Domain weight: 21%</span>
+    <span>Application Integration · Policy · Limitations · Private vs. Public</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to AI Concepts for IT Support</h2>
+
+<p>Artificial intelligence tools are increasingly integrated into everyday business software — writing assistance, chatbots, code generation, data analysis, and customer support are all common examples. Objective 4.10 doesn't ask a technician to build or train AI systems; it asks for a working understanding of how AI shows up in the workplace, the policies that should govern its use, its practical limitations, and the data-handling distinctions that determine how safely a given AI tool can be used.</p>
+
+<p>This objective covers four areas. <span class="key-term">Application integration</span> covers how AI capabilities get embedded into the tools people already use. <span class="key-term">Policy</span> covers the organizational rules governing appropriate AI use and originality. <span class="key-term">Limitations</span> covers the specific, well-documented weaknesses AI systems have that users need to account for. And <span class="key-term">private vs. public</span> covers the data-handling distinction between AI tools an organization controls versus AI tools operated by an outside vendor.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — AI Is a Tool with Specific, Known Failure Modes</p>
+  <p>The exam's framing of AI is practical rather than technical: AI tools are useful, but they are not infallible, and a technician (or any employee) using them needs to understand exactly where they tend to go wrong and what organizational rules apply to using them responsibly. Every sub-topic in this objective — bias, hallucinations, accuracy, data privacy — exists to build healthy skepticism and appropriate caution around a technology that can otherwise seem more authoritative than it actually is.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — APPLICATION INTEGRATION ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Application Integration</h2>
+
+<p><span class="key-term">Application integration</span> refers to the way AI capabilities are increasingly built directly into everyday business software rather than existing only as standalone, separate tools. Word processors, spreadsheets, email clients, customer support platforms, search engines, and countless other applications now commonly include AI-powered features — drafting assistance, summarization, data analysis, automated responses, and more — embedded directly into the interface a user already works in.</p>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Why Integration Matters for a Technician</p>
+  <p>Because AI features are increasingly built into mainstream software rather than requiring a separate dedicated tool, a technician can no longer assume "the user isn't using AI" just because they haven't opened a dedicated AI application. Recognizing that an AI feature might be active inside a familiar piece of software — and understanding what that feature does with the user's data — is now a relevant part of general troubleshooting and support awareness, not a specialized niche skill.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — POLICY ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Policy</h2>
+
+<p>Organizations increasingly need explicit policies governing how employees may and may not use AI tools at work — extending the general concept of an acceptable use policy (Objective 4.6) specifically into the AI space.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Appropriate use</span>
+    <span>Organizational rules defining which tasks AI tools may be used for, which data may or may not be entered into them, and which AI platforms (if any) are approved for business use — mirroring the same purpose as a general acceptable use policy, but addressing AI's specific risks and capabilities directly.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Plagiarism</span>
+    <span>The risk that AI-generated content may closely mirror existing copyrighted or otherwise protected material without proper attribution, and the related concern that presenting AI-generated work as entirely one's own original work — without disclosure where required — raises the same ethical and, in some contexts, academic or professional integrity concerns as traditional plagiarism.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Policy Exists Because the Risk Is Real, Not Theoretical</p>
+  <p>Without a clear appropriate-use policy, employees may unknowingly paste confidential company data into a public AI tool, or submit AI-generated content as fully original work in a context where that violates organizational or professional standards. A written AI policy exists to make these risks explicit and set clear boundaries before a problem occurs, rather than relying on individual judgment alone.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — LIMITATIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Limitations</h2>
+
+<p>AI tools, despite their capabilities, have specific, well-documented weaknesses that every user should understand before relying on their output without verification.</p>
+
+<h3 class="section">Bias</h3>
+
+<div class="lim-panel">
+  <div class="lim-panel-header bias"><span>Bias</span><span>Reflects patterns in training data</span></div>
+  <div class="lim-panel-body">
+    <div class="lim-row">
+      <span class="lim-label">What it is</span>
+      <span class="lim-desc">AI systems learn patterns from the data they were trained on, and if that training data contains imbalances, stereotypes, or skewed representation, the AI's output can reflect and even amplify those same biases</span>
+    </div>
+    <div class="lim-row">
+      <span class="lim-label">Practical implication</span>
+      <span class="lim-desc">AI-generated content or decisions should not be treated as automatically neutral or objective — output should be reviewed critically, especially in contexts involving people, hiring, or other sensitive decisions</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Hallucinations</h3>
+
+<div class="lim-panel">
+  <div class="lim-panel-header hallucination"><span>Hallucinations</span><span>Confidently stated, fabricated information</span></div>
+  <div class="lim-panel-body">
+    <div class="lim-row">
+      <span class="lim-label">What it is</span>
+      <span class="lim-desc">A term for AI systems generating information that sounds plausible and is stated confidently, but is factually incorrect or entirely fabricated — including invented facts, sources, or details that don't actually exist</span>
+    </div>
+    <div class="lim-row">
+      <span class="lim-label">Practical implication</span>
+      <span class="lim-desc">Because hallucinated content is presented with the same confident tone as accurate content, it can be difficult to distinguish without independent verification — a critical reason never to treat AI output as inherently trustworthy without fact-checking</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">Accuracy</h3>
+
+<div class="lim-panel">
+  <div class="lim-panel-header accuracy"><span>Accuracy</span><span>Overall reliability varies by task and topic</span></div>
+  <div class="lim-panel-body">
+    <div class="lim-row">
+      <span class="lim-label">What it is</span>
+      <span class="lim-desc">Broader than hallucinations alone — AI accuracy varies depending on the topic, the recency of information needed, the complexity of the task, and the quality of the underlying training data, meaning reliability is not uniform across all uses</span>
+    </div>
+    <div class="lim-row">
+      <span class="lim-label">Practical implication</span>
+      <span class="lim-desc">Higher-stakes tasks (technical specifications, medical/legal/financial information, current events) warrant a higher level of independent verification than low-stakes creative or exploratory tasks</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Distinguishing Bias, Hallucinations, and Accuracy</p>
+  <p>These three limitations are related but distinct, and the exam may test them individually. <strong>Bias</strong> is about skewed or unfair patterns inherited from training data. <strong>Hallucinations</strong> are about confidently fabricated information that isn't true. <strong>Accuracy</strong> is the broader, more general concept of how reliable output is overall. A scenario describing an AI tool inventing a citation that doesn't exist is describing a hallucination specifically, not simply "low accuracy" in the general sense.</p>
+</div>
+
+
+<!-- ═══ SECTION 4 — PRIVATE VS. PUBLIC ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Private vs. Public AI</h2>
+
+<p>A critical distinction for any organization using AI tools is whether a given AI system is <span class="key-term">private</span> (hosted and controlled within the organization's own environment, or contractually restricted from using submitted data for external training) or <span class="key-term">public</span> (a consumer-facing or general-purpose AI service where data handling practices may be far less restrictive).</p>
+
+<div class="pvp-strip">
+  <div class="pvp-card private">
+    <span class="pvp-tag">Private</span>
+    <h5>Private AI Deployment</h5>
+    <p>Hosted internally or under a specific enterprise agreement that restricts how submitted data is used, stored, and retained — generally the appropriate choice for handling sensitive or regulated organizational data</p>
+  </div>
+  <div class="pvp-card public">
+    <span class="pvp-tag">Public</span>
+    <h5>Public AI Service</h5>
+    <p>A general-purpose, consumer-accessible AI tool where data handling terms may allow submitted data to be used for further training or retained under less restrictive policies — appropriate for lower-sensitivity, general-purpose tasks, but risky for confidential data</p>
+  </div>
+</div>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Data security</span>
+    <span>How securely an AI platform stores, transmits, and protects the data submitted to it — a public, general-purpose AI tool may have different (often less controllable) security practices than a private, enterprise-managed deployment.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Data source</span>
+    <span>Understanding what data an AI system was trained on, and where the data it references or retrieves comes from, matters both for evaluating its outputs and for understanding potential licensing, copyright, or accuracy concerns tied to that underlying source data.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Data privacy</span>
+    <span>Whether data entered into an AI tool remains confidential or could be exposed, retained, or used to train future versions of the model — the central concern when deciding whether sensitive, regulated, or confidential organizational data (Objective 4.6) is safe to submit to a given AI tool at all.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Never Submit Regulated or Confidential Data to an Unapproved Public AI Tool</p>
+  <p>Pasting customer PII, healthcare data, credit card information, or other regulated data (Objective 4.6) into a public AI tool without organizational approval can constitute a serious data privacy and compliance violation — the data may leave the organization's control entirely, potentially violating regulatory requirements (PCI DSS, HIPAA, etc.) regardless of good intentions. This is exactly why appropriate-use policy (Section 2) and the private-vs-public distinction exist together: policy defines the rule, and understanding private vs. public AI is what lets an employee actually follow it correctly.</p>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.10 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Application Integration</span><span>AI features increasingly embedded directly into everyday business software</span></div>
+    <div class="summary-item"><span class="s-sym">Appropriate Use Policy</span><span>Organizational rules on approved AI tools, tasks, and data submission</span></div>
+    <div class="summary-item"><span class="s-sym">Plagiarism</span><span>Risk of AI output mirroring protected material or being passed off as fully original</span></div>
+    <div class="summary-item"><span class="s-sym">Bias</span><span>AI output reflecting skewed patterns inherited from training data</span></div>
+    <div class="summary-item"><span class="s-sym">Hallucinations</span><span>Confidently stated but fabricated/incorrect information</span></div>
+    <div class="summary-item"><span class="s-sym">Accuracy</span><span>Overall reliability, varying by topic, task, and data quality</span></div>
+    <div class="summary-item"><span class="s-sym">Private AI</span><span>Enterprise-controlled/restricted deployment; appropriate for sensitive data</span></div>
+    <div class="summary-item"><span class="s-sym">Public AI</span><span>General-purpose consumer tool; less restrictive, higher exposure risk</span></div>
+    <div class="summary-item"><span class="s-sym">Data Security</span><span>How securely a platform stores/transmits/protects submitted data</span></div>
+    <div class="summary-item"><span class="s-sym">Data Source</span><span>What the AI was trained on and where referenced data originates</span></div>
+    <div class="summary-item"><span class="s-sym">Data Privacy</span><span>Whether submitted data stays confidential or could be retained/reused</span></div>
+    <div class="summary-item"><span class="s-sym">Regulated Data + Public AI</span><span>A serious compliance risk — never submit PII/PHI/PCI data to unapproved tools</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Limitation Quick ID</h4>
+    <ul>
+      <li><strong>Output favors/disfavors a group unfairly</strong> — bias</li>
+      <li><strong>AI states a fake fact/source confidently</strong> — hallucination</li>
+      <li><strong>Output is generally unreliable for a given task</strong> — accuracy limitation</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Private vs. Public — Quick Test</h4>
+    <ul>
+      <li><strong>Enterprise-controlled, data-use restricted by contract</strong> — private</li>
+      <li><strong>Consumer/general-purpose, less restrictive terms</strong> — public</li>
+      <li><strong>Handling regulated/confidential data</strong> — private only, per policy</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Policy Reminders</h4>
+    <ul>
+      <li><strong>Approved tools/tasks/data types</strong> — appropriate use policy</li>
+      <li><strong>Passing AI content off as fully original</strong> — plagiarism risk</li>
+      <li><strong>When in doubt about submitting data</strong> — check organizational AI policy first</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Cross-Objective Connections</h4>
+    <ul>
+      <li><strong>AI appropriate use policy</strong> — extends Objective 4.6's AUP concept</li>
+      <li><strong>Regulated data + public AI risk</strong> — ties to Objective 4.6's regulated data categories</li>
+      <li><strong>AI features inside everyday apps</strong> — relevant to general troubleshooting awareness</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Bias, hallucinations, and accuracy are three distinct limitations</strong>, not interchangeable terms — bias is about skewed patterns, hallucination is about confidently fabricated content, and accuracy is the broader overall-reliability concept.</p>
+  <p><strong>AI features are increasingly embedded in everyday software</strong>, not confined to standalone AI applications — this application integration concept is why AI awareness now applies broadly across general IT support, not just to specialized AI tools.</p>
+  <p><strong>Never submit regulated or confidential data to a public, unapproved AI tool</strong> — this is the single most consistently tested principle in Section 4, directly connecting back to Objective 4.6's regulated data categories.</p>
+  <p><strong>Private AI deployments offer more control over data security, source, and privacy than public AI services</strong> — when a scenario involves sensitive organizational data, private/enterprise-controlled AI is the appropriate choice.</p>
+  <p><strong>An AI appropriate-use policy is a specific application of the broader acceptable use policy concept</strong> (Objective 4.6) — expect the exam to connect these two ideas rather than treat AI policy as something entirely separate from general AUP concepts.</p>
+  <p><strong>AI-generated output should always be treated as something to verify, not something to trust outright</strong> — this single mindset underlies bias, hallucinations, and accuracy concerns all at once, and is the practical takeaway the exam wants a technician to internalize.</p>
+</div>
+
+</div>
+</body>
+</html>
+

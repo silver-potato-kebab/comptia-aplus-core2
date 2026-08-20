@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 4.2 — Change Management Procedures</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* CHANGE TYPE PANEL — mirrors os-panel pattern */
+  .ct-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .ct-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .ct-panel-header.standard  { background: var(--accent3); }
+  .ct-panel-header.normal    { background: var(--accent2); }
+  .ct-panel-header.emergency { background: var(--accent); }
+  .ct-panel-body { padding: 0; }
+  .ct-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .ct-row:last-child { border-bottom: none; }
+  .ct-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .ct-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .ct-desc strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 180px;
+    line-height: 1.4;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* FEATURE COMPARISON BADGE */
+  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
+  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .ct-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>4.2</strong> Apply Change Management Procedures</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./4_1-Documentation-Support-Systems.html">4.1</a>
+    <a class="nav-next" href="./4_3-Workstation-Backup-Recovery.html">4.3</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>4.2</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 4 — Operational Procedures
+  </div>
+  <h1 class="book-title">Apply Change Management<br>Procedures</h1>
+  <div class="book-subtitle">
+    <span>Objective 4.2</span>
+    <span>Domain weight: 21%</span>
+    <span>Documented Business Processes · Change Management Workflow</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Change Management</h2>
+
+<p><span class="key-term">Change management</span> is the formal, structured process an organization follows before making a modification to its IT systems — a software update, a network reconfiguration, a hardware swap, a firewall rule change — so that the change happens deliberately, with known risks, a plan for what to do if it fails, and buy-in from the people it affects. Without change management, even a well-intentioned fix can cause an outage nobody saw coming, simply because nobody checked what else depended on the thing being changed.</p>
+
+<p>Objective 4.2 covers two closely linked halves. <span class="key-term">Documented business processes</span> are the standing safety nets that should exist around any change — a rollback plan, a backup plan, sandbox testing, and clearly assigned responsible staff — regardless of how the change request itself is processed. The <span class="key-term">change management</span> workflow is the actual step-by-step process a proposed change moves through, from the initial request form to final end-user acceptance.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Change Management Exists to Prevent Surprises</p>
+  <p>Every element of this objective answers one of three questions: <strong>What could go wrong?</strong> (risk analysis, sandbox testing), <strong>What do we do if it does?</strong> (rollback plan, backup plan), and <strong>Who needs to know and approve before it happens?</strong> (change board approvals, responsible staff members, end-user acceptance). A technician who understands why each element exists — not just its name — can reason through any change management scenario question, even ones phrased in unfamiliar ways.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — DOCUMENTED BUSINESS PROCESSES ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Documented Business Processes</h2>
+
+<p>These four elements form the baseline safety net that should surround any meaningful change, independent of the formal approval workflow covered in Section 2. Think of them as the preparation work that makes a change safe to attempt in the first place.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Rollback plan</span>
+    <span>A documented, specific procedure for undoing the change and returning the system to its prior working state if the change fails or causes unexpected problems. A rollback plan must be prepared <em>before</em> the change is implemented — discovering mid-outage that there's no way back is exactly the failure this element exists to prevent.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Backup plan</span>
+    <span>Ensuring a current, verified backup of the affected system or data exists immediately before the change is made, so that even if the rollback procedure itself fails, the data and configuration can still be restored from a known-good backup. This directly ties into Objective 4.3's backup and recovery methods.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Sandbox testing</span>
+    <span>Testing the proposed change first in an isolated, non-production environment that mirrors production closely enough to reveal problems — without any risk to real systems or users. Sandbox testing is how many risks get caught and addressed before the change ever reaches the risk-analysis or approval stage.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Responsible staff members</span>
+    <span>Clearly naming who is accountable for planning, implementing, monitoring, and — if necessary — rolling back the change. Without a named owner, a failing change can sit unresolved simply because no single person feels clearly responsible for reacting to it.</span>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Why Skipping These Steps Is a Common Exam Trap</p>
+  <p>Scenario questions often describe a technician who made a change directly in production without testing it first, or who didn't have a rollback plan ready when something broke. The correct answer nearly always identifies the missing documented business process — not a technical detail of the change itself. Recognize that the failure described is a <em>process</em> failure, and match it to whichever of these four elements was skipped.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — CHANGE MANAGEMENT WORKFLOW ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>The Change Management Workflow</h2>
+
+<p>Where Section 1 covers the safety net around a change, this section covers the formal process a proposed change actually travels through — from someone first requesting it to the moment users have accepted the result.</p>
+
+<h3 class="section">Request Forms</h3>
+
+<p>A <span class="key-term">change request form</span> is the standardized document used to formally propose a change, capturing every detail decision-makers need to evaluate it — often including the purpose, scope, change type, timing, affected systems, and risk information covered in the remaining sub-topics below. Requiring a standardized form (rather than an informal request) ensures nothing critical gets omitted and creates a written record for later audit or reference.</p>
+
+<h3 class="section">Purpose of the Change</h3>
+
+<p>A clear statement of <em>why</em> the change is being made — what problem it solves, what capability it adds, or what requirement it satisfies. Purpose is the first thing a change board or approver evaluates, because a change without a clear justification is difficult to weigh against its risk.</p>
+
+<h3 class="section">Scope of the Change</h3>
+
+<p>A precise definition of exactly what the change will and will not touch — which systems, configurations, or user groups are included, and just as importantly, which are explicitly excluded. A well-defined scope prevents "scope creep," where a change quietly grows to affect more than what was originally reviewed and approved.</p>
+
+<h3 class="section">Change Type</h3>
+
+<p>The exam names three distinct categories of change, each carrying a different level of scrutiny and approval speed.</p>
+
+<div class="ct-panel">
+  <div class="ct-panel-header standard"><span>Standard Change</span><span>Pre-approved, low risk</span></div>
+  <div class="ct-panel-body">
+    <div class="ct-row">
+      <span class="ct-label">Definition</span>
+      <span class="ct-desc">A routine, well-understood, low-risk change that has been performed successfully many times before, following an established and pre-approved procedure</span>
+    </div>
+    <div class="ct-row">
+      <span class="ct-label">Approval path</span>
+      <span class="ct-desc">Pre-authorized in advance — does not require case-by-case change board review each time it's performed, since the risk and procedure are already well known</span>
+    </div>
+    <div class="ct-row">
+      <span class="ct-label">Example</span>
+      <span class="ct-desc">Installing a routine, tested monthly security patch using an established, previously validated procedure</span>
+    </div>
+  </div>
+</div>
+
+<div class="ct-panel">
+  <div class="ct-panel-header normal"><span>Normal Change</span><span>Full review process</span></div>
+  <div class="ct-panel-body">
+    <div class="ct-row">
+      <span class="ct-label">Definition</span>
+      <span class="ct-desc">A change that isn't routine or pre-approved, and doesn't need to happen immediately — it goes through the complete change management process: request, risk analysis, and change board review before implementation</span>
+    </div>
+    <div class="ct-row">
+      <span class="ct-label">Approval path</span>
+      <span class="ct-desc">Requires full change board review and approval prior to implementation; this is the default path for most non-routine changes</span>
+    </div>
+    <div class="ct-row">
+      <span class="ct-label">Example</span>
+      <span class="ct-desc">Migrating a department's file server to new hardware, planned and scheduled weeks in advance</span>
+    </div>
+  </div>
+</div>
+
+<div class="ct-panel">
+  <div class="ct-panel-header emergency"><span>Emergency Change</span><span>Urgent, expedited review</span></div>
+  <div class="ct-panel-body">
+    <div class="ct-row">
+      <span class="ct-label">Definition</span>
+      <span class="ct-desc">A change needed immediately to resolve a critical, active problem — a security incident, an outage, a severe vulnerability actively being exploited — where waiting for the normal approval cycle would cause unacceptable harm</span>
+    </div>
+    <div class="ct-row">
+      <span class="ct-label">Approval path</span>
+      <span class="ct-desc">Expedited approval, often from a smaller subset of the change board or a designated emergency authority, with full documentation and formal review completed retroactively after the fact</span>
+    </div>
+    <div class="ct-row">
+      <span class="ct-label">Example</span>
+      <span class="ct-desc">Emergency patching or isolating a system actively under active exploitation of a zero-day vulnerability</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Identifying Change Type from a Scenario</p>
+  <p>The exam tests this by describing a situation and asking which change type applies. <strong>Routine, done many times, low risk</strong> → standard. <strong>Planned, non-routine, time to go through full review</strong> → normal. <strong>Active incident, can't wait, needs to happen now</strong> → emergency. The key differentiator is urgency and precedent, not the technical complexity of the change itself — a technically simple change can still require normal review if it's non-routine, and a technically complex change can still be a standard change if it's been performed successfully many times with a pre-approved procedure.</p>
+</div>
+
+<h3 class="section">Date and Time of Change</h3>
+
+<p>Every change request must specify exactly when the change will occur, accounting for two important constraints.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Change freeze</span>
+    <span>A designated period during which no non-emergency changes are permitted at all — commonly enforced around a business's highest-stakes periods (e.g., a retailer freezing changes during its peak holiday shopping season) to eliminate any risk of a change-induced outage when the business can least afford one.</span>
+  </div>
+  <div class="def-item">
+    <span class="def-term">Maintenance windows</span>
+    <span>Pre-scheduled, approved time blocks — typically during off-peak hours — set aside specifically for making changes with minimal impact on users, since fewer people are actively relying on the affected systems during that window.</span>
+  </div>
+</div>
+
+<h3 class="section">Affected Systems/Impact</h3>
+
+<p>A documented accounting of every system, service, and user group the change will touch — directly or indirectly — so that reviewers can accurately weigh the change's risk and so that anyone impacted can be notified in advance. This is where a well-maintained CMDB (Objective 4.1) becomes directly useful: it reveals downstream dependencies that might not be obvious from the change alone.</p>
+
+<h3 class="section">Risk Analysis</h3>
+
+<p><span class="key-term">Risk analysis</span> is the formal evaluation of what could go wrong with the proposed change, how likely each failure scenario is, and how severe the consequences would be if it occurred. The output of a risk analysis is typically expressed as a <span class="key-term">risk level</span> — a simplified rating (e.g., low, medium, high, or critical) that lets a change board quickly gauge how much scrutiny a given change warrants without re-deriving the full analysis themselves.</p>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Risk Level Drives Everything Downstream</p>
+  <p>A change's assigned risk level typically determines how many people need to review it, whether it requires a maintenance window versus being safe to implement during business hours, and how thorough the rollback and backup plans need to be. Higher risk level does not mean a change is denied — it means the change gets more scrutiny and more safeguards proportional to what could go wrong.</p>
+</div>
+
+<h3 class="section">Change Board Approvals</h3>
+
+<p>A <span class="key-term">change board</span> (sometimes called a Change Advisory Board, or CAB) is a designated group of stakeholders — often representing IT, security, and affected business units — responsible for reviewing proposed normal changes and formally approving or rejecting them before implementation. The change board's review is where purpose, scope, risk analysis, and affected-systems impact all get weighed together against the organization's tolerance for risk at that time.</p>
+
+<h3 class="section">Implementation</h3>
+
+<p>The actual execution of the approved change, ideally carried out by the responsible staff member(s) named earlier, following whatever procedure was tested in the sandbox and documented in the request — with the rollback and backup plans staged and ready in case anything goes wrong during this step.</p>
+
+<h3 class="section">Peer Review</h3>
+
+<p><span class="key-term">Peer review</span> is a second qualified technician independently checking the change's plan (and often the actual implementation) before or as it goes live — catching mistakes, blind spots, or overlooked risks that the original implementer might have missed simply from being too close to their own work. Peer review is a lightweight but effective quality-control step distinct from the more formal change board approval.</p>
+
+<h3 class="section">End-User Acceptance</h3>
+
+<p><span class="key-term">End-user acceptance</span> confirms that the people who actually use the affected system are satisfied the change achieved its intended purpose and didn't introduce new problems from their perspective — closing the loop on the change. A change can be implemented flawlessly from a technical standpoint and still fail this step if it doesn't actually solve the user's underlying problem or introduces an unexpected workflow disruption.</p>
+
+<div class="process-flow">
+  <div class="flow-title">The Complete Change Management Sequence</div>
+  <div class="flow-step">
+    <div class="flow-num">01</div>
+    <div class="flow-text"><strong>Request submitted</strong> via a standardized change request form, stating the purpose and scope of the change.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">02</div>
+    <div class="flow-text"><strong>Classification</strong> as a standard, normal, or emergency change, which determines how much review the request requires.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">03</div>
+    <div class="flow-text"><strong>Risk analysis performed,</strong> affected systems/impact documented, and a risk level assigned.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">04</div>
+    <div class="flow-text"><strong>Sandbox testing</strong> of the proposed change in an isolated environment, surfacing problems before they reach production.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">05</div>
+    <div class="flow-text"><strong>Change board review and approval</strong> (for normal changes), or expedited approval (for emergency changes); standard changes skip this step since they're pre-approved.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">06</div>
+    <div class="flow-text"><strong>Scheduling</strong> within an appropriate maintenance window, and confirmation that no change freeze is currently in effect.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">07</div>
+    <div class="flow-text"><strong>Backup plan and rollback plan finalized and staged,</strong> with responsible staff members confirmed and ready.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">08</div>
+    <div class="flow-text"><strong>Implementation</strong> of the change by the responsible staff member(s), with peer review confirming the plan and execution.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">09</div>
+    <div class="flow-text"><strong>End-user acceptance</strong> confirms the change achieved its purpose without introducing new problems, formally closing the change.</div>
+  </div>
+</div>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 4.2 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Rollback Plan</span><span>Documented way to undo the change and return to the prior working state, prepared beforehand</span></div>
+    <div class="summary-item"><span class="s-sym">Backup Plan</span><span>Verified backup taken immediately before the change, as a fallback if rollback itself fails</span></div>
+    <div class="summary-item"><span class="s-sym">Sandbox Testing</span><span>Testing the change in an isolated non-production environment first</span></div>
+    <div class="summary-item"><span class="s-sym">Responsible Staff Members</span><span>Named owner(s) accountable for planning, implementing, and reacting to the change</span></div>
+    <div class="summary-item"><span class="s-sym">Request Forms</span><span>Standardized document formally proposing the change and capturing all key details</span></div>
+    <div class="summary-item"><span class="s-sym">Purpose of the Change</span><span>Why the change is being made — the problem it solves or requirement it meets</span></div>
+    <div class="summary-item"><span class="s-sym">Scope of the Change</span><span>Exactly what is and isn't included, preventing uncontrolled scope creep</span></div>
+    <div class="summary-item"><span class="s-sym">Standard Change</span><span>Routine, low-risk, pre-approved — no case-by-case board review needed</span></div>
+    <div class="summary-item"><span class="s-sym">Normal Change</span><span>Non-routine, non-urgent — goes through the full request/review/approval process</span></div>
+    <div class="summary-item"><span class="s-sym">Emergency Change</span><span>Urgent, active-incident driven — expedited approval, documented retroactively</span></div>
+    <div class="summary-item"><span class="s-sym">Change Freeze</span><span>Period where no non-emergency changes are allowed at all (e.g., peak business season)</span></div>
+    <div class="summary-item"><span class="s-sym">Maintenance Windows</span><span>Pre-scheduled off-peak time blocks set aside for making changes</span></div>
+    <div class="summary-item"><span class="s-sym">Affected Systems/Impact</span><span>Full accounting of everything the change touches, directly or indirectly</span></div>
+    <div class="summary-item"><span class="s-sym">Risk Analysis / Risk Level</span><span>Evaluation of what could go wrong and how severe it would be, summarized as a rating</span></div>
+    <div class="summary-item"><span class="s-sym">Change Board Approvals</span><span>Stakeholder group reviewing and approving/rejecting normal changes before implementation</span></div>
+    <div class="summary-item"><span class="s-sym">Peer Review</span><span>A second technician independently checking the plan/implementation for missed issues</span></div>
+    <div class="summary-item"><span class="s-sym">End-User Acceptance</span><span>Confirmation from affected users that the change achieved its purpose without new problems</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Change Type Decision Guide</h4>
+    <ul>
+      <li><strong>Done many times before, pre-approved procedure</strong> — standard change</li>
+      <li><strong>Planned, non-routine, time for full review</strong> — normal change</li>
+      <li><strong>Active incident, can't wait for full review</strong> — emergency change</li>
+      <li><strong>Emergency changes still get documented</strong> — just after the fact, not before</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Safety Net Elements (Section 1)</h4>
+    <ul>
+      <li><strong>"How do we undo this?"</strong> — rollback plan</li>
+      <li><strong>"What if rollback itself fails?"</strong> — backup plan</li>
+      <li><strong>"Did we test it first, safely?"</strong> — sandbox testing</li>
+      <li><strong>"Who owns this if it breaks?"</strong> — responsible staff members</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Timing Concepts</h4>
+    <ul>
+      <li><strong>No changes allowed at all right now</strong> — change freeze</li>
+      <li><strong>Scheduled low-impact time slot for changes</strong> — maintenance window</li>
+      <li><strong>Freeze applies even to most emergency-adjacent work</strong> — exceptions are rare and reviewed carefully</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Who Signs Off, and When</h4>
+    <ul>
+      <li><strong>Before implementation (normal change)</strong> — change board approval</li>
+      <li><strong>During/around implementation</strong> — peer review</li>
+      <li><strong>After implementation, closing the loop</strong> — end-user acceptance</li>
+      <li><strong>Standard changes</strong> — skip case-by-case board approval entirely</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>A rollback plan must exist before implementation begins</strong> — a scenario describing a technician improvising a way to undo a failed change mid-incident is describing a missing rollback plan, not a successful one.</p>
+  <p><strong>Standard changes are pre-approved and routine; normal changes require full review; emergency changes are urgent and documented after the fact</strong> — the differentiator is urgency and precedent, not technical complexity.</p>
+  <p><strong>A change freeze blocks non-emergency changes entirely for a defined period</strong> (e.g., a retail change freeze during the holiday season), while a maintenance window is simply the scheduled, low-impact time slot changes are normally implemented in — don't confuse the two.</p>
+  <p><strong>Risk level is the summarized output of a risk analysis</strong> and typically drives how much review, how many approvers, and how much rollback/backup preparation a change requires.</p>
+  <p><strong>Change board approval and peer review are two distinct checks</strong> — the change board approves whether the change should happen at all; peer review checks whether the plan/execution itself is sound. A scenario can require both.</p>
+  <p><strong>End-user acceptance is the final step, not implementation</strong> — a change isn't considered complete just because it was technically executed successfully; it's complete once the affected users confirm it actually solved their problem.</p>
+  <p><strong>Sandbox testing happens before implementation, in an environment separate from production</strong> — testing directly in production defeats the purpose and is exactly the kind of shortcut the exam expects you to flag as a process failure.</p>
+</div>
+
+</div>
+</body>
+</html>
