@@ -396,15 +396,15 @@
   }
   ul.body-list li strong { color: var(--text); }
 
-  /* EDITION PANEL — custom for this page */
-  .edition-panel {
+  /* TOOL PANEL — mirrors os-panel pattern for collaboration tool breakdowns */
+  .tool-panel {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 6px;
     overflow: hidden;
     margin: 20px 0;
   }
-  .edition-panel-header {
+  .tool-panel-header {
     padding: 12px 18px;
     font-family: var(--mono);
     font-size: 11px;
@@ -413,19 +413,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color: #fff;
   }
-  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
-  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
-  .edition-panel-body { padding: 0; }
-  .edition-row {
+  .tool-panel-header.email  { background: #0078d4; }
+  .tool-panel-header.storage{ background: var(--accent3); }
+  .tool-panel-body { padding: 0; }
+  .tool-row {
     display: grid;
     grid-template-columns: 180px 1fr;
     border-bottom: 1px solid var(--border);
     font-family: var(--sans);
     font-size: 14px;
   }
-  .edition-row:last-child { border-bottom: none; }
-  .edition-label {
+  .tool-row:last-child { border-bottom: none; }
+  .tool-label {
     font-weight: 600;
     color: var(--accent2);
     padding: 11px 18px;
@@ -433,12 +434,12 @@
     border-right: 1px solid var(--border);
     line-height: 1.4;
   }
-  .edition-desc {
+  .tool-desc {
     padding: 11px 18px;
     color: var(--muted);
     line-height: 1.5;
   }
-  .edition-desc strong { color: var(--text); }
+  .tool-desc strong { color: var(--text); }
 
   /* CODE */
   code {
@@ -453,6 +454,45 @@
 
   /* KEY TERM */
   .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* COLLAB TOOL GRID */
+  .collab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .collab-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .collab-card .collab-icon {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--accent2);
+    padding: 3px 9px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .collab-card h5 {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .collab-card p {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
 
   /* SUMMARY BOX */
   .summary-box {
@@ -498,48 +538,6 @@
     margin: 48px 0;
   }
 
-  /* FEATURE COMPARISON BADGE */
-  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
-  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
-  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
-
-  /* UPGRADE PATH DIAGRAM */
-  .upgrade-path {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin: 16px 0 24px;
-    font-family: var(--sans);
-    font-size: 13px;
-    flex-wrap: wrap;
-  }
-  .up-node {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 14px;
-    text-align: center;
-    flex-shrink: 0;
-  }
-  .up-node .up-label {
-    font-weight: 600;
-    color: var(--accent2);
-    font-size: 13px;
-  }
-  .up-node .up-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-  .up-arrow {
-    font-size: 18px;
-    color: var(--border2);
-    padding: 0 8px;
-    flex-shrink: 0;
-  }
-  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
-  .up-node.target .up-label { color: var(--accent3); }
-
   /* REQUIREMENT CARD */
   .req-grid {
     display: grid;
@@ -583,705 +581,238 @@
 
   @media (max-width: 680px) {
     .page { padding: 0 20px 60px; }
-    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .collab-grid { grid-template-columns: 1fr; }
     .def-item { grid-template-columns: 1fr; gap: 4px; }
-    .edition-row { grid-template-columns: 1fr; }
-    .upgrade-path { flex-direction: column; align-items: flex-start; }
-    .up-arrow { transform: rotate(90deg); }
+    .tool-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
+<!-- TOP NAV -->
 <nav class="top-nav">
   <div class="top-nav-left">
     <a class="nav-home" href="../index.html">Study Guide</a>
-    <span class="nav-sep">›</span>
-    <span class="nav-current"><strong>1.11</strong> Given a scenario, install and configure cloud-based productivity tools</span>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.11</strong> Install and Configure Cloud-Based Productivity Tools</span>
   </div>
   <div class="top-nav-right">
-    <a class="nav-prev" href="1_10-Install-Applications.html">1.10</a>
-    <a class="nav-next" href="2_1-Security-Measures.html">2.1</a>
+    <a class="nav-prev" href="./1_10-Install-Applications.html">1.10</a>
+    <a class="nav-next" href="./2_1-Security-Measures.html">2.1</a>
   </div>
 </nav>
 
 <div class="page">
 
-<header class="book-header">
+<!-- HEADER -->
+<div class="book-header">
   <div class="book-eyebrow">
     <span>1.11</span>
     CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
   </div>
-  <h1 class="book-title">Given a scenario, install and configure <br> cloud-based productivity tools</h1>
+  <h1 class="book-title">Install and Configure Cloud-Based<br>Productivity Tools</h1>
   <div class="book-subtitle">
     <span>Objective 1.11</span>
     <span>Domain weight: 28%</span>
-    <span>Email Systems · Cloud Storage · Collaboration Suite · Identity Sync · Licensing</span>
+    <span>Email · Storage · Collaboration Tools · Identity Sync · Licensing</span>
   </div>
-</header>
+</div>
 
-<!-- ══════════════════════════════════════════ -->
-<!-- OVERVIEW                                  -->
-<!-- ══════════════════════════════════════════ -->
-<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
 
-<!-- INTRO -->
-<p>Cloud-based productivity tools have become the dominant software model for business computing. Rather than installing applications on individual machines and managing local license keys, organizations now provision accounts through central directories — and users access their email, documents, spreadsheets, video calls, and chat from any device with a browser or a lightweight installed client. For an A+ technician, this shift means the job has evolved: instead of running setup wizards, you are connecting users to cloud platforms, configuring sync settings, troubleshooting account provisioning, and ensuring licenses are correctly assigned.</p>
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Cloud-Based Productivity Tools</h2>
 
-<p>This objective covers the full scope of what that entails: understanding the major cloud productivity platforms and what each component does, configuring email profiles and storage sync, deploying collaboration tools, and managing identity synchronization and licensing at the administrative level. The scenarios on the exam present real technician tasks — a user whose OneDrive isn't syncing, a new employee who needs a Microsoft 365 license, a video call tool that needs to be configured — and require you to identify the correct steps.</p>
+<p>Most modern organizations no longer run productivity software purely on local machines — email, document editing, file storage, and team communication increasingly live in the cloud, accessed through a browser or a thin client app that syncs with a remote service. Objective 1.11 closes out Domain 1 by covering what a technician needs to know to set up, configure, and support this cloud-based productivity stack for end users.</p>
+
+<p>This objective covers four connected areas. <span class="key-term">Email systems</span> and <span class="key-term">storage</span> cover the two most foundational cloud services most organizations rely on. <span class="key-term">Collaboration tools</span> covers the broader suite of cloud apps teams use to work together. <span class="key-term">Identity synchronization</span> and <span class="key-term">licensing assignment</span> cover the administrative backbone that ties a user's account to the right access and the right subscription across all of these services.</p>
 
 <div class="callout callout-info">
-  <p class="callout-title">Platform Scope</p>
-  <p>The exam is platform-agnostic — it tests concepts that apply across <strong>Google Workspace</strong> (formerly G Suite), <strong>Microsoft 365</strong> (formerly Office 365), and <strong>Apple iCloud</strong>. Scenarios may name a specific platform, so recognizing the equivalent tool in each suite is important. The coverage below addresses all three, with emphasis on Google Workspace and Microsoft 365 as the dominant enterprise platforms.</p>
+  <p class="callout-title">Core Concept — Cloud Productivity Shifts Where the Work (and the Support Burden) Lives</p>
+  <p>When productivity tools move to the cloud, the technician's job shifts too — less time reinstalling local software, more time managing accounts, sync settings, permissions, and licenses across a centralized identity system. A technician supporting cloud productivity tools needs to think less about "what's installed on this machine" and more about "what is this user's account entitled to, and is it configured correctly" — a theme that runs through every sub-topic in this objective.</p>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION A — CLOUD PRODUCTIVITY OVERVIEW
-     ═══════════════════════════════════════════════════ -->
 
-<h2 class="chapter"><span class="ch-num">Section A</span>What Cloud-Based Productivity Means</h2>
+<!-- ═══ SECTION 1 — EMAIL SYSTEMS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Email Systems</h2>
 
-<p>A <span class="key-term">cloud-based productivity suite</span> is a collection of business applications — email, word processing, spreadsheets, presentations, video conferencing, chat, and file storage — delivered as a service over the internet. The applications may be accessed entirely through a web browser, installed as desktop/mobile clients that sync with the cloud, or both. The defining characteristic is that the data lives in the cloud provider's infrastructure, not on the local machine.</p>
+<p>Cloud-based email — services like Microsoft 365 (Exchange Online) or Google Workspace (Gmail) — has largely replaced locally hosted mail servers for most organizations. Rather than an organization running and maintaining its own physical mail server, a cloud email provider hosts the mailboxes, and users connect via a web browser, a desktop mail client configured to talk to the cloud service, or a mobile app.</p>
 
-<div class="platform-strip">
-  <div class="platform-cell pc-google">
-    <div class="platform-name">Google Workspace</div>
-    <div class="platform-maker">Google · formerly G Suite</div>
-    <div class="platform-items">
-      <strong>Email:</strong> Gmail<br>
-      <strong>Storage:</strong> Google Drive<br>
-      <strong>Docs:</strong> Google Docs<br>
-      <strong>Sheets:</strong> Google Sheets<br>
-      <strong>Slides:</strong> Google Slides<br>
-      <strong>Video:</strong> Google Meet<br>
-      <strong>Chat:</strong> Google Chat<br>
-      <strong>Admin:</strong> Google Admin Console<br>
-      <strong>Directory:</strong> Google Directory / Cloud Identity
+<div class="tool-panel">
+  <div class="tool-panel-header email"><span>Cloud Email Configuration</span><span>Common technician tasks</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row">
+      <span class="tool-label">Account setup</span>
+      <span class="tool-desc">Creating or provisioning a new mailbox as part of a user's cloud identity, typically through the organization's admin portal rather than on the local machine directly</span>
     </div>
-  </div>
-  <div class="platform-cell pc-ms">
-    <div class="platform-name">Microsoft 365</div>
-    <div class="platform-maker">Microsoft · formerly Office 365</div>
-    <div class="platform-items">
-      <strong>Email:</strong> Exchange Online / Outlook<br>
-      <strong>Storage:</strong> OneDrive / SharePoint<br>
-      <strong>Docs:</strong> Word Online / Word<br>
-      <strong>Sheets:</strong> Excel Online / Excel<br>
-      <strong>Slides:</strong> PowerPoint Online<br>
-      <strong>Video:</strong> Microsoft Teams<br>
-      <strong>Chat:</strong> Microsoft Teams<br>
-      <strong>Admin:</strong> Microsoft 365 Admin Center<br>
-      <strong>Directory:</strong> Microsoft Entra ID (Azure AD)
+    <div class="tool-row">
+      <span class="tool-label">Client configuration</span>
+      <span class="tool-desc">Connecting a desktop or mobile mail client to the cloud mailbox, often via modern authentication/SSO rather than manually entering server settings</span>
     </div>
-  </div>
-  <div class="platform-cell pc-apple">
-    <div class="platform-name">Apple iCloud</div>
-    <div class="platform-maker">Apple · primarily consumer</div>
-    <div class="platform-items">
-      <strong>Email:</strong> iCloud Mail<br>
-      <strong>Storage:</strong> iCloud Drive<br>
-      <strong>Docs:</strong> Pages<br>
-      <strong>Sheets:</strong> Numbers<br>
-      <strong>Slides:</strong> Keynote<br>
-      <strong>Video:</strong> FaceTime<br>
-      <strong>Chat:</strong> iMessage<br>
-      <strong>Admin:</strong> Apple Business Manager<br>
-      <strong>Directory:</strong> Apple Business Manager / Federated Auth
+    <div class="tool-row">
+      <span class="tool-label">Troubleshooting</span>
+      <span class="tool-desc">Diagnosing sync issues, authentication failures, or mailbox access problems, which frequently trace back to identity/licensing issues (Sections 3–4) rather than the email client itself</span>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION B — EMAIL SYSTEMS
-     ═══════════════════════════════════════════════════ -->
 
-<h2 class="chapter"><span class="ch-num">Section B</span>Email Systems</h2>
+<!-- ═══ SECTION 2 — STORAGE ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Storage</h2>
 
-<p>Cloud email is the most universally deployed cloud productivity component. Unlike on-premises mail servers that require a technician to maintain Exchange or Postfix infrastructure, cloud email is entirely managed by the provider — the technician's role is configuration: setting up the mail client to connect to the cloud service, configuring the account in mobile and desktop apps, and troubleshooting connectivity and authentication issues.</p>
+<p>Cloud storage services — such as OneDrive, Google Drive, or Dropbox — let users store and access files from any device with an internet connection, rather than being tied to a single local machine's hard drive.</p>
 
-<div class="tool-card">
-  <div class="tool-header blue">
-    <div>
-      <div class="tool-name">Cloud Email — Configuration and Protocols</div>
-      <div class="tool-sub">Exchange Online, Gmail, iCloud Mail — configuring clients to connect</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-info">Core Task</span></div>
+<h3 class="section">Sync/Folder Settings</h3>
+
+<p>Most cloud storage services offer a local sync client that mirrors some or all of a user's cloud storage onto their local machine, keeping files updated in both directions automatically. Configuring which folders sync locally — versus which remain available only "on demand" or purely in the cloud — is a key setup task, particularly relevant for managing local disk space on machines with limited storage, or ensuring a specific folder is always available offline.</p>
+
+<div class="callout callout-tip">
+  <p class="callout-title">Common Real-World Scenario — Sync Conflicts and Storage Limits</p>
+  <p>Two frequent support issues connect directly to sync/folder settings: a user's local drive filling up because every cloud folder is set to sync fully rather than "on demand," and sync conflicts arising when the same file is edited offline on two different devices before reconnecting. Both are resolved by understanding and adjusting the specific sync settings for the storage client in use, rather than treating them as a mysterious file-corruption problem.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — COLLABORATION TOOLS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Collaboration Tools</h2>
+
+<p>Beyond email and storage, most cloud productivity suites bundle a set of collaboration applications that let multiple users work together in real time, replacing what used to be single-user, locally installed desktop software.</p>
+
+<div class="collab-grid">
+  <div class="collab-card">
+    <span class="collab-icon">Data</span>
+    <h5>Spreadsheets</h5>
+    <p>Cloud-based spreadsheet tools (e.g., Excel Online, Google Sheets) supporting real-time multi-user editing and version history, accessible from any device without needing the file transferred manually</p>
   </div>
-  <div class="spec-row">
-    <div class="spec-cell"><div class="spec-label">Microsoft 365</div><div class="spec-value sv-blu">Exchange Online · Outlook</div></div>
-    <div class="spec-cell"><div class="spec-label">Google Workspace</div><div class="spec-value sv-grn">Gmail · IMAP/SMTP</div></div>
-    <div class="spec-cell"><div class="spec-label">Auto-config method</div><div class="spec-value sv-org">Autodiscover / MX records</div></div>
+  <div class="collab-card">
+    <span class="collab-icon">Meetings</span>
+    <h5>Videoconferencing</h5>
+    <p>Cloud-integrated meeting platforms (e.g., Teams, Google Meet, Zoom) tightly tied into the same identity and calendar system as email and other collaboration tools</p>
   </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Exchange Online setup</div>
-      <div class="card-desc">Microsoft 365 email is powered by <span class="key-term">Exchange Online</span>. Setting up email in Outlook: enter the user's email address (e.g., <code>user@company.com</code>) and Outlook queries <strong>Autodiscover</strong> — a DNS service record that returns the correct server configuration automatically. Modern authentication (OAuth 2.0) then prompts for the Microsoft 365 password and may trigger MFA. No manual server settings are required in most deployments. For manual setup: incoming server <code>outlook.office365.com</code> (IMAP port 993 SSL or POP3 port 995), outgoing SMTP <code>smtp.office365.com</code> port 587 (TLS). In enterprise environments, the IT admin configures Exchange Online settings centrally through the <strong>Microsoft 365 Admin Center → Exchange Admin Center</strong>.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Gmail / Google Workspace</div>
-      <div class="card-desc">Google Workspace email is Gmail with a custom domain. In the Gmail web interface, no client configuration is needed — users log in at <code>mail.google.com</code> with their Workspace credentials. For third-party email clients (Outlook, Thunderbird, Apple Mail), enable IMAP in Gmail settings (<strong>Settings → Forwarding and POP/IMAP → Enable IMAP</strong>), then configure the client with IMAP server <code>imap.gmail.com</code> port 993 (SSL) and SMTP <code>smtp.gmail.com</code> port 465 or 587. Google requires an <strong>App Password</strong> for clients that don't support OAuth — generated in Google Account → Security → App Passwords (requires 2-Step Verification to be enabled). In enterprise Workspace, app passwords may be managed via admin policy.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Email protocols recap</div>
-      <div class="card-desc"><strong>IMAP (port 143/993)</strong> — Internet Message Access Protocol; messages stay on the server, client shows a synchronized view; deleting on one device deletes everywhere. <strong>POP3 (port 110/995)</strong> — Post Office Protocol 3; downloads messages to the local device and (optionally) deletes from server; works offline but messages are not synchronized across devices. For cloud email, <strong>IMAP is the correct choice</strong> — POP3 defeats the purpose of cloud storage by pulling everything local. <strong>SMTP (port 25/465/587)</strong> — Simple Mail Transfer Protocol; outbound only; always used for sending regardless of which protocol handles receiving.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Mobile email configuration</div>
-      <div class="card-desc">On iOS/Android, email is configured in the native mail app or through <strong>Microsoft Outlook for Mobile</strong> / <strong>Gmail app</strong>. iOS automatically detects Microsoft 365 and iCloud configurations when the email address is entered — entering <code>user@company.com</code> triggers Autodiscover and the account is set up automatically. For Google Workspace accounts, the Gmail app on Android/iOS only requires email and password. In <span class="key-term">MDM (Mobile Device Management)</span> environments, email profiles are pushed to devices automatically — the user's device receives the Exchange/Google profile silently when enrolled, with no manual configuration needed.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Spam and mail flow</div>
-      <div class="card-desc">Cloud email platforms include built-in spam filtering and policy enforcement. <strong>Microsoft 365</strong> uses Exchange Online Protection (EOP) and optionally Defender for Office 365 for anti-phishing, anti-malware, and link detonation. <strong>Google Workspace</strong> includes Gmail's spam filter with configurable policies in the admin console. Technicians may be asked to: whitelist a sender (add to the safe senders list), release a quarantined message, or configure an email flow rule (transport rule in Exchange / routing rule in Google Workspace). These are done in the respective admin consoles, not individual client settings.</div>
-    </div>
+  <div class="collab-card">
+    <span class="collab-icon">Slides</span>
+    <h5>Presentation Tools</h5>
+    <p>Cloud-based presentation software (e.g., PowerPoint Online, Google Slides) with the same real-time collaborative editing model as cloud spreadsheets and documents</p>
+  </div>
+  <div class="collab-card">
+    <span class="collab-icon">Docs</span>
+    <h5>Word Processing Tools</h5>
+    <p>Cloud-based document editors (e.g., Word Online, Google Docs) enabling simultaneous multi-user editing, comments, and revision tracking directly in the browser</p>
+  </div>
+  <div class="collab-card">
+    <span class="collab-icon">Chat</span>
+    <h5>Instant Messaging</h5>
+    <p>Cloud-based team chat platforms (e.g., Teams chat, Slack, Google Chat) for quick real-time communication, often integrated with file sharing and videoconferencing within the same suite</p>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION C — CLOUD STORAGE
-     ═══════════════════════════════════════════════════ -->
+<div class="callout callout-info">
+  <p class="callout-title">The Shared Thread Across Collaboration Tools</p>
+  <p>Every tool in this category shares two defining traits that distinguish it from older, locally installed software: real-time multi-user collaboration on the same file or conversation, and access from any authenticated device rather than a single installed copy. From a support standpoint, this means troubleshooting these tools frequently comes back to the same few root causes — account/identity issues, sharing permissions, network connectivity, or a licensing gap — rather than a local software installation problem.</p>
+</div>
 
-<h2 class="chapter"><span class="ch-num">Section C</span>Cloud Storage — Sync and Folder Settings</h2>
 
-<p>Cloud storage services provide a synchronized folder on the user's device that mirrors content to and from the cloud. Files placed in the synced folder are automatically uploaded to the cloud and pushed to all other signed-in devices. For a technician, the task is installing and configuring the sync client, setting up folder selections, troubleshooting sync errors, and understanding how selective sync and shared drives work.</p>
+<!-- ═══ SECTION 4 — IDENTITY SYNCHRONIZATION ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Identity Synchronization</h2>
 
-<div class="tool-card">
-  <div class="tool-header blue">
-    <div>
-      <div class="tool-name">OneDrive — Microsoft 365 Cloud Storage</div>
-      <div class="tool-sub">Per-user storage integrated with Windows, SharePoint, and Microsoft 365 apps</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-info">Microsoft 365</span></div>
+<p><span class="key-term">Identity synchronization</span> is the process of keeping a user's identity — their account, credentials, and group memberships — consistent between an organization's on-premises directory (such as Active Directory) and its cloud identity provider (such as Microsoft Entra ID/Azure AD or Google Workspace's identity system). This allows a single username and password to work seamlessly across both on-premises resources and cloud productivity tools, rather than requiring separate logins for each.</p>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Identity Sync as the Root Cause of "Everything" Failing at Once</p>
+  <p>When identity synchronization breaks or is delayed, a user can suddenly lose access to email, storage, and every collaboration tool simultaneously — even though none of those individual applications actually has a problem. A scenario describing a user unable to log into multiple different cloud services all at once is a strong signal to check identity synchronization status first, rather than troubleshooting each application separately.</p>
+</div>
+
+
+<!-- ═══ SECTION 5 — LICENSING ASSIGNMENT ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 5</span>Licensing Assignment</h2>
+
+<p>Most cloud productivity suites are subscription-based, and individual features or applications are only available to a user if the correct license has been assigned to their account. <span class="key-term">Licensing assignment</span> is the administrative process of granting a specific user account the appropriate license — which then determines exactly which applications, storage limits, and features that user can actually access.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">Why licensing matters for troubleshooting</span>
+    <span>A user reporting that a specific application (e.g., Teams, or a particular storage tier) "isn't working" or "isn't available" may simply be missing the license that grants access to that feature — a licensing check should be a routine early troubleshooting step for this class of problem, well before assuming a technical fault.</span>
   </div>
-  <div class="spec-row">
-    <div class="spec-cell"><div class="spec-label">Default storage</div><div class="spec-value">1 TB per user (M365 Business)</div></div>
-    <div class="spec-cell"><div class="spec-label">Sync client</div><div class="spec-value sv-blu">Built into Windows 10/11</div></div>
-    <div class="spec-cell"><div class="spec-label">Shared storage</div><div class="spec-value sv-grn">SharePoint document libraries</div></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Setting up OneDrive sync</div>
-      <div class="card-desc">OneDrive is built into Windows 10 and 11. Sign in: click the OneDrive cloud icon in the system tray → Sign in → enter Microsoft 365 email → authenticate. Windows then syncs the user's OneDrive folder to <code>C:\Users\[username]\OneDrive - [Organization]</code>. The folder appears in File Explorer alongside local folders. Any file saved here is automatically uploaded. First-time sync on a large account can take minutes to hours depending on data volume and connection speed — the icon animates while syncing and becomes a static cloud when complete.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Selective sync / Files On-Demand</div>
-      <div class="card-desc"><span class="key-term">Files On-Demand</span> (enabled by default in Windows 10/11) shows all OneDrive files in File Explorer without downloading them — they download on first open. File status icons: <strong>cloud icon</strong> = online only (not downloaded, no local copy); <strong>sync arrows</strong> = currently syncing; <strong>green checkmark</strong> = available locally (full copy on disk); <strong>solid green checkmark</strong> = always keep on device. Right-click any file or folder → <strong>Always keep on this device</strong> to force a local download. Right-click → <strong>Free up space</strong> to convert a local file back to online-only. This is critical for laptops with limited storage — only frequently used files need to occupy local disk space.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Selective folder sync</div>
-      <div class="card-desc">To control which OneDrive folders sync to a specific device: right-click the OneDrive icon in system tray → Settings → Account → Choose folders. Uncheck folders that should not sync locally. This does not delete files from OneDrive — it just removes them from the local device. Useful when a workstation has limited disk space but the user's OneDrive contains large archive folders they rarely access from that machine.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">SharePoint and shared libraries</div>
-      <div class="card-desc"><span class="key-term">SharePoint Online</span> is the team-level storage in Microsoft 365 — document libraries shared across a department or team, as distinct from a user's personal OneDrive. SharePoint libraries can be synced to the local device using the same OneDrive sync client: in SharePoint → navigate to the library → click <strong>Sync</strong>. The library appears in File Explorer under <code>C:\Users\[username]\[Organization]</code>. SharePoint libraries support versioning, check-in/check-out, and permissions management — features that individual OneDrive does not have. Microsoft Teams stores its files in SharePoint libraries behind the scenes.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Troubleshooting OneDrive sync</div>
-      <div class="card-desc">Common sync issues and fixes: <strong>Red X on files</strong> — file is in a conflict state or has a name with illegal characters (<code>: * ? &lt; &gt; | " /</code>); rename the file. <strong>Sync paused</strong> — OneDrive pauses sync when battery saver is active, metered connection detected, or storage is nearly full; address the condition. <strong>Account not connected</strong> — user's password changed; click the OneDrive icon → Sign In. <strong>Files not appearing on another device</strong> — check sync is not paused on the source device; check available cloud storage quota (OneDrive icon → Settings → Account → shows used/available). <strong>Reset OneDrive</strong>: run <code>%localappdata%\Microsoft\OneDrive\onedrive.exe /reset</code> — resets sync engine without deleting files.</div>
-    </div>
+  <div class="def-item">
+    <span class="def-term">License assignment and onboarding/offboarding</span>
+    <span>Assigning the correct license is typically a standard step in a new user onboarding checklist (Objective 4.1), and reclaiming/reassigning that license is equally a standard step in offboarding — both to free up the license for reuse and to ensure a departed user's paid subscription doesn't continue unnecessarily.</span>
   </div>
 </div>
 
-<div class="tool-card">
-  <div class="tool-header grn">
-    <div>
-      <div class="tool-name">Google Drive — Google Workspace Cloud Storage</div>
-      <div class="tool-sub">Drive for desktop sync client, Shared Drives for team storage</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-low">Google Workspace</span></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Drive for Desktop</div>
-      <div class="card-desc">Google Drive's desktop sync application is called <span class="key-term">Drive for Desktop</span> (formerly Backup and Sync / Google Drive File Stream). Install from <code>drive.google.com/drive/download</code>. After sign-in, Drive for Desktop creates a virtual drive letter (<code>G:\</code> or the next available letter) that shows all Drive content without downloading it — similar to OneDrive's Files On-Demand. Files download when opened. Alternatively, specific local folders can be mirrored to Google Drive so they sync bidirectionally.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Mirror vs. Stream</div>
-      <div class="card-desc">Drive for Desktop offers two sync modes: <strong>Stream files</strong> — all Drive content is visible as a virtual drive; files download on demand; minimal local disk usage. <strong>Mirror files</strong> — selected folders are fully downloaded and kept in sync bidirectionally; files are always available offline. Configure in Drive for Desktop preferences → My Drive syncing options. For users who frequently work offline (travelers, those with unreliable connections), Mirror mode ensures files are always available. For users with large Drives on small disks, Stream mode is appropriate.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Shared Drives</div>
-      <div class="card-desc"><span class="key-term">Shared Drives</span> (formerly Team Drives) are Google Workspace's equivalent of SharePoint — storage owned by the organization rather than any individual user. When an employee leaves, their files remain in the Shared Drive. Shared Drives appear in Drive for Desktop alongside My Drive. Permissions are managed by Workspace admins: Manager, Content Manager, Contributor, Commenter, Viewer. Files in Shared Drives can be synced locally using Drive for Desktop's Stream or Mirror mode just like personal Drive content.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Storage quota management</div>
-      <div class="card-desc">Google Workspace storage is pooled across the organization rather than per-user (in newer plans). Admins monitor usage in the Google Admin Console → Reports → Storage. Individual users see their quota at <code>one.google.com/storage</code>. Gmail, Drive, and Google Photos all count against the quota. When a user's quota is full, they cannot receive new emails or upload new files — addressing quota requires the admin to either upgrade the plan or have the user delete unnecessary content. In enterprise environments, storage limits are configurable per organizational unit (OU).</div>
-    </div>
-  </div>
+<div class="callout callout-tip">
+  <p class="callout-title">Licensing Ties Directly Back to Asset Management</p>
+  <p>Objective 4.1's asset management concepts — warranty and licensing tracking, assigned users — apply just as much to cloud software licenses as they do to physical hardware and traditional software. A well-run organization tracks which cloud licenses are assigned to which users the same way it tracks which laptop is assigned to which employee, precisely because unused or misassigned cloud licenses represent ongoing, unnecessary cost.</p>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION D — COLLABORATION TOOLS
-     ═══════════════════════════════════════════════════ -->
 
-<h2 class="chapter"><span class="ch-num">Section D</span>Collaboration Tools</h2>
-
-<p>Cloud productivity suites bundle a full set of collaboration applications — word processing, spreadsheets, presentations, video conferencing, and instant messaging. A technician needs to know which application in each suite serves each function, how to install and configure the desktop clients, and how to troubleshoot the most common issues users encounter.</p>
-
-<h3 class="section">Word Processing Tools</h3>
-
-<div class="tool-card">
-  <div class="tool-header neu">
-    <div>
-      <div class="tool-name">Word Processing — Cloud Docs</div>
-      <div class="tool-sub">Microsoft Word / Word Online · Google Docs · Apple Pages</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-med">Docs</span></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Microsoft Word / Word Online</div>
-      <div class="card-desc">Microsoft 365 includes the full desktop <strong>Word</strong> application (installed via Microsoft 365 Apps deployment) and <strong>Word Online</strong> (browser-based, lighter feature set). Files are saved to OneDrive or SharePoint in <code>.docx</code> format. Real-time co-authoring allows multiple users to edit simultaneously — changes appear in near-real-time with colored cursor indicators showing each user's position. <strong>AutoSave</strong> continuously saves changes to the cloud when the file is stored in OneDrive/SharePoint — the floppy disk save button is replaced by an AutoSave toggle. A user who complains that Word is not saving may have AutoSave disabled or the file stored locally rather than in OneDrive.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Google Docs</div>
-      <div class="card-desc"><strong>Google Docs</strong> is entirely browser-based — no installation required. Files are stored in Google Drive in native Docs format (<code>.gdoc</code> links, not traditional files), though they can be exported as <code>.docx</code> or PDF. Real-time collaboration is a core strength — multiple editors are indicated by colored cursor icons with name labels. <strong>Version history</strong> (File → Version history → See version history) shows every edit with timestamp and author — documents can be restored to any previous version. Docs auto-saves every few seconds with no manual save required. For users working offline, Docs requires enabling offline mode in Drive settings first.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">File format compatibility</div>
-      <div class="card-desc">A common technician task is handling file format compatibility between Google Docs and Microsoft Word. <strong>Opening a .docx in Google Docs</strong> — Google Drive opens Word files natively in Docs; complex formatting may not render perfectly. <strong>Exporting from Docs to .docx</strong> — File → Download → Microsoft Word (.docx). <strong>Converting Drive files to Office format by default</strong> — Google Admin Console → Google Workspace → Drive and Docs → Features and Applications → enable "Create files in Office formats." This ensures new documents created in Docs default to <code>.docx</code>, simplifying collaboration with non-Google users.</div>
-    </div>
-  </div>
-</div>
-
-<h3 class="section">Spreadsheets</h3>
-
-<div class="tool-card">
-  <div class="tool-header neu">
-    <div>
-      <div class="tool-name">Spreadsheets — Cloud Sheets</div>
-      <div class="tool-sub">Microsoft Excel / Excel Online · Google Sheets · Apple Numbers</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-med">Sheets</span></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Microsoft Excel Online</div>
-      <div class="card-desc"><strong>Excel Online</strong> is the browser-based version of Excel, available through Microsoft 365. It supports most common Excel functions, charts, and pivot tables but lacks some advanced features (Power Query, certain VBA macros). Files are stored as <code>.xlsx</code> in OneDrive/SharePoint. The full desktop Excel application is available to users with Microsoft 365 Apps licensing. When a user reports that Excel macros are not running in the browser version, the correct response is that VBA macros require the desktop application — Excel Online does not support VBA execution. Co-authoring works in both Online and desktop versions when files are saved to OneDrive/SharePoint.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Google Sheets</div>
-      <div class="card-desc"><strong>Google Sheets</strong> is browser-native and supports Google Apps Script for automation (the Google equivalent of VBA macros). Data can be imported from and exported to <code>.xlsx</code>, <code>.csv</code>, and other formats. A significant Sheets feature relevant to technicians is <strong>Google Forms → Sheets integration</strong> — responses from Google Forms are automatically populated into a linked Sheets spreadsheet, which is commonly used for IT inventory tracking, help desk intake forms, and asset management in SMB environments. Sheets supports up to 10 million cells per spreadsheet — large data sets that exceed this require BigQuery or other data solutions.</div>
-    </div>
-  </div>
-</div>
-
-<h3 class="section">Presentation Tools</h3>
-
-<div class="tool-card">
-  <div class="tool-header neu">
-    <div>
-      <div class="tool-name">Presentation Tools</div>
-      <div class="tool-sub">Microsoft PowerPoint / PowerPoint Online · Google Slides · Apple Keynote</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-med">Slides</span></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">PowerPoint vs. Google Slides</div>
-      <div class="card-desc"><strong>Microsoft PowerPoint</strong> (desktop and Online) stores files as <code>.pptx</code> and is the industry standard for business presentations. <strong>Google Slides</strong> is browser-based and stores natively in Drive, exportable as <code>.pptx</code>. A common technician scenario: a user shares a <code>.pptx</code> file received via email and reports that it does not display correctly. Resolution options: open in the full desktop PowerPoint application for best fidelity; or convert to Google Slides, accepting that some formatting (custom fonts, animations, embedded media) may not transfer perfectly. For presenting directly from a browser, both PowerPoint Online and Google Slides support presenter mode with speaker notes.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Sharing and presenting</div>
-      <div class="card-desc">Both platforms support sharing presentations with view-only or edit access. <strong>Google Slides</strong>: Share button → enter email addresses or generate a shareable link with configurable permissions (Viewer, Commenter, Editor). <strong>PowerPoint Online</strong>: Share → invite people (Microsoft 365 users) or copy link with configurable permission (Can view / Can edit). For presenting during a video call (Teams, Meet, Zoom), the presenter shares their screen or uses the video platform's built-in presentation mode, which can show slides without sharing the entire desktop.</div>
-    </div>
-  </div>
-</div>
-
-<h3 class="section">Videoconferencing</h3>
-
-<div class="tool-card">
-  <div class="tool-header blue">
-    <div>
-      <div class="tool-name">Videoconferencing Tools</div>
-      <div class="tool-sub">Microsoft Teams · Google Meet · Zoom · Cisco Webex</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-info">High Priority</span></div>
-  </div>
-  <div class="spec-row">
-    <div class="spec-cell"><div class="spec-label">Microsoft 365</div><div class="spec-value sv-blu">Microsoft Teams</div></div>
-    <div class="spec-cell"><div class="spec-label">Google Workspace</div><div class="spec-value sv-grn">Google Meet</div></div>
-    <div class="spec-cell"><div class="spec-label">Third-party</div><div class="spec-value sv-org">Zoom, Webex, GoTo Meeting</div></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Microsoft Teams</div>
-      <div class="card-desc"><span class="key-term">Microsoft Teams</span> is the unified communication and collaboration hub in Microsoft 365 — it combines video meetings, persistent chat (channels and direct messages), file sharing (backed by SharePoint), and app integrations in one application. Install: Microsoft 365 Apps installation includes Teams by default, or download separately from <code>teams.microsoft.com</code>. Sign in with Microsoft 365 credentials. Key configuration: <strong>device settings</strong> (audio device, camera, microphone — test before the first meeting); <strong>background effects</strong> (blur or virtual background for privacy); <strong>notification settings</strong> (configure per-channel and per-chat notification behavior to reduce interruption). Teams is also the platform for Microsoft 365 Phone System calls if the organization uses Teams as a VoIP phone system.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Google Meet</div>
-      <div class="card-desc"><span class="key-term">Google Meet</span> is included in all Google Workspace tiers and is accessible directly from Gmail, Google Calendar, and <code>meet.google.com</code>. No separate download is required for browser-based use; a lightweight app is available for Android/iOS. Meeting links are generated via Google Calendar — when a Calendar event is created and "Add Google Meet video conferencing" is added, a unique meet.google.com link is generated and included in the invitation. Configuration: camera/microphone permissions must be granted in the browser on first use; test at <code>meet.google.com</code> → check audio and video before joining. Google Meet records (in Workspace Business and above) are saved to the organizer's Google Drive → Meet Recordings folder.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Zoom</div>
-      <div class="card-desc"><span class="key-term">Zoom</span> is a third-party videoconferencing platform that works alongside or instead of the suite-integrated tools. Install: download Zoom client from <code>zoom.us/download</code> — organizations often deploy this via software management tools (Intune, JAMF, SCCM). Sign in with a Zoom account or SSO (Single Sign-On) through the organization's identity provider. Zoom integrates with both Microsoft 365 and Google Workspace calendars via add-ins/extensions that add a "Zoom" button to meeting invitations. Key settings: <strong>Virtual background</strong> requires a CPU or GPU that supports it; some older machines cannot run Zoom virtual backgrounds. <strong>Screen sharing permissions</strong> can be restricted by the host — technicians may need to enable screen sharing in Zoom account settings for users who report they cannot share their screen in meetings.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Hardware requirements and troubleshooting</div>
-      <div class="card-desc">Videoconferencing requires a functioning camera, microphone, and speakers/headset. Common technician issues: <strong>Camera not working in meeting app</strong> — check OS privacy settings (Windows: Settings → Privacy → Camera; macOS: System Preferences → Security → Camera) — the app must be granted camera access. <strong>Echo or audio feedback</strong> — user's microphone is picking up speaker output; solution: use headphones or headset instead of built-in speakers. <strong>Poor video quality / pixelation</strong> — insufficient bandwidth; video uses 1–4 Mbps for HD; test connection speed or reduce video quality in the app settings. <strong>Meeting audio heard but no video</strong> — camera driver issue or camera covered/disabled; verify in Device Manager.</div>
-    </div>
-  </div>
-</div>
-
-<h3 class="section">Instant Messaging</h3>
-
-<div class="tool-card">
-  <div class="tool-header blue">
-    <div>
-      <div class="tool-name">Instant Messaging / Team Chat</div>
-      <div class="tool-sub">Microsoft Teams Chat · Google Chat · Slack · others</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-info">Collaboration</span></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Microsoft Teams channels and chat</div>
-      <div class="card-desc">Microsoft Teams provides both <strong>persistent channel messaging</strong> (organized by team and channel, visible to all channel members, archived and searchable) and <strong>direct chat</strong> (one-to-one or group conversations). Teams messages are stored in Exchange Online mailboxes and are subject to the organization's compliance and retention policies. Setting up Teams: after Microsoft 365 sign-in, Teams creates a workspace automatically based on the organization's existing Microsoft 365 groups. Teams admin center allows admins to create and manage teams, configure guest access, and set messaging policies (whether users can delete messages, use GIFs, etc.).</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Google Chat</div>
-      <div class="card-desc"><span class="key-term">Google Chat</span> (formerly Google Hangouts Chat) is the persistent messaging platform in Google Workspace. It supports <strong>Direct messages</strong> (one-to-one and small group) and <strong>Spaces</strong> (persistent, topic-organized channels similar to Teams channels). Google Chat is integrated with Gmail — a chat panel appears in the Gmail sidebar. Messages and Space history are searchable within Google Chat. In Google Workspace admin console, admins can configure whether Chat history is enabled or disabled by default, whether users can chat with external Google accounts, and what integrations (Google Workspace bots) are permitted.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Slack and third-party messaging</div>
-      <div class="card-desc"><span class="key-term">Slack</span> is a third-party team messaging platform widely used in technology companies. It uses a workspace model (one Slack workspace per organization) with channels, direct messages, and integrations. Slack integrates with both Google Workspace and Microsoft 365 for file sharing, calendar, and SSO. Installation: download from <code>slack.com/downloads</code> or deploy via MDM/software management. Sign in using a workspace URL (e.g., <code>company.slack.com</code>) or via SSO through Google or Microsoft accounts. Enterprise Slack deployments use <span class="key-term">Enterprise Grid</span> for multi-workspace management and data loss prevention integrations.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION E — IDENTITY SYNCHRONIZATION
-     ═══════════════════════════════════════════════════ -->
-
-<h2 class="chapter"><span class="ch-num">Section E</span>Identity Synchronization</h2>
-
-<p><span class="key-term">Identity synchronization</span> is the process of keeping user accounts consistent between an on-premises directory (Active Directory) and a cloud identity provider (Microsoft Entra ID / Azure AD, Google Workspace Directory). In hybrid organizations — those with both on-premises infrastructure and cloud services — a single user must have a consistent identity that allows them to sign in to both local Windows workstations and cloud applications with the same credentials. Identity sync is what makes this possible.</p>
-
-<div class="tool-card">
-  <div class="tool-header purple">
-    <div>
-      <div class="tool-name">Microsoft Entra ID Connect (Azure AD Connect)</div>
-      <div class="tool-sub">Synchronizing on-premises Active Directory with Microsoft 365 / Entra ID</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-purple">Hybrid Identity</span></div>
-  </div>
-  <div class="spec-row">
-    <div class="spec-cell"><div class="spec-label">On-premises source</div><div class="spec-value">Active Directory Domain Services</div></div>
-    <div class="spec-cell"><div class="spec-label">Cloud target</div><div class="spec-value sv-blu">Microsoft Entra ID (Azure AD)</div></div>
-    <div class="spec-cell"><div class="spec-label">Sync interval</div><div class="spec-value sv-org">Every 30 minutes (default)</div></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">What it does</div>
-      <div class="card-desc"><span class="key-term">Microsoft Entra ID Connect</span> (formerly Azure AD Connect) is a service installed on a Windows Server on the organization's network. It reads user and group objects from on-premises Active Directory and replicates them to Microsoft Entra ID (the cloud identity service backing Microsoft 365). Once synchronized, a user created in Active Directory automatically appears in Microsoft 365 within 30 minutes — their username, email address, group memberships, and password hash are mirrored to the cloud. Technicians do not typically install or configure Entra ID Connect directly (that is an admin/architect task), but they need to understand what it does to diagnose identity issues.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Password Hash Sync vs. Pass-Through Auth</div>
-      <div class="card-desc">Entra ID Connect supports several authentication modes. <strong>Password Hash Synchronization (PHS)</strong> — the hash of the user's on-premises AD password is synchronized to Entra ID; users authenticate directly to the cloud; works even if on-premises servers are down. <strong>Pass-Through Authentication (PTA)</strong> — authentication requests from the cloud are forwarded to on-premises AD in real time; the password hash never leaves the premises; requires on-premises infrastructure to be available for cloud login. <strong>Federation (AD FS)</strong> — a dedicated federation server issues tokens; most complex, highest cost, used by large enterprises with strict compliance requirements. For most organizations, PHS is the recommended and most resilient option.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Single Sign-On (SSO)</div>
-      <div class="card-desc"><span class="key-term">Seamless Single Sign-On</span> is a companion feature to Entra ID Connect that allows users logged into a domain-joined Windows machine to access Microsoft 365 cloud applications (Outlook, Teams, SharePoint) without re-entering credentials — the Kerberos ticket from Windows login is used transparently to obtain a cloud token. From the technician's perspective, SSO "just works" once properly configured by the admin, but failures manifest as users being unexpectedly prompted for credentials in Microsoft 365 apps. Common cause: the user's machine is not domain-joined, or the <strong>Workplace Join</strong> / <strong>Hybrid Azure AD Join</strong> registration has failed — check in Settings → Accounts → Access work or school → view account details to confirm the device registration state.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Google Workspace — Directory Sync</div>
-      <div class="card-desc">Google Workspace uses <span class="key-term">Google Cloud Directory Sync (GCDS)</span> to synchronize users from on-premises Active Directory or LDAP directories to the Google Workspace directory. Like Entra ID Connect, GCDS is installed on an on-premises server and runs on a schedule. It is unidirectional — AD is the source of truth, GCDS pushes to Google. Changes made in the Google Admin Console may be overwritten at the next sync cycle. Google Workspace also supports <strong>SAML-based SSO</strong> with an on-premises identity provider (AD FS, Okta, Ping) — users are redirected to the corporate identity provider for authentication rather than entering their Google password.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Cloud-only identity</div>
-      <div class="card-desc">Organizations without on-premises Active Directory use <span class="key-term">cloud-only identity</span> — accounts exist only in Entra ID (Microsoft 365) or Google Workspace, with no on-premises sync. In cloud-only environments: accounts are created directly in the Microsoft 365 Admin Center or Google Admin Console; no sync infrastructure is needed; all authentication happens in the cloud. This is typical for small businesses, startups, and organizations that have never had on-premises infrastructure. The technician creates users directly in the admin portal rather than in Active Directory.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION F — LICENSING ASSIGNMENT
-     ═══════════════════════════════════════════════════ -->
-
-<h2 class="chapter"><span class="ch-num">Section F</span>Licensing Assignment</h2>
-
-<p>Cloud productivity services are licensed per user. Unlike traditional software where a license key unlocks a single installation, cloud licenses are assigned to user accounts — controlling which services and features each user can access. A user without a license cannot use the service, even if their account exists in the directory. Managing license assignment is a routine IT task that technicians in help desk and desktop support roles frequently perform.</p>
-
-<div class="tool-card">
-  <div class="tool-header org">
-    <div>
-      <div class="tool-name">Microsoft 365 License Assignment</div>
-      <div class="tool-sub">Assigning and managing licenses in the Microsoft 365 Admin Center</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-med">Admin Task</span></div>
-  </div>
-  <div class="spec-row">
-    <div class="spec-cell"><div class="spec-label">Admin portal</div><div class="spec-value">admin.microsoft.com</div></div>
-    <div class="spec-cell"><div class="spec-label">Assignment path</div><div class="spec-value sv-org">Users → Active Users → user → Licenses</div></div>
-    <div class="spec-cell"><div class="spec-label">Group-based licensing</div><div class="spec-value sv-blu">Entra ID → Groups → Licenses</div></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">License tiers</div>
-      <div class="card-desc">Microsoft 365 licenses come in tiers that bundle different services. Common tiers: <strong>Microsoft 365 Business Basic</strong> — web-only Office apps, Exchange Online, Teams, OneDrive, SharePoint; <strong>Microsoft 365 Business Standard</strong> — adds full desktop Office apps (Word, Excel, PowerPoint, Outlook) installable on 5 devices; <strong>Microsoft 365 Business Premium</strong> — adds Intune MDM, Defender for Business, Azure AD Premium P1; <strong>Microsoft 365 E3/E5</strong> — enterprise tiers with advanced compliance, security, and voice features. A user who reports they cannot install Office desktop applications likely has Business Basic — they need at least Business Standard for desktop app access.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Assigning a license (per-user)</div>
-      <div class="card-desc"><strong>Microsoft 365 Admin Center</strong> (<code>admin.microsoft.com</code>) → Users → Active Users → click the user → Licenses and apps tab → check the license to assign → Save. The license activates within minutes. The user can then access the licensed services. When a license is removed, the user loses access to associated services (OneDrive files become read-only, Outlook can no longer send/receive after a grace period). <strong>License availability</strong> is shown at the top of the Billing → Licenses page — if all licenses are consumed, a new license must be purchased before it can be assigned to a new user.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Group-based licensing</div>
-      <div class="card-desc">In larger organizations, <span class="key-term">group-based licensing</span> (a Microsoft Entra ID P1 feature) automates license assignment. A license is assigned to a security group in Entra ID — all members of the group automatically receive the license. When a user is added to or removed from the group, their license is automatically assigned or revoked. This eliminates the need to manually assign licenses to each new user — the onboarding process just requires adding the user to the appropriate group. Group-based licensing is managed in the <strong>Entra Admin Center → Groups → [group name] → Licenses</strong>.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Service plan management</div>
-      <div class="card-desc">Within a license, individual <span class="key-term">service plans</span> (components) can be enabled or disabled per user. For example, a Microsoft 365 Business Standard license includes Exchange Online, Teams, SharePoint, OneDrive, and Office apps — but you can disable Teams for a specific user if the organization uses Zoom instead, while still allowing them access to all other services. In Admin Center → user → Licenses and apps → expand the license → toggle individual services on or off. This is useful when an organization has a licensing agreement that includes a service they don't want users to adopt, or when specific users have specialized roles that don't require certain tools.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Office app installation from license</div>
-      <div class="card-desc">Users with a license that includes desktop Office apps can install Office on up to 5 PCs/Macs and 5 mobile devices. Installation: user signs into <code>portal.microsoft.com</code> → click Install Office → Office 365 apps → the setup executable downloads and installs Click-to-Run Office. The installation activates automatically when the user signs in with their licensed Microsoft 365 account — no product key is required. If a user's license is removed or expires, Office enters a <strong>reduced functionality mode</strong> (read-only) after a grace period. A common help desk issue: "Office is asking me to activate" — usually means the license was removed, the account password changed invalidating the cached token, or the subscription has lapsed.</div>
-    </div>
-  </div>
-</div>
-
-<div class="tool-card">
-  <div class="tool-header grn">
-    <div>
-      <div class="tool-name">Google Workspace License Assignment</div>
-      <div class="tool-sub">Managing licenses and service access in Google Admin Console</div>
-    </div>
-    <div class="tool-tags"><span class="tag tag-low">Google Workspace</span></div>
-  </div>
-  <div class="card-body">
-    <div class="card-row">
-      <div class="card-label">Google Workspace tiers</div>
-      <div class="card-desc">Google Workspace tiers: <strong>Business Starter</strong> — 30 GB pooled storage, Meet up to 100 participants, basic security; <strong>Business Standard</strong> — 2 TB pooled, Meet up to 150 + recording, more admin controls; <strong>Business Plus</strong> — 5 TB pooled, eDiscovery and audit, 250-person Meet; <strong>Enterprise</strong> — unlimited storage, advanced security, DLP, data regions. Licenses are assigned per user; inactive users still consume a license if their account is active. Suspended accounts do not consume a license.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Assigning licenses in Google Admin</div>
-      <div class="card-desc"><strong>Google Admin Console</strong> (<code>admin.google.com</code>) → Users → click user → Licenses → assign the appropriate Workspace license. In Google Workspace, licenses are often assigned based on <span class="key-term">Organizational Units (OUs)</span> — the admin assigns a license to all users in an OU, and any user added to that OU automatically receives the license. This is Google Workspace's equivalent of Microsoft's group-based licensing. Individual service access (Gmail, Drive, Meet, Chat) can also be toggled per OU or per user in Admin Console → Apps → Google Workspace → [Service] → turn on/off for selected OUs.</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">License reclamation</div>
-      <div class="card-desc">When an employee leaves the organization, their license should be reclaimed and reassigned. In both Microsoft 365 and Google Workspace: <strong>offboarding</strong> involves suspending or deleting the account. In Microsoft 365: the license is removed from the departing user and can be immediately assigned to a new user. In Google Workspace: suspending a user releases their license for reassignment. Before suspension/deletion, data should be transferred — in Google Admin, use <strong>Transfer ownership</strong> to move Drive files and Gmail data to a manager; in Microsoft 365, use the <strong>user offboarding wizard</strong> in Admin Center to assign a delegate to the mailbox and export data.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION G — ONBOARDING WORKFLOW
-     ═══════════════════════════════════════════════════ -->
-
-<div class="ch-divider"></div>
-
-<h2 class="chapter"><span class="ch-num">Section G</span>New User Onboarding — End-to-End Workflow</h2>
-
-<p>Understanding the full onboarding workflow — from account creation to a fully configured workstation with cloud productivity access — is what ties all the topics in this objective together. The following flow shows the complete sequence for provisioning a new user in a hybrid Microsoft 365 / Active Directory environment, which is the most common enterprise scenario.</p>
-
-<div class="flow">
-  <div class="flow-title">New Employee Cloud Productivity Setup — Microsoft 365 Hybrid Environment</div>
-
-  <div class="flow-row">
-    <div class="flow-node">1. Create AD account</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">Create user in <strong>on-premises Active Directory</strong> (Active Directory Users and Computers). Set UPN (User Principal Name) matching the cloud domain (e.g., <code>jdoe@company.com</code>). Add to appropriate security groups (which map to license groups if group-based licensing is configured).</div>
-  </div>
-
-  <div class="flow-row">
-    <div class="flow-node">2. Entra ID Connect sync</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">Entra ID Connect automatically syncs the new account to <strong>Microsoft Entra ID</strong> within 30 minutes (or force-sync with <code>Start-ADSyncSyncCycle -PolicyType Delta</code> on the server). The account now appears in the Microsoft 365 Admin Center.</div>
-  </div>
-
-  <div class="flow-row">
-    <div class="flow-node">3. Assign license</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">In <strong>Microsoft 365 Admin Center → Users → Active Users → [user] → Licenses</strong>: assign the appropriate Microsoft 365 license (e.g., Business Standard). If group-based licensing is configured, this happens automatically when the user is added to the licensed group in step 1.</div>
-  </div>
-
-  <div class="flow-row">
-    <div class="flow-node">4. Configure email client</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">Open <strong>Outlook</strong> → enter email address → Autodiscover configures Exchange Online automatically. Modern authentication prompts for Microsoft 365 credentials and MFA if required. Verify mail flow: send and receive a test message.</div>
-  </div>
-
-  <div class="flow-row">
-    <div class="flow-node">5. Sign in to OneDrive</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">OneDrive opens automatically on first login for domain-joined Hybrid Azure AD joined machines. If not, click OneDrive in system tray → Sign in. Configure <strong>Files On-Demand</strong> and <strong>folder sync settings</strong> based on the user's storage needs and device capacity.</div>
-  </div>
-
-  <div class="flow-row">
-    <div class="flow-node">6. Install/sign in to Teams</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">Teams installs automatically with Microsoft 365 Apps or via Company Portal (Intune). Sign in with Microsoft 365 credentials. Configure audio/video devices in <strong>Settings → Devices</strong>. Add user to appropriate Teams and channels. Test a call or meeting.</div>
-  </div>
-
-  <div class="flow-row">
-    <div class="flow-node">7. Install Office apps (if licensed)</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">Office installs via Microsoft 365 Apps deployment (Intune/SCCM pushes it automatically) or user self-service at <code>portal.microsoft.com → Install Office</code>. Activation is automatic when the user signs into Office with their Microsoft 365 account.</div>
-  </div>
-
-  <div class="flow-row">
-    <div class="flow-node">8. Verify and document</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-detail">Test each service: send email, open a SharePoint document, join a Teams meeting, verify OneDrive sync. <span class="good">Document the setup</span> in the ticketing system including license assigned, date, and any non-standard configuration. Update the CMDB asset record with the user assignment.</div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION H — COMPARISON TABLE
-     ═══════════════════════════════════════════════════ -->
-
-<h2 class="chapter"><span class="ch-num">Section H</span>Platform Feature Comparison</h2>
-
-<table class="data-table">
-  <thead>
-    <tr>
-      <th>Function</th>
-      <th>Microsoft 365 Tool</th>
-      <th>Google Workspace Tool</th>
-      <th>Apple iCloud Tool</th>
-      <th>Notable Third-Party</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Email</td>
-      <td>Exchange Online / Outlook</td>
-      <td>Gmail</td>
-      <td>iCloud Mail</td>
-      <td>Zoho Mail, ProtonMail</td>
-    </tr>
-    <tr>
-      <td>Personal cloud storage</td>
-      <td>OneDrive (1 TB/user)</td>
-      <td>Google Drive (pooled)</td>
-      <td>iCloud Drive (5 GB free)</td>
-      <td>Dropbox, Box</td>
-    </tr>
-    <tr>
-      <td>Team / org storage</td>
-      <td>SharePoint Online</td>
-      <td>Shared Drives</td>
-      <td>N/A (consumer-focused)</td>
-      <td>Box, Dropbox Business</td>
-    </tr>
-    <tr>
-      <td>Word processing</td>
-      <td>Word / Word Online</td>
-      <td>Google Docs</td>
-      <td>Pages</td>
-      <td>LibreOffice (offline)</td>
-    </tr>
-    <tr>
-      <td>Spreadsheets</td>
-      <td>Excel / Excel Online</td>
-      <td>Google Sheets</td>
-      <td>Numbers</td>
-      <td>LibreOffice Calc</td>
-    </tr>
-    <tr>
-      <td>Presentations</td>
-      <td>PowerPoint / Online</td>
-      <td>Google Slides</td>
-      <td>Keynote</td>
-      <td>Canva, Prezi</td>
-    </tr>
-    <tr>
-      <td>Video conferencing</td>
-      <td>Microsoft Teams</td>
-      <td>Google Meet</td>
-      <td>FaceTime</td>
-      <td>Zoom, Webex, GoTo</td>
-    </tr>
-    <tr>
-      <td>Instant messaging / Chat</td>
-      <td>Microsoft Teams Chat</td>
-      <td>Google Chat</td>
-      <td>iMessage</td>
-      <td>Slack, Discord</td>
-    </tr>
-    <tr>
-      <td>Sync client (desktop)</td>
-      <td>OneDrive (built into Win)</td>
-      <td>Drive for Desktop</td>
-      <td>iCloud for Windows</td>
-      <td>Dropbox, Box Drive</td>
-    </tr>
-    <tr>
-      <td>Admin portal</td>
-      <td>admin.microsoft.com</td>
-      <td>admin.google.com</td>
-      <td>business.apple.com</td>
-      <td>Varies by platform</td>
-    </tr>
-    <tr>
-      <td>Directory / identity</td>
-      <td>Microsoft Entra ID</td>
-      <td>Google Directory / Cloud Identity</td>
-      <td>Apple Business Manager</td>
-      <td>Okta, JumpCloud</td>
-    </tr>
-    <tr>
-      <td>On-prem AD sync tool</td>
-      <td>Entra ID Connect</td>
-      <td>Google Cloud Directory Sync (GCDS)</td>
-      <td>Federated SAML / LDAP</td>
-      <td>Okta AD Agent</td>
-    </tr>
-    <tr>
-      <td>License management</td>
-      <td>M365 Admin Center / Entra groups</td>
-      <td>Google Admin Console / OUs</td>
-      <td>Apple Business Manager</td>
-      <td>Varies</td>
-    </tr>
-    <tr>
-      <td>Mobile management (MDM)</td>
-      <td>Microsoft Intune</td>
-      <td>Google Endpoint Management</td>
-      <td>Apple Business Manager + MDM</td>
-      <td>Jamf, VMware Workspace ONE</td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- SUMMARY -->
+<!-- MASTER REFERENCE -->
 <div class="ch-divider"></div>
 
 <div class="summary-box">
-  <h3>Objective 1.11 — Key Facts Summary</h3>
+  <h3>Master Reference — Objective 1.11 Key Concepts</h3>
   <div class="summary-grid">
-    <div class="summary-item"><span class="s-sym">Exchange Online</span>Microsoft 365 cloud email. Outlook uses Autodiscover for automatic setup. IMAP port 993, SMTP port 587. POP3 not recommended for cloud email.</div>
-    <div class="summary-item"><span class="s-sym">Gmail / IMAP</span>Enable IMAP in Gmail settings for third-party clients. App Password required when 2FA is on and client doesn't support OAuth. IMAP server: imap.gmail.com port 993.</div>
-    <div class="summary-item"><span class="s-sym">OneDrive setup</span>Sign in via system tray cloud icon with Microsoft 365 credentials. Syncs to C:\Users\[user]\OneDrive - [Org]. Files On-Demand shows all files without downloading.</div>
-    <div class="summary-item"><span class="s-sym">Files On-Demand icons</span>Cloud = online only; sync arrows = syncing; green check = local copy available; solid green check = always keep on device.</div>
-    <div class="summary-item"><span class="s-sym">OneDrive reset</span>%localappdata%\Microsoft\OneDrive\onedrive.exe /reset — resets sync engine without deleting cloud files. Use for persistent sync errors.</div>
-    <div class="summary-item"><span class="s-sym">SharePoint sync</span>Team/org storage behind Microsoft Teams. Sync to local via Drive for Desktop-equivalent OneDrive client: SharePoint library → Sync button. Appears in File Explorer.</div>
-    <div class="summary-item"><span class="s-sym">Google Drive for Desktop</span>Stream mode = virtual drive letter, files download on demand. Mirror mode = selected folders fully downloaded for offline access.</div>
-    <div class="summary-item"><span class="s-sym">Shared Drives</span>Google equivalent of SharePoint — org-owned, persists after employee departure. Appears in Drive for Desktop alongside My Drive.</div>
-    <div class="summary-item"><span class="s-sym">Word vs. Google Docs</span>Both support real-time co-authoring. Word requires OneDrive/SharePoint for co-author + AutoSave. Docs saves every few seconds automatically in browser.</div>
-    <div class="summary-item"><span class="s-sym">Excel Online limitation</span>VBA macros do not run in Excel Online — requires full desktop Excel. Users with Business Basic license cannot install desktop Office apps.</div>
-    <div class="summary-item"><span class="s-sym">Microsoft Teams setup</span>Install with M365 Apps or separate download. Sign in with M365 credentials. Configure audio/video in Settings → Devices. Stores files in SharePoint behind the scenes.</div>
-    <div class="summary-item"><span class="s-sym">Google Meet</span>No install needed for browser. Link generated from Google Calendar event. Recordings saved to organizer's Drive → Meet Recordings (Business and above).</div>
-    <div class="summary-item"><span class="s-sym">Camera not working</span>Check OS privacy settings: Windows Settings → Privacy → Camera; macOS System Preferences → Security → Camera. App must be granted permission.</div>
-    <div class="summary-item"><span class="s-sym">Entra ID Connect</span>Syncs on-prem Active Directory to Microsoft Entra ID (Azure AD). Runs on a Windows Server. Default sync interval: 30 minutes. Force sync: Start-ADSyncSyncCycle -PolicyType Delta.</div>
-    <div class="summary-item"><span class="s-sym">Password Hash Sync</span>Recommended auth mode for Entra ID Connect. Password hashes synced to cloud; authentication works even if on-prem is down. Alternative: Pass-Through Auth (requires on-prem availability).</div>
-    <div class="summary-item"><span class="s-sym">GCDS</span>Google Cloud Directory Sync — unidirectional sync from on-prem AD/LDAP to Google Workspace. AD is source of truth; Admin Console changes may be overwritten at next sync.</div>
-    <div class="summary-item"><span class="s-sym">M365 license assignment</span>admin.microsoft.com → Users → Active Users → user → Licenses and apps. License activates within minutes. No license = no service access.</div>
-    <div class="summary-item"><span class="s-sym">Group-based licensing</span>Entra ID P1 feature — assign a license to a security group; all members receive it automatically. Membership change = automatic license grant/removal. Managed in Entra Admin Center.</div>
-    <div class="summary-item"><span class="s-sym">Service plan management</span>Individual services within a license (Teams, Exchange, SharePoint) can be toggled on/off per user in Admin Center → user → Licenses and apps → expand license.</div>
-    <div class="summary-item"><span class="s-sym">Office activation "reduced mode"</span>Means license was removed, expired, or account token expired. Re-sign in to Office with M365 account to re-activate. No product key needed — license is account-based.</div>
+    <div class="summary-item"><span class="s-sym">Email Systems</span><span>Cloud-hosted mailboxes (e.g., Exchange Online, Gmail); accessed via browser, client, or app</span></div>
+    <div class="summary-item"><span class="s-sym">Storage</span><span>Cloud file storage accessible across devices (e.g., OneDrive, Google Drive)</span></div>
+    <div class="summary-item"><span class="s-sym">Sync/Folder Settings</span><span>Controls which folders sync locally vs. remain cloud-only/on-demand</span></div>
+    <div class="summary-item"><span class="s-sym">Spreadsheets</span><span>Cloud spreadsheet tools with real-time multi-user editing</span></div>
+    <div class="summary-item"><span class="s-sym">Videoconferencing</span><span>Cloud-integrated meeting platforms tied to identity/calendar systems</span></div>
+    <div class="summary-item"><span class="s-sym">Presentation Tools</span><span>Cloud slide-deck tools with the same collaborative editing model</span></div>
+    <div class="summary-item"><span class="s-sym">Word Processing Tools</span><span>Cloud document editors supporting simultaneous multi-user editing</span></div>
+    <div class="summary-item"><span class="s-sym">Instant Messaging</span><span>Cloud team chat, often integrated with file sharing/videoconferencing</span></div>
+    <div class="summary-item"><span class="s-sym">Identity Synchronization</span><span>Keeps on-prem and cloud identities consistent for single sign-on access</span></div>
+    <div class="summary-item"><span class="s-sym">Licensing Assignment</span><span>Grants a user account access to specific apps/features/storage tiers</span></div>
+    <div class="summary-item"><span class="s-sym">Multi-Service Login Failure</span><span>Strong signal to check identity sync status first</span></div>
+    <div class="summary-item"><span class="s-sym">Single-App Access Failure</span><span>Strong signal to check license assignment first</span></div>
   </div>
 </div>
 
-<div class="callout callout-exam">
-  <p class="callout-title">High-Probability Exam Scenarios</p>
-  <p><strong>Scenario 1:</strong> A new user reports they can log in to Microsoft 365 online but cannot install Word or Excel on their computer. What is the most likely cause? → Their Microsoft 365 license does not include desktop Office apps — they likely have Business Basic (web-only). Upgrade their license to Business Standard or higher to enable desktop app installation.<br><br>
-  <strong>Scenario 2:</strong> A user's OneDrive shows a red X on several files and they are not syncing. What should the technician check first? → File names — OneDrive cannot sync files with illegal characters in the name (<code>: * ? &lt; &gt; | " /</code>). Rename the affected files. Also check available OneDrive storage quota and that the user is signed in.<br><br>
-  <strong>Scenario 3:</strong> A user's laptop has limited storage and they want to access all their OneDrive files without them taking up local disk space. What feature resolves this? → Enable OneDrive Files On-Demand. This shows all files in File Explorer without downloading them — files consume no local disk space until opened. Set rarely used folders to "online only" by right-clicking → Free up space.<br><br>
-  <strong>Scenario 4:</strong> A new employee was created in Active Directory but their account does not appear in Microsoft 365 after 2 hours. What should the technician check? → The Entra ID Connect sync service on the on-premises server. Verify the service is running and trigger a manual delta sync: <code>Start-ADSyncSyncCycle -PolicyType Delta</code> in PowerShell on the Entra ID Connect server. Also verify the UPN suffix of the AD account matches the verified domain in Microsoft 365.<br><br>
-  <strong>Scenario 5:</strong> A user cannot set up Gmail in Outlook and is seeing an authentication error. Their Google account uses 2-Step Verification. What is needed? → An App Password. When 2-Step Verification is enabled and the email client doesn't support OAuth, the user must generate an App Password in Google Account → Security → App Passwords and use that instead of their regular Google password in Outlook.<br><br>
-  <strong>Scenario 6:</strong> A company uses Google Workspace and wants all employees in the "Sales" department to automatically get a Business Standard license when added to the department OU in Google Admin. What is the correct approach? → Assign the Google Workspace Business Standard license to the "Sales" organizational unit (OU) in Google Admin Console. Any user added to that OU will automatically receive the license.<br><br>
-  <strong>Scenario 7:</strong> A remote employee reports their camera works in the operating system's camera app but not in Microsoft Teams. What should the technician check? → Windows privacy settings. Navigate to Settings → Privacy → Camera → verify that Microsoft Teams is listed and that the toggle is set to allow access. Teams needs explicit OS-level permission to use the camera, separate from the camera hardware working correctly.</p>
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Cloud Productivity Building Blocks</h4>
+    <ul>
+      <li><strong>Communication</strong> — email systems, instant messaging</li>
+      <li><strong>Files</strong> — storage with sync/folder settings</li>
+      <li><strong>Content creation</strong> — spreadsheets, word processing, presentations</li>
+      <li><strong>Meetings</strong> — videoconferencing</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Troubleshooting Triage</h4>
+    <ul>
+      <li><strong>Everything cloud-related fails at once</strong> — check identity synchronization</li>
+      <li><strong>One specific app/feature unavailable</strong> — check licensing assignment</li>
+      <li><strong>Local drive filling up unexpectedly</strong> — check sync/folder settings</li>
+      <li><strong>File edited on two devices conflicts</strong> — sync conflict, check sync settings</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Onboarding/Offboarding Connections</h4>
+    <ul>
+      <li><strong>New user</strong> — provision email, assign licenses, configure identity sync</li>
+      <li><strong>Departing user</strong> — reclaim/reassign licenses, disable identity access</li>
+      <li><strong>Ties to</strong> — Objective 4.1's onboarding/off-boarding checklists</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Key Distinctions</h4>
+    <ul>
+      <li><strong>Identity sync</strong> — who you are, consistently, across systems</li>
+      <li><strong>Licensing</strong> — what you're entitled to use once identified</li>
+      <li><strong>Both must be correct</strong> for full, proper access to cloud productivity tools</li>
+    </ul>
+  </div>
 </div>
 
-</div><!-- /.page -->
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Identity synchronization problems tend to break access to multiple cloud services at once</strong>, while licensing problems tend to affect a single specific application or feature — use this pattern to quickly triage a scenario question describing an access issue.</p>
+  <p><strong>Sync/folder settings control what's mirrored locally versus what stays cloud-only</strong> — a common, easily overlooked cause of both disk space complaints and "my file isn't showing up on this device" reports.</p>
+  <p><strong>All five collaboration tool categories — spreadsheets, videoconferencing, presentations, word processing, instant messaging — share the same real-time, multi-device, identity-dependent model</strong>, so troubleshooting any of them starts with the same short list of root causes: identity, licensing, permissions, and connectivity.</p>
+  <p><strong>Licensing assignment and identity synchronization are standard steps in onboarding and offboarding</strong> (Objective 4.1) — expect the exam to connect this objective's concepts directly to that documentation-and-asset-management workflow rather than treating cloud tool setup as an isolated task.</p>
+  <p><strong>A user missing access to one particular app is rarely a "broken" application</strong> — check the license assignment for that specific user before assuming a deeper technical fault.</p>
+</div>
+
+</div>
 </body>
 </html>
