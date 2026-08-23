@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ 1.4 — Microsoft Windows OS Features and Tools</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f5f4f0;
+    --border: #e5e2d9;
+    --border2: #d4d0c4;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a6b3a;
+    --accent4: #b5590a;
+    --accent-light: #fdf2f1;
+    --accent2-light: #f0f2f8;
+    --accent3-light: #f0f8f3;
+    --accent4-light: #fdf5ed;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-home:hover { color: var(--accent2); }
+  .nav-home::before { content: '←'; font-size: 12px; }
+  .nav-sep { font-size: 12px; color: var(--border2); flex-shrink: 0; }
+  .nav-current {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-current strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-prev:hover, .nav-next:hover { border-color: var(--border2); color: var(--accent2); }
+  .nav-prev::before { content: '← '; }
+  .nav-next::after  { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 16px; }
+    .nav-current { display: none; }
+    .nav-sep { display: none; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* HEADER */
+  .book-header {
+    border-bottom: 3px double var(--border2);
+    padding: 56px 0 32px;
+    margin-bottom: 48px;
+  }
+  .book-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .book-eyebrow span {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .book-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .book-subtitle span { display: flex; align-items: center; gap: 6px; }
+  .book-subtitle span::before { content: '·'; color: var(--border2); }
+  .book-subtitle span:first-child::before { display: none; }
+
+  /* HEADINGS */
+  h2.chapter {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 52px 0 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2.chapter .ch-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h3.section {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+  h3.section::before { content: '§ '; color: var(--muted); font-weight: 300; }
+
+  p { margin-bottom: 16px; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 15.5px;
+  }
+  .callout p { margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px !important;
+  }
+  .callout-exam  { border-color: var(--accent);  background: var(--accent-light); }
+  .callout-exam .callout-title  { color: var(--accent); }
+  .callout-info  { border-color: var(--accent2); background: var(--accent2-light); }
+  .callout-info .callout-title  { color: var(--accent2); }
+  .callout-tip   { border-color: var(--accent3); background: var(--accent3-light); }
+  .callout-tip .callout-title   { color: var(--accent3); }
+  .callout-warn  { border-color: var(--accent4); background: var(--accent4-light); }
+  .callout-warn .callout-title  { color: var(--accent4); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .data-table thead th {
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 9px 13px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
+
+  /* PROCESS FLOW */
+  .process-flow {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .flow-text { color: var(--text); line-height: 1.55; }
+  .flow-text strong { font-weight: 600; }
+
+  /* DEF LIST */
+  .def-list { margin: 16px 0 24px; }
+  .def-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-term {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
+  .card h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
+  .card ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
+
+  /* BODY LIST */
+  ul.body-list {
+    list-style: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 0;
+    margin: 12px 0 20px;
+  }
+  ul.body-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  ul.body-list li:last-child { border-bottom: none; }
+  ul.body-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 12px;
+  }
+  ul.body-list li strong { color: var(--text); }
+
+  /* TOOL PANEL — for MMC snap-ins and additional tools */
+  .tool-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .tool-panel-header {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    background: #2c3e6b;
+  }
+  .tool-panel-header .tool-name { font-family: var(--serif); font-size: 16px; font-weight: 600; }
+  .tool-panel-header .tool-exe { font-size: 12px; opacity: 0.85; }
+  .tool-panel-body { padding: 0; }
+  .tool-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .tool-row:last-child { border-bottom: none; }
+  .tool-label {
+    font-weight: 600;
+    color: var(--accent2);
+    padding: 11px 18px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .tool-desc {
+    padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .tool-desc strong { color: var(--text); }
+
+  /* TASK MANAGER TAB GRID */
+  .tab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .tab-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .tab-card-header {
+    background: var(--text);
+    color: #f0ede6;
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .tab-card-body {
+    padding: 12px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .tab-card-body strong { color: var(--text); }
+
+  /* CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* KEY TERM */
+  .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--text);
+    color: #f0ede6;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .summary-box h3 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 18px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .summary-item {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: #c4bfb4;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .summary-item .s-sym {
+    color: #fff;
+    font-weight: 600;
+    min-width: 165px;
+    line-height: 1.4;
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+
+  .ch-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 48px 0;
+  }
+
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  /* QUICK MSC/EXE TABLE */
+  .exe-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .exe-table thead th {
+    background: var(--text);
+    color: #f0ede6;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    text-align: left;
+  }
+  .exe-table tbody tr { border-bottom: 1px solid var(--border); }
+  .exe-table tbody tr:nth-child(even) { background: var(--surface2); }
+  .exe-table td { padding: 8px 12px; vertical-align: top; line-height: 1.45; }
+  .exe-table td:first-child { white-space: nowrap; font-weight: 700; color: var(--accent2); }
+  .exe-table td:nth-child(2) { white-space: nowrap; }
+
+  @media (max-width: 680px) {
+    .page { padding: 0 20px 60px; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .tab-grid { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; gap: 4px; }
+    .tool-row { grid-template-columns: 1fr; }
+    .exe-table { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a class="nav-home" href="../index.html">Study Guide</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current"><strong>1.4</strong> Use Microsoft Windows Operating System Features and Tools</span>
+  </div>
+  <div class="top-nav-right">
+    <a class="nav-prev" href="./1_3-Windows-Editions.html">1.3</a>
+    <a class="nav-next" href="./1_5-Windows-Command-Line.html">1.5</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="book-eyebrow">
+    <span>1.4</span>
+    CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
+  </div>
+  <h1 class="book-title">Use Microsoft Windows Operating<br>System Features and Tools</h1>
+  <div class="book-subtitle">
+    <span>Objective 1.4</span>
+    <span>Domain weight: 28%</span>
+    <span>Task Manager · MMC Snap-Ins · Additional Tools</span>
+  </div>
+</div>
+
+
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Windows Built-In Tools</h2>
+
+<p>Windows ships with a large set of built-in graphical utilities for monitoring, configuring, and troubleshooting the system — no third-party software required. Objective 1.4 covers the specific tools a technician is expected to know: what each one is for, how to launch it, and which situation calls for which tool. Nearly every tool in this objective can be launched by typing its executable name (often ending in <code>.msc</code> or <code>.exe</code>) directly into the Run dialog (<code>Win + R</code>) or Start menu search — a detail worth memorizing since the exam frequently references tools by that exact filename.</p>
+
+<p>This objective covers three groups. <span class="key-term">Task Manager</span> is the everyday, at-a-glance tool for processes, performance, and startup items. <span class="key-term">MMC snap-ins</span> are specialized administrative consoles, each focused on a single area of system management, all built on the shared Microsoft Management Console framework. And <span class="key-term">additional tools</span> covers a set of standalone utilities that round out a technician's diagnostic toolkit.</p>
+
+<div class="callout callout-info">
+  <p class="callout-title">Core Concept — Know the Filename, Not Just the Name</p>
+  <p>Every tool in this objective has both a friendly display name ("Device Manager") and an executable/console filename (<code>devmgmt.msc</code>) used to launch it directly. The exam tests both directions — recognizing what a tool does when given its filename, and recalling the filename when given a scenario. Treat the two as inseparable: learn each tool as a name-and-filename pair, not just a name.</p>
+</div>
+
+
+<!-- ═══ SECTION 1 — TASK MANAGER ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Task Manager</h2>
+
+<p><span class="key-term">Task Manager</span> is the most frequently used everyday Windows utility, providing a real-time view of what's running on the system and giving a technician the ability to end unresponsive programs, inspect resource usage, and manage startup items — all from one window. It can be launched via <code>Ctrl+Shift+Esc</code>, via <code>Ctrl+Alt+Delete</code>, or by right-clicking the taskbar.</p>
+
+<div class="tab-grid">
+  <div class="tab-card">
+    <div class="tab-card-header">Processes</div>
+    <div class="tab-card-body">Lists all currently running applications and background processes, along with their real-time CPU, memory, disk, and network usage — the first place to look for a single process consuming excessive resources or an unresponsive application to end.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Performance</div>
+    <div class="tab-card-body">Displays real-time graphs of overall system resource usage — CPU, memory, disk, network, and (if present) GPU — useful for quickly assessing whether the system as a whole is under heavy load rather than looking at any single process.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Startup</div>
+    <div class="tab-card-body">Lists applications configured to launch automatically when Windows starts, along with each one's relative impact on startup time — the primary tool for diagnosing and fixing a slow-booting system by disabling unnecessary startup programs.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Users</div>
+    <div class="tab-card-body">Shows all user accounts currently logged into the system (including disconnected sessions) along with their individual resource usage — useful on shared or multi-session machines to see which user's session is consuming resources.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Services</div>
+    <div class="tab-card-body">Lists Windows services and their current running/stopped status, with the ability to start, stop, or restart a service directly — a quick way to check or control a specific background service without opening the full Services console.</div>
+  </div>
+</div>
+
+<div class="callout callout-exam">
+  <p class="callout-title">Exam Angle — Matching the Task Manager Tab to the Symptom</p>
+  <p><strong>"The computer boots slowly"</strong> → Startup tab. <strong>"One specific application is frozen or consuming all the CPU"</strong> → Processes tab. <strong>"The whole system feels sluggish, unclear why"</strong> → Performance tab. <strong>"A shared computer, need to see who else is logged in"</strong> → Users tab. <strong>"A specific background service needs to be restarted"</strong> → Services tab. Matching the described symptom to the correct tab is a frequently tested pattern.</p>
+</div>
+
+
+<!-- ═══ SECTION 2 — MMC SNAP-INS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Microsoft Management Console (MMC) Snap-Ins</h2>
+
+<p>The <span class="key-term">Microsoft Management Console (MMC)</span> is a framework that hosts individual administrative tools, called <span class="key-term">snap-ins</span>, each focused on managing one specific area of the system. Every snap-in below can be launched directly by typing its <code>.msc</code> filename into the Run dialog.</p>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Event Viewer</span><span class="tool-exe">eventvwr.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Displays detailed logs of system, security, and application events — errors, warnings, and informational messages recorded by Windows and installed applications</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The first place to look when diagnosing an unexplained crash, failed service, or security event — logs are timestamped and categorized by severity and source</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Disk Management</span><span class="tool-exe">diskmgmt.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">A graphical utility for viewing and managing disks, partitions, and volumes — creating, deleting, resizing, formatting, and assigning drive letters</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The graphical counterpart to the command-line <code>diskpart</code> tool (Objective 1.5) — generally the preferred tool for straightforward, one-off partition and volume tasks</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Task Scheduler</span><span class="tool-exe">taskschd.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Creates, views, and manages tasks that run automatically on a schedule or in response to a specific trigger (e.g., at logon, at a specific time, or when an event occurs)</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Automating scripts (Objective 4.8), scheduling routine maintenance tasks, or scheduling backups (Objective 4.3) to run without manual intervention</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Device Manager</span><span class="tool-exe">devmgmt.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Lists all hardware devices recognized by Windows, organized by category, showing driver status and allowing drivers to be updated, rolled back, disabled, or uninstalled</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The primary tool for diagnosing hardware driver problems — a device showing a warning icon here typically points directly to a driver conflict or failure</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Certificate Manager</span><span class="tool-exe">certmgr.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Views and manages digital certificates installed for the current user — including personal certificates, trusted root certification authorities, and other certificate stores</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Troubleshooting certificate warnings (Objective 3.4), installing a needed certificate, or verifying whether a specific certificate is trusted on the machine</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Local Users and Groups</span><span class="tool-exe">lusrmgr.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Manages local (non-domain) user accounts and security groups — creating accounts, resetting passwords, and assigning group membership</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The graphical counterpart to the command-line <code>net user</code> command (Objective 1.5); notably unavailable on Windows Home editions, which lack this snap-in</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Performance Monitor</span><span class="tool-exe">perfmon.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Tracks detailed, customizable performance counters over time, well beyond what Task Manager's Performance tab shows — supports logging data over extended periods for deeper analysis</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Diagnosing intermittent or hard-to-reproduce performance problems that require historical data rather than just a real-time snapshot</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Group Policy Editor</span><span class="tool-exe">gpedit.msc</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Configures local Group Policy settings — security options, restrictions, and system behavior — on a single machine, independent of a domain-based Group Policy</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Configuring policy on a standalone or workgroup machine not joined to a domain; like Local Users and Groups, notably unavailable on Windows Home editions</span></div>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Home Edition Limitation — A Frequently Tested Detail</p>
+  <p>Both <strong>Local Users and Groups (lusrmgr.msc)</strong> and <strong>Group Policy Editor (gpedit.msc)</strong> are not included in Windows Home editions — a detail that connects directly back to Objective 1.3's Windows edition feature comparisons. A scenario describing either tool being unavailable on a specific machine is very likely describing a Home edition limitation, not a broken installation.</p>
+</div>
+
+
+<!-- ═══ SECTION 3 — ADDITIONAL TOOLS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Additional Tools</h2>
+
+<p>These standalone utilities round out the built-in Windows toolkit, each launched by its own <code>.exe</code> filename rather than through the MMC framework.</p>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">System Information</span><span class="tool-exe">msinfo32.exe</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Displays a comprehensive summary of the system's hardware configuration, installed software environment, and system components in one consolidated report</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Quickly gathering full system specs and configuration details for documentation, asset management (Objective 4.1), or advanced troubleshooting without checking multiple separate locations</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Resource Monitor</span><span class="tool-exe">resmon.exe</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Provides a much more detailed, granular view of CPU, memory, disk, and network usage than Task Manager — including which specific files a process has open and which processes are using which network connections</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Digging deeper than Task Manager allows — for example, identifying exactly which process is holding a file open and preventing it from being deleted or modified</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">System Configuration</span><span class="tool-exe">msconfig.exe</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Configures system boot options (including Safe Mode boot), manages startup services, and adjusts general system settings related to how Windows starts</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Selectively enabling/disabling startup services (as distinct from Task Manager's startup <em>app</em> list) and configuring boot into Safe Mode for troubleshooting</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Disk Cleanup</span><span class="tool-exe">cleanmgr.exe</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Identifies and removes unnecessary files — temporary files, recycle bin contents, old Windows update files, and other reclaimable space — to free up disk space</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">A quick first step when a drive is running low on free space, before considering more involved storage solutions</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Disk Defragment</span><span class="tool-exe">dfrgui.exe</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Reorganizes fragmented data on a traditional hard disk drive (HDD) so related file pieces sit closer together physically, improving read/write performance</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Maintaining performance on HDD-based systems specifically; not needed (and not recommended) for solid-state drives (SSDs), which don't suffer the same fragmentation-related performance penalty and can wear unnecessarily from excess writes</span></div>
+  </div>
+</div>
+
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Registry Editor</span><span class="tool-exe">regedit.exe</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Directly views and edits the Windows Registry — the hierarchical database storing low-level configuration settings for the OS, hardware, and installed applications</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Advanced troubleshooting and configuration changes not exposed through any standard graphical settings interface — used carefully, since incorrect edits can destabilize or break the OS</span></div>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <p class="callout-title">Registry Editor — High Risk, Last Resort</p>
+  <p>Unlike most other tools in this objective, <code>regedit.exe</code> offers no built-in safety net — there's no confirmation dialog stopping a technician from deleting or altering a critical registry key, and a wrong edit can prevent Windows from booting. Best practice is to back up the specific registry key (or export the full registry) before making a change, and to use the Registry Editor only when no safer, purpose-built tool accomplishes the same task.</p>
+</div>
+
+<div class="callout callout-tip">
+  <p class="callout-title">SSD vs. HDD — Why Defragmenting Matters for Only One</p>
+  <p>Disk Defragment (<code>dfrgui.exe</code>) exists to counteract fragmentation on spinning hard disk drives, where a mechanical read/write head has to physically move to different locations to read a fragmented file. Solid-state drives have no moving parts and near-uniform access time regardless of where data sits, so defragmenting an SSD provides no performance benefit and simply consumes some of its limited write endurance — modern versions of the tool will actually run an SSD-appropriate "optimization" (like TRIM) instead of true defragmentation when it detects an SSD.</p>
+</div>
+
+
+<!-- QUICK LOOKUP TABLE -->
+<div class="ch-divider"></div>
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Lookup — Tool Name to Filename</h2>
+
+<table class="exe-table">
+  <thead><tr><th>Tool</th><th>Filename</th><th>One-Line Purpose</th></tr></thead>
+  <tbody>
+    <tr><td>Event Viewer</td><td>eventvwr.msc</td><td>Review system/application/security logs</td></tr>
+    <tr><td>Disk Management</td><td>diskmgmt.msc</td><td>Graphical partition/volume management</td></tr>
+    <tr><td>Task Scheduler</td><td>taskschd.msc</td><td>Automate tasks/scripts on a schedule or trigger</td></tr>
+    <tr><td>Device Manager</td><td>devmgmt.msc</td><td>View/manage hardware devices and drivers</td></tr>
+    <tr><td>Certificate Manager</td><td>certmgr.msc</td><td>View/manage installed digital certificates</td></tr>
+    <tr><td>Local Users and Groups</td><td>lusrmgr.msc</td><td>Manage local accounts and security groups (not on Home)</td></tr>
+    <tr><td>Performance Monitor</td><td>perfmon.msc</td><td>Detailed, loggable performance counters over time</td></tr>
+    <tr><td>Group Policy Editor</td><td>gpedit.msc</td><td>Configure local Group Policy (not on Home)</td></tr>
+    <tr><td>System Information</td><td>msinfo32.exe</td><td>Full hardware/software system summary</td></tr>
+    <tr><td>Resource Monitor</td><td>resmon.exe</td><td>Granular resource usage, incl. open file handles</td></tr>
+    <tr><td>System Configuration</td><td>msconfig.exe</td><td>Boot options (incl. Safe Mode), startup services</td></tr>
+    <tr><td>Disk Cleanup</td><td>cleanmgr.exe</td><td>Remove unnecessary files to free disk space</td></tr>
+    <tr><td>Disk Defragment</td><td>dfrgui.exe</td><td>Reorganize fragmented data on HDDs</td></tr>
+    <tr><td>Registry Editor</td><td>regedit.exe</td><td>Direct edit of the Windows Registry — high risk</td></tr>
+  </tbody>
+</table>
+
+
+<!-- MASTER REFERENCE -->
+<div class="ch-divider"></div>
+
+<div class="summary-box">
+  <h3>Master Reference — Objective 1.4 Key Concepts</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><span class="s-sym">Task Mgr — Processes</span><span>Per-app/process resource usage; end unresponsive tasks</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Performance</span><span>Real-time overall system resource graphs</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Startup</span><span>Manage apps launching at boot; diagnose slow startup</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Users</span><span>See logged-in sessions and their resource usage</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Services</span><span>Quick start/stop/restart of Windows services</span></div>
+    <div class="summary-item"><span class="s-sym">eventvwr.msc</span><span>Event Viewer — system/app/security logs</span></div>
+    <div class="summary-item"><span class="s-sym">diskmgmt.msc</span><span>Disk Management — graphical partition/volume tool</span></div>
+    <div class="summary-item"><span class="s-sym">taskschd.msc</span><span>Task Scheduler — automate scheduled/triggered tasks</span></div>
+    <div class="summary-item"><span class="s-sym">devmgmt.msc</span><span>Device Manager — hardware and driver management</span></div>
+    <div class="summary-item"><span class="s-sym">certmgr.msc</span><span>Certificate Manager — manage digital certificates</span></div>
+    <div class="summary-item"><span class="s-sym">lusrmgr.msc</span><span>Local Users and Groups — not available on Home</span></div>
+    <div class="summary-item"><span class="s-sym">perfmon.msc</span><span>Performance Monitor — detailed, loggable counters</span></div>
+    <div class="summary-item"><span class="s-sym">gpedit.msc</span><span>Group Policy Editor — local policy; not on Home</span></div>
+    <div class="summary-item"><span class="s-sym">msinfo32.exe</span><span>System Information — full system summary</span></div>
+    <div class="summary-item"><span class="s-sym">resmon.exe</span><span>Resource Monitor — granular usage incl. file handles</span></div>
+    <div class="summary-item"><span class="s-sym">msconfig.exe</span><span>System Configuration — boot options, startup services</span></div>
+    <div class="summary-item"><span class="s-sym">cleanmgr.exe</span><span>Disk Cleanup — remove unnecessary files</span></div>
+    <div class="summary-item"><span class="s-sym">dfrgui.exe</span><span>Disk Defragment — HDDs only, not SSDs</span></div>
+    <div class="summary-item"><span class="s-sym">regedit.exe</span><span>Registry Editor — high-risk direct config editing</span></div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>"Which Tool Do I Need?" — Common Scenarios</h4>
+    <ul>
+      <li><strong>Slow boot time</strong> — Task Manager Startup tab, or msconfig.exe</li>
+      <li><strong>Unexplained crash/error</strong> — Event Viewer (eventvwr.msc)</li>
+      <li><strong>Driver problem</strong> — Device Manager (devmgmt.msc)</li>
+      <li><strong>Low disk space</strong> — Disk Cleanup (cleanmgr.exe)</li>
+      <li><strong>File won't delete, "in use"</strong> — Resource Monitor (resmon.exe)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Graphical vs. Command-Line Counterparts</h4>
+    <ul>
+      <li><strong>Disk Management</strong> ↔ diskpart (Obj. 1.5)</li>
+      <li><strong>Local Users and Groups</strong> ↔ net user (Obj. 1.5)</li>
+      <li><strong>Group Policy Editor</strong> ↔ gpupdate/gpresult (Obj. 1.5)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Not Available on Windows Home</h4>
+    <ul>
+      <li><strong>lusrmgr.msc</strong> — Local Users and Groups</li>
+      <li><strong>gpedit.msc</strong> — Group Policy Editor</li>
+      <li><strong>Connects to</strong> — Objective 1.3's edition comparisons</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Handle-With-Care Tools</h4>
+    <ul>
+      <li><strong>regedit.exe</strong> — no undo; back up before editing</li>
+      <li><strong>diskmgmt.msc</strong> — deleting/formatting a volume destroys data</li>
+      <li><strong>dfrgui.exe</strong> — don't run traditional defrag on an SSD</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Learn each tool as a name-and-filename pair</strong> — the exam tests recognition in both directions, and scenario questions often reference the filename directly (e.g., "which tool would you launch with devmgmt.msc?").</p>
+  <p><strong>lusrmgr.msc and gpedit.msc are both absent from Windows Home editions</strong> — this is one of the most reliably tested cross-references between this objective and Objective 1.3.</p>
+  <p><strong>Resource Monitor (resmon.exe) goes deeper than Task Manager</strong>, especially for identifying which process has a specific file locked open — know this as the specific tool for that specific symptom.</p>
+  <p><strong>Disk Defragment is for HDDs, not SSDs</strong> — running it unnecessarily on an SSD provides no benefit and consumes write endurance; modern Windows detects the drive type and adjusts its behavior accordingly.</p>
+  <p><strong>Registry Editor changes take effect immediately with no confirmation and no built-in undo</strong> — always back up the relevant key (or the full registry) before making a change, and treat it as a last-resort tool.</p>
+  <p><strong>Task Manager's Startup tab and msconfig.exe both relate to what runs at boot, but aren't identical</strong> — Task Manager's Startup tab manages startup <em>applications</em>, while msconfig also covers boot options like Safe Mode and startup <em>services</em>, giving broader control over the boot process itself.</p>
+</div>
+
+</div>
+</body>
+</html>
