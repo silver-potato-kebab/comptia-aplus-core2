@@ -396,49 +396,33 @@
   }
   ul.body-list li strong { color: var(--text); }
 
-  /* EDITION PANEL — custom for this page */
-  .edition-panel {
+  /* APPLET GRID (Control Panel) */
+  .applet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .applet-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 6px;
-    overflow: hidden;
-    margin: 20px 0;
+    padding: 13px 16px;
   }
-  .edition-panel-header {
-    padding: 12px 18px;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .edition-panel-header.win10 { background: #0078d4; color: #fff; }
-  .edition-panel-header.win11 { background: #0067b8; color: #fff; }
-  .edition-panel-body { padding: 0; }
-  .edition-row {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--sans);
-    font-size: 14px;
-  }
-  .edition-row:last-child { border-bottom: none; }
-  .edition-label {
+  .applet-card h5 {
+    font-family: var(--serif);
+    font-size: 16px;
     font-weight: 600;
+    margin-bottom: 5px;
     color: var(--accent2);
-    padding: 11px 18px;
-    background: var(--surface2);
-    border-right: 1px solid var(--border);
-    line-height: 1.4;
   }
-  .edition-desc {
-    padding: 11px 18px;
+  .applet-card p {
+    font-family: var(--sans);
+    font-size: 13px;
     color: var(--muted);
     line-height: 1.5;
+    margin-bottom: 0;
   }
-  .edition-desc strong { color: var(--text); }
 
   /* CODE */
   code {
@@ -453,6 +437,68 @@
 
   /* KEY TERM */
   .key-term { font-style: italic; font-weight: 500; color: var(--accent2); }
+
+  /* POWER STATE LADDER */
+  .power-ladder {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .power-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+  }
+  .power-step:last-child { border-bottom: none; }
+  .power-rank {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent2);
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .power-content { flex: 1; }
+  .power-content strong { display: block; font-size: 14.5px; color: var(--text); margin-bottom: 2px; }
+  .power-content span { font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+  /* SETTINGS APP CATEGORY GRID */
+  .settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .settings-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .settings-card h5 {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .settings-card p {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 0;
+  }
 
   /* SUMMARY BOX */
   .summary-box {
@@ -498,48 +544,6 @@
     margin: 48px 0;
   }
 
-  /* FEATURE COMPARISON BADGE */
-  .feat-yes  { color: var(--accent3); font-weight: 700; font-family: var(--sans); font-size: 13px; }
-  .feat-no   { color: var(--border2); font-weight: 600; font-family: var(--sans); font-size: 13px; }
-  .feat-ltd  { color: var(--accent4); font-weight: 700; font-family: var(--sans); font-size: 13px; }
-
-  /* UPGRADE PATH DIAGRAM */
-  .upgrade-path {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin: 16px 0 24px;
-    font-family: var(--sans);
-    font-size: 13px;
-    flex-wrap: wrap;
-  }
-  .up-node {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 14px;
-    text-align: center;
-    flex-shrink: 0;
-  }
-  .up-node .up-label {
-    font-weight: 600;
-    color: var(--accent2);
-    font-size: 13px;
-  }
-  .up-node .up-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-  .up-arrow {
-    font-size: 18px;
-    color: var(--border2);
-    padding: 0 8px;
-    flex-shrink: 0;
-  }
-  .up-node.target { border-color: var(--accent3); background: var(--accent3-light); }
-  .up-node.target .up-label { color: var(--accent3); }
-
   /* REQUIREMENT CARD */
   .req-grid {
     display: grid;
@@ -583,11 +587,9 @@
 
   @media (max-width: 680px) {
     .page { padding: 0 20px 60px; }
-    .summary-grid, .card-grid, .card-grid-3, .req-grid { grid-template-columns: 1fr; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .applet-grid { grid-template-columns: 1fr; }
+    .settings-grid { grid-template-columns: 1fr 1fr; }
     .def-item { grid-template-columns: 1fr; gap: 4px; }
-    .edition-row { grid-template-columns: 1fr; }
-    .upgrade-path { flex-direction: column; align-items: flex-start; }
-    .up-arrow { transform: rotate(90deg); }
   }
 </style>
 </head>
@@ -598,7 +600,7 @@
   <div class="top-nav-left">
     <a class="nav-home" href="../index.html">Study Guide</a>
     <span class="nav-sep">/</span>
-    <span class="nav-current"><strong>1.6</strong> Given a scenario, configure Microsoft Windows settings</span>
+    <span class="nav-current"><strong>1.6</strong> Configure Microsoft Windows Settings</span>
   </div>
   <div class="top-nav-right">
     <a class="nav-prev" href="./1_5-Windows-Command-Line.html">1.5</a>
@@ -614,822 +616,185 @@
     <span>1.6</span>
     CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
   </div>
-  <h1 class="book-title">Given a scenario, configure <br> Microsoft Windows settings</h1>
+  <h1 class="book-title">Configure Microsoft Windows Settings</h1>
   <div class="book-subtitle">
     <span>Objective 1.6</span>
     <span>Domain weight: 28%</span>
-    <span>Control Panel · Settings App · Power · File Explorer · Administrative Tools</span>
+    <span>Control Panel Applets · File Explorer Options · Power Options · Settings App</span>
   </div>
 </div>
 
 
 <!-- OVERVIEW -->
-<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Two Interfaces, One System</h2>
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Windows Configuration Interfaces</h2>
 
-<p>Windows configuration lives in two places — the classic <span class="key-term">Control Panel</span> and the modern <span class="key-term">Settings app</span> — and understanding both is mandatory for the A+ exam. Control Panel dates to Windows 1.0 and remains the authoritative home for many system-critical tools. The Settings app (introduced in Windows 8 and expanded in Windows 10/11) provides a touch-friendly, redesigned interface that has absorbed many Control Panel functions while leaving others behind. Microsoft is slowly migrating all settings to the Settings app, but as of Windows 11, both interfaces remain essential.</p>
+<p>Windows configuration is split across two overlapping interfaces that have coexisted for years: the classic <span class="key-term">Control Panel</span>, with its individual applets, and the modern <span class="key-term">Settings app</span>, organized into broad categories. Microsoft has been migrating functionality from the former into the latter for years, but neither has fully replaced the other — a technician needs to know both, and needs to know roughly where a given configuration option lives regardless of which interface a specific version of Windows happens to surface it through.</p>
 
-<p>This objective tests your ability to navigate to specific settings, understand what each setting does, and apply the correct configuration in a given scenario. The exam frequently presents a description of a problem or task and asks which setting panel or specific option to use. The path to the setting is often as important as the setting itself.</p>
+<p>This objective covers four groups. The first is the set of classic <span class="key-term">Control Panel applets</span> named directly in the objective. The second and third are two specific applets broken out with their own detailed sub-bullets — <span class="key-term">File Explorer Options</span> and <span class="key-term">Power Options</span> — because each has several individually testable settings. The fourth is the list of top-level categories in the modern <span class="key-term">Settings app</span>.</p>
 
 <div class="callout callout-info">
-  <p class="callout-title">How to Open Each Interface</p>
-  <p><strong>Control Panel:</strong> Search "Control Panel" in Start, or run <code>control</code> from the Run dialog (<code>Win+R</code>). Can be opened directly to specific applets with run commands: <code>control inetcpl.cpl</code> (Internet Options), <code>control printers</code> (Devices and Printers), <code>control userpasswords2</code> (User Accounts), etc. <strong>Settings App:</strong> <code>Win+I</code> is the universal keyboard shortcut. Right-clicking the Start button reveals a quick-access menu for Device Manager, System, Network Connections, and more — faster than navigating through Control Panel.</p>
-</div>
-
-<div class="card-grid">
-  <div class="card">
-    <h4>Control Panel Items (Legacy)</h4>
-    <ul>
-      <li><strong>Internet Options</strong> — IE/legacy browser + network proxy settings</li>
-      <li><strong>Devices and Printers</strong> — add/manage printers and devices</li>
-      <li><strong>Programs and Features</strong> — uninstall/modify software</li>
-      <li><strong>Network and Sharing Center</strong> — network status and configuration</li>
-      <li><strong>System</strong> — computer name, hardware info, performance</li>
-      <li><strong>Windows Defender Firewall</strong> — inbound/outbound rule management</li>
-      <li><strong>Mail</strong> — Outlook mail profile configuration</li>
-      <li><strong>Sound</strong> — playback, recording, and sound scheme management</li>
-      <li><strong>User Accounts</strong> — local account management and UAC</li>
-      <li><strong>Device Manager</strong> — hardware driver status and management</li>
-      <li><strong>Indexing Options</strong> — Windows Search index configuration</li>
-      <li><strong>Administrative Tools</strong> — advanced system management utilities</li>
-      <li><strong>File Explorer Options</strong> — folder view and hidden file settings</li>
-      <li><strong>Power Options</strong> — power plans and sleep/hibernate settings</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h4>Settings App Sections (Modern)</h4>
-    <ul>
-      <li><strong>System</strong> — display, notifications, power, storage</li>
-      <li><strong>Devices</strong> — Bluetooth, printers, mouse, keyboard, pen</li>
-      <li><strong>Network &amp; Internet</strong> — Wi-Fi, VPN, proxy, Ethernet status</li>
-      <li><strong>Personalization</strong> — background, colors, lock screen, themes</li>
-      <li><strong>Apps</strong> — app management, default apps, optional features</li>
-      <li><strong>Accounts</strong> — sign-in options, Microsoft account, work/school</li>
-      <li><strong>Time &amp; Language</strong> — date/time, region, language, speech</li>
-      <li><strong>Gaming</strong> — Game Bar, Game Mode, Xbox integration</li>
-      <li><strong>Ease of Access</strong> — accessibility features for vision, hearing, mobility</li>
-      <li><strong>Privacy</strong> — app permissions, diagnostics, location, camera, mic</li>
-      <li><strong>Update &amp; Security</strong> — Windows Update, Windows Defender, backup, recovery</li>
-    </ul>
-  </div>
+  <p class="callout-title">Core Concept — Two Interfaces, One Underlying System</p>
+  <p>Many settings in this objective can be reached through both the Control Panel and the Settings app, or have migrated from one to the other across Windows versions. The exam's expectation isn't that a setting lives in exactly one place forever — it's that you know what the setting does and can locate it in whichever interface a given scenario or Windows version presents. Focus on the purpose of each item first; the exact click-path is secondary.</p>
 </div>
 
 
-<!-- ═══ CONTROL PANEL ═══ -->
-<h2 class="chapter"><span class="ch-num">SECTION 1</span>Control Panel Settings</h2>
+<!-- ═══ SECTION 1 — CONTROL PANEL APPLETS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 1</span>Control Panel Applets</h2>
 
-<p>The Control Panel remains the primary location for many system-critical configuration tasks. Its applets provide deeper access to system internals than the Settings app. Each applet is also directly accessible via Run dialog commands, making them accessible even when the Start menu is unavailable.</p>
+<p>These are the classic, individually named Control Panel items a technician is expected to recognize and know how to use.</p>
 
-<h3 class="section">Internet Options</h3>
-<div class="path-badge">Control Panel → Network and Internet → Internet Options &nbsp;|&nbsp; Run: inetcpl.cpl</div>
+<div class="applet-grid">
+  <div class="applet-card">
+    <h5>Internet Options</h5>
+    <p>Configures Internet Explorer/legacy browser settings still used by some system components — security zones, connections, privacy settings, and default home page — even on systems where IE itself isn't the primary browser.</p>
+  </div>
+  <div class="applet-card">
+    <h5>Devices and Printers</h5>
+    <p>Lists all connected devices and printers, allowing installation, removal, setting a default printer, and accessing device-specific settings and troubleshooters.</p>
+  </div>
+  <div class="applet-card">
+    <h5>Programs and Features</h5>
+    <p>Lists installed applications and Windows features, allowing uninstallation, modification, or repair of installed software, and enabling/disabling optional Windows features.</p>
+  </div>
+  <div class="applet-card">
+    <h5>Network and Sharing Center</h5>
+    <p>Displays active network connections and status, and provides access to adapter settings, sharing options, and troubleshooting for network connectivity (Objective 1.7).</p>
+  </div>
+  <div class="applet-card">
+    <h5>System</h5>
+    <p>Displays core system information (OS edition, processor, installed RAM, computer name) and provides access to system protection, remote settings, and advanced system properties.</p>
+  </div>
+  <div class="applet-card">
+    <h5>Windows Defender Firewall</h5>
+    <p>Configures the built-in Windows firewall — enabling/disabling per network profile, managing allowed apps, and configuring advanced inbound/outbound rules (Objective 2.2).</p>
+  </div>
+  <div class="applet-card">
+    <h5>Mail</h5>
+    <p>Configures Outlook mail profiles and data files when Outlook is installed — managing email account settings outside of the Outlook application itself.</p>
+  </div>
+  <div class="applet-card">
+    <h5>Sound</h5>
+    <p>Manages audio playback and recording devices, sets the default input/output device, and adjusts levels and communication settings.</p>
+  </div>
+  <div class="applet-card">
+    <h5>User Accounts</h5>
+    <p>Manages local user account settings, changes account type, manages credentials, and configures User Account Control (UAC) behavior (Objective 2.2).</p>
+  </div>
+  <div class="applet-card">
+    <h5>Device Manager</h5>
+    <p>Also directly accessible via <code>devmgmt.msc</code> (Objective 1.4) — the same hardware/driver management console reachable through Control Panel.</p>
+  </div>
+  <div class="applet-card">
+    <h5>Indexing Options</h5>
+    <p>Configures which locations Windows Search indexes for faster file search results, and allows rebuilding the search index if search results become unreliable or incomplete.</p>
+  </div>
+  <div class="applet-card">
+    <h5>Administrative Tools</h5>
+    <p>A folder providing quick access to many of the MMC snap-ins and advanced utilities covered in Objective 1.4 (Event Viewer, Task Scheduler, Performance Monitor, and more) from a single central location.</p>
+  </div>
+</div>
 
-<p><span class="key-term">Internet Options</span> configures settings for Internet Explorer and the legacy Edge engine, but also controls system-wide proxy settings, certificate management, and security zones that affect all Windows applications using the WinINet API (including many enterprise applications, Windows Update, and Outlook). Even on systems where Chrome or Firefox is the primary browser, Internet Options remains relevant for proxy and security zone configuration.</p>
 
-<div class="setting-panel">
-  <div class="setting-panel-head">Internet Options — Tabs Reference <span class="sp-path">inetcpl.cpl</span></div>
-  <div class="setting-row">
-    <div class="setting-name">General Tab</div>
-    <div class="setting-desc">Sets the browser home page, startup behavior (start with tabs from last session), browsing history (delete cookies, cached files, saved passwords, history, form data), and tab behavior. Home page changes here affect IE and some legacy embedded browser applications.</div>
+<!-- ═══ SECTION 2 — FILE EXPLORER OPTIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>File Explorer Options</h2>
+
+<p><span class="key-term">File Explorer Options</span> (sometimes still labeled Folder Options) controls how File Explorer displays and behaves — a frequently used applet for both everyday customization and specific troubleshooting/security tasks.</p>
+
+<div class="def-list">
+  <div class="def-item">
+    <span class="def-term">View hidden files</span>
+    <span>Toggles whether files and folders marked with the "hidden" attribute are displayed in File Explorer — commonly needed when troubleshooting, since many system and configuration files are hidden by default to prevent accidental modification or deletion.</span>
   </div>
-  <div class="setting-row">
-    <div class="setting-name">Security Tab</div>
-    <div class="setting-desc">Configures <strong>security zones</strong> — Internet, Local intranet, Trusted sites, and Restricted sites. Each zone has a security level (High/Medium/Low/Custom) that controls ActiveX, scripting, file downloads, and authentication behaviors. Enterprise environments add intranet servers to the Local intranet zone to allow single sign-on without authentication prompts.</div>
+  <div class="def-item">
+    <span class="def-term">Hide extensions</span>
+    <span>Controls whether file extensions (<code>.exe</code>, <code>.docx</code>, <code>.txt</code>) are shown or hidden for known file types. Disabling this (i.e., showing extensions) is a frequently recommended security practice, since malware often disguises itself with a deceptive filename like <code>invoice.pdf.exe</code> that appears to be a harmless PDF when extensions are hidden.</span>
   </div>
-  <div class="setting-row">
-    <div class="setting-name">Privacy Tab</div>
-    <div class="setting-desc">Controls <strong>cookie behavior</strong> per security zone and enables the <strong>pop-up blocker</strong>. Pop-up blocker settings allow exceptions for trusted sites — enterprise web apps often require pop-up exceptions to function. Also controls InPrivate browsing settings.</div>
+  <div class="def-item">
+    <span class="def-term">General options</span>
+    <span>Controls broader File Explorer behavior — whether items open with a single or double click, whether folders open in the same window or a new one, and default Quick Access/navigation pane behavior.</span>
   </div>
-  <div class="setting-row">
-    <div class="setting-name">Content Tab</div>
-    <div class="setting-desc">Manages <strong>SSL/TLS certificates</strong> (view, import, export, delete personal certificates, trusted root CAs, intermediate CAs). Also manages AutoComplete settings (saved form data, usernames, passwords) and RSS feed subscriptions. Certificate management here affects all Windows applications, not just IE.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Connections Tab</div>
-    <div class="setting-desc"><strong>Proxy server configuration</strong> — the most important tab for technicians in enterprise environments. "LAN Settings" button opens the proxy configuration: enable/disable proxy, set proxy server address and port, and configure bypass list. These proxy settings apply to all applications using WinINet (IE, Windows Update, many enterprise apps). Also manages VPN and dial-up connection settings.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Programs Tab</div>
-    <div class="setting-desc">Sets default programs for email, newsgroups, internet calls, calendar, and contacts that launch from within the browser. Also manages HTML editor associations and add-on management (browser extensions and toolbars for IE).</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Advanced Tab</div>
-    <div class="setting-desc">Fine-grained settings for security (which TLS versions to use — TLS 1.0, 1.1, 1.2, 1.3), browsing behavior, multimedia, and accessibility. <strong>TLS version settings here are critical</strong> — some older enterprise applications may require enabling older TLS versions. The "Reset" button restores all Internet Options to defaults, useful when browser settings are suspected to be misconfigured or malware-altered.</div>
+  <div class="def-item">
+    <span class="def-term">View options</span>
+    <span>Controls additional display settings beyond hidden files and extensions — showing/hiding protected operating system files, displaying full paths in the title bar, showing file size information in folder tips, and similar display preferences.</span>
   </div>
 </div>
 
 <div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Internet Options</p>
-  <p>The <strong>Connections tab → LAN Settings</strong> is where proxy server address and port are configured for the entire system. A scenario where "a user can access websites but enterprise applications can't reach internal servers" → check proxy settings / intranet zone in Internet Options. A scenario about managing trusted root certificates → Content tab → Certificates. Pop-up blocker exceptions for a required enterprise web app → Privacy tab.</p>
+  <p class="callout-title">Exam Angle — Hide Extensions as a Security Control</p>
+  <p>A scenario describing a user who was tricked into running a malicious file that "looked like" a normal document is very likely pointing at hidden file extensions as a contributing factor. The corrective action — disabling "hide extensions for known file types" so the true, full filename (including its real extension) is always visible — is a frequently tested File Explorer Options detail with direct security implications, not just a cosmetic preference.</p>
 </div>
 
-<h3 class="section">Devices and Printers</h3>
-<div class="path-badge">Control Panel → Hardware and Sound → Devices and Printers &nbsp;|&nbsp; Run: control printers</div>
 
-<p><span class="key-term">Devices and Printers</span> is the Control Panel hub for viewing and managing all connected printers, scanners, Bluetooth devices, and other peripherals. It provides a visual representation of connected devices and allows right-click context-menu access to device-specific management options.</p>
+<!-- ═══ SECTION 3 — POWER OPTIONS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 3</span>Power Options</h2>
+
+<p><span class="key-term">Power Options</span> governs how a Windows machine manages power consumption and transitions between full-power and reduced-power states — especially relevant for laptops, but applicable to desktops as well.</p>
+
+<h3 class="section">Power States</h3>
+
+<div class="power-ladder">
+  <div class="flow-title" style="margin-bottom:16px;">Power States — Lowest to Highest Power Savings</div>
+  <div class="power-step">
+    <span class="power-rank">1</span>
+    <div class="power-content"><strong>Sleep/Suspend</strong><span>System state and open work are kept in RAM, which continues drawing a small amount of power; the machine resumes almost instantly since nothing needs to be reloaded from disk</span></div>
+  </div>
+  <div class="power-step">
+    <span class="power-rank">2</span>
+    <div class="power-content"><strong>Standby</strong><span>Functionally similar to sleep — a reduced-power state that preserves RAM contents for a fast resume, with terminology varying somewhat by Windows version and hardware</span></div>
+  </div>
+  <div class="power-step">
+    <span class="power-rank">3</span>
+    <div class="power-content"><strong>Hibernate</strong><span>The current system state is written from RAM to disk, and the machine powers off completely — draws effectively no power while hibernating, but takes longer to resume than sleep since the saved state must be read back from disk</span></div>
+  </div>
+</div>
 
 <div class="def-list">
   <div class="def-item">
-    <span class="def-term">Add a Printer</span>
-    <span>The "Add a printer" wizard searches for available printers automatically (network printers via WSD or Bonjour broadcast, Bluetooth printers) and allows manual entry of a printer address (IP or hostname). For TCP/IP network printers, select "The printer that I want isn't listed" → "Add a printer using a TCP/IP address or hostname" → enter the printer's static IP. This creates a Standard TCP/IP Port monitor pointing to the printer.</span>
+    <span class="def-term">Power plans</span>
+    <span>Predefined (or custom) sets of power management rules — screen timeout, sleep timeout, processor performance — bundled together as a single selectable profile (e.g., Balanced, Power saver, High performance), letting a user switch their overall power behavior with one selection rather than adjusting each setting individually.</span>
   </div>
   <div class="def-item">
-    <span class="def-term">Set as Default Printer</span>
-    <span>Right-click any printer → "Set as default printer." Windows marks the default printer with a green checkmark. The default printer is what applications use when the user prints without explicitly choosing a printer. Windows 10/11 has a "Let Windows manage my default printer" feature that automatically sets the most recently used printer as default — this can confuse users who expect a fixed default and should often be disabled in enterprise environments.</span>
+    <span class="def-term">Choose what closing the lid does</span>
+    <span>A laptop-specific setting controlling the action taken when the lid is closed — sleep, hibernate, shut down, or do nothing — separately configurable for when the machine is on battery versus plugged in.</span>
   </div>
   <div class="def-item">
-    <span class="def-term">Printer Properties vs. Printing Preferences</span>
-    <span><strong>Printer Properties</strong> (right-click → Printer properties): manages the printer's hardware configuration — ports, sharing settings, security permissions, driver version, and spooler settings. <strong>Printing Preferences</strong> (right-click → Printing preferences): manages default print settings — paper orientation, paper size, color vs. grayscale, duplex (two-sided), print quality. Properties = device admin; Preferences = print job defaults.</span>
+    <span class="def-term">Turn on fast startup</span>
+    <span>A hybrid shutdown feature that saves the OS kernel session to disk (similar to hibernation) when the system is shut down, allowing subsequent boots to be significantly faster — but this can occasionally interfere with certain low-level troubleshooting steps or hardware changes that expect a true full shutdown/cold boot.</span>
   </div>
   <div class="def-item">
-    <span class="def-term">View Print Queue</span>
-    <span>Double-clicking a printer opens the print queue — a list of pending and in-progress print jobs with their status. From the queue, a technician can pause individual jobs, cancel jobs, or cancel all documents. <strong>Stuck print jobs</strong> (jobs that won't cancel through the normal UI) require stopping the Print Spooler service (<code>services.msc</code> → Print Spooler → Stop), manually deleting files from <code>C:\Windows\System32\spool\PRINTERS\</code>, then restarting the spooler service.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Print Spooler Service</span>
-    <span>The Print Spooler (<code>spoolsv.exe</code>) is the Windows service that manages the print queue, accepts print jobs from applications, stores them temporarily on disk, and sends them to the printer in order. A crashed or hung spooler affects all printing. Restart it via Services console or: <code>net stop spooler</code> → clear spool files → <code>net start spooler</code>.</span>
+    <span class="def-term">USB selective suspend</span>
+    <span>A power-saving feature that allows Windows to selectively suspend individual USB devices when not actively in use, reducing overall power draw — occasionally a troubleshooting culprit when a USB device disconnects or misbehaves after a period of inactivity, since the device was suspended rather than genuinely failing.</span>
   </div>
 </div>
 
-<h3 class="section">Programs and Features</h3>
-<div class="path-badge">Control Panel → Programs → Programs and Features &nbsp;|&nbsp; Run: appwiz.cpl</div>
+<div class="callout callout-warn">
+  <p class="callout-title">Fast Startup and USB Selective Suspend — Common Troubleshooting Culprits</p>
+  <p>Both of these features are common, non-obvious causes of confusing symptoms. <strong>Fast startup</strong> can cause a "shutdown" to behave more like hibernation, which occasionally interferes with driver or hardware changes that expect a genuine cold boot to take effect — disabling it is a reasonable troubleshooting step when a hardware change doesn't seem to be recognized after a restart. <strong>USB selective suspend</strong> can cause a USB device (particularly external drives or certain peripherals) to appear to disconnect or stop responding after sitting idle — disabling it for a specific device is a reasonable step when troubleshooting intermittent USB dropouts.</p>
+</div>
 
-<p><span class="key-term">Programs and Features</span> lists all installed software with version, publisher, install date, and size. It is the primary Control Panel location for uninstalling, modifying, or repairing installed applications and for managing Windows Features.</p>
 
-<div class="setting-panel">
-  <div class="setting-panel-head">Programs and Features — Key Functions <span class="sp-path">appwiz.cpl</span></div>
-  <div class="setting-row">
-    <div class="setting-name">Uninstall a Program</div>
-    <div class="setting-desc">Select an application → click Uninstall. Runs the application's own uninstaller. If an application doesn't appear here (malware, improperly installed software), use the vendor's standalone removal tool or a third-party uninstaller. Note: simply deleting program folders does <strong>not</strong> uninstall software — it leaves registry entries, start menu items, and services behind.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Change / Repair</div>
-    <div class="setting-desc">Some applications (Microsoft Office, Visual Studio) show "Change" or "Repair" options alongside Uninstall. <strong>Change</strong> opens the application's installer to add or remove components. <strong>Repair</strong> re-runs the installer to fix corrupted or missing files without removing user data or settings. Use Repair when an application is malfunctioning but uninstall/reinstall is too disruptive.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">View Installed Updates</div>
-    <div class="setting-desc">Left panel link "View installed updates" lists all Windows updates installed on the system, with their KB article number, install date, and the option to uninstall individual updates. Useful for rolling back a problematic Windows Update that broke functionality after installation.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Turn Windows Features On/Off</div>
-    <div class="setting-desc">Opens the Windows Features dialog listing optional OS components: Internet Explorer, Hyper-V, Windows Subsystem for Linux, .NET Framework versions, Telnet Client, TFTP Client, Remote Desktop Services, Windows Sandbox, and more. Features that are unchecked are not installed; checking them installs them from the Windows component store without installation media (internet connection may be needed for some).</div>
-  </div>
+<!-- ═══ SECTION 4 — SETTINGS APP CATEGORIES ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 4</span>Windows Settings App Categories</h2>
+
+<p>The modern <span class="key-term">Settings app</span> (accessible via <code>Win + I</code>) organizes configuration into broad top-level categories, many of which now house settings that used to live exclusively in Control Panel.</p>
+
+<div class="settings-grid">
+  <div class="settings-card"><h5>Ease of Access</h5><p>Accessibility features — narrator, magnifier, high contrast, closed captions, and other accommodations</p></div>
+  <div class="settings-card"><h5>Time and Language</h5><p>Date/time, region, and display/input language settings</p></div>
+  <div class="settings-card"><h5>Update and Security</h5><p>Windows Update, recovery options, backup, and built-in security/Defender settings</p></div>
+  <div class="settings-card"><h5>Personalization</h5><p>Desktop background, colors, lock screen, themes, taskbar, and Start menu appearance</p></div>
+  <div class="settings-card"><h5>Apps</h5><p>Installed application management, default apps, and optional feature installation</p></div>
+  <div class="settings-card"><h5>Privacy</h5><p>App permissions — camera, microphone, location — and general data/diagnostics privacy controls</p></div>
+  <div class="settings-card"><h5>System</h5><p>Display, sound, notifications, power/battery, storage, and general "About" system info</p></div>
+  <div class="settings-card"><h5>Devices</h5><p>Bluetooth, printers/scanners, mouse, and other connected peripheral settings</p></div>
+  <div class="settings-card"><h5>Network and Internet</h5><p>Wi-Fi, Ethernet, VPN, proxy, and general network status settings</p></div>
+  <div class="settings-card"><h5>Gaming</h5><p>Game Bar, game mode, captures, and gaming-specific performance settings</p></div>
+  <div class="settings-card"><h5>Accounts</h5><p>Sign-in options, other user accounts, syncing settings, and Microsoft account/work-or-school access</p></div>
 </div>
 
 <div class="callout callout-tip">
-  <p class="callout-title">Windows Features vs. Programs</p>
-  <p>"Turn Windows features on or off" manages optional Windows OS components — things that are part of Windows itself but not installed by default. Common exam scenarios: a technician needs to install <strong>Hyper-V</strong> to run virtual machines (Windows feature, not a separate download); enable <strong>Telnet Client</strong> for legacy network testing; enable <strong>Windows Subsystem for Linux (WSL)</strong> for Linux command-line tools on Windows. These are always found here, not in the Apps section of Settings.</p>
-</div>
-
-<h3 class="section">Network and Sharing Center</h3>
-<div class="path-badge">Control Panel → Network and Internet → Network and Sharing Center &nbsp;|&nbsp; Run: control.exe /name Microsoft.NetworkAndSharingCenter</div>
-
-<p>The <span class="key-term">Network and Sharing Center</span> provides a unified view of the computer's network connections, their status, and access to all network configuration tasks. It shows the current network map, active connections, and links to key network management tasks.</p>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Network Map / Status</span>
-    <span>Displays the current network connection: the computer, the network (private or public), and the internet connection. Shows whether internet access is available. The label "No internet access" or "Limited connectivity" indicates the connection exists but internet routing or DHCP has failed. Clicking the network name opens its status dialog showing speed, signal, bytes sent/received, and a Properties/Diagnose button.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Change Adapter Settings</span>
-    <span>Opens the Network Connections view listing all network adapters (physical and virtual). Right-click an adapter → Properties opens the adapter's protocol bindings — this is where IP address, subnet mask, default gateway, and DNS servers are manually configured (or DHCP is enabled) via IPv4 Properties and IPv6 Properties. This is the most common destination for manual IP configuration in a troubleshooting scenario.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Change Advanced Sharing Settings</span>
-    <span>Controls network discovery (whether the computer is visible to other devices on the network), file and printer sharing, public folder sharing, and password-protected sharing. Separate settings exist for Private (home/work) and Public network profiles. Enabling file and printer sharing on the Public profile is a security risk — sharing should only be enabled on Private profiles.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Set Up a New Connection</span>
-    <span>Wizard for creating new network connections: broadband (PPPoE), VPN connections, dial-up, and wireless ad-hoc networks. VPN connections created here appear in the network adapter list and can be initiated from the taskbar network menu. Enterprise VPN clients (Cisco AnyConnect, GlobalProtect) bypass this wizard with their own installers.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Network Profile (Public/Private)</span>
-    <span>Each network connection is assigned a profile: <strong>Private</strong> (home/work — trusted network; file sharing allowed; network discovery on) or <strong>Public</strong> (untrusted — maximum firewall restrictions; network discovery off; sharing disabled). Changing the profile affects Windows Firewall rules and sharing behavior. A freshly connected network defaults to Public unless the user chooses Private during initial connection.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Homegroup (Legacy)</span>
-    <span>Homegroup was a simplified home network sharing feature removed in Windows 10 version 1803. Replaced by standard workgroup sharing. If troubleshooting an older machine, Homegroup may still appear here — it is no longer supported and should not be configured on modern systems.</span>
-  </div>
-</div>
-
-<h3 class="section">System</h3>
-<div class="path-badge">Control Panel → System and Security → System &nbsp;|&nbsp; Run: sysdm.cpl (for System Properties) &nbsp;|&nbsp; Win+Pause/Break</div>
-
-<p>The <span class="key-term">System</span> Control Panel applet provides essential hardware information and access to core system configuration settings. It displays the Windows edition, CPU, installed RAM, and system type (32-bit or 64-bit OS, 64-bit capable processor). This is the first stop when diagnosing hardware specifications or configuring computer identity settings.</p>
-
-<div class="setting-panel">
-  <div class="setting-panel-head">System — Key Settings <span class="sp-path">sysdm.cpl</span></div>
-  <div class="setting-row">
-    <div class="setting-name">Computer Name / Domain / Workgroup</div>
-    <div class="setting-desc">The System Properties dialog (click "Change settings" or run <code>sysdm.cpl</code>) → Computer Name tab allows renaming the computer and joining or leaving a domain or workgroup. <strong>Domain join</strong> requires domain admin credentials and a reboot. The computer name must be unique on the network. Computer name changes require a reboot to take effect.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">System Protection / System Restore</div>
-    <div class="setting-desc">System Protection tab in System Properties enables/disables <strong>System Restore</strong> for each drive. When enabled, Windows automatically creates restore points before major system changes (updates, driver installs, application installs). Restore points capture registry state and protected system files — not personal files. Creating a manual restore point before risky changes is best practice. Restoring to a point reverts the registry and system files to that point's state.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Advanced — Performance Settings</div>
-    <div class="setting-desc">Advanced tab → Performance Settings → Visual Effects: controls Windows animation and visual effects. On older or lower-spec hardware, disabling unnecessary animations ("Adjust for best performance") can noticeably improve responsiveness. Options include: animate windows, fade menus, smooth scroll, thumbnail previews — each can be individually toggled.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Advanced — Virtual Memory</div>
-    <div class="setting-desc">Advanced tab → Performance → Advanced → Virtual Memory: manages the <strong>pagefile.sys</strong> (swap file). Windows uses pagefile as virtual RAM when physical RAM is exhausted. Allowing Windows to manage paging file size automatically is recommended for most systems. Manual configuration is appropriate for performance-critical servers. Placing the pagefile on a separate drive from the OS can improve performance. Setting pagefile to zero disables virtual memory — risky, not recommended.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Remote Settings</div>
-    <div class="setting-desc">Remote tab manages <strong>Remote Desktop</strong> and <strong>Remote Assistance</strong>. "Allow remote connections to this computer" must be enabled for RDP connections to be accepted. Unticking "Allow connections only from computers running Remote Desktop with Network Level Authentication (NLA)" is sometimes needed for older RDP clients — but NLA should remain enabled for security in modern environments. RDP also requires the Windows Firewall to allow TCP 3389.</div>
-  </div>
-</div>
-
-<h3 class="section">Windows Defender Firewall</h3>
-<div class="path-badge">Control Panel → System and Security → Windows Defender Firewall &nbsp;|&nbsp; Run: firewall.cpl</div>
-
-<p><span class="key-term">Windows Defender Firewall</span> (formerly Windows Firewall) is the built-in host-based firewall that controls network traffic to and from the computer based on configurable rules. It operates independently of any network perimeter firewall and provides essential protection especially on laptops that connect to untrusted public networks.</p>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Firewall On/Off per Profile</span>
-    <span>Windows Firewall maintains separate rule sets for three network profiles: <strong>Domain</strong> (computer on a domain network), <strong>Private</strong> (trusted home/work network), and <strong>Public</strong> (untrusted public network). Each profile can have the firewall independently enabled or disabled. The Public profile should always have the firewall on at maximum protection. The Domain profile is typically managed by Group Policy in enterprise environments.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Allow an App Through</span>
-    <span>"Allow an app or feature through Windows Defender Firewall" opens the application exception list. Checking an application here creates an allow rule for it in all or specific profiles. This is the simple interface — for granular control (specific ports, protocols, IP ranges), use <strong>Windows Defender Firewall with Advanced Security</strong> (<code>wf.msc</code>), which exposes the full inbound/outbound rule set.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Advanced Security (wf.msc)</span>
-    <span>The advanced console exposes complete inbound and outbound rules, connection security rules, and monitoring. From here a technician can: create rules for specific ports (allow TCP 3389 for RDP), block specific applications, create rules that only apply on certain network profiles, and view which rules are currently active. Most firewall troubleshooting in enterprise environments uses <code>wf.msc</code> rather than the basic Control Panel interface.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Restore Defaults</span>
-    <span>"Restore defaults" removes all custom rules and resets Windows Firewall to factory state. This is a valuable troubleshooting step when suspected misconfigured or malware-added firewall rules are blocking legitimate traffic or allowing malicious connections. Use with caution — any legitimate application exceptions added by IT will also be removed.</span>
-  </div>
-</div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Windows Defender Firewall</p>
-  <p>A scenario where "a newly installed application cannot communicate over the network" → Windows Firewall blocked it; add an exception in "Allow an app through Windows Defender Firewall." A scenario requiring granular port-level rules → <code>wf.msc</code> Advanced Security. RDP won't connect to a machine → check that Remote Desktop is allowed through the firewall (TCP 3389) and that Remote Desktop is enabled in System Properties → Remote tab. <strong>Never disable the firewall on the Public profile</strong> — this is explicitly a security mistake the exam expects you to recognize.</p>
-</div>
-
-<h3 class="section">Mail</h3>
-<div class="path-badge">Control Panel → Mail (Microsoft Outlook)</div>
-
-<p>The <span class="key-term">Mail</span> Control Panel applet manages <strong>Microsoft Outlook mail profiles</strong>. It is only present on systems where Microsoft Outlook (from Microsoft 365 or Office) is installed. It is used to create, modify, and delete Outlook profiles, and to manage the data files (PST/OST) associated with each profile. This applet does not configure Windows Mail or any other email client.</p>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Mail Profiles</span>
-    <span>An Outlook <strong>mail profile</strong> is a named configuration that contains email account settings, data file locations, and address book references. A single user can have multiple profiles (e.g., "Work" and "Personal") and select which to open when Outlook starts. Profiles are stored in the registry and are user-specific. Corrupted profiles are a common cause of Outlook failing to start — creating a new profile and reconfiguring the account resolves this without losing email data (which is in the PST/OST file, not the profile itself).</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Email Accounts</span>
-    <span>Within a profile, one or more email accounts are configured — Exchange, Microsoft 365, IMAP, or POP3 accounts. The Mail applet allows adding, removing, or modifying account settings including server addresses, authentication, and sync settings. For Microsoft 365/Exchange accounts, the "Autodiscover" service typically configures settings automatically when just the email address and password are provided.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Data Files (PST/OST)</span>
-    <span><strong>PST (Personal Storage Table)</strong> — a local data file for POP3 accounts and Personal Folders; all email, contacts, and calendar items are stored locally. Can be backed up and moved between machines. <strong>OST (Offline Storage Table)</strong> — a local cache of an Exchange or IMAP account; the authoritative copy remains on the server. OST files cannot be directly imported to another machine — only PST files are portable. The Mail applet's "Data Files" tab shows the location of each data file.</span>
-  </div>
-</div>
-
-<h3 class="section">Sound</h3>
-<div class="path-badge">Control Panel → Hardware and Sound → Sound &nbsp;|&nbsp; Run: mmsys.cpl</div>
-
-<p>The <span class="key-term">Sound</span> applet manages audio playback devices, recording devices, sound schemes (the audio cues for system events), and audio communications settings. It provides access to per-device volume levels, format settings, and exclusive mode controls that are not accessible through the taskbar volume icon.</p>
-
-<div class="setting-panel">
-  <div class="setting-panel-head">Sound — Tabs Reference <span class="sp-path">mmsys.cpl</span></div>
-  <div class="setting-row">
-    <div class="setting-name">Playback Tab</div>
-    <div class="setting-desc">Lists all audio output devices (speakers, headphones, HDMI audio). The <strong>default device</strong> (green checkmark) receives system audio by default. The <strong>default communication device</strong> (different from default playback) handles communication apps like Teams and Zoom. Right-click → Set as Default Device / Set as Default Communication Device to change. Right-click → Properties → Advanced for sample rate, bit depth, and exclusive mode settings.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Recording Tab</div>
-    <div class="setting-desc">Lists all audio input devices (microphones, line-in). Same default device concept as Playback. If a microphone isn't working, check here first — the device may be present but disabled (right-click → Enable) or the level may be set to zero. The "Levels" sub-tab in device Properties adjusts microphone gain and boost separately from the main system volume.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Sounds Tab</div>
-    <div class="setting-desc">Maps Windows system events (startup, error, logon, notification, etc.) to audio files — the <strong>sound scheme</strong>. Schemes can be set to "No Sounds" to disable all system audio cues, or to one of Windows' built-in schemes. Custom sound schemes can be saved. This is the setting to change when a user complains about specific notification sounds or wants to mute system event sounds without muting application audio.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Communications Tab</div>
-    <div class="setting-desc">Controls Windows' <strong>automatic communications ducking</strong> — when Windows detects a phone call or real-time communication, it can automatically reduce other sounds to 80%, mute them, or do nothing. Users who find their music muted during Teams calls should check this setting — "Do nothing" disables the ducking behavior.</div>
-  </div>
-</div>
-
-<h3 class="section">User Accounts</h3>
-<div class="path-badge">Control Panel → User Accounts &nbsp;|&nbsp; Run: netplwiz (advanced) &nbsp;|&nbsp; control userpasswords2</div>
-
-<p>The <span class="key-term">User Accounts</span> Control Panel applet manages local Windows user accounts — creating, deleting, changing passwords, changing account types, and configuring User Account Control (UAC) behavior. It is distinct from the Accounts section in the Settings app, which focuses on Microsoft account sign-in and work/school account integration.</p>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Account Types</span>
-    <span><strong>Administrator</strong> accounts have full system access — they can install software, modify system settings, create/delete accounts, and change security policies. <strong>Standard User</strong> accounts can use the computer and change their own settings but cannot make system-level changes without providing administrator credentials (UAC prompt). Best practice: users should operate with standard accounts and only elevate when necessary. Never give users administrator accounts for day-to-day use.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">User Account Control (UAC)</span>
-    <span><strong>UAC</strong> is the security feature that prompts for confirmation or credentials when a program attempts to make system-level changes. The UAC prompt appears as a blue/grey dimmed desktop overlay. The UAC slider (User Accounts → Change User Account Control settings) has four levels: Always notify (highest) → Notify when apps try to make changes (default) → Notify without dimming the desktop → Never notify (essentially disabled). Lowering UAC increases convenience but reduces security — the exam expects you to know it should generally remain at the default or higher.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">netplwiz (Advanced Accounts)</span>
-    <span>Running <code>netplwiz</code> opens the "User Accounts" advanced dialog. This interface shows all local accounts, allows adding/removing accounts, and — critically — allows disabling the password requirement at startup: uncheck "Users must enter a user name and password to use this computer." This enables automatic login. Only appropriate for kiosk or single-user systems in physically secured locations. Never enable automatic login on a laptop or shared system.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Credential Manager</span>
-    <span>Accessible from User Accounts, <strong>Credential Manager</strong> stores saved usernames and passwords for network resources, websites (in Windows Credential Store), and Windows applications. Saved credentials auto-fill authentication prompts for network shares and mapped drives. Outdated credentials (e.g., after a password change on a network share) cause authentication failures — deleting the old credential from Credential Manager forces a fresh authentication prompt.</span>
-  </div>
-</div>
-
-<h3 class="section">Device Manager</h3>
-<div class="path-badge">Control Panel → System → Device Manager &nbsp;|&nbsp; Run: devmgmt.msc &nbsp;|&nbsp; Right-click Start → Device Manager</div>
-
-<p><span class="key-term">Device Manager</span> is the single most important tool for hardware management in Windows. It lists every hardware device the OS knows about, displays the driver status for each, and provides controls to update, roll back, disable, and uninstall device drivers. It is the first stop for any hardware problem — unknown devices, driver conflicts, and disabled devices all surface here.</p>
-
-<div class="setting-panel">
-  <div class="setting-panel-head">Device Manager — Icons and Status Indicators <span class="sp-path">devmgmt.msc</span></div>
-  <div class="setting-row">
-    <div class="setting-name">⚠️ Yellow Exclamation</div>
-    <div class="setting-desc">A device has a problem — driver is missing, corrupted, or incompatible. The device may be partially functional or non-functional. Right-click → Update driver, or Uninstall device → reboot to reinstall. Check the device's Properties → Details tab → Hardware Ids to identify the exact device and find the correct driver.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">❌ Red X</div>
-    <div class="setting-desc">A device is <strong>disabled</strong>. The hardware is present and has a driver but has been manually disabled in Device Manager or Group Policy. Right-click → Enable device to re-enable. Disabled devices consume no system resources.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">⬇️ Down Arrow</div>
-    <div class="setting-desc">Device is disabled (same as red X in newer Windows versions — a down-arrow overlaid on the device icon indicates a manually disabled device).</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">❓ Unknown Device</div>
-    <div class="setting-desc">Hardware detected but no driver is installed and Windows cannot identify the device automatically. Common after installing new hardware. Look up the Hardware ID in the device's Properties to identify it, then download the correct driver from the manufacturer's website.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Update Driver</div>
-    <div class="setting-desc">Two options: <strong>"Search automatically"</strong> — Windows checks Windows Update for a matching driver; <strong>"Browse my computer"</strong> — specify a local path to driver files (INF file and supporting files). For enterprise environments, always use Browse to supply the tested, approved driver rather than whatever Windows Update provides.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Roll Back Driver</div>
-    <div class="setting-desc">Reverts to the previously installed driver version. Available only if a driver was recently updated — Windows keeps one prior version. Critical when a driver update breaks device functionality. If the device no longer works after an update, roll back immediately before troubleshooting further.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Show Hidden Devices</div>
-    <div class="setting-desc">View menu → "Show hidden devices" reveals non-present devices (hardware that was connected and had a driver installed but is currently disconnected) and legacy non-Plug-and-Play drivers. Useful for cleaning up phantom devices that persist in Device Manager after hardware is removed.</div>
-  </div>
-</div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Device Manager</p>
-  <p>Yellow exclamation = driver problem (update/reinstall driver). Red X or down arrow = disabled device (enable it). Unknown device = no driver installed (get driver from manufacturer using Hardware ID). <strong>Roll Back Driver</strong> = device worked before a driver update, now doesn't — roll back is the first step. <strong>View → Show Hidden Devices</strong> = see phantom/disconnected devices. Device Manager is also where you can check if hardware is using DMA, IRQs, or I/O ports via Properties → Resources tab (advanced hardware conflict troubleshooting).</p>
-</div>
-
-<h3 class="section">Indexing Options</h3>
-<div class="path-badge">Control Panel → Indexing Options &nbsp;|&nbsp; Run: control srchadmin.dll</div>
-
-<p><span class="key-term">Indexing Options</span> configures the Windows Search indexing service — the background process that catalogs file contents and metadata so that searches in File Explorer and the Start menu return results instantly rather than requiring a live file system scan.</p>
-
-<ul class="body-list">
-  <li><strong>Indexed locations:</strong> By default, Windows indexes the user's home folder (Documents, Pictures, Music, Videos, Desktop) and Start menu. The index does not cover all drives by default — adding locations (e.g., a data drive or shared folder) improves search speed for those locations at the cost of disk space and indexing CPU time</li>
-  <li><strong>Rebuild index:</strong> If search results are incorrect, missing, or returning stale data, rebuilding the index recreates the catalog from scratch. This can take several hours on systems with large file collections. Index is stored at <code>C:\ProgramData\Microsoft\Search\</code></li>
-  <li><strong>Advanced → File Types:</strong> Controls which file extensions are indexed and whether file contents (not just names/metadata) are indexed. Indexing file contents enables full-text search but increases index size and build time significantly</li>
-  <li><strong>Troubleshooting slow search:</strong> A system that hangs or becomes slow when searching may have a corrupted or extremely large index. Pause indexing (via Services: Windows Search), clear the index location, restart the service, and allow rebuilding overnight</li>
-  <li><strong>Exam scenario:</strong> A user complains that searching for files on their computer takes a very long time → check Indexing Options; the drive/folder may not be in the indexed locations list, or the index may need rebuilding</li>
-</ul>
-
-<h3 class="section">Administrative Tools</h3>
-<div class="path-badge">Control Panel → Administrative Tools &nbsp;|&nbsp; Run: control admintools</div>
-
-<p><span class="key-term">Administrative Tools</span> is a folder of shortcuts to advanced Windows management consoles. These tools are used for in-depth system administration and go significantly beyond what the basic Control Panel or Settings app offer. Many A+ troubleshooting scenarios use these tools.</p>
-
-<table class="data-table">
-  <thead><tr><th>Tool</th><th>Run Command</th><th>Purpose</th></tr></thead>
-  <tbody>
-    <tr><td>Computer Management</td><td><code>compmgmt.msc</code></td><td>All-in-one console: Device Manager, Disk Management, Event Viewer, Services, Task Scheduler, Local Users and Groups, Shared Folders</td></tr>
-    <tr><td>Disk Management</td><td><code>diskmgmt.msc</code></td><td>Create, delete, format, resize, and assign drive letters to partitions; initialize new disks; extend/shrink volumes</td></tr>
-    <tr><td>Event Viewer</td><td><code>eventvwr.msc</code></td><td>View Windows event logs: Application, System, Security. Essential for troubleshooting crashes, service failures, and security events. Each event has an ID, source, and description; critical and error events are most important</td></tr>
-    <tr><td>Services</td><td><code>services.msc</code></td><td>Start, stop, pause, and configure Windows services. Set startup type (Automatic, Manual, Disabled). View service dependencies. Critical for managing background processes and resolving service-related errors</td></tr>
-    <tr><td>Task Scheduler</td><td><code>taskschd.msc</code></td><td>Create and manage scheduled tasks: run programs at specific times, on events, at login, on system startup. View built-in Windows maintenance tasks and their last-run status</td></tr>
-    <tr><td>Local Security Policy</td><td><code>secpol.msc</code></td><td>Configure password complexity, lockout policies, audit policies, user rights assignments, and security options. Not available on Home editions — only Pro/Enterprise/Education</td></tr>
-    <tr><td>Group Policy Editor</td><td><code>gpedit.msc</code></td><td>Configure local computer and user policy settings — restrictions, software installation, desktop customization, and hundreds of security settings. Not available on Home editions</td></tr>
-    <tr><td>Performance Monitor</td><td><code>perfmon.msc</code></td><td>Real-time graphs of CPU, memory, disk, network performance counters. Create performance baselines and Data Collector Sets for long-term monitoring</td></tr>
-    <tr><td>Resource Monitor</td><td><code>resmon.exe</code></td><td>Real-time per-process CPU, memory, disk, and network usage — more detailed than Task Manager. Identify which process is consuming resources or blocking a file</td></tr>
-    <tr><td>Registry Editor</td><td><code>regedit.exe</code></td><td>View and edit the Windows Registry — the hierarchical database storing OS and application configuration. Editing the registry incorrectly can render Windows unbootable; always export a key before modifying it</td></tr>
-    <tr><td>Windows Memory Diagnostic</td><td><code>mdsched.exe</code></td><td>Tests installed RAM for errors on next reboot. Schedules a full memory test during the next restart. Use when diagnosing suspected RAM failures (random crashes, BSOD with memory-related stop codes)</td></tr>
-    <tr><td>System Configuration</td><td><code>msconfig.exe</code></td><td>Manage startup type (Normal/Diagnostic/Selective), boot options (safe mode, no GUI boot), startup items, and services. Classic tool for clean-boot troubleshooting to isolate startup software conflicts</td></tr>
-    <tr><td>System Information</td><td><code>msinfo32.exe</code></td><td>Complete hardware and software inventory: hardware components, installed drivers, running services, environment variables, problem devices. Save as .NFO files for remote diagnostics</td></tr>
-  </tbody>
-</table>
-
-<h3 class="section">File Explorer Options</h3>
-<div class="path-badge">Control Panel → File Explorer Options &nbsp;|&nbsp; File Explorer → View → Options &nbsp;|&nbsp; Run: control folders</div>
-
-<p><span class="key-term">File Explorer Options</span> (formerly Folder Options) controls how files and folders are displayed in File Explorer. Several of these settings are critical for technicians — hidden system files are invisible by default and must be revealed to troubleshoot many issues, and file extensions are hidden by default which can conceal malicious files disguised as documents.</p>
-
-<div class="setting-panel">
-  <div class="setting-panel-head">File Explorer Options — Critical Settings <span class="sp-path">control folders</span></div>
-  <div class="setting-row">
-    <div class="setting-name">View Hidden Files and Folders</div>
-    <div class="setting-desc">View tab → "Show hidden files, folders, and drives." By default, files and folders with the Hidden attribute set are invisible in File Explorer. Changing this to <strong>"Show hidden files, folders, and drives"</strong> makes them visible. Hidden files appear slightly translucent (grayed out) to indicate their hidden status. Malware frequently hides in hidden folders like <code>AppData</code> — this setting is required to navigate there manually.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Hide Extensions for Known File Types</div>
-    <div class="setting-desc">By default, Windows <strong>hides file extensions for registered file types</strong> — <code>document.docx</code> appears as just "document." This hides critical information and enables a social engineering attack: a malicious executable named <code>invoice.pdf.exe</code> displays as "invoice.pdf" with a PDF icon, tricking users into running it. <strong>Uncheck "Hide extensions for known file types"</strong> to always show extensions. Technicians should always enable this setting — it is a security best practice.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Hide Protected Operating System Files</div>
-    <div class="setting-desc">View tab → "Hide protected operating system files (Recommended)." System files with both Hidden and System attributes (like pagefile.sys, hiberfil.sys, NTLDR, bootmgr) are hidden even when "Show hidden files" is enabled unless this option is also unchecked. Unchecking reveals these files. Accidentally deleting protected OS files is a risk — Windows prompts a strong warning when disabling this option.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">General Tab — Open File Explorer to</div>
-    <div class="setting-desc">Sets whether File Explorer opens to <strong>Quick Access</strong> (recent files and pinned folders — default) or <strong>This PC</strong> (shows drives and libraries). Power users and technicians typically prefer "This PC" for faster access to drives. Change to preference.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">General Tab — Browsing Single/Double Click</div>
-    <div class="setting-desc">Controls whether items open with a single click (web-style — hovering selects, single click opens) or double click (classic Windows style). Almost universally set to double-click; single-click can confuse users transitioning from web browsers.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">View Tab — Apply to All Folders</div>
-    <div class="setting-desc">"Apply to Folders" button propagates the current folder's view settings (icon size, sort order, grouping) to all folders of the same type. Useful for standardizing the view across all Documents folders or all Pictures folders. "Reset Folders" returns all folder views to Windows default settings.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Search Tab</div>
-    <div class="setting-desc">Controls search behavior: whether to search file contents (slower but more thorough), whether to include compressed files (ZIP) in search results, and how to handle searches in non-indexed locations. "Always search file names and contents" provides the most complete search results but is significantly slower in non-indexed locations.</div>
-  </div>
-</table>
-</div>
-
-<div class="callout callout-warn">
-  <p class="callout-title">Security Implication — Hidden Extensions</p>
-  <p>The default Windows behavior of hiding known file extensions is a major social engineering enabler. An attacker sends a file named <code>Important_Document.pdf.exe</code> — with extensions hidden, the user sees <code>Important_Document.pdf</code> with whatever icon the attacker chose. Double-clicking it executes the malware. <strong>Always show file extensions</strong> on any computer you manage. This is one of the first settings a technician should change on a new system setup. The exam expects you to know that hiding extensions creates a security risk.</p>
-  </div>
-
-
-<!-- ═══ POWER OPTIONS ═══ -->
-<h2 class="chapter"><span class="ch-num">SECTION 2</span>Power Options</h2>
-<div class="path-badge">Control Panel → Hardware and Sound → Power Options &nbsp;|&nbsp; Run: powercfg.cpl &nbsp;|&nbsp; Settings → System → Power &amp; Sleep</div>
-
-<p><span class="key-term">Power Options</span> controls how Windows manages power consumption — balancing performance against battery life and energy efficiency. These settings are especially important for laptops but also relevant for desktops in environments where energy consumption is a concern. Power management directly affects system availability, data safety, and hardware longevity.</p>
-
-<div class="power-grid" style="grid-template-columns:1fr 1fr 1fr;">
-  <div class="power-card">
-    <div class="power-head ph-sleep">😴 Sleep / Suspend</div>
-    <div class="power-body">
-      <div class="power-row"><strong>What happens</strong>System state saved in RAM; most components power off; memory stays powered</div>
-      <div class="power-row"><strong>Resume time</strong>Instant (seconds) — RAM contents intact</div>
-      <div class="power-row"><strong>Power draw</strong>Low but not zero — RAM requires continuous power</div>
-      <div class="power-row"><strong>Risk</strong>Battery drain; power failure = data loss (RAM is volatile)</div>
-      <div class="power-row"><strong>Best for</strong>Short breaks; desk use; where fast resume is needed</div>
-    </div>
-  </div>
-  <div class="power-card">
-    <div class="power-head ph-hib">💾 Hibernate</div>
-    <div class="power-body">
-      <div class="power-row"><strong>What happens</strong>RAM contents saved to hiberfil.sys on disk; system fully powers off</div>
-      <div class="power-row"><strong>Resume time</strong>Slower than sleep (10–30 sec); disk read on resume</div>
-      <div class="power-row"><strong>Power draw</strong>Zero — system is completely off</div>
-      <div class="power-row"><strong>Risk</strong>Disk failure = loss of hibernate file; SSD fragmentation</div>
-      <div class="power-row"><strong>Best for</strong>Laptops traveling; extended away time; no power outlet</div>
-    </div>
-  </div>
-  <div class="power-card">
-    <div class="power-head ph-standby">⏸️ Standby</div>
-    <div class="power-body">
-      <div class="power-row"><strong>What happens</strong>Legacy term for sleep in older Windows; ACPI S3 state; RAM powered</div>
-      <div class="power-row"><strong>Resume time</strong>Fast (seconds)</div>
-      <div class="power-row"><strong>Power draw</strong>Low; memory remains active</div>
-      <div class="power-row"><strong>Note</strong>Modern Windows uses "Sleep" — "Standby" is Windows XP/Vista era terminology; both refer to ACPI S3 power state</div>
-      <div class="power-row"><strong>Exam note</strong>Standby = Sleep on the A+ exam; treat as equivalent</div>
-    </div>
-  </div>
-</div>
-
-<h3 class="section">Power Plans</h3>
-
-<p>A <span class="key-term">power plan</span> is a named collection of hardware and system settings that defines how Windows balances performance and power consumption. Three built-in plans exist, and custom plans can be created. The active power plan governs display timeout, sleep timeout, processor performance state, and disk spin-down behavior.</p>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Balanced (Default)</span>
-    <span>The standard plan for most systems. Dynamically adjusts CPU performance based on demand — reduces CPU frequency when idle, increases it under load. Display turns off after 10 minutes, sleep after 30 minutes by default. Balances performance for active tasks with energy savings during idle periods. Recommended for laptops on battery and for general desktop use.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">High Performance</span>
-    <span>Keeps the CPU running at maximum frequency at all times. Display timeout and sleep timeout are set to longer durations (or never). Used for gaming, video editing, CAD workstations, and any application that benefits from consistent maximum CPU performance. Consumes significantly more power — not recommended for laptops on battery. On desktops, the power difference is usually worthwhile for performance-critical tasks.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Power Saver</span>
-    <span>Reduces CPU frequency to minimum levels even under moderate load. Aggressive display and sleep timeouts. Screen brightness reduced. Used on laptops when battery conservation is the priority — extends battery runtime at the cost of noticeably reduced performance. May cause applications to feel sluggish.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Ultimate Performance (Enterprise)</span>
-    <span>Available on Windows 10/11 Pro Workstation and Server editions. Even more aggressive than High Performance — eliminates any micro-latency from power management transitions. Targeted at high-end workstations where every cycle counts. Must be enabled via <code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code> command if not visible.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Custom Plan Settings</span>
-    <span>Any plan can be customized via "Change plan settings" → "Change advanced power settings." Advanced settings expose per-plan configuration for: processor minimum/maximum performance states, hard disk spin-down timeout, USB selective suspend, wireless adapter power saving mode, PCI Express link state power management, and sleep state settings. These granular settings matter for server environments and specialized hardware configurations.</span>
-  </div>
-</div>
-
-<h3 class="section">Hibernate</h3>
-
-<p>Hibernate must be <strong>explicitly enabled</strong> on Windows 10/11 — it is sometimes disabled by default, especially when Fast Startup is enabled. Hibernate requires free disk space equal to the installed RAM (the <code>hiberfil.sys</code> file). On systems with 32 GB RAM, hibernate reserves 32 GB of disk space.</p>
-
-<ul class="body-list">
-  <li><strong>Enable hibernate:</strong> <code>powercfg /hibernate on</code> in an elevated command prompt; or Power Options → Choose what the power buttons do → "Turn on fast startup (recommended)" → click "Change settings that are currently unavailable" → check Hibernate</li>
-  <li><strong>Disable hibernate (recover disk space):</strong> <code>powercfg /hibernate off</code> — removes <code>hiberfil.sys</code> and reclaims disk space. Appropriate on SSD-equipped desktops where disk space is valuable and hibernate isn't needed</li>
-  <li><strong>Hybrid Sleep:</strong> Combines sleep and hibernate — saves RAM to both memory and disk simultaneously. On resume, wakes from memory (fast) if power was maintained; recovers from disk if power was lost. Enabled by default on desktops, often disabled on laptops where hibernate alone is preferred</li>
-  <li><strong>hiberfil.sys size:</strong> Typically 75% of physical RAM (reduced size hibernate) or 100% (full hibernate). Reduced size is sufficient for most uses and saves disk space</li>
-</ul>
-
-<h3 class="section">Choose What Closing the Lid Does</h3>
-
-<p>Laptop-specific setting that defines the action taken when the laptop lid is closed, and optionally when the power button is pressed. Located in Power Options → "Choose what closing the lid does" (left panel). Each action can be set differently for <strong>On battery</strong> and <strong>Plugged in</strong>.</p>
-
-<div class="card-grid">
-  <div class="card">
-    <h4>Lid Close / Power Button Actions</h4>
-    <ul>
-      <li><strong>Do nothing</strong> — computer stays fully running when lid is closed; used for clamshell desktop mode with external monitor</li>
-      <li><strong>Sleep</strong> — saves to RAM, low power; default for most laptops</li>
-      <li><strong>Hibernate</strong> — saves to disk, powers off; best for extended transport</li>
-      <li><strong>Shut down</strong> — full shutdown when lid closes; rare but sometimes used in kiosk deployments</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h4>Common Scenarios</h4>
-    <ul>
-      <li><strong>Laptop used as desktop (closed lid):</strong> Set lid close → "Do nothing" so closing the lid doesn't suspend the session; external monitor, keyboard, and mouse continue working</li>
-      <li><strong>User's laptop resumes when opened:</strong> Default behavior; lid open resumes from sleep automatically</li>
-      <li><strong>User wants maximum battery life during transport:</strong> Set lid close on battery → Hibernate</li>
-      <li><strong>Power button accidentally pressed:</strong> Change power button action to "Do nothing" or "Ask me what to do" to prevent accidental shutdowns</li>
-    </ul>
-  </div>
-</div>
-
-<h3 class="section">Turn On Fast Startup</h3>
-
-<p><span class="key-term">Fast Startup</span> is a hybrid shutdown mode that combines elements of a traditional shutdown with hibernate. When Fast Startup is enabled and the user shuts down, Windows saves the kernel session and device driver state to a hibernate file — the user's session is fully closed (logged out), but the kernel state is preserved. The next boot loads this saved kernel state, skipping the full kernel initialization and making startup significantly faster.</p>
-
-<div class="callout callout-warn">
-  <p class="callout-title">Fast Startup — Important Caveats</p>
-  <p><strong>Fast Startup is not a full shutdown.</strong> Because the kernel state is preserved, Fast Startup does not clear driver state or re-initialize hardware. This causes two common issues: (1) Windows updates that require a full reboot to complete will not apply on a "shutdown" with Fast Startup — they require selecting <strong>Restart</strong> instead, which does perform a full shutdown/boot cycle. (2) Dual-boot systems: Windows' Fast Startup locks the NTFS filesystem from the previous session, preventing Linux from safely reading/writing the Windows partition. Disable Fast Startup when dual-booting with Linux. Located: Power Options → Choose what the power buttons do → check "Turn on fast startup."</p>
-</div>
-
-<h3 class="section">USB Selective Suspend</h3>
-
-<p><span class="key-term">USB Selective Suspend</span> allows Windows to place individual USB ports into a low-power suspended state when the connected device is idle, rather than maintaining continuous power to all USB ports at all times. The USB host controller can suspend individual ports independently without affecting other active ports.</p>
-
-<ul class="body-list">
-  <li><strong>Where to configure:</strong> Power Options → Change plan settings → Change advanced power settings → USB Settings → USB Selective Suspend Setting → Enabled/Disabled. Each power plan has its own setting, configurable separately for On Battery and Plugged In</li>
-  <li><strong>Enabled (default):</strong> USB devices may be suspended when idle — reduces battery drain; beneficial for laptops; devices resume quickly when accessed</li>
-  <li><strong>Disabled:</strong> USB ports maintain constant power; recommended when connected USB devices (audio interfaces, MIDI controllers, external drives, precision mice) experience intermittent disconnections, audio dropouts, or other issues related to power state transitions</li>
-  <li><strong>Troubleshooting USB devices that randomly disconnect:</strong> Disable USB Selective Suspend as a first step — this is a very common cause of intermittent USB audio interface failures, external drive disconnections, and USB hub issues</li>
-  <li><strong>Device Manager alternative:</strong> USB selective suspend can also be disabled per-device via Device Manager → Universal Serial Bus controllers → USB Root Hub → Properties → Power Management → uncheck "Allow the computer to turn off this device to save power"</li>
-</ul>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Power Options</p>
-  <p><strong>Sleep</strong> = RAM powered, instant resume, low power draw. <strong>Hibernate</strong> = RAM to disk (hiberfil.sys), zero power, slower resume, requires free disk space equal to RAM. <strong>Standby = Sleep</strong> in older Windows terminology. <strong>Fast Startup</strong> = hybrid shutdown that preserves kernel state — NOT a true full shutdown; use Restart for full reboot. <strong>USB Selective Suspend</strong> = disable when USB devices randomly disconnect. Power plan High Performance = CPU at max always; Power Saver = minimum CPU frequency. Lid close action = Do nothing for clamshell desktop mode.</p>
-</div>
-
-
-<!-- ═══ SETTINGS APP ═══ -->
-<h2 class="chapter"><span class="ch-num">SECTION 3</span>Windows Settings App</h2>
-
-<p>The <span class="key-term">Settings app</span> (<code>Win+I</code>) is the modern replacement interface that Microsoft is building out to eventually replace Control Panel. It is organized into top-level categories, each containing related settings grouped logically. Settings mirrors and overlaps with Control Panel in many areas — both interfaces can reach many of the same underlying settings, just via different navigation paths.</p>
-
-<h3 class="section">Ease of Access</h3>
-<div class="path-badge">Settings → Ease of Access &nbsp;|&nbsp; Win+I → Ease of Access &nbsp;|&nbsp; Win+U</div>
-
-<p><span class="key-term">Ease of Access</span> groups all accessibility features for users with vision, hearing, and motor impairments. These settings can also be opened at the login screen (bottom-right accessibility icon) for users who need them before signing in.</p>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Vision — Narrator</span>
-    <span>Screen reader that reads aloud the text of what appears on screen and describes events (notifications, key presses). Uses keyboard shortcuts starting with <code>Caps Lock</code> or <code>Insert</code> as the "Narrator key." Enable via <code>Win+Ctrl+Enter</code> or the toggle in Ease of Access. Essential for users with visual impairments or blindness.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Vision — Magnifier</span>
-    <span>Enlarges portions of the screen. Three modes: Full screen (magnifies entire display), Lens (magnifier follows the mouse cursor), Docked (a panel at the top magnifies an area). Enable/adjust with <code>Win++</code> (zoom in) and <code>Win+-</code> (zoom out). <code>Win+Esc</code> exits Magnifier.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Vision — High Contrast</span>
-    <span>Replaces the color scheme with high-contrast themes (white-on-black or black-on-white) for users with low vision or color blindness. Toggle with <code>Left Alt+Left Shift+Print Screen</code>. High contrast themes apply to the entire OS and all applications.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Hearing — Captions / Visual Alerts</span>
-    <span>Enables visual cues for audio alerts — screen flash instead of or in addition to audio beep. Closed captions settings control font, size, color, and background for video captioning. Important for users who are deaf or hard of hearing working in environments where audio output isn't reliable.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Interaction — Keyboard</span>
-    <span><strong>Sticky Keys:</strong> allows pressing keyboard shortcuts one key at a time instead of simultaneously (useful for users who cannot hold multiple keys at once). Enable by pressing Shift 5 times rapidly. <strong>Filter Keys:</strong> slows down keyboard repeat rate to ignore brief or repeated keystrokes. <strong>Toggle Keys:</strong> audio beep when Caps Lock, Num Lock, or Scroll Lock is pressed.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Interaction — Mouse Keys</span>
-    <span>Enables using the numeric keypad to control the mouse pointer — an alternative to a physical mouse for users with motor impairments. Enable with <code>Left Alt+Left Shift+Num Lock</code>. Mouse Keys can interfere with number entry when accidentally activated — a common support call where a user's Num Lock keypad moves the cursor instead of typing numbers.</span>
-  </div>
-</div>
-
-<h3 class="section">Time and Language</h3>
-<div class="path-badge">Settings → Time and Language &nbsp;|&nbsp; Win+I → Time &amp; Language</div>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Date and Time</span>
-    <span>Set date and time manually or enable <strong>"Set time automatically"</strong> via NTP (Network Time Protocol) — the time server is configurable (default: time.windows.com). Enable "Set time zone automatically" for traveling devices. Incorrect time causes SSL/TLS certificate validation failures (certificates have validity periods validated against the system clock), Kerberos authentication failures on domain networks, and log correlation problems.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Region</span>
-    <span>Sets the country/region which determines date format (MM/DD/YYYY vs. DD/MM/YYYY), number format (1,234.56 vs. 1.234,56), currency symbol, and measurement units. Important in multinational organizations where incorrect regional settings cause application data entry errors (dates entered in wrong format, comma vs. period in numbers).</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Language</span>
-    <span>Add display languages (changes UI language of Windows and Office), input methods (keyboard layouts — QWERTY, AZERTY, Dvorak), and speech recognition languages. Adding an input method adds an input language indicator to the taskbar; users can switch keyboard layouts with <code>Win+Space</code>. Phantom character input (wrong characters typed) is often caused by accidentally switching keyboard layout.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Speech</span>
-    <span>Configures Windows Speech Recognition and Cortana's voice model. Training the speech model improves recognition accuracy for the specific user's voice and accent. Speech settings also control the text-to-speech voice (Microsoft David, Zira, or third-party voices) and speaking rate used by Narrator and other TTS applications.</span>
-  </div>
-</div>
-
-<h3 class="section">Update and Security</h3>
-<div class="path-badge">Settings → Update &amp; Security &nbsp;|&nbsp; Win+I → Windows Update</div>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Windows Update</span>
-    <span>Check for, download, and install updates. View update history. Pause updates for up to 35 days (Pro/Enterprise). Configure <strong>active hours</strong> (time range when Windows won't automatically restart for updates — protecting active working hours). Advanced options include enabling/disabling updates for other Microsoft products (Office) and choosing when feature updates are received (deferral policies in Enterprise).</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Windows Security</span>
-    <span>Opens Windows Security (formerly Windows Defender) — the integrated antivirus, firewall, and security health dashboard. Sections: Virus &amp; threat protection (scan controls, real-time protection, update virus definitions), Firewall &amp; network protection, App &amp; browser control (SmartScreen, exploit protection), Device security (Secure Boot, TPM status, Core isolation/Memory Integrity), and Device performance &amp; health.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Backup</span>
-    <span>Links to File History (automated backup of user files to an external drive or network location — versioned copies of files saved at configurable intervals) and the legacy Windows Backup tool. File History is the recommended personal backup solution on Windows 10/11 for user data. For full system backup, use third-party imaging tools (Macrium Reflect, Veeam Agent).</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Recovery</span>
-    <span>Options for resetting Windows ("Reset this PC" — keep files or remove everything), advanced startup (boot to WinRE for repair tools), and returning to a previous version of Windows (available for a limited time after a major upgrade). "Reset this PC → Remove everything" is equivalent to a clean install and is the fastest way to prepare a machine for decommission or reissue.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Activation</span>
-    <span>Shows Windows activation status and allows re-entering the product key or troubleshooting activation errors. Common activation issues: hardware changes (motherboard replacement) can trigger re-activation; volume licensing activation requires the KMS (Key Management Service) server to be reachable; digital license activation fails if Microsoft account is disconnected. Run <code>slui.exe</code> or <code>slmgr /ato</code> commands for activation management.</span>
-  </div>
-</div>
-
-<h3 class="section">Personalization</h3>
-<div class="path-badge">Settings → Personalization &nbsp;|&nbsp; Right-click Desktop → Personalize</div>
-
-<ul class="body-list">
-  <li><strong>Background:</strong> Set desktop wallpaper (solid color, picture, or slideshow). In enterprise environments, Group Policy often locks this to prevent changes and enforce branding</li>
-  <li><strong>Colors:</strong> Accent color for UI elements; light vs. dark mode for Start menu, taskbar, and apps. Dark mode enables the Windows 10/11 dark theme — individual applications must also support dark mode to fully apply it</li>
-  <li><strong>Lock Screen:</strong> Sets the lock screen image (picture, slideshow, or Windows Spotlight — rotating Bing images). Controls which apps display status on the lock screen (calendar, mail preview)</li>
-  <li><strong>Themes:</strong> Bundles wallpaper, color, sound scheme, and mouse cursor settings into a single named package. Microsoft provides additional themes in the Store. Corporate environments deploy custom themes via Group Policy</li>
-  <li><strong>Start:</strong> Configure how many pinned and recent apps appear, whether recently added apps show, whether most used apps appear in Start. Show or hide specific folders on Start (Settings, File Explorer, Documents, Downloads, Music, Pictures, Videos, Network, Personal Folder)</li>
-  <li><strong>Taskbar:</strong> Configure taskbar position, pinned items, system tray icons, and notification badge behavior. Lock the taskbar to prevent accidental repositioning. Enable/disable features like Search, Task View, News and Interests, and Cortana on the taskbar</li>
-</ul>
-
-<h3 class="section">Apps</h3>
-<div class="path-badge">Settings → Apps &nbsp;|&nbsp; Win+I → Apps</div>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Apps and Features</span>
-    <span>Lists all installed applications with options to uninstall or modify — the Settings app equivalent of Programs and Features in Control Panel. Also provides "Advanced options" for Store apps (reset, repair, background permissions, notifications). Clicking an app → Uninstall is the simplest path for most users, though Control Panel's Programs and Features is still preferred by technicians for its additional information (install date, version, publisher).</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Default Apps</span>
-    <span>Sets which application handles each file type or protocol by default: default browser, email client, music player, video player, photo viewer, and map application. Also "Choose default apps by file type" (e.g., associate .pdf files with Adobe Reader instead of Edge) and "Choose default apps by protocol" (e.g., which app opens mailto: links). In Windows 11, setting defaults requires manually selecting each file type — a deliberate Microsoft friction point to make Edge and Microsoft apps harder to replace.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Startup Apps</span>
-    <span>Replaces the Startup tab in Task Manager for managing applications that launch at login. Toggle individual startup items on/off. Shows the "Startup impact" rating (Low/Medium/High) indicating how much the app slows login time. Equivalent to the Startup tab in Task Manager (<code>taskmgr</code>) — either interface can be used.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Optional Features</span>
-    <span>Add or remove optional Windows features like Notepad, WordPad, RSAT (Remote Server Administration Tools — lets technicians manage Windows Server from a client machine without logging in to the server), Windows Media Player, OpenSSH client and server, and fonts. RSAT tools are critical for enterprise IT technicians.</span>
-  </div>
-</div>
-
-<h3 class="section">Privacy</h3>
-<div class="path-badge">Settings → Privacy &nbsp;|&nbsp; Win+I → Privacy</div>
-
-<p>Privacy settings control which applications and Windows components can access hardware features and user data. These are critically important both for user privacy and for troubleshooting applications that fail to access expected hardware resources.</p>
-
-<div class="setting-panel">
-  <div class="setting-panel-head">Privacy — Key Permission Controls</div>
-  <div class="setting-row">
-    <div class="setting-name">General</div>
-    <div class="setting-desc">Controls advertising ID (allows apps to show personalized ads), tracking app launches (for Start suggestions), suggested content in Settings, and sending diagnostic data to Microsoft. "Diagnostic data" setting has two levels: Required (basic telemetry only) and Optional (full telemetry including browsing and app usage data). Enterprise environments typically set this to Required via policy.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Camera</div>
-    <div class="setting-desc">Master switch for camera access plus per-app controls. If a video conferencing app (Teams, Zoom) cannot access the camera, check here first — the app may have been denied camera access. "Allow apps to access your camera" must be on, AND the specific app must be allowed. Classic scenario: "camera works in one app but not another" → check per-app camera permission.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Microphone</div>
-    <div class="setting-desc">Same structure as Camera — master microphone access toggle plus per-app permissions. Common troubleshooting: user's microphone works in Windows Sound settings (recording tab shows signal) but not in Teams or Zoom → check Privacy → Microphone; the app may be denied microphone access. Desktop apps (Win32, .exe files) are listed separately from Store apps.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Location</div>
-    <div class="setting-desc">Controls whether Windows and apps can access GPS/location data. Default location can be set manually. Apps like Maps, weather widgets, and browser-based location services use this. On laptops without GPS, Windows uses Wi-Fi access point data and IP geolocation for approximate location. Disabling location blocks all location-based app functionality.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Background Apps</div>
-    <div class="setting-desc">Controls which apps can run in the background (checking for updates, receiving notifications, syncing data) when not in focus. Disabling background access for an app means it won't send notifications or sync when the app isn't open. Useful for reducing battery drain and system resource use on low-powered devices.</div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-name">Diagnostics and Feedback</div>
-    <div class="setting-desc">Controls the level of diagnostic data (telemetry) sent to Microsoft, feedback frequency, and the diagnostic data viewer. Enterprise environments use Group Policy to enforce Required telemetry level and disable user modification of these settings.</div>
-  </div>
-</div>
-
-<h3 class="section">System (Settings App)</h3>
-<div class="path-badge">Settings → System &nbsp;|&nbsp; Win+I → System</div>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Display</span>
-    <span>Screen resolution, refresh rate, orientation (landscape/portrait), brightness and color settings, Night Light (reduces blue light in evenings), HDR settings, and multi-monitor arrangement. <strong>Scale and layout</strong> (text size / DPI scaling) adjusts the size of text and UI elements — 100% is native resolution; 125% and 150% are common on high-DPI screens (HiDPI). Blurry applications on HiDPI screens often need their per-application DPI override set via right-click → Properties → Compatibility → DPI settings.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Notifications and Actions</span>
-    <span>Enable/disable notifications globally and per-application. Configure which quick-action buttons appear in the Action Center (notification panel). Set focus assist levels — focus assist suppresses notifications during presentations, gaming, or defined quiet hours. Disabling all notifications is appropriate for kiosk systems; per-app control is better for personal workstations.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Storage</span>
-    <span>Shows disk usage breakdown by category (System and reserved, Apps and games, Documents, Pictures, Videos, etc.). Storage Sense — automated storage cleanup that deletes temporary files, clears Downloads folder at intervals, and empties Recycle Bin automatically. Run Storage Sense manually to free space. "Change where new content is saved" redirects future Downloads, Documents, Music, Pictures, and Videos to a secondary drive — useful when the C: drive is nearly full.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Multitasking</span>
-    <span>Snap layouts — configure Snap Assist behavior (automatically suggesting windows to fill alongside a snapped window, showing snapped apps when hovering over the taskbar). Virtual desktops settings — whether taskbar shows windows from all desktops or only current desktop. Alt+Tab behavior for virtual desktops.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">About</span>
-    <span>Shows Windows edition, version, build number, installation date, device name, processor, RAM, system type, and product ID. Links to "Advanced system settings" (sysdm.cpl), "Rename this PC," BitLocker, and Device Manager. The <strong>Windows version and build number</strong> here is critical for support — always check this before troubleshooting OS-specific issues to confirm exact Windows version and whether it is current.</span>
-  </div>
-</div>
-
-<h3 class="section">Devices (Settings App)</h3>
-<div class="path-badge">Settings → Devices &nbsp;|&nbsp; Win+I → Devices</div>
-
-<ul class="body-list">
-  <li><strong>Bluetooth and other devices:</strong> Pair and manage Bluetooth devices; add printers, scanners, and other peripherals. For printers, this is the simpler path vs. Control Panel → Devices and Printers — though for advanced printer management (port configuration, security, spooler) the Control Panel path is still necessary</li>
-  <li><strong>Printers and Scanners:</strong> Add printers (wizard-based), set default printer, "Let Windows manage my default printer" toggle, remove printers. Clicking a printer → Manage opens a simplified print queue and printing preferences interface</li>
-  <li><strong>Mouse:</strong> Button configuration (left/right swap), pointer speed, scrolling behavior (lines per scroll notch, scroll inactive windows on hover). "Additional mouse options" opens the classic Mouse Properties control panel for advanced settings (pointer schemes, pointer trails, click speed)</li>
-  <li><strong>Typing:</strong> Autocorrect and spell-check settings, hardware keyboard settings (toggle keys, filter keys, sticky keys shortcuts), touch keyboard behavior, voice typing settings</li>
-  <li><strong>Pen and Windows Ink:</strong> Surface Pen and stylus settings — writing with the pen, left-handed mode, ignored palm detection sensitivity</li>
-  <li><strong>AutoPlay:</strong> Configures automatic actions when removable media (USB drives, optical discs, SD cards, cameras) are inserted. Can set to "Ask me every time," "Take no action," or a specific application for each media type. Disabling AutoPlay for all media prevents malicious AutoRun malware from executing automatically when infected USB drives are inserted</li>
-</ul>
-
-<h3 class="section">Network and Internet (Settings App)</h3>
-<div class="path-badge">Settings → Network &amp; Internet &nbsp;|&nbsp; Win+I → Network &amp; Internet</div>
-
-<ul class="body-list">
-  <li><strong>Status:</strong> Shows current network connection status, data usage, network troubleshooter, and links to advanced network settings (including Change adapter options and Network and Sharing Center)</li>
-  <li><strong>Wi-Fi:</strong> Connect to Wi-Fi networks, manage known networks (forget networks), Wi-Fi Calling settings, hotspot 2.0 settings. "Show available networks" shows the same network list as clicking the taskbar Wi-Fi icon</li>
-  <li><strong>Ethernet:</strong> View connection status, configure IP settings (DHCP or manual IP), DNS settings (DNS over HTTPS in Windows 11), and set the network profile (Private/Public)</li>
-  <li><strong>VPN:</strong> Add, configure, and connect to VPN connections. Supports built-in Windows VPN protocols (IKEv2, SSTP, L2TP/IPsec, PPTP). Third-party VPN clients have their own apps but may also appear here</li>
-  <li><strong>Proxy:</strong> Configure system-wide proxy settings — this is the Settings app equivalent of Internet Options → Connections → LAN Settings. Changes here are reflected in Internet Options and vice versa</li>
-  <li><strong>Mobile Hotspot:</strong> Share the computer's internet connection over Wi-Fi — useful for sharing a wired or cellular internet connection wirelessly to other devices</li>
-</ul>
-
-<h3 class="section">Gaming</h3>
-<div class="path-badge">Settings → Gaming &nbsp;|&nbsp; Win+I → Gaming</div>
-
-<ul class="body-list">
-  <li><strong>Xbox Game Bar:</strong> Enable/disable the Game Bar overlay (<code>Win+G</code>). Game Bar provides fps counter, performance overlay, screen recording, and screenshot tools. Some enterprise environments disable Game Bar via Group Policy to prevent misuse during work hours or to reduce system overhead</li>
-  <li><strong>Captures:</strong> Configure background recording (records the last N minutes of gameplay automatically), screenshot storage location, video quality, and audio capture settings for recordings</li>
-  <li><strong>Game Mode:</strong> When enabled, Windows prioritizes CPU and GPU resources for the active game, suspending background Windows Update downloads and other non-critical background tasks during gameplay. Reduces frame rate drops and stuttering during gaming. Enable via the Game Mode toggle in Settings → Gaming → Game Mode</li>
-  <li><strong>Xbox Networking:</strong> Shows NAT type and connection quality for Xbox network services — useful for diagnosing multiplayer connectivity issues related to firewall NAT traversal</li>
-</ul>
-
-<h3 class="section">Accounts</h3>
-<div class="path-badge">Settings → Accounts &nbsp;|&nbsp; Win+I → Accounts</div>
-
-<div class="def-list">
-  <div class="def-item">
-    <span class="def-term">Your Info</span>
-    <span>Shows the current signed-in account (Microsoft account or local account), profile picture, and whether the account is an administrator. Switch between a Microsoft account and a local account here. Signing in with a Microsoft account enables settings sync, OneDrive integration, and digital license activation tied to the account rather than the hardware.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Sign-in Options</span>
-    <span>Configure authentication methods: <strong>Windows Hello Face</strong> (facial recognition — requires IR camera), <strong>Windows Hello Fingerprint</strong> (requires fingerprint reader), <strong>Windows Hello PIN</strong> (device-local PIN that doesn't require network access), <strong>Security Key</strong> (FIDO2 hardware key like YubiKey), <strong>Password</strong> (traditional password), and <strong>Picture Password</strong>. Also controls dynamic lock (automatically locks when Bluetooth-paired phone leaves range) and whether sign-in is required after sleep.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Email and Accounts</span>
-    <span>Adds accounts for Windows apps (Mail, Calendar, People, Maps). Adding a Google account here syncs Gmail and Google Calendar into the Windows Mail and Calendar apps. Adding a Microsoft 365/Exchange account enables native integration with Outlook (when installed). These accounts are separate from the sign-in account and affect only Windows app data sync.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Access Work or School</span>
-    <span>Join the computer to an Azure Active Directory (AAD) or on-premises Active Directory domain for enterprise management. When joined to AAD, the machine can receive Intune MDM policies, Conditional Access policies, and Single Sign-On to Microsoft 365. "Enroll only in device management" allows MDM enrollment without full domain join — used for BYOD (Bring Your Own Device) scenarios where the user owns the machine but the company manages corporate apps and data on it.</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Family and Other Users</span>
-    <span>Add additional local or Microsoft account users to the computer. Includes Microsoft Family Safety integration for parental controls — screen time limits, content filters, and app purchase approvals for child accounts. "Add a family member" creates a child or adult account with appropriate oversight settings. Local account creation for users without a Microsoft account is done here via "Add someone else to this PC."</span>
-  </div>
-  <div class="def-item">
-    <span class="def-term">Sync Your Settings</span>
-    <span>When signed in with a Microsoft account, Windows can sync settings across devices: themes, passwords (via Microsoft Account), language preferences, ease of access settings, and other Windows settings. Enable or disable sync globally or per category. Useful for users with multiple Windows devices who want consistent settings everywhere. Requires Microsoft account sign-in — not available for local accounts.</span>
-  </div>
+  <p class="callout-title">Same Concept, Two Interfaces — A Study Strategy</p>
+  <p>Notice that "System" and device/network management appear conceptually in both the Control Panel list (Section 1) and the Settings app list (Section 4), and Device Manager is directly reachable from both. Rather than memorizing two entirely separate universes of settings, it's more efficient to learn the underlying concept once (e.g., "how do I check installed RAM and computer name") and simply recognize that it might be reached via the Control Panel's System applet or the Settings app's System → About page depending on the Windows version and scenario described.</p>
 </div>
 
 
@@ -1439,108 +804,78 @@
 <div class="summary-box">
   <h3>Master Reference — Objective 1.6 Key Concepts</h3>
   <div class="summary-grid">
-    <div class="summary-item"><span class="s-sym">Internet Options — Proxy</span><span>Connections tab → LAN Settings; system-wide proxy for all WinINet apps</span></div>
-    <div class="summary-item"><span class="s-sym">Internet Options — Certs</span><span>Content tab → Certificates; manage SSL/TLS certificates for all Windows apps</span></div>
-    <div class="summary-item"><span class="s-sym">Devices and Printers</span><span>Add/default/manage printers; right-click for queue, properties, preferences</span></div>
-    <div class="summary-item"><span class="s-sym">Stuck Print Job Fix</span><span>Stop Spooler → delete C:\Windows\System32\spool\PRINTERS\* → Start Spooler</span></div>
-    <div class="summary-item"><span class="s-sym">Programs and Features</span><span>appwiz.cpl; uninstall/repair apps; View Installed Updates; Windows Features</span></div>
-    <div class="summary-item"><span class="s-sym">Windows Features</span><span>Programs and Features → Turn Windows features on/off; Hyper-V, WSL, Telnet, .NET</span></div>
-    <div class="summary-item"><span class="s-sym">Network and Sharing Center</span><span>Change Adapter Settings = IP config; Change Advanced Sharing = file sharing toggle</span></div>
-    <div class="summary-item"><span class="s-sym">System — Computer Name</span><span>sysdm.cpl → Computer Name tab; domain join; requires reboot</span></div>
-    <div class="summary-item"><span class="s-sym">System — Virtual Memory</span><span>sysdm.cpl → Advanced → Performance → Virtual Memory; pagefile management</span></div>
-    <div class="summary-item"><span class="s-sym">System — Remote Desktop</span><span>sysdm.cpl → Remote tab; enable RDP; firewall must also allow TCP 3389</span></div>
-    <div class="summary-item"><span class="s-sym">Windows Defender Firewall</span><span>firewall.cpl; per-profile rules; wf.msc for port-level rules; never disable Public</span></div>
-    <div class="summary-item"><span class="s-sym">User Accounts — UAC</span><span>4 levels; default = notify when apps make changes; lower = more risk</span></div>
-    <div class="summary-item"><span class="s-sym">Credential Manager</span><span>Stores saved network/app passwords; delete stale credentials after password change</span></div>
-    <div class="summary-item"><span class="s-sym">Device Manager</span><span>devmgmt.msc; ⚠️=driver problem; ❌=disabled; ❓=no driver; Roll Back Driver option</span></div>
-    <div class="summary-item"><span class="s-sym">File Explorer — Show Hidden</span><span>View tab → Show hidden files, folders, and drives; also unhide protected OS files</span></div>
-    <div class="summary-item"><span class="s-sym">File Explorer — Extensions</span><span>Uncheck "Hide extensions for known file types" — security best practice always</span></div>
-    <div class="summary-item"><span class="s-sym">Sleep vs. Hibernate</span><span>Sleep = RAM powered, instant resume; Hibernate = RAM to disk, zero power, slower resume</span></div>
-    <div class="summary-item"><span class="s-sym">Fast Startup</span><span>Hybrid shutdown preserving kernel state; NOT a full reboot; use Restart for updates/dual-boot</span></div>
-    <div class="summary-item"><span class="s-sym">USB Selective Suspend</span><span>Disable when USB devices randomly disconnect; Power Options → Advanced → USB Settings</span></div>
-    <div class="summary-item"><span class="s-sym">Lid Close → Do Nothing</span><span>Required for clamshell laptop-as-desktop mode with external monitor</span></div>
-    <div class="summary-item"><span class="s-sym">Privacy — Camera/Mic</span><span>App can't access camera/mic → Settings → Privacy → Camera/Microphone; check per-app toggle</span></div>
-    <div class="summary-item"><span class="s-sym">Ease of Access — Sticky Keys</span><span>Shift × 5 = enable; one key at a time for shortcuts; Mouse Keys = Num Lock controls mouse</span></div>
-    <div class="summary-item"><span class="s-sym">Time — NTP</span><span>Wrong time → Kerberos and TLS fail; set to automatic NTP sync (time.windows.com)</span></div>
-    <div class="summary-item"><span class="s-sym">Accounts — Sign-in Options</span><span>Windows Hello: Face/Fingerprint/PIN; dynamic lock; sign-in after sleep setting</span></div>
+    <div class="summary-item"><span class="s-sym">Internet Options</span><span>Legacy IE/system browser security zones, connections, privacy</span></div>
+    <div class="summary-item"><span class="s-sym">Devices and Printers</span><span>Install/manage connected devices and printers</span></div>
+    <div class="summary-item"><span class="s-sym">Programs and Features</span><span>Uninstall apps; enable/disable optional Windows features</span></div>
+    <div class="summary-item"><span class="s-sym">Network and Sharing Center</span><span>Connection status, adapter settings, sharing options</span></div>
+    <div class="summary-item"><span class="s-sym">System (Control Panel)</span><span>Core system info, system protection, advanced properties</span></div>
+    <div class="summary-item"><span class="s-sym">Windows Defender Firewall</span><span>Enable/disable per profile; manage allowed apps and rules</span></div>
+    <div class="summary-item"><span class="s-sym">Mail</span><span>Outlook profile/data file configuration</span></div>
+    <div class="summary-item"><span class="s-sym">Sound</span><span>Audio device selection, levels, default in/out devices</span></div>
+    <div class="summary-item"><span class="s-sym">User Accounts</span><span>Local account management; UAC configuration</span></div>
+    <div class="summary-item"><span class="s-sym">Indexing Options</span><span>Configure/rebuild Windows Search index locations</span></div>
+    <div class="summary-item"><span class="s-sym">Administrative Tools</span><span>Central folder of MMC snap-ins and advanced utilities</span></div>
+    <div class="summary-item"><span class="s-sym">View Hidden Files</span><span>Toggles display of hidden system/config files</span></div>
+    <div class="summary-item"><span class="s-sym">Hide Extensions</span><span>Security-relevant: disable to always show true file extensions</span></div>
+    <div class="summary-item"><span class="s-sym">Hibernate</span><span>Saves RAM state to disk; powers off; slower resume</span></div>
+    <div class="summary-item"><span class="s-sym">Sleep/Suspend/Standby</span><span>Keeps state in RAM; low power draw; near-instant resume</span></div>
+    <div class="summary-item"><span class="s-sym">Fast Startup</span><span>Hybrid shutdown; can interfere with hardware-change detection</span></div>
+    <div class="summary-item"><span class="s-sym">USB Selective Suspend</span><span>Can cause idle USB devices to appear disconnected</span></div>
+    <div class="summary-item"><span class="s-sym">Settings App Categories</span><span>Ease of Access, Time/Language, Update/Security, Personalization, Apps, Privacy, System, Devices, Network/Internet, Gaming, Accounts</span></div>
   </div>
 </div>
 
-<!-- QUICK REFERENCE CARDS -->
-<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference — Run Commands and Paths</h2>
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
 
 <div class="card-grid">
   <div class="card">
-    <h4>Critical Run Commands</h4>
+    <h4>"Where Do I Configure This?" — Common Tasks</h4>
     <ul>
-      <li><strong>inetcpl.cpl</strong> — Internet Options</li>
-      <li><strong>control printers</strong> — Devices and Printers</li>
-      <li><strong>appwiz.cpl</strong> — Programs and Features</li>
-      <li><strong>firewall.cpl</strong> — Windows Defender Firewall</li>
-      <li><strong>sysdm.cpl</strong> — System Properties</li>
-      <li><strong>devmgmt.msc</strong> — Device Manager</li>
-      <li><strong>powercfg.cpl</strong> — Power Options</li>
-      <li><strong>control folders</strong> — File Explorer Options</li>
-      <li><strong>netplwiz</strong> — Advanced User Accounts</li>
-      <li><strong>wf.msc</strong> — Firewall Advanced Security</li>
-      <li><strong>mmsys.cpl</strong> — Sound</li>
-      <li><strong>Win+I</strong> — Settings App (keyboard shortcut)</li>
+      <li><strong>Set a default printer</strong> — Devices and Printers</li>
+      <li><strong>Uninstall a program</strong> — Programs and Features</li>
+      <li><strong>Show real file extensions</strong> — File Explorer Options → View</li>
+      <li><strong>Check installed RAM/computer name</strong> — System applet or Settings → System → About</li>
+      <li><strong>Adjust firewall rules</strong> — Windows Defender Firewall</li>
     </ul>
   </div>
   <div class="card">
-    <h4>Administrative Tools Run Commands</h4>
+    <h4>Power State Quick Compare</h4>
     <ul>
-      <li><strong>compmgmt.msc</strong> — Computer Management</li>
-      <li><strong>diskmgmt.msc</strong> — Disk Management</li>
-      <li><strong>eventvwr.msc</strong> — Event Viewer</li>
-      <li><strong>services.msc</strong> — Services</li>
-      <li><strong>taskschd.msc</strong> — Task Scheduler</li>
-      <li><strong>secpol.msc</strong> — Local Security Policy (Pro+)</li>
-      <li><strong>gpedit.msc</strong> — Group Policy Editor (Pro+)</li>
-      <li><strong>perfmon.msc</strong> — Performance Monitor</li>
-      <li><strong>regedit.exe</strong> — Registry Editor</li>
-      <li><strong>msconfig.exe</strong> — System Configuration</li>
-      <li><strong>msinfo32.exe</strong> — System Information</li>
-      <li><strong>mdsched.exe</strong> — Memory Diagnostic</li>
+      <li><strong>Fastest resume, some power draw</strong> — Sleep/Suspend/Standby</li>
+      <li><strong>No power draw, slower resume</strong> — Hibernate</li>
+      <li><strong>Bundles timeout/performance rules</strong> — Power plan</li>
+      <li><strong>Laptop-specific action on lid close</strong> — "Choose what closing the lid does"</li>
     </ul>
   </div>
   <div class="card">
-    <h4>Power States — At a Glance</h4>
+    <h4>Troubleshooting Culprits to Remember</h4>
     <ul>
-      <li><strong>Sleep</strong> — RAM powered; instant resume; low power; power cut = data loss</li>
-      <li><strong>Hibernate</strong> — RAM → disk (hiberfil.sys); zero power; slower resume</li>
-      <li><strong>Standby</strong> — legacy term for Sleep (ACPI S3)</li>
-      <li><strong>Hybrid Sleep</strong> — RAM to both memory and disk; desktop default</li>
-      <li><strong>Fast Startup</strong> — kernel hibernated on shutdown; NOT a full reboot</li>
-      <li><strong>High Performance plan</strong> — CPU at max always; ignore for battery</li>
-      <li><strong>Power Saver plan</strong> — minimum CPU; max battery; reduced performance</li>
+      <li><strong>Hardware change not detected after restart</strong> — check Fast Startup</li>
+      <li><strong>USB device "disconnects" when idle</strong> — check USB selective suspend</li>
+      <li><strong>User ran a disguised malicious file</strong> — check hidden extensions setting</li>
+      <li><strong>Search results incomplete/stale</strong> — check/rebuild Indexing Options</li>
     </ul>
   </div>
   <div class="card">
-    <h4>Scenario Quick Reference</h4>
+    <h4>Settings App — Category Quick Map</h4>
     <ul>
-      <li><strong>App can't access camera/mic</strong> → Settings → Privacy → Camera/Microphone</li>
-      <li><strong>USB device randomly disconnects</strong> → Disable USB Selective Suspend</li>
-      <li><strong>Laptop + external monitor, lid closed</strong> → Power Options → Lid close → Do nothing</li>
-      <li><strong>Can't show file extension</strong> → File Explorer Options → uncheck Hide extensions</li>
-      <li><strong>App blocked by firewall</strong> → Allow app through Windows Defender Firewall</li>
-      <li><strong>Wrong time breaks TLS/Kerberos</strong> → Time &amp; Language → Set time automatically</li>
-      <li><strong>Windows Updates need full reboot</strong> → Use Restart, not Shutdown (Fast Startup)</li>
-      <li><strong>Unknown device in Device Manager</strong> → Check Hardware ID → get driver from manufacturer</li>
+      <li><strong>Accessibility</strong> — Ease of Access</li>
+      <li><strong>Wi-Fi/VPN/proxy</strong> — Network and Internet</li>
+      <li><strong>App permissions (camera/mic/location)</strong> — Privacy</li>
+      <li><strong>Sign-in options/other users</strong> — Accounts</li>
     </ul>
   </div>
 </div>
 
 <div class="callout callout-exam" style="margin-top:28px;">
   <p class="callout-title">Final Exam Reminders</p>
-  <p><strong>Internet Options → Connections → LAN Settings</strong> is where proxy server address is configured. This affects all applications using WinINet — not just browsers. If enterprise apps can't reach internal servers but browsers work, check security zones and proxy bypass settings here.</p>
-  <p><strong>Hide extensions for known file types</strong> is a security risk — an EXE disguised with a PDF icon and named <code>file.pdf.exe</code> shows as <code>file.pdf</code>. Always uncheck this. Always show extensions on any computer you manage.</p>
-  <p><strong>Device Manager:</strong> Yellow exclamation = bad/missing driver. Red X / down arrow = disabled. Unknown device = no driver. Roll Back Driver = device broke after driver update. Show Hidden Devices = see disconnected hardware.</p>
-  <p><strong>Sleep ≠ Hibernate:</strong> Sleep keeps RAM powered (instant resume, loses data if power fails). Hibernate writes RAM to disk and powers off completely (slower resume, survives power loss). Standby = Sleep in older Windows terminology.</p>
-  <p><strong>Fast Startup</strong> is NOT a full shutdown — it preserves kernel state in a hibernate file. Windows Updates requiring a reboot must use <strong>Restart</strong>, not Shutdown. Disable Fast Startup for dual-boot Linux configurations.</p>
-  <p><strong>UAC:</strong> Standard User accounts get UAC prompts for admin actions. Running as admin all the time is a security risk. UAC should remain at default level or higher — never set to "Never notify."</p>
-  <p><strong>Programs and Features → Turn Windows features on/off</strong> is where Hyper-V, WSL, Telnet Client, and .NET Framework versions are enabled/disabled — these are Windows OS components, not applications, and don't appear in the main program list.</p>
-  <p><strong>Administrative tools exam priority:</strong> Know <code>devmgmt.msc</code>, <code>diskmgmt.msc</code>, <code>services.msc</code>, <code>eventvwr.msc</code>, <code>compmgmt.msc</code>, <code>msconfig.exe</code>, and <code>regedit.exe</code> by heart — these appear in nearly every domain of A+ troubleshooting questions.</p>
+  <p><strong>Disabling "hide extensions for known file types" is a security-relevant setting</strong>, not just cosmetic — it prevents a file like <code>invoice.pdf.exe</code> from displaying as if it were a harmless PDF.</p>
+  <p><strong>Hibernate writes RAM to disk and powers off completely; Sleep/Suspend/Standby keep RAM powered for a near-instant resume</strong> — the trade-off is always resume speed versus power savings, and this distinction is one of the most reliably tested Power Options facts.</p>
+  <p><strong>Fast Startup and USB selective suspend are both common, non-obvious troubleshooting culprits</strong> — a hardware change not being detected after a restart, or a USB device that seems to vanish after being idle, should prompt checking these two settings specifically.</p>
+  <p><strong>Device Manager and the System applet exist in both the Control Panel and Settings app worlds</strong> — don't treat the two lists in this objective as entirely separate; many concepts overlap or have simply moved between interfaces across Windows versions.</p>
+  <p><strong>Power plans bundle multiple individual settings into one selectable profile</strong> — recognize a scenario asking to quickly switch overall power behavior (rather than adjust one specific setting) as a power plan question.</p>
+  <p><strong>The eleven Settings app categories map roughly to older Control Panel functionality</strong> — know the general category a setting would fall under (e.g., app permissions → Privacy, not System) since the exam may ask which Settings category houses a described option.</p>
 </div>
 
 </div>
