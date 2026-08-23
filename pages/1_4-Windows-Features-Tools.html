@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CompTIA A+ 1.4 — Use Microsoft Windows OS Features and Tools</title>
+<title>CompTIA A+ 1.4 — Microsoft Windows OS Features and Tools</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
@@ -235,6 +235,7 @@
     padding: 9px 13px;
     text-align: left;
     border-bottom: 2px solid var(--border);
+    white-space: nowrap;
   }
   .data-table tbody tr { border-bottom: 1px solid var(--border); }
   .data-table tbody tr:last-child { border-bottom: none; }
@@ -245,6 +246,9 @@
     font-size: 13px;
     white-space: nowrap;
   }
+  .data-table .yes { color: var(--accent3); font-weight: 600; }
+  .data-table .no  { color: var(--muted); }
+  .data-table .ltd { color: var(--accent4); font-weight: 600; }
 
   /* PROCESS FLOW */
   .process-flow {
@@ -275,7 +279,7 @@
   .flow-num {
     font-family: var(--mono);
     font-size: 11px;
-    color: var(--accent);
+    color: var(--accent2);
     font-weight: 600;
     min-width: 24px;
     padding-top: 2px;
@@ -289,7 +293,7 @@
     padding: 11px 0;
     border-bottom: 1px solid var(--border);
     display: grid;
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: 220px 1fr;
     gap: 20px;
     font-size: 15px;
   }
@@ -302,17 +306,17 @@
     padding-top: 1px;
     line-height: 1.4;
   }
-  .def-term code {
-    font-size: 11.5px;
-    display: block;
-    margin-top: 3px;
-    color: var(--accent);
-  }
 
   /* GRID CARDS */
   .card-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 14px;
     margin: 20px 0;
   }
@@ -322,6 +326,10 @@
     border-radius: 5px;
     padding: 16px 18px;
   }
+  .card.card-accent2 { border-top: 3px solid var(--accent2); }
+  .card.card-accent  { border-top: 3px solid var(--accent); }
+  .card.card-accent3 { border-top: 3px solid var(--accent3); }
+  .card.card-accent4 { border-top: 3px solid var(--accent4); }
   .card h4 {
     font-family: var(--sans);
     font-size: 12px;
@@ -333,6 +341,13 @@
     padding-bottom: 7px;
     border-bottom: 1px solid var(--border);
   }
+  .card .card-title-big {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
   .card ul { list-style: none; font-family: var(--sans); font-size: 13.5px; }
   .card ul li {
     padding: 4px 0;
@@ -342,6 +357,19 @@
   }
   .card ul li:last-child { border-bottom: none; }
   .card ul li strong { color: var(--text); }
+  .card .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .card .pill-green { border-color: #1a6b3a55; color: var(--accent3); background: var(--accent3-light); }
+  .card .pill-blue  { border-color: #2c3e6b55; color: var(--accent2); background: var(--accent2-light); }
+  .card .pill-red   { border-color: #c0392b55; color: var(--accent);  background: var(--accent-light); }
 
   /* BODY LIST */
   ul.body-list {
@@ -368,7 +396,7 @@
   }
   ul.body-list li strong { color: var(--text); }
 
-  /* TOOL PANEL — main display component */
+  /* TOOL PANEL — for MMC snap-ins and additional tools */
   .tool-panel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -377,120 +405,71 @@
     margin: 20px 0;
   }
   .tool-panel-header {
-    background: var(--text);
-    color: rgba(255,255,255,0.9);
-    padding: 11px 18px;
+    padding: 12px 18px;
+    font-family: var(--mono);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-  }
-  .tool-panel-header .tool-name {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
     color: #fff;
+    background: #2c3e6b;
   }
-  .tool-panel-header .tool-exe {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.04em;
-  }
+  .tool-panel-header .tool-name { font-family: var(--serif); font-size: 16px; font-weight: 600; }
+  .tool-panel-header .tool-exe { font-size: 12px; opacity: 0.85; }
   .tool-panel-body { padding: 0; }
   .tool-row {
     display: grid;
-    grid-template-columns: 170px 1fr;
+    grid-template-columns: 180px 1fr;
     border-bottom: 1px solid var(--border);
     font-family: var(--sans);
     font-size: 14px;
   }
   .tool-row:last-child { border-bottom: none; }
-  .tool-row-label {
+  .tool-label {
     font-weight: 600;
     color: var(--accent2);
     padding: 11px 18px;
     background: var(--surface2);
     border-right: 1px solid var(--border);
     line-height: 1.4;
-    font-size: 13px;
   }
-  .tool-row-desc {
+  .tool-desc {
     padding: 11px 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .tool-desc strong { color: var(--text); }
+
+  /* TASK MANAGER TAB GRID */
+  .tab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .tab-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .tab-card-header {
+    background: var(--text);
+    color: #f0ede6;
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .tab-card-body {
+    padding: 12px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
     color: var(--muted);
     line-height: 1.55;
   }
-  .tool-row-desc strong { color: var(--text); }
-
-  /* TAB ACCESS BAR */
-  .tab-access {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 14px 18px;
-    margin: 16px 0 24px;
-    font-family: var(--sans);
-    font-size: 13.5px;
-  }
-  .tab-access-title {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-  .tab-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .tab-pill {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 3px;
-    border: 1px solid var(--border2);
-    color: var(--accent2);
-    background: var(--surface);
-    white-space: nowrap;
-  }
-
-  /* MMC SNAP-IN TABLE */
-  .snapin-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    font-family: var(--sans);
-    margin: 16px 0 24px;
-  }
-  .snapin-table thead th {
-    background: var(--surface2);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 9px 13px;
-    text-align: left;
-    border-bottom: 2px solid var(--border);
-  }
-  .snapin-table tbody tr { border-bottom: 1px solid var(--border); }
-  .snapin-table tbody tr:last-child { border-bottom: none; }
-  .snapin-table td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
-  .snapin-table td:first-child {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--accent);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  .snapin-table td:nth-child(2) {
-    font-weight: 600;
-    color: var(--accent2);
-    font-size: 13px;
-  }
+  .tab-card-body strong { color: var(--text); }
 
   /* CODE */
   code {
@@ -539,11 +518,11 @@
   }
   .summary-item .s-sym {
     color: #fff;
-    font-family: var(--mono);
-    font-size: 12px;
-    min-width: 170px;
+    font-weight: 600;
+    min-width: 165px;
     line-height: 1.4;
-    padding-top: 1px;
+    font-family: var(--mono);
+    font-size: 12.5px;
   }
 
   .ch-divider {
@@ -552,28 +531,77 @@
     margin: 48px 0;
   }
 
-  /* ACCESS METHOD BADGE */
-  .how-to-open {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  /* REQUIREMENT CARD */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .req-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .req-card-head {
+    background: var(--surface2);
+    padding: 10px 16px;
     font-family: var(--mono);
     font-size: 11px;
-    background: var(--accent2-light);
-    border: 1px solid #2c3e6b33;
-    color: var(--accent2);
-    padding: 3px 10px;
-    border-radius: 3px;
-    margin: 4px 0 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
   }
-  .how-to-open::before { content: '▶'; font-size: 9px; }
+  .req-card-body {
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-spec { font-weight: 600; color: var(--text); }
+  .req-val  { color: var(--accent2); font-family: var(--mono); font-size: 12.5px; }
+
+  /* QUICK MSC/EXE TABLE */
+  .exe-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    font-family: var(--sans);
+    margin: 16px 0 24px;
+  }
+  .exe-table thead th {
+    background: var(--text);
+    color: #f0ede6;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    text-align: left;
+  }
+  .exe-table tbody tr { border-bottom: 1px solid var(--border); }
+  .exe-table tbody tr:nth-child(even) { background: var(--surface2); }
+  .exe-table td { padding: 8px 12px; vertical-align: top; line-height: 1.45; }
+  .exe-table td:first-child { white-space: nowrap; font-weight: 700; color: var(--accent2); }
+  .exe-table td:nth-child(2) { white-space: nowrap; }
 
   @media (max-width: 680px) {
     .page { padding: 0 20px 60px; }
-    .summary-grid, .card-grid { grid-template-columns: 1fr; }
+    .summary-grid, .card-grid, .card-grid-3, .req-grid, .tab-grid { grid-template-columns: 1fr; }
     .def-item { grid-template-columns: 1fr; gap: 4px; }
     .tool-row { grid-template-columns: 1fr; }
-    .tool-row-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .exe-table { font-size: 12px; }
   }
 </style>
 </head>
@@ -584,8 +612,7 @@
   <div class="top-nav-left">
     <a class="nav-home" href="../index.html">Study Guide</a>
     <span class="nav-sep">/</span>
-    <span class="nav-current"><strong>1.4</strong> Given a Scenario, Use Microsoft Windows
-Operating System Features and Tools</span>
+    <span class="nav-current"><strong>1.4</strong> Use Microsoft Windows Operating System Features and Tools</span>
   </div>
   <div class="top-nav-right">
     <a class="nav-prev" href="./1_3-Windows-Editions.html">1.3</a>
@@ -601,924 +628,304 @@ Operating System Features and Tools</span>
     <span>1.4</span>
     CompTIA A+ · Core 2 (220-1202) · Domain 1 — Operating Systems
   </div>
-  <h1 class="book-title">Given a Scenario, Use Microsoft Windows<br>Operating System Features and Tools</h1>
+  <h1 class="book-title">Use Microsoft Windows Operating<br>System Features and Tools</h1>
   <div class="book-subtitle">
     <span>Objective 1.4</span>
     <span>Domain weight: 28%</span>
-    <span>Verb: Scenario</span>
-    <span>3 tool categories · 22 tools</span>
+    <span>Task Manager · MMC Snap-Ins · Additional Tools</span>
   </div>
 </div>
 
 
-<!-- ══════════════════════════════════════════ -->
-<!-- OVERVIEW                                  -->
-<!-- ══════════════════════════════════════════ -->
-<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction</h2>
+<!-- OVERVIEW -->
+<h2 class="chapter"><span class="ch-num">OVERVIEW</span>Introduction to Windows Built-In Tools</h2>
 
-<p>Windows ships with a substantial set of built-in administrative tools that allow a technician to diagnose hardware, monitor performance, manage disks, control startup behavior, inspect event logs, and configure the system — all without installing third-party software. Objective 1.4 tests your knowledge of three categories of these tools: <strong>Task Manager</strong>, the <strong>Microsoft Management Console (MMC) snap-ins</strong>, and a set of standalone <strong>additional tools</strong>.</p>
+<p>Windows ships with a large set of built-in graphical utilities for monitoring, configuring, and troubleshooting the system — no third-party software required. Objective 1.4 covers the specific tools a technician is expected to know: what each one is for, how to launch it, and which situation calls for which tool. Nearly every tool in this objective can be launched by typing its executable name (often ending in <code>.msc</code> or <code>.exe</code>) directly into the Run dialog (<code>Win + R</code>) or Start menu search — a detail worth memorizing since the exam frequently references tools by that exact filename.</p>
 
-<p>The exam is scenario-based, meaning you will be given a support situation and asked which tool to use, or asked what a specific tool shows you. The key to mastering this objective is not just knowing that each tool exists — it is knowing the <em>specific problem each tool solves</em>, what information it displays, and how to launch it quickly.</p>
+<p>This objective covers three groups. <span class="key-term">Task Manager</span> is the everyday, at-a-glance tool for processes, performance, and startup items. <span class="key-term">MMC snap-ins</span> are specialized administrative consoles, each focused on a single area of system management, all built on the shared Microsoft Management Console framework. And <span class="key-term">additional tools</span> covers a set of standalone utilities that round out a technician's diagnostic toolkit.</p>
 
 <div class="callout callout-info">
-  <p class="callout-title">How to Launch Any Tool Instantly</p>
-  <p>Every tool in this objective can be launched from the <strong>Run dialog</strong> (Win + R) or from the <strong>Search bar</strong> by typing its executable name. Memorizing the executable names (e.g., <code>taskmgr</code>, <code>eventvwr.msc</code>, <code>msinfo32</code>) is both an exam skill and a real-world productivity skill. Most tools also appear in the Start menu under Windows Administrative Tools, and many are accessible from right-clicking the Start button (Win + X menu).</p>
+  <p class="callout-title">Core Concept — Know the Filename, Not Just the Name</p>
+  <p>Every tool in this objective has both a friendly display name ("Device Manager") and an executable/console filename (<code>devmgmt.msc</code>) used to launch it directly. The exam tests both directions — recognizing what a tool does when given its filename, and recalling the filename when given a scenario. Treat the two as inseparable: learn each tool as a name-and-filename pair, not just a name.</p>
 </div>
 
 
-<!-- ══════════════════════════════════════════ -->
-<!-- SECTION 1: TASK MANAGER                  -->
-<!-- ══════════════════════════════════════════ -->
+<!-- ═══ SECTION 1 — TASK MANAGER ═══ -->
 <h2 class="chapter"><span class="ch-num">SECTION 1</span>Task Manager</h2>
 
-<p><span class="key-term">Task Manager</span> is the most frequently used diagnostic and management tool available to a Windows technician and end user alike. It provides a real-time, multi-tab window into the running state of the operating system — showing active processes, resource consumption, startup impact, logged-in users, and running services. It is the first tool most technicians reach for when a system is slow, unresponsive, or behaving unexpectedly.</p>
+<p><span class="key-term">Task Manager</span> is the most frequently used everyday Windows utility, providing a real-time view of what's running on the system and giving a technician the ability to end unresponsive programs, inspect resource usage, and manage startup items — all from one window. It can be launched via <code>Ctrl+Shift+Esc</code>, via <code>Ctrl+Alt+Delete</code>, or by right-clicking the taskbar.</p>
 
-<div class="how-to-open">Ctrl + Shift + Esc  |  Ctrl + Alt + Del → Task Manager  |  Win+X → Task Manager  |  taskmgr</div>
-
-<div class="callout callout-info">
-  <p class="callout-title">Windows 11 Task Manager Redesign</p>
-  <p>Windows 11 redesigned Task Manager with a left-side icon navigation bar instead of tabs across the top. The same information is present — it is reorganized, not removed. The functional content of each section is identical to Windows 10 for exam purposes.</p>
-</div>
-
-<h3 class="section">Processes Tab</h3>
-
-<p>The <strong>Processes</strong> tab is the default view when Task Manager opens. It shows every running process on the system — including applications the user launched, background processes, and Windows system processes — grouped into three categories: Apps, Background processes, and Windows processes.</p>
-
-<div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Task Manager — Processes Tab</span>
-    <span class="tool-exe">taskmgr → Processes</span>
+<div class="tab-grid">
+  <div class="tab-card">
+    <div class="tab-card-header">Processes</div>
+    <div class="tab-card-body">Lists all currently running applications and background processes, along with their real-time CPU, memory, disk, and network usage — the first place to look for a single process consuming excessive resources or an unresponsive application to end.</div>
   </div>
-  <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Apps</div>
-      <div class="tool-row-desc">User-launched foreground applications currently open. Double-clicking an app expands it to show child processes it has spawned.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Background processes</div>
-      <div class="tool-row-desc">Processes running in the background without a visible window. Includes system tray apps, updaters, and service host containers.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Windows processes</div>
-      <div class="tool-row-desc">Core OS processes required for Windows to function — System, Registry, csrss.exe, winlogon.exe, and others. Terminating these can crash the system.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">CPU / Memory / Disk / Net columns</div>
-      <div class="tool-row-desc">Per-process real-time resource consumption. Sortable by clicking column headers. Clicking CPU descending immediately identifies the highest CPU consumer — key for diagnosing slow systems.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">End Task</div>
-      <div class="tool-row-desc"><strong>Right-click → End task</strong> forcefully terminates a process. Used when an application is frozen (Not Responding). Unsaved data in that application will be lost.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Open file location</div>
-      <div class="tool-row-desc">Right-click → Open file location opens File Explorer at the executable's directory. Useful for identifying suspicious or unfamiliar processes.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Search online</div>
-      <div class="tool-row-desc">Right-click → Search online opens a browser search for the process name. Useful for determining whether an unfamiliar process is legitimate or malicious.</div>
-    </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Performance</div>
+    <div class="tab-card-body">Displays real-time graphs of overall system resource usage — CPU, memory, disk, network, and (if present) GPU — useful for quickly assessing whether the system as a whole is under heavy load rather than looking at any single process.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Startup</div>
+    <div class="tab-card-body">Lists applications configured to launch automatically when Windows starts, along with each one's relative impact on startup time — the primary tool for diagnosing and fixing a slow-booting system by disabling unnecessary startup programs.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Users</div>
+    <div class="tab-card-body">Shows all user accounts currently logged into the system (including disconnected sessions) along with their individual resource usage — useful on shared or multi-session machines to see which user's session is consuming resources.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-header">Services</div>
+    <div class="tab-card-body">Lists Windows services and their current running/stopped status, with the ability to start, stop, or restart a service directly — a quick way to check or control a specific background service without opening the full Services console.</div>
   </div>
 </div>
 
 <div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Processes Tab</p>
-  <p>When a scenario describes an application that has stopped responding or is consuming excessive CPU/RAM, the answer is Task Manager → Processes tab → End Task. Sort by CPU or Memory to identify the problematic process. This is the most fundamental Task Manager use case.</p>
+  <p class="callout-title">Exam Angle — Matching the Task Manager Tab to the Symptom</p>
+  <p><strong>"The computer boots slowly"</strong> → Startup tab. <strong>"One specific application is frozen or consuming all the CPU"</strong> → Processes tab. <strong>"The whole system feels sluggish, unclear why"</strong> → Performance tab. <strong>"A shared computer, need to see who else is logged in"</strong> → Users tab. <strong>"A specific background service needs to be restarted"</strong> → Services tab. Matching the described symptom to the correct tab is a frequently tested pattern.</p>
 </div>
 
-<h3 class="section">Performance Tab</h3>
 
-<p>The <strong>Performance</strong> tab displays live, continuously updating graphs of system-wide resource utilization. It gives a historical view (typically the last 60 seconds) of how CPU, memory, disk, and network resources have been used — essential for identifying whether a system is consistently resource-constrained or experiencing intermittent spikes.</p>
+<!-- ═══ SECTION 2 — MMC SNAP-INS ═══ -->
+<h2 class="chapter"><span class="ch-num">SECTION 2</span>Microsoft Management Console (MMC) Snap-Ins</h2>
+
+<p>The <span class="key-term">Microsoft Management Console (MMC)</span> is a framework that hosts individual administrative tools, called <span class="key-term">snap-ins</span>, each focused on managing one specific area of the system. Every snap-in below can be launched directly by typing its <code>.msc</code> filename into the Run dialog.</p>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Task Manager — Performance Tab</span>
-    <span class="tool-exe">taskmgr → Performance</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Event Viewer</span><span class="tool-exe">eventvwr.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">CPU</div>
-      <div class="tool-row-desc">Aggregate CPU utilization percentage over time. Shows number of logical processors, base speed, current speed (with boost), L1/L2/L3 cache sizes, and whether virtualization is enabled. A CPU consistently above 90% indicates a processing bottleneck.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Memory</div>
-      <div class="tool-row-desc">RAM utilization graph. Displays total installed RAM, in-use amount, committed memory, cached, paged pool, and non-paged pool. Also shows the number of RAM slots used vs. available and the RAM speed. High memory usage with heavy disk activity suggests the system is paging to disk.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Disk 0, 1…</div>
-      <div class="tool-row-desc">Read/write throughput per physical disk in real time. If disk activity is consistently near 100%, the disk is the bottleneck — common on systems still using mechanical HDDs as the system drive. Disk model and type (SSD/HDD) are shown.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Network</div>
-      <div class="tool-row-desc">Send/receive throughput per network adapter. Adapter name and connection speed displayed. Useful for identifying network saturation or unexpectedly high background network traffic.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">GPU</div>
-      <div class="tool-row-desc">GPU utilization and dedicated VRAM usage (Windows 10 build 1709+). Each installed GPU is listed separately. Helpful for diagnosing graphics-intensive application performance.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Open Resource Monitor</div>
-      <div class="tool-row-desc">A link at the bottom of the Performance tab opens Resource Monitor (<code>resmon.exe</code>) for deeper per-process drill-down. Resource Monitor is covered in Section 3 of this objective.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Displays detailed logs of system, security, and application events — errors, warnings, and informational messages recorded by Windows and installed applications</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The first place to look when diagnosing an unexplained crash, failed service, or security event — logs are timestamped and categorized by severity and source</span></div>
   </div>
 </div>
-
-<h3 class="section">Startup Tab</h3>
-
-<p>The <strong>Startup</strong> tab (moved here from <code>msconfig</code> in Windows 8 and later) lists every program configured to launch automatically when a user logs in. Each entry shows the program name, publisher, startup status (Enabled/Disabled), and a <strong>Startup impact</strong> rating (High, Medium, Low, or Not measured) — an estimate of how much the program slows down the login process.</p>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Task Manager — Startup Tab</span>
-    <span class="tool-exe">taskmgr → Startup</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Disk Management</span><span class="tool-exe">diskmgmt.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Enable / Disable</div>
-      <div class="tool-row-desc">Right-click any entry → Disable prevents the program from launching at login. The program is not uninstalled — it simply no longer starts automatically. Re-enabling restores auto-start. Changes take effect at the next login.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Startup impact</div>
-      <div class="tool-row-desc"><strong>High</strong> items significantly delay login. Disabling high-impact startup entries is the primary technique for reducing slow login times. Focus on disabling programs the user does not need immediately at login.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Publisher</div>
-      <div class="tool-row-desc">Identifies the software vendor. "Unknown" publisher is a yellow flag — it may indicate an unsigned application or potentially unwanted software that added itself to startup.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Open file location</div>
-      <div class="tool-row-desc">Right-click → Open file location reveals where the startup executable lives. Malware commonly places itself in %AppData%, %Temp%, or %ProgramData% and registers as a startup entry.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">A graphical utility for viewing and managing disks, partitions, and volumes — creating, deleting, resizing, formatting, and assigning drive letters</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The graphical counterpart to the command-line <code>diskpart</code> tool (Objective 1.5) — generally the preferred tool for straightforward, one-off partition and volume tasks</span></div>
   </div>
 </div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Slow Login / Startup</p>
-  <p>When a scenario describes a computer that logs in slowly or takes a long time to become usable after login, the answer is Task Manager → Startup tab → disable high-impact startup programs. This is the standard first step for addressing slow login performance without reinstalling Windows.</p>
-</div>
-
-<h3 class="section">Services Tab</h3>
-
-<p>The <strong>Services</strong> tab provides a flat list view of all Windows services — background programs that run under the service control manager (SCM), typically with no user interface. It shows the service name, PID (Process ID), description, status (Running/Stopped), and group.</p>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Task Manager — Services Tab</span>
-    <span class="tool-exe">taskmgr → Services</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Task Scheduler</span><span class="tool-exe">taskschd.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Start / Stop / Restart</div>
-      <div class="tool-row-desc">Right-click a service to start, stop, or restart it directly from Task Manager. Useful for a quick restart of a misbehaving service without rebooting the system.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Go to details</div>
-      <div class="tool-row-desc">Right-click → Go to details jumps to the Details tab and highlights the process hosting that service. Helpful for identifying which svchost.exe instance is running a specific service.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Open Services</div>
-      <div class="tool-row-desc">A link at the bottom opens the full Services management console (<code>services.msc</code>) where startup type (Automatic, Manual, Disabled), dependencies, recovery actions, and logon accounts can be configured. Task Manager's Services tab is for quick status checks and restarts only.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Creates, views, and manages tasks that run automatically on a schedule or in response to a specific trigger (e.g., at logon, at a specific time, or when an event occurs)</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Automating scripts (Objective 4.8), scheduling routine maintenance tasks, or scheduling backups (Objective 4.3) to run without manual intervention</span></div>
   </div>
 </div>
-
-<h3 class="section">Users Tab</h3>
-
-<p>The <strong>Users</strong> tab shows all user accounts currently logged into the system — including active sessions and disconnected sessions (users who are logged in but whose session is locked or disconnected via Remote Desktop). Each user entry can be expanded to show the processes running under their account.</p>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Task Manager — Users Tab</span>
-    <span class="tool-exe">taskmgr → Users</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Device Manager</span><span class="tool-exe">devmgmt.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Logged-in users</div>
-      <div class="tool-row-desc">Lists all active and disconnected user sessions. A single machine can have multiple users logged in simultaneously if Fast User Switching is enabled or if Remote Desktop sessions are active.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Resource columns</div>
-      <div class="tool-row-desc">Per-user CPU, memory, disk, and network totals. Useful for identifying which user's session is consuming resources on a shared or terminal server.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Disconnect / Sign off</div>
-      <div class="tool-row-desc"><strong>Disconnect</strong> ends the user's active session but leaves their processes running (the user remains logged in, session is locked). <strong>Sign off</strong> logs the user out completely, terminating all their processes. Requires administrator rights to act on other users' sessions.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Send message</div>
-      <div class="tool-row-desc">On domain environments or Remote Desktop Session Host servers, an administrator can send a pop-up message to another logged-in user's session.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Lists all hardware devices recognized by Windows, organized by category, showing driver status and allowing drivers to be updated, rolled back, disabled, or uninstalled</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The primary tool for diagnosing hardware driver problems — a device showing a warning icon here typically points directly to a driver conflict or failure</span></div>
   </div>
 </div>
-
-
-<!-- ══════════════════════════════════════════ -->
-<!-- SECTION 2: MMC SNAP-INS                  -->
-<!-- ══════════════════════════════════════════ -->
-<h2 class="chapter"><span class="ch-num">SECTION 2</span>Microsoft Management Console (MMC) Snap-ins</h2>
-
-<p>The <span class="key-term">Microsoft Management Console (MMC)</span> is a framework — a container application — that hosts modular administrative tools called <span class="key-term">snap-ins</span>. Each snap-in is a self-contained tool with a specific administrative function: managing disks, viewing event logs, managing users, and so on. You can open snap-ins individually using their own executable name (e.g., <code>eventvwr.msc</code>), or load multiple snap-ins together inside a single custom MMC console (<code>mmc.exe</code>).</p>
-
-<div class="callout callout-info">
-  <p class="callout-title">Opening MMC Snap-ins</p>
-  <p>Every snap-in has its own <code>.msc</code> file that can be run directly from the Run dialog (Win + R), the Search bar, or a Command Prompt. You can also open a blank MMC console by running <code>mmc</code>, then use File → Add/Remove Snap-in to build a custom console with exactly the tools you need — a common technique for system administrators who manage multiple aspects of a server simultaneously.</p>
-</div>
-
-<p>The quick-reference table below summarizes all eight snap-ins tested in Objective 1.4 before each is covered in depth.</p>
-
-<table class="snapin-table">
-  <thead>
-    <tr>
-      <th>Executable</th>
-      <th>Tool Name</th>
-      <th>Primary Use</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>eventvwr.msc</td><td>Event Viewer</td><td>View system, application, and security event logs</td></tr>
-    <tr><td>diskmgmt.msc</td><td>Disk Management</td><td>Partition, format, assign drive letters, manage volumes</td></tr>
-    <tr><td>taskschd.msc</td><td>Task Scheduler</td><td>Create and manage automated scheduled tasks</td></tr>
-    <tr><td>devmgmt.msc</td><td>Device Manager</td><td>View hardware, manage drivers, troubleshoot devices</td></tr>
-    <tr><td>certmgr.msc</td><td>Certificate Manager</td><td>View and manage user-level digital certificates</td></tr>
-    <tr><td>lusrmgr.msc</td><td>Local Users and Groups</td><td>Create/manage local user accounts and groups</td></tr>
-    <tr><td>perfmon.msc</td><td>Performance Monitor</td><td>Long-term performance data collection and analysis</td></tr>
-    <tr><td>gpedit.msc</td><td>Group Policy Editor</td><td>Configure local Group Policy settings (Pro/Enterprise)</td></tr>
-  </tbody>
-</table>
-
-<h3 class="section">Event Viewer (eventvwr.msc)</h3>
-
-<p><span class="key-term">Event Viewer</span> is the central repository for Windows log data. Every significant OS event — successful logins, failed logins, service crashes, driver errors, application errors, warnings — is recorded in an event log. Event Viewer is the first tool to consult when diagnosing a system that crashes, throws errors, or behaves unexpectedly without obvious cause.</p>
-
-<div class="how-to-open">Win + R → eventvwr.msc  |  Win+X → Event Viewer  |  Control Panel → Administrative Tools</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Event Viewer</span>
-    <span class="tool-exe">eventvwr.msc</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Certificate Manager</span><span class="tool-exe">certmgr.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Windows Logs → Application</div>
-      <div class="tool-row-desc">Events generated by applications and programs. Application crashes, database errors, and software-specific warnings appear here. The faulting module and exception code in a crash event often pinpoint the cause.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Windows Logs → System</div>
-      <div class="tool-row-desc">Events generated by the Windows operating system and its components — driver failures, service start/stop events, hardware errors, disk errors, and kernel events. <strong>The most important log for hardware troubleshooting.</strong></div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Windows Logs → Security</div>
-      <div class="tool-row-desc">Audit events: successful and failed login attempts, privilege use, account management changes, and object access (if auditing is enabled). Critical for security investigations. Requires admin rights to view.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Windows Logs → Setup</div>
-      <div class="tool-row-desc">Events related to application installation and Windows component installation. Useful for diagnosing failed software deployments.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Windows Logs → Forwarded Events</div>
-      <div class="tool-row-desc">Events collected from remote computers (when Windows Event Forwarding is configured). Empty on standalone machines.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Applications and Services Logs</div>
-      <div class="tool-row-desc">Application-specific logs for Windows components (PowerShell, Task Scheduler, WMI, etc.) and third-party applications. More granular than the main Windows Logs.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Event levels</div>
-      <div class="tool-row-desc"><strong>Critical</strong> — system failure requiring immediate attention. <strong>Error</strong> — significant problem, functionality affected. <strong>Warning</strong> — potential problem, not yet critical. <strong>Information</strong> — normal operational event. <strong>Verbose</strong> — detailed diagnostic data.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Event ID</div>
-      <div class="tool-row-desc">A numeric code identifying the specific event type. Event IDs are consistent across Windows versions — e.g., Event ID <strong>41</strong> = unexpected shutdown (power loss), <strong>6008</strong> = unexpected shutdown recorded after restart, <strong>4625</strong> = failed login attempt. Searching an Event ID online yields Microsoft documentation and community diagnoses.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Filter Current Log</div>
-      <div class="tool-row-desc">Right-click a log → Filter Current Log to narrow events by level, date/time range, Event ID, or source. Essential for finding relevant events in logs with thousands of entries.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Custom Views</div>
-      <div class="tool-row-desc">Pre-built filtered views — including Administrative Events, which aggregates Critical, Error, and Warning events from all logs into a single view. Saves time when performing a general health check.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Views and manages digital certificates installed for the current user — including personal certificates, trusted root certification authorities, and other certificate stores</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Troubleshooting certificate warnings (Objective 3.4), installing a needed certificate, or verifying whether a specific certificate is trusted on the machine</span></div>
   </div>
 </div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Event Viewer</p>
-  <p>When a scenario says "a computer keeps crashing" or "a service keeps stopping" or "a user is receiving login errors" — Event Viewer is the diagnostic tool. Know that the <strong>System log</strong> covers OS and hardware events, the <strong>Application log</strong> covers software events, and the <strong>Security log</strong> covers login and audit events. Event IDs 41 and 6008 specifically relate to unexpected shutdowns — common exam questions.</p>
-</div>
-
-<h3 class="section">Disk Management (diskmgmt.msc)</h3>
-
-<p><span class="key-term">Disk Management</span> is the primary GUI tool for working with physical disks and their partitions and volumes in Windows. It provides a graphical disk map showing every physical disk, its partitions, filesystem, health status, and drive letter assignments.</p>
-
-<div class="how-to-open">Win + R → diskmgmt.msc  |  Win+X → Disk Management  |  Computer Management → Storage → Disk Management</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Disk Management</span>
-    <span class="tool-exe">diskmgmt.msc</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Local Users and Groups</span><span class="tool-exe">lusrmgr.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Initialize Disk</div>
-      <div class="tool-row-desc">A new uninitialized disk (fresh from the factory or wiped) must be initialized before partitions can be created. Disk Management prompts to initialize with <strong>MBR</strong> (legacy, max 2.2 TB, max 4 primary partitions) or <strong>GPT</strong> (modern, large drives, up to 128 partitions). GPT is the correct choice for new disks on modern systems.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Create / Delete volumes</div>
-      <div class="tool-row-desc">Right-click unallocated space → New Simple Volume to create a new partition. Right-click an existing partition → Delete Volume to remove it (data is destroyed). Right-click → Format to reformat an existing partition with a new filesystem (NTFS, FAT32, exFAT).</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Extend / Shrink Volume</div>
-      <div class="tool-row-desc"><strong>Extend Volume</strong> adds unallocated space adjacent to (or on the same disk as) a volume, making it larger. <strong>Shrink Volume</strong> reduces a volume's size to free up unallocated space that can be used for a new partition. Shrink cannot move files — the amount shrinkable may be limited by immovable files (like the pagefile) near the end of the volume.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Change Drive Letter</div>
-      <div class="tool-row-desc">Right-click any volume → Change Drive Letter and Paths to assign, change, or remove a drive letter. Useful when a drive letter conflicts with another device or a letter is needed for application compatibility. Note: changing the system drive letter will break Windows.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Disk status indicators</div>
-      <div class="tool-row-desc"><strong>Online</strong> = healthy and accessible. <strong>Offline</strong> = disk is present but not accessible (right-click → Online to bring it back). <strong>Foreign</strong> = dynamic disk from another computer (import it). <strong>Failed</strong> = disk has an error and data may be at risk.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Volume types</div>
-      <div class="tool-row-desc"><strong>Simple</strong> = standard single-disk partition. <strong>Spanned</strong> = single volume spread across multiple disks (no redundancy). <strong>Striped (RAID 0)</strong> = data striped across disks for speed (no redundancy). <strong>Mirrored (RAID 1)</strong> = duplicate data across two disks. <strong>RAID-5</strong> = striped with parity. Dynamic disks required for spanned/striped/mirrored volumes.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Manages local (non-domain) user accounts and security groups — creating accounts, resetting passwords, and assigning group membership</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">The graphical counterpart to the command-line <code>net user</code> command (Objective 1.5); notably unavailable on Windows Home editions, which lack this snap-in</span></div>
   </div>
 </div>
-
-<h3 class="section">Task Scheduler (taskschd.msc)</h3>
-
-<p><span class="key-term">Task Scheduler</span> allows Windows and applications to run programs, scripts, or commands automatically at specified times or in response to specific system events — without any user interaction. It is the backbone of automated maintenance in Windows, and many Windows features (Automatic Updates check-ins, disk defragmentation, antivirus definition updates) rely on scheduled tasks behind the scenes.</p>
-
-<div class="how-to-open">Win + R → taskschd.msc  |  Search → Task Scheduler  |  Computer Management → System Tools → Task Scheduler</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Task Scheduler</span>
-    <span class="tool-exe">taskschd.msc</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Performance Monitor</span><span class="tool-exe">perfmon.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Task Library</div>
-      <div class="tool-row-desc">The left-pane tree view organized in folders. <strong>Task Scheduler Library</strong> is the root. Microsoft's own tasks live under <code>Microsoft\Windows\</code>. Third-party applications create folders under the root. Browse here to see all tasks on the system, including malicious persistence mechanisms that may have registered themselves as scheduled tasks.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Triggers</div>
-      <div class="tool-row-desc">The conditions that cause a task to run. Triggers include: <strong>On a schedule</strong> (daily, weekly, monthly, one time), <strong>At logon</strong>, <strong>At startup</strong>, <strong>On an event</strong> (a specific Event ID in a specific log), <strong>On idle</strong>, <strong>On connection/disconnect</strong>, and more. A single task can have multiple triggers.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Actions</div>
-      <div class="tool-row-desc">What the task does when triggered. Actions include: <strong>Start a program</strong> (run an executable, script, or command), <strong>Send an email</strong> (deprecated), and <strong>Display a message</strong> (deprecated). Most tasks use Start a program. The program path and any arguments are specified here.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Conditions</div>
-      <div class="tool-row-desc">Optional additional conditions that must be true for the task to run even if the trigger fires — for example, only run when the computer is idle, only run when on AC power (not battery), or only run when a specific network connection is available.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Security context</div>
-      <div class="tool-row-desc">Tasks run under a specified user account. Tasks can be set to <strong>Run whether user is logged on or not</strong> (runs in the background silently, requires the password) and <strong>Run with highest privileges</strong> (runs as administrator). Important for administrative tasks that need elevated rights.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Last Run Result</div>
-      <div class="tool-row-desc">In the middle pane task list, the Last Run Time and Last Run Result columns show when the task last executed and whether it succeeded (0x0 = success) or failed (any non-zero code). Useful for verifying that backup, update, or maintenance tasks are actually running.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Tracks detailed, customizable performance counters over time, well beyond what Task Manager's Performance tab shows — supports logging data over extended periods for deeper analysis</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Diagnosing intermittent or hard-to-reproduce performance problems that require historical data rather than just a real-time snapshot</span></div>
   </div>
 </div>
-
-<h3 class="section">Device Manager (devmgmt.msc)</h3>
-
-<p><span class="key-term">Device Manager</span> is the central control panel for all hardware devices recognized by Windows. It displays every hardware component the OS is aware of, shows the driver status for each device, and allows drivers to be updated, rolled back, disabled, or uninstalled. It is the primary tool for hardware troubleshooting and driver management.</p>
-
-<div class="how-to-open">Win + R → devmgmt.msc  |  Win+X → Device Manager  |  Right-click This PC → Manage → Device Manager</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Device Manager</span>
-    <span class="tool-exe">devmgmt.msc</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Group Policy Editor</span><span class="tool-exe">gpedit.msc</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Yellow exclamation (⚠)</div>
-      <div class="tool-row-desc">A yellow warning triangle on a device indicates a <strong>driver problem</strong> — the device is present but not functioning correctly. The driver may be missing, corrupt, or incompatible. Right-click → Properties → Details for the error code and description.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Red X (✗)</div>
-      <div class="tool-row-desc">The device has been <strong>disabled</strong> — either manually by an administrator, or automatically by Windows due to a resource conflict. Right-click → Enable device to re-enable it.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Down arrow (↓)</div>
-      <div class="tool-row-desc">The device has been <strong>manually disabled</strong> by the user or administrator. Distinct from a hardware error — the device is working but turned off in software.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Update driver</div>
-      <div class="tool-row-desc">Right-click a device → Update driver offers two options: <strong>Search automatically</strong> (queries Windows Update) or <strong>Browse my computer</strong> (manual installation from a downloaded driver package). For the most current drivers, always download directly from the manufacturer's website.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Roll back driver</div>
-      <div class="tool-row-desc">Right-click → Properties → Driver tab → Roll Back Driver reverts to the previously installed driver version. Essential when a driver update breaks functionality — for example, a GPU driver update that causes display issues. Only available if a previous driver version was installed.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Uninstall device</div>
-      <div class="tool-row-desc">Removes the driver from the system. The option to "delete the driver software for this device" also removes the driver package from Windows' driver store. On the next reboot (or Scan for hardware changes), Windows will attempt to reinstall the driver. Used to force a clean driver reinstall.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Scan for hardware changes</div>
-      <div class="tool-row-desc">Action menu → Scan for hardware changes forces Windows to re-detect all connected hardware. Used after physically installing a new device or after uninstalling a driver to prompt Windows to reinstall it immediately.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">View → Show hidden devices</div>
-      <div class="tool-row-desc">Reveals devices that are not currently connected (ghosted devices) and non-plug-and-play drivers. Useful for finding leftover driver entries from previously connected hardware.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Configures local Group Policy settings — security options, restrictions, and system behavior — on a single machine, independent of a domain-based Group Policy</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Configuring policy on a standalone or workgroup machine not joined to a domain; like Local Users and Groups, notably unavailable on Windows Home editions</span></div>
   </div>
 </div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Device Manager Icons</p>
-  <p>The yellow exclamation mark is the most tested Device Manager symbol. It means the device has a driver problem — not that the device is absent. The fix is to update or reinstall the driver, not to replace the hardware. A red X means disabled, not broken. Know the distinction.</p>
-</div>
-
-<h3 class="section">Certificate Manager (certmgr.msc)</h3>
-
-<p><span class="key-term">Certificate Manager</span> displays and manages digital certificates stored for the currently logged-in user account. Digital certificates are cryptographic credentials issued by a Certificate Authority (CA) that establish identity and enable encryption for secure communications (HTTPS, email signing, code signing, smart card authentication, etc.).</p>
-
-<div class="how-to-open">Win + R → certmgr.msc</div>
-
-<div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Certificate Manager</span>
-    <span class="tool-exe">certmgr.msc</span>
-  </div>
-  <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Personal</div>
-      <div class="tool-row-desc">Certificates issued to this user — used for email encryption (S/MIME), client authentication, smart card login, and other user-specific cryptographic operations.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Trusted Root CAs</div>
-      <div class="tool-row-desc">The list of Certificate Authorities that Windows implicitly trusts. Any certificate signed by a CA in this list is trusted. Rogue or unauthorized root certificates installed here are a serious security threat — malware sometimes installs fake root CAs to enable HTTPS interception.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Intermediate CAs</div>
-      <div class="tool-row-desc">Certificates of intermediate Certificate Authorities that form the chain of trust between an end-entity certificate and a Trusted Root CA. Certificate errors often occur when an intermediate CA certificate is missing from this store.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">User vs. Computer store</div>
-      <div class="tool-row-desc"><code>certmgr.msc</code> manages the <strong>current user's</strong> certificate store. To manage the <strong>computer-level</strong> certificate store (trusted for all users and services on the machine), use the Certificates snap-in within a custom MMC console targeting the Local Computer account — requires administrator rights.</div>
-    </div>
-  </div>
-</div>
-
-<h3 class="section">Local Users and Groups (lusrmgr.msc)</h3>
-
-<p><span class="key-term">Local Users and Groups</span> is the management interface for user accounts and security groups stored in the local Security Account Manager (SAM) database — the accounts that exist on this machine independently of any domain. It provides more granular control than the basic account settings in the Settings app.</p>
-
-<div class="how-to-open">Win + R → lusrmgr.msc  |  Computer Management → System Tools → Local Users and Groups</div>
 
 <div class="callout callout-warn">
-  <p class="callout-title">Pro/Enterprise Only</p>
-  <p><code>lusrmgr.msc</code> is available only on Windows Pro, Pro for Workstations, and Enterprise editions. On Windows Home, attempting to run it produces an error. Home users must manage accounts through Settings → Accounts instead, which offers limited options by comparison.</p>
-</div>
-
-<div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Local Users and Groups</span>
-    <span class="tool-exe">lusrmgr.msc</span>
-  </div>
-  <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Users folder</div>
-      <div class="tool-row-desc">Lists all local user accounts including built-in accounts (Administrator, Guest, DefaultAccount, WDAGUtilityAccount). Double-clicking a user opens their properties: full name, description, password options (cannot change, never expires, account is disabled), and group memberships.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Groups folder</div>
-      <div class="tool-row-desc">Lists local security groups. The critical built-in groups are: <strong>Administrators</strong> (full system control), <strong>Users</strong> (standard limited access), <strong>Guests</strong> (minimal temporary access), <strong>Remote Desktop Users</strong> (RDP login permission), and <strong>Power Users</strong> (legacy elevated group — equivalent to standard user in modern Windows).</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Creating users</div>
-      <div class="tool-row-desc">Right-click Users folder → New User. Set username, full name, description, and password. Options to force password change at next login, prevent user from changing password, or set the password to never expire. <strong>New users are not added to any group by default</strong> — they must be manually added to the Users group (or another group) to have usable permissions.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Managing group membership</div>
-      <div class="tool-row-desc">Double-click a user → Member Of tab to add or remove group memberships. Or double-click a group → Add button to add users to that group. Adding a user to the Administrators group elevates them to full admin rights — a significant security decision.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Disabling accounts</div>
-      <div class="tool-row-desc">Double-click a user → check "Account is disabled" to disable the account without deleting it. Disabled accounts cannot log in. This is the correct way to handle departing employees — disable rather than delete, in case their profile or files need to be accessed. Disabled accounts appear with a down-arrow icon in the Users list.</div>
-    </div>
-  </div>
-</div>
-
-<h3 class="section">Performance Monitor (perfmon.msc)</h3>
-
-<p><span class="key-term">Performance Monitor</span> is a professional-grade performance data collection and analysis tool that goes well beyond the real-time snapshot in Task Manager. It allows a technician to track dozens of system performance counters over extended periods, save the data for later analysis, compare baselines to current values, and diagnose intermittent performance problems that may not be reproducible on demand.</p>
-
-<div class="how-to-open">Win + R → perfmon.msc  |  Win + R → perfmon  |  Search → Performance Monitor</div>
-
-<div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Performance Monitor</span>
-    <span class="tool-exe">perfmon.msc</span>
-  </div>
-  <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Performance counters</div>
-      <div class="tool-row-desc">Measurable values from hundreds of categories — Processor, Memory, LogicalDisk, PhysicalDisk, Network Interface, Process, and many more. Each counter tracks a specific metric, e.g., <strong>Processor → % Processor Time</strong>, <strong>Memory → Available MBytes</strong>, <strong>PhysicalDisk → Avg. Disk Queue Length</strong>.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Real-time monitoring</div>
-      <div class="tool-row-desc">The default Performance Monitor view shows selected counters as live-updating line graphs. Add counters using the green + button. Multiple counters from different categories can be overlaid on the same chart for correlation analysis.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Data Collector Sets</div>
-      <div class="tool-row-desc">A named collection of counters that can be scheduled to run automatically and save data to log files. Used for capturing performance data over hours or days without human monitoring — essential for diagnosing intermittent slowdowns that occur overnight or after hours.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">System Diagnostics Report</div>
-      <div class="tool-row-desc">Under Reports → System → System Diagnostics: a built-in Data Collector Set that runs for 60 seconds and generates a comprehensive HTML report of system performance, hardware, software configuration, and potential issues. A quick automated health assessment.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Key diagnostic counters</div>
-      <div class="tool-row-desc"><strong>Memory → Pages/sec</strong> &gt;20 sustained = heavy paging (insufficient RAM). <strong>PhysicalDisk → Avg. Disk Queue Length</strong> &gt;2 = disk bottleneck. <strong>Processor → % Processor Time</strong> sustained near 100% = CPU bottleneck. <strong>Network Interface → Bytes Total/sec</strong> near adapter capacity = network saturation.</div>
-    </div>
-  </div>
-</div>
-
-<div class="callout callout-info">
-  <p class="callout-title">Performance Monitor vs. Task Manager</p>
-  <p>Task Manager is for <strong>real-time, immediate diagnosis</strong> — "what is consuming resources right now?" Performance Monitor is for <strong>historical and trend analysis</strong> — "what was happening to this system at 2 AM when users report it was slow?" Use Task Manager first; escalate to Performance Monitor when the problem is not immediately visible or reproducible.</p>
-</div>
-
-<h3 class="section">Group Policy Editor (gpedit.msc)</h3>
-
-<p>The <span class="key-term">Local Group Policy Editor</span> is the graphical interface for managing the thousands of Windows settings governed by Group Policy — system-wide and per-user configuration settings that go far beyond what the Settings app exposes. As established in Objective 1.3, this tool is available only on Pro, Pro for Workstations, and Enterprise editions.</p>
-
-<div class="how-to-open">Win + R → gpedit.msc  |  Search → Edit group policy</div>
-
-<div class="callout callout-warn">
-  <p class="callout-title">Pro/Enterprise Only</p>
-  <p><code>gpedit.msc</code> is not installed on Windows Home. Running it on Home editions returns a "Windows cannot find 'gpedit.msc'" error. This is an edition limitation, not a permissions issue — the tool simply does not exist on Home.</p>
-</div>
-
-<div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Local Group Policy Editor</span>
-    <span class="tool-exe">gpedit.msc</span>
-  </div>
-  <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Computer Configuration</div>
-      <div class="tool-row-desc">Settings applied to the computer regardless of which user is logged in. Takes effect at system startup. Controls Windows settings, security settings (password policies, account lockout, audit policy), and software restrictions that apply system-wide.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">User Configuration</div>
-      <div class="tool-row-desc">Settings applied to user accounts when they log in. Controls desktop appearance, Start menu restrictions, Control Panel access, folder redirection, and per-user software behavior. Settings here apply to whoever is logged in on this machine.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Administrative Templates</div>
-      <div class="tool-row-desc">The largest category — thousands of registry-backed settings exposed as readable policy items with descriptions of each setting and its effect. Navigate to <strong>Computer Configuration → Administrative Templates → Windows Components</strong> to find settings for Windows Update, Windows Defender, Remote Desktop, OneDrive, and hundreds more.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Security Settings</div>
-      <div class="tool-row-desc">Under Computer Configuration → Windows Settings → Security Settings: password policies (length, complexity, expiration), account lockout policy (how many failed attempts before lockout), local policies (user rights assignments, security options like UAC behavior), and Windows Firewall with Advanced Security.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Policy states</div>
-      <div class="tool-row-desc">Each policy item has three states: <strong>Not Configured</strong> (policy has no effect — default), <strong>Enabled</strong> (policy is active), <strong>Disabled</strong> (policy is explicitly turned off, overriding any default that would enable it). Not Configured and Disabled are different — Disabled explicitly prevents other policy sources from enabling the setting.</div>
-    </div>
-  </div>
+  <p class="callout-title">Home Edition Limitation — A Frequently Tested Detail</p>
+  <p>Both <strong>Local Users and Groups (lusrmgr.msc)</strong> and <strong>Group Policy Editor (gpedit.msc)</strong> are not included in Windows Home editions — a detail that connects directly back to Objective 1.3's Windows edition feature comparisons. A scenario describing either tool being unavailable on a specific machine is very likely describing a Home edition limitation, not a broken installation.</p>
 </div>
 
 
-<!-- ══════════════════════════════════════════ -->
-<!-- SECTION 3: ADDITIONAL TOOLS              -->
-<!-- ══════════════════════════════════════════ -->
+<!-- ═══ SECTION 3 — ADDITIONAL TOOLS ═══ -->
 <h2 class="chapter"><span class="ch-num">SECTION 3</span>Additional Tools</h2>
 
-<p>Beyond Task Manager and the MMC snap-ins, Windows includes a set of standalone diagnostic and maintenance tools that are accessed via their own executable. These six tools cover hardware inventory, deep resource analysis, system configuration, disk maintenance, and the Registry.</p>
-
-<h3 class="section">System Information (msinfo32.exe)</h3>
-
-<p><span class="key-term">System Information</span> generates a comprehensive, read-only snapshot of the entire hardware and software configuration of the local computer. It is the fastest single-stop tool for gathering hardware specifications, OS version details, driver information, and environmental variables — without opening Device Manager or digging through multiple Settings pages.</p>
-
-<div class="how-to-open">Win + R → msinfo32  |  Search → System Information  |  Start → Windows Administrative Tools</div>
+<p>These standalone utilities round out the built-in Windows toolkit, each launched by its own <code>.exe</code> filename rather than through the MMC framework.</p>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">System Information</span>
-    <span class="tool-exe">msinfo32.exe</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">System Information</span><span class="tool-exe">msinfo32.exe</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">System Summary</div>
-      <div class="tool-row-desc">The default view. Shows OS name and version, OS build number, system manufacturer and model, BIOS version and date, <strong>BIOS Mode</strong> (UEFI or Legacy), <strong>Secure Boot State</strong> (On or Off), total physical memory, available physical memory, total virtual memory, and processor information. Extremely useful for quickly confirming hardware specs.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Hardware Resources</div>
-      <div class="tool-row-desc">IRQs, I/O addresses, DMA channels, and memory addresses assigned to hardware. The <strong>Conflicts/Sharing</strong> node highlights any hardware resource conflicts — devices sharing an interrupt that may cause instability.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Components</div>
-      <div class="tool-row-desc">Detailed information on every hardware category: Display (adapter, resolution, driver version, VRAM), Network (adapter name, MAC address, IP, speed), Storage (drives, optical devices), Sound, Ports (COM, LPT), USB, and more. Very useful when a device's specs need to be documented or verified.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Software Environment</div>
-      <div class="tool-row-desc">System drivers, environment variables, print jobs, network connections, running tasks, loaded modules, services, startup programs, OLE registration, and Windows Error Reporting. A complete software inventory.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Find / Export</div>
-      <div class="tool-row-desc">The Find field at the bottom searches across all categories — useful for quickly locating a specific piece of information. File → Export saves the entire report as a plain-text .NFO file for documentation or remote support.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Displays a comprehensive summary of the system's hardware configuration, installed software environment, and system components in one consolidated report</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Quickly gathering full system specs and configuration details for documentation, asset management (Objective 4.1), or advanced troubleshooting without checking multiple separate locations</span></div>
   </div>
 </div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — msinfo32 Key Data Points</p>
-  <p>On the exam, <code>msinfo32</code> is the answer when a scenario asks how to determine: the BIOS mode (UEFI vs Legacy), Secure Boot status, total installed RAM, processor model, or OS build number — all from a single tool. It is read-only and cannot be used to change any settings.</p>
-</div>
-
-<h3 class="section">Resource Monitor (resmon.exe)</h3>
-
-<p><span class="key-term">Resource Monitor</span> is a real-time diagnostic tool that provides per-process detail on CPU, memory, disk, and network usage at a level of granularity that exceeds Task Manager. Where Task Manager shows aggregate resource consumption, Resource Monitor shows exactly which files a process is reading, which network connections it has open, and what handles it holds.</p>
-
-<div class="how-to-open">Win + R → resmon  |  Task Manager → Performance tab → Open Resource Monitor  |  Search → Resource Monitor</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Resource Monitor</span>
-    <span class="tool-exe">resmon.exe</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Resource Monitor</span><span class="tool-exe">resmon.exe</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Overview tab</div>
-      <div class="tool-row-desc">A four-panel summary showing CPU, Disk, Network, and Memory utilization simultaneously with sparkline graphs for each. The left column shows per-process breakdown for each resource. Checking a process in the CPU pane filters all other panes to show only that process's activity.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">CPU tab</div>
-      <div class="tool-row-desc">Per-process CPU usage, thread counts, CPU cycles, and context switches. The <strong>Associated Handles</strong> and <strong>Associated Modules</strong> panels below show file handles and DLLs loaded by the selected process — useful for identifying what resources a process is using or locking.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Memory tab</div>
-      <div class="tool-row-desc">Per-process Working Set (RAM actively used), Commit (virtual memory reserved), Shareable, and Private memory. The bottom panel shows the physical memory usage map — blue (in use), green (modified), yellow (standby), grey (free). Extremely helpful for RAM troubleshooting and diagnosing memory leaks.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Disk tab</div>
-      <div class="tool-row-desc">Per-process disk read/write activity showing the actual <strong>file paths</strong> being read or written. This answers questions like "why is my disk thrashing?" — you can see exactly which process is reading/writing which files in real time. Also shows disk queue length over time.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Network tab</div>
-      <div class="tool-row-desc">Per-process network connections showing source/destination IP addresses, ports, and protocol. The <strong>TCP Connections</strong> panel shows every open TCP connection with its state (ESTABLISHED, TIME_WAIT, LISTENING, etc.). Useful for identifying unexpected outbound connections from suspicious processes.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Provides a much more detailed, granular view of CPU, memory, disk, and network usage than Task Manager — including which specific files a process has open and which processes are using which network connections</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Digging deeper than Task Manager allows — for example, identifying exactly which process is holding a file open and preventing it from being deleted or modified</span></div>
   </div>
 </div>
-
-<h3 class="section">System Configuration (msconfig.exe)</h3>
-
-<p><span class="key-term">System Configuration</span> (commonly referred to by its executable name, <code>msconfig</code>) is a utility for managing how Windows boots and what loads at startup. It is particularly valuable for troubleshooting via <span class="key-term">selective startup</span> — a method of isolating startup problems by progressively disabling components to identify which one is causing an issue.</p>
-
-<div class="how-to-open">Win + R → msconfig  |  Search → System Configuration</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">System Configuration</span>
-    <span class="tool-exe">msconfig.exe</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">System Configuration</span><span class="tool-exe">msconfig.exe</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">General tab</div>
-      <div class="tool-row-desc">Three startup options: <strong>Normal startup</strong> (loads all drivers and services — standard operation), <strong>Diagnostic startup</strong> (loads only basic devices and services — similar to Safe Mode but a full-OS boot), and <strong>Selective startup</strong> (allows choosing whether to load system services, startup items, or the original boot configuration). Diagnostic startup is a quick way to test whether a problem is caused by third-party services.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Boot tab</div>
-      <div class="tool-row-desc">For systems with multiple OS installations, the Boot tab selects the default OS and timeout. Advanced options include setting the number of processor cores and maximum memory for boot (used to test behavior with limited resources). <strong>Safe boot</strong> checkbox configures the next boot into Safe Mode — useful for cases where the system can't boot into Safe Mode using F8. Boot log saves startup information to <code>C:\Windows\ntbtlog.txt</code>.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Services tab</div>
-      <div class="tool-row-desc">Lists all registered Windows services with Enable/Disable checkboxes. The critical option: <strong>"Hide all Microsoft services"</strong> checkbox filters out Windows-built-in services, leaving only third-party services visible. Unchecking all remaining services and rebooting disables all third-party services — a clean-boot technique for isolating software conflicts.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Startup tab</div>
-      <div class="tool-row-desc">In Windows 8 and later, this tab simply contains a link to Task Manager's Startup tab where startup programs are now managed. In Windows 7 and earlier, startup programs were managed directly here.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Tools tab</div>
-      <div class="tool-row-desc">A convenient launcher for 20+ Windows administrative tools — including Event Viewer, Performance Monitor, Resource Monitor, UAC settings, System Restore, and the Command Prompt. Each tool shows its command-line path, making it a useful reference.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Configures system boot options (including Safe Mode boot), manages startup services, and adjusts general system settings related to how Windows starts</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Selectively enabling/disabling startup services (as distinct from Task Manager's startup <em>app</em> list) and configuring boot into Safe Mode for troubleshooting</span></div>
   </div>
 </div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Clean Boot with msconfig</p>
-  <p>The <strong>clean boot</strong> technique uses msconfig to isolate startup problems. The steps are: (1) Services tab → Hide all Microsoft services → Disable all, (2) Task Manager Startup tab → Disable all, (3) Reboot. If the problem disappears, it is caused by a third-party service or startup program. Re-enable items in batches to identify the culprit. This is a standard exam-tested troubleshooting methodology.</p>
-</div>
-
-<h3 class="section">Disk Cleanup (cleanmgr.exe)</h3>
-
-<p><span class="key-term">Disk Cleanup</span> is a built-in utility that identifies and removes categories of unnecessary files that accumulate on Windows systems over time — temporary files, cached data, old Windows installation files, error reports, and more. It is the standard tool for reclaiming disk space without manually hunting through the file system.</p>
-
-<div class="how-to-open">Win + R → cleanmgr  |  Search → Disk Cleanup  |  File Explorer → right-click drive → Properties → Disk Cleanup button</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Disk Cleanup</span>
-    <span class="tool-exe">cleanmgr.exe</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Disk Cleanup</span><span class="tool-exe">cleanmgr.exe</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">Standard categories</div>
-      <div class="tool-row-desc">Downloaded Program Files (ActiveX controls, Java applets), Temporary Internet Files (browser cache), Windows Error Reports, DirectX Shader Cache, Delivery Optimization Files, Recycle Bin contents, Temporary files (files in %TEMP% folders), Thumbnails, and more. Each category shows how much space will be reclaimed.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Clean up system files</div>
-      <div class="tool-row-desc">A button that re-runs Disk Cleanup with administrator privileges, revealing additional categories: <strong>Windows Update Cleanup</strong> (old update packages — often the largest category, can be many gigabytes), <strong>Previous Windows installation(s)</strong> (<code>Windows.old</code> folder from an upgrade), and <strong>Device driver packages</strong>. This is where the most significant disk space recovery happens.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Windows.old</div>
-      <div class="tool-row-desc">After an OS upgrade, the previous Windows installation is stored in <code>C:\Windows.old</code> as a rollback option. This folder is automatically cleaned up by Windows after 10 days. If a user needs the space sooner, Disk Cleanup → Clean up system files → Previous Windows installation(s) removes it immediately.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Storage Sense (modern alternative)</div>
-      <div class="tool-row-desc">In Windows 10/11, <strong>Storage Sense</strong> (Settings → System → Storage) provides an automated, scheduled version of disk cleanup that can run automatically when disk space runs low. For the exam, <code>cleanmgr</code> remains the expected answer for manual disk cleanup tasks.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Identifies and removes unnecessary files — temporary files, recycle bin contents, old Windows update files, and other reclaimable space — to free up disk space</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">A quick first step when a drive is running low on free space, before considering more involved storage solutions</span></div>
   </div>
 </div>
-
-<h3 class="section">Disk Defragment (dfrgui.exe)</h3>
-
-<p><span class="key-term">Optimize Drives</span> (the modern name for the Disk Defragmenter, accessed via <code>dfrgui.exe</code>) maintains drive performance by reorganizing how data is stored on disk. The tool behaves differently depending on whether the target drive is a traditional Hard Disk Drive (HDD) or a Solid-State Drive (SSD) — an important distinction for both the exam and real-world use.</p>
-
-<div class="how-to-open">Win + R → dfrgui  |  Search → Defragment and Optimize Drives  |  File Explorer → right-click drive → Properties → Tools tab → Optimize</div>
 
 <div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Optimize Drives (Disk Defragmenter)</span>
-    <span class="tool-exe">dfrgui.exe</span>
-  </div>
+  <div class="tool-panel-header"><span class="tool-name">Disk Defragment</span><span class="tool-exe">dfrgui.exe</span></div>
   <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">HDD — Defragmentation</div>
-      <div class="tool-row-desc">On mechanical HDDs, files become fragmented over time — their data is written in non-contiguous blocks scattered across the platters. The read head must physically seek to each fragment, slowing reads. Defragmentation rewrites fragmented files contiguously, reducing seek time. The <strong>Analyze</strong> button shows the current fragmentation percentage before running a defrag. A full defrag on a heavily fragmented HDD can take hours.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">SSD — TRIM / Retrim</div>
-      <div class="tool-row-desc">SSDs do not benefit from defragmentation (and excessive writes could reduce their lifespan). Instead, dfrgui runs a <strong>Retrim</strong> operation on SSDs — sending TRIM commands that notify the SSD controller which data blocks are no longer in use, allowing the SSD to reclaim those blocks for future writes. This maintains long-term SSD write performance. Windows identifies drive type and runs the appropriate operation automatically.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Scheduled optimization</div>
-      <div class="tool-row-desc">By default, Windows schedules automatic optimization weekly for all drives. The schedule can be customized (daily/weekly/monthly) or disabled. Scheduled defragmentation is enabled by default and generally sufficient — manual defragmentation is rarely necessary on modern systems.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Analyze</div>
-      <div class="tool-row-desc">Reports the current fragmentation percentage of a selected drive without making any changes. Use this to assess whether defragmentation is necessary before committing to a potentially lengthy operation. Greater than 10% fragmentation on an HDD generally warrants a defrag.</div>
-    </div>
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Reorganizes fragmented data on a traditional hard disk drive (HDD) so related file pieces sit closer together physically, improving read/write performance</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Maintaining performance on HDD-based systems specifically; not needed (and not recommended) for solid-state drives (SSDs), which don't suffer the same fragmentation-related performance penalty and can wear unnecessarily from excess writes</span></div>
   </div>
 </div>
 
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — HDD vs. SSD Optimization</p>
-  <p>You should <strong>not defragment an SSD</strong>. The exam may present a scenario asking what to do to maintain SSD performance — the answer is TRIM (which dfrgui handles automatically as "Retrim"). Defragmenting an SSD does not improve performance and unnecessarily wears the drive. Windows is smart enough to run the right operation for each drive type — but the technician should understand why.</p>
+<div class="tool-panel">
+  <div class="tool-panel-header"><span class="tool-name">Registry Editor</span><span class="tool-exe">regedit.exe</span></div>
+  <div class="tool-panel-body">
+    <div class="tool-row"><span class="tool-label">Purpose</span><span class="tool-desc">Directly views and edits the Windows Registry — the hierarchical database storing low-level configuration settings for the OS, hardware, and installed applications</span></div>
+    <div class="tool-row"><span class="tool-label">Common use</span><span class="tool-desc">Advanced troubleshooting and configuration changes not exposed through any standard graphical settings interface — used carefully, since incorrect edits can destabilize or break the OS</span></div>
+  </div>
 </div>
-
-<h3 class="section">Registry Editor (regedit.exe)</h3>
-
-<p>The <span class="key-term">Registry Editor</span> provides direct read/write access to the Windows Registry — the hierarchical database that stores virtually all configuration settings for Windows, its services, hardware drivers, and installed applications. Every user account preference, every installed application's settings, every hardware configuration, and most Windows behavior settings are ultimately stored in the Registry.</p>
-
-<div class="how-to-open">Win + R → regedit  |  Search → Registry Editor  |  (requires administrator confirmation via UAC)</div>
 
 <div class="callout callout-warn">
-  <p class="callout-title">Use With Extreme Caution</p>
-  <p>Incorrect Registry edits can render Windows unbootable, prevent applications from running, or cause unpredictable system behavior. <strong>Always export (back up) a key before modifying it</strong>: right-click the key → Export, save the .reg file. This allows the change to be undone by double-clicking the exported file. Do not modify Registry keys you do not understand.</p>
+  <p class="callout-title">Registry Editor — High Risk, Last Resort</p>
+  <p>Unlike most other tools in this objective, <code>regedit.exe</code> offers no built-in safety net — there's no confirmation dialog stopping a technician from deleting or altering a critical registry key, and a wrong edit can prevent Windows from booting. Best practice is to back up the specific registry key (or export the full registry) before making a change, and to use the Registry Editor only when no safer, purpose-built tool accomplishes the same task.</p>
 </div>
 
-<div class="tool-panel">
-  <div class="tool-panel-header">
-    <span class="tool-name">Registry Editor</span>
-    <span class="tool-exe">regedit.exe</span>
-  </div>
-  <div class="tool-panel-body">
-    <div class="tool-row">
-      <div class="tool-row-label">HKEY_LOCAL_MACHINE (HKLM)</div>
-      <div class="tool-row-desc">Settings that apply to the entire computer regardless of which user is logged in. Includes hardware configuration (HKLM\HARDWARE), installed software (HKLM\SOFTWARE), system services (HKLM\SYSTEM), and security settings (HKLM\SECURITY, HKLM\SAM). The most important hive for system-level configuration.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">HKEY_CURRENT_USER (HKCU)</div>
-      <div class="tool-row-desc">Settings for the currently logged-in user — desktop preferences, user-specific application settings, mapped network drives, and user-level software configuration. Changes here affect only the current user's profile. HKCU is a shortcut into HKLM\SOFTWARE\Classes and the current user's profile hive.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">HKEY_USERS (HKU)</div>
-      <div class="tool-row-desc">Contains subkeys for every user profile loaded on the system. HKCU is actually a pointer to the current user's subkey under HKU. Administrators can edit settings for other user profiles by navigating directly to their subkey under HKU.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">HKEY_CLASSES_ROOT (HKCR)</div>
-      <div class="tool-row-desc">File type associations and COM object registrations — which application opens a .pdf file, how context menus are constructed, and what icons appear for file types. A merge of HKLM\SOFTWARE\Classes and HKCU\SOFTWARE\Classes; per-user settings take precedence.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">HKEY_CURRENT_CONFIG (HKCC)</div>
-      <div class="tool-row-desc">A pointer to the current hardware profile under HKLM\SYSTEM\CurrentControlSet\Hardware Profiles\Current. Contains settings for the active hardware configuration. Rarely edited directly.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Value types</div>
-      <div class="tool-row-desc"><strong>REG_SZ</strong> — plain text string. <strong>REG_DWORD</strong> — 32-bit integer (0 or 1 commonly used for on/off flags). <strong>REG_QWORD</strong> — 64-bit integer. <strong>REG_BINARY</strong> — raw binary data. <strong>REG_MULTI_SZ</strong> — multiple strings. <strong>REG_EXPAND_SZ</strong> — string containing environment variable references (e.g., <code>%SystemRoot%</code>).</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Find (Ctrl + F)</div>
-      <div class="tool-row-desc">Searches across all keys, value names, and value data. Essential for finding where a specific application stores its settings or locating a malware persistence key by name. Use Find Next (F3) to continue searching after the first result.</div>
-    </div>
-    <div class="tool-row">
-      <div class="tool-row-label">Export / Import</div>
-      <div class="tool-row-desc">Right-click a key → Export saves it (and all subkeys) as a <code>.reg</code> file — human-readable text. Double-clicking a .reg file merges its contents back into the Registry. File → Import achieves the same result. This is the standard backup method before making Registry changes.</div>
-    </div>
-  </div>
-</div>
-
-<div class="callout callout-exam">
-  <p class="callout-title">Exam Focus — Registry Hives</p>
-  <p>Know the five root hives and what each contains: <strong>HKLM</strong> = machine-wide settings, <strong>HKCU</strong> = current user settings, <strong>HKU</strong> = all user profiles, <strong>HKCR</strong> = file associations, <strong>HKCC</strong> = current hardware profile. Common exam questions ask which hive to look in for a specific type of setting — system-wide settings are in HKLM; per-user settings are in HKCU.</p>
+<div class="callout callout-tip">
+  <p class="callout-title">SSD vs. HDD — Why Defragmenting Matters for Only One</p>
+  <p>Disk Defragment (<code>dfrgui.exe</code>) exists to counteract fragmentation on spinning hard disk drives, where a mechanical read/write head has to physically move to different locations to read a fragmented file. Solid-state drives have no moving parts and near-uniform access time regardless of where data sits, so defragmenting an SSD provides no performance benefit and simply consumes some of its limited write endurance — modern versions of the tool will actually run an SSD-appropriate "optimization" (like TRIM) instead of true defragmentation when it detects an SSD.</p>
 </div>
 
 
-<!-- ══════════════════════════════════════════ -->
-<!-- TOOL QUICK REFERENCE                     -->
-<!-- ══════════════════════════════════════════ -->
-<h2 class="chapter"><span class="ch-num">REFERENCE</span>Complete Tool Quick Reference</h2>
+<!-- QUICK LOOKUP TABLE -->
+<div class="ch-divider"></div>
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Lookup — Tool Name to Filename</h2>
 
-<p>The following table consolidates all tools from this objective with their executable names, primary diagnostic purpose, and the most likely exam scenario each solves.</p>
-
-<table class="data-table">
-  <thead>
-    <tr>
-      <th>Tool</th>
-      <th>Executable</th>
-      <th>Primary Scenario / When to Use</th>
-    </tr>
-  </thead>
+<table class="exe-table">
+  <thead><tr><th>Tool</th><th>Filename</th><th>One-Line Purpose</th></tr></thead>
   <tbody>
-    <tr><td>Task Manager — Processes</td><td><code>taskmgr</code></td><td>App frozen / high CPU or RAM consumption — End Task the offending process</td></tr>
-    <tr><td>Task Manager — Performance</td><td><code>taskmgr</code></td><td>System running slow — identify whether CPU, RAM, Disk, or Network is the bottleneck</td></tr>
-    <tr><td>Task Manager — Startup</td><td><code>taskmgr</code></td><td>Slow login — disable high-impact startup programs</td></tr>
-    <tr><td>Task Manager — Services</td><td><code>taskmgr</code></td><td>Quick start/stop/restart of a service; link to Services console</td></tr>
-    <tr><td>Task Manager — Users</td><td><code>taskmgr</code></td><td>Multiple users logged in; need to disconnect or sign off a session</td></tr>
-    <tr><td>Event Viewer</td><td><code>eventvwr.msc</code></td><td>Unexplained crashes, errors, failed logins — search System/Application/Security logs</td></tr>
-    <tr><td>Disk Management</td><td><code>diskmgmt.msc</code></td><td>New drive not appearing, partition a drive, change drive letter, extend/shrink a volume</td></tr>
-    <tr><td>Task Scheduler</td><td><code>taskschd.msc</code></td><td>Create automated tasks; check if scheduled maintenance jobs are running</td></tr>
-    <tr><td>Device Manager</td><td><code>devmgmt.msc</code></td><td>Device not working (yellow !) — update, roll back, or reinstall driver</td></tr>
-    <tr><td>Certificate Manager</td><td><code>certmgr.msc</code></td><td>SSL/TLS errors, certificate trust issues, view installed certificates for current user</td></tr>
-    <tr><td>Local Users &amp; Groups</td><td><code>lusrmgr.msc</code></td><td>Create local accounts, add user to Administrators group, disable departing employee account</td></tr>
-    <tr><td>Performance Monitor</td><td><code>perfmon.msc</code></td><td>Historical performance analysis, intermittent slowness, baseline comparison</td></tr>
-    <tr><td>Group Policy Editor</td><td><code>gpedit.msc</code></td><td>Configure Windows Update policy, restrict access, enforce security settings (Pro/Ent only)</td></tr>
-    <tr><td>System Information</td><td><code>msinfo32</code></td><td>Document hardware specs, check BIOS mode / Secure Boot state, find RAM / CPU info</td></tr>
-    <tr><td>Resource Monitor</td><td><code>resmon</code></td><td>Identify which process is using a specific file or network connection; detailed memory map</td></tr>
-    <tr><td>System Configuration</td><td><code>msconfig</code></td><td>Clean boot to isolate startup conflicts; configure Safe Mode boot; manage boot options</td></tr>
-    <tr><td>Disk Cleanup</td><td><code>cleanmgr</code></td><td>Low disk space — remove temp files, Windows Update cache, Windows.old</td></tr>
-    <tr><td>Optimize Drives</td><td><code>dfrgui</code></td><td>HDD running slow — defragment. SSD maintenance — Retrim. Do NOT defrag SSDs.</td></tr>
-    <tr><td>Registry Editor</td><td><code>regedit</code></td><td>Direct configuration settings changes; remove malware persistence keys; advanced OS customization</td></tr>
+    <tr><td>Event Viewer</td><td>eventvwr.msc</td><td>Review system/application/security logs</td></tr>
+    <tr><td>Disk Management</td><td>diskmgmt.msc</td><td>Graphical partition/volume management</td></tr>
+    <tr><td>Task Scheduler</td><td>taskschd.msc</td><td>Automate tasks/scripts on a schedule or trigger</td></tr>
+    <tr><td>Device Manager</td><td>devmgmt.msc</td><td>View/manage hardware devices and drivers</td></tr>
+    <tr><td>Certificate Manager</td><td>certmgr.msc</td><td>View/manage installed digital certificates</td></tr>
+    <tr><td>Local Users and Groups</td><td>lusrmgr.msc</td><td>Manage local accounts and security groups (not on Home)</td></tr>
+    <tr><td>Performance Monitor</td><td>perfmon.msc</td><td>Detailed, loggable performance counters over time</td></tr>
+    <tr><td>Group Policy Editor</td><td>gpedit.msc</td><td>Configure local Group Policy (not on Home)</td></tr>
+    <tr><td>System Information</td><td>msinfo32.exe</td><td>Full hardware/software system summary</td></tr>
+    <tr><td>Resource Monitor</td><td>resmon.exe</td><td>Granular resource usage, incl. open file handles</td></tr>
+    <tr><td>System Configuration</td><td>msconfig.exe</td><td>Boot options (incl. Safe Mode), startup services</td></tr>
+    <tr><td>Disk Cleanup</td><td>cleanmgr.exe</td><td>Remove unnecessary files to free disk space</td></tr>
+    <tr><td>Disk Defragment</td><td>dfrgui.exe</td><td>Reorganize fragmented data on HDDs</td></tr>
+    <tr><td>Registry Editor</td><td>regedit.exe</td><td>Direct edit of the Windows Registry — high risk</td></tr>
   </tbody>
 </table>
 
 
-<!-- ══════════════════════════════════════════ -->
-<!-- SUMMARY                                  -->
-<!-- ══════════════════════════════════════════ -->
+<!-- MASTER REFERENCE -->
 <div class="ch-divider"></div>
 
 <div class="summary-box">
-  <h3>Objective 1.4 — Key Facts Summary</h3>
+  <h3>Master Reference — Objective 1.4 Key Concepts</h3>
   <div class="summary-grid">
-    <div class="summary-item"><span class="s-sym">taskmgr</span>5 tabs: Processes, Performance, Startup, Services, Users</div>
-    <div class="summary-item"><span class="s-sym">Frozen app</span>Task Manager → Processes → End Task</div>
-    <div class="summary-item"><span class="s-sym">Slow login</span>Task Manager → Startup → disable high-impact items</div>
-    <div class="summary-item"><span class="s-sym">eventvwr.msc</span>System log = OS/hardware; App log = software; Security log = logins/audit</div>
-    <div class="summary-item"><span class="s-sym">Event ID 41 / 6008</span>Unexpected / dirty shutdown events in System log</div>
-    <div class="summary-item"><span class="s-sym">diskmgmt.msc</span>Partition, format, extend/shrink, change drive letter, initialize new disks</div>
-    <div class="summary-item"><span class="s-sym">devmgmt.msc</span>Yellow ! = driver problem; Red X = disabled; roll back driver after bad update</div>
-    <div class="summary-item"><span class="s-sym">gpedit.msc / lusrmgr.msc</span>Pro and Enterprise only — not available on Home editions</div>
-    <div class="summary-item"><span class="s-sym">msinfo32</span>Read-only hardware/software inventory; shows BIOS mode, Secure Boot, RAM, CPU</div>
-    <div class="summary-item"><span class="s-sym">resmon</span>Per-process file/network/handle detail; deeper than Task Manager</div>
-    <div class="summary-item"><span class="s-sym">msconfig</span>Clean boot = disable 3rd-party services + startup items; isolates software conflicts</div>
-    <div class="summary-item"><span class="s-sym">cleanmgr</span>"Clean up system files" reveals Windows Update cache and Windows.old for removal</div>
-    <div class="summary-item"><span class="s-sym">dfrgui — HDD</span>Defragment to consolidate fragmented files and improve read speed</div>
-    <div class="summary-item"><span class="s-sym">dfrgui — SSD</span>Retrim (TRIM commands) — do NOT defragment SSDs</div>
-    <div class="summary-item"><span class="s-sym">regedit — HKLM</span>Machine-wide settings; applies to all users</div>
-    <div class="summary-item"><span class="s-sym">regedit — HKCU</span>Current user settings; per-user configuration</div>
-    <div class="summary-item"><span class="s-sym">regedit safety</span>Always export a key before editing it; .reg file is the backup/undo mechanism</div>
-    <div class="summary-item"><span class="s-sym">perfmon vs. resmon</span>perfmon = long-term trend data; resmon = real-time per-process detail</div>
-    <div class="summary-item"><span class="s-sym">taskschd.msc</span>Triggers (when), Actions (what), Conditions (additional requirements)</div>
-    <div class="summary-item"><span class="s-sym">certmgr.msc</span>User-level cert store; Trusted Root CAs list; rogue root CA = security threat</div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Processes</span><span>Per-app/process resource usage; end unresponsive tasks</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Performance</span><span>Real-time overall system resource graphs</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Startup</span><span>Manage apps launching at boot; diagnose slow startup</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Users</span><span>See logged-in sessions and their resource usage</span></div>
+    <div class="summary-item"><span class="s-sym">Task Mgr — Services</span><span>Quick start/stop/restart of Windows services</span></div>
+    <div class="summary-item"><span class="s-sym">eventvwr.msc</span><span>Event Viewer — system/app/security logs</span></div>
+    <div class="summary-item"><span class="s-sym">diskmgmt.msc</span><span>Disk Management — graphical partition/volume tool</span></div>
+    <div class="summary-item"><span class="s-sym">taskschd.msc</span><span>Task Scheduler — automate scheduled/triggered tasks</span></div>
+    <div class="summary-item"><span class="s-sym">devmgmt.msc</span><span>Device Manager — hardware and driver management</span></div>
+    <div class="summary-item"><span class="s-sym">certmgr.msc</span><span>Certificate Manager — manage digital certificates</span></div>
+    <div class="summary-item"><span class="s-sym">lusrmgr.msc</span><span>Local Users and Groups — not available on Home</span></div>
+    <div class="summary-item"><span class="s-sym">perfmon.msc</span><span>Performance Monitor — detailed, loggable counters</span></div>
+    <div class="summary-item"><span class="s-sym">gpedit.msc</span><span>Group Policy Editor — local policy; not on Home</span></div>
+    <div class="summary-item"><span class="s-sym">msinfo32.exe</span><span>System Information — full system summary</span></div>
+    <div class="summary-item"><span class="s-sym">resmon.exe</span><span>Resource Monitor — granular usage incl. file handles</span></div>
+    <div class="summary-item"><span class="s-sym">msconfig.exe</span><span>System Configuration — boot options, startup services</span></div>
+    <div class="summary-item"><span class="s-sym">cleanmgr.exe</span><span>Disk Cleanup — remove unnecessary files</span></div>
+    <div class="summary-item"><span class="s-sym">dfrgui.exe</span><span>Disk Defragment — HDDs only, not SSDs</span></div>
+    <div class="summary-item"><span class="s-sym">regedit.exe</span><span>Registry Editor — high-risk direct config editing</span></div>
   </div>
 </div>
 
-<div class="callout callout-exam">
-  <p class="callout-title">High-Probability Exam Scenarios</p>
-  <p><strong>Scenario 1:</strong> Application is unresponsive → Task Manager → Processes → End Task.<br>
-  <strong>Scenario 2:</strong> Computer boots slowly / slow to become usable after login → Task Manager → Startup → disable high-impact programs.<br>
-  <strong>Scenario 3:</strong> A device has a yellow exclamation mark → Device Manager → update or reinstall driver.<br>
-  <strong>Scenario 4:</strong> A new driver update causes display problems → Device Manager → Roll Back Driver.<br>
-  <strong>Scenario 5:</strong> System crashes without explanation → Event Viewer → System log → search for Critical/Error events near the crash time.<br>
-  <strong>Scenario 6:</strong> A new hard drive is not visible in File Explorer → Disk Management — the disk needs to be initialized and a volume created.<br>
-  <strong>Scenario 7:</strong> Need to know BIOS mode or Secure Boot state → msinfo32 → System Summary.<br>
-  <strong>Scenario 8:</strong> Computer is slow — need to determine whether it's CPU, RAM, or disk → Task Manager → Performance tab.<br>
-  <strong>Scenario 9:</strong> Low disk space → Disk Cleanup → Clean up system files to remove Windows Update cache.<br>
-  <strong>Scenario 10:</strong> Application conflict after Windows starts — clean boot → msconfig → Services → Hide Microsoft → Disable all, then Startup items off.</p>
+<!-- QUICK REFERENCE -->
+<h2 class="chapter"><span class="ch-num">REFERENCE</span>Quick Reference Cards</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>"Which Tool Do I Need?" — Common Scenarios</h4>
+    <ul>
+      <li><strong>Slow boot time</strong> — Task Manager Startup tab, or msconfig.exe</li>
+      <li><strong>Unexplained crash/error</strong> — Event Viewer (eventvwr.msc)</li>
+      <li><strong>Driver problem</strong> — Device Manager (devmgmt.msc)</li>
+      <li><strong>Low disk space</strong> — Disk Cleanup (cleanmgr.exe)</li>
+      <li><strong>File won't delete, "in use"</strong> — Resource Monitor (resmon.exe)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Graphical vs. Command-Line Counterparts</h4>
+    <ul>
+      <li><strong>Disk Management</strong> ↔ diskpart (Obj. 1.5)</li>
+      <li><strong>Local Users and Groups</strong> ↔ net user (Obj. 1.5)</li>
+      <li><strong>Group Policy Editor</strong> ↔ gpupdate/gpresult (Obj. 1.5)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Not Available on Windows Home</h4>
+    <ul>
+      <li><strong>lusrmgr.msc</strong> — Local Users and Groups</li>
+      <li><strong>gpedit.msc</strong> — Group Policy Editor</li>
+      <li><strong>Connects to</strong> — Objective 1.3's edition comparisons</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Handle-With-Care Tools</h4>
+    <ul>
+      <li><strong>regedit.exe</strong> — no undo; back up before editing</li>
+      <li><strong>diskmgmt.msc</strong> — deleting/formatting a volume destroys data</li>
+      <li><strong>dfrgui.exe</strong> — don't run traditional defrag on an SSD</li>
+    </ul>
+  </div>
 </div>
 
-</div><!-- /.page -->
+<div class="callout callout-exam" style="margin-top:28px;">
+  <p class="callout-title">Final Exam Reminders</p>
+  <p><strong>Learn each tool as a name-and-filename pair</strong> — the exam tests recognition in both directions, and scenario questions often reference the filename directly (e.g., "which tool would you launch with devmgmt.msc?").</p>
+  <p><strong>lusrmgr.msc and gpedit.msc are both absent from Windows Home editions</strong> — this is one of the most reliably tested cross-references between this objective and Objective 1.3.</p>
+  <p><strong>Resource Monitor (resmon.exe) goes deeper than Task Manager</strong>, especially for identifying which process has a specific file locked open — know this as the specific tool for that specific symptom.</p>
+  <p><strong>Disk Defragment is for HDDs, not SSDs</strong> — running it unnecessarily on an SSD provides no benefit and consumes write endurance; modern Windows detects the drive type and adjusts its behavior accordingly.</p>
+  <p><strong>Registry Editor changes take effect immediately with no confirmation and no built-in undo</strong> — always back up the relevant key (or the full registry) before making a change, and treat it as a last-resort tool.</p>
+  <p><strong>Task Manager's Startup tab and msconfig.exe both relate to what runs at boot, but aren't identical</strong> — Task Manager's Startup tab manages startup <em>applications</em>, while msconfig also covers boot options like Safe Mode and startup <em>services</em>, giving broader control over the boot process itself.</p>
+</div>
+
+</div>
 </body>
 </html>
